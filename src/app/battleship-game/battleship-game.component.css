@@ -1,0 +1,57 @@
+.board-area {
+  float: left;
+  width: 45%;
+  text-align: center;
+  padding: 30px;
+  overflow: hidden;
+}
+
+.game-board {
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+.game-board tr td {
+  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+}
+
+.header {
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+}
+
+.instructions {
+  font-size: 2em;
+}
+
+.hit {
+  background-color: red;
+}
+
+.miss {
+  background-color: blue;
+}
+
+.unknown {
+  background-color: white;
+}
+
+.occupied {
+  background-color: darkslategray;
+}
+
+.preview {
+  background-color: slategray;
+}
+
+.occupied.preview {
+  background-color: red;
+}
+
+.occupied.hit {
+  background-color: darkred;
+}
