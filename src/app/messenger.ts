@@ -1,17 +1,15 @@
 export enum MessageType {
     // General
-    Info,
-    ClientError,
+    Info, ClientError,
+
+    // Accounts
+    AnonymousLogin, LoginResponce,
 
     // Queuing
-    JoinQueue,
-    ExitQueue,
-    StartGame,
+    JoinQueue, ExitQueue, StartGame,
 
     // In Game
-    Concede,
-    GameEvent,
-    GameAction,
+    Concede, GameEvent, GameAction
 }
 
 export interface Message {
@@ -29,23 +27,36 @@ export interface Message {
 export class Messenger {
     private handlers: Map<string, (msg: Message) => void>;
     private connections: Map<string, any>;
+    private username: string;
     private id: string;
     private ws: WebSocket;
 
     constructor() {
-        let url = 'localhost'//location.host;
+        
         this.connections = new Map<string, any>();
         this.handlers = new Map();
-        let protocal = location.protocol.includes('https') ? 'wss' : 'ws';
+        let url = 'ws-battleship.herokuapp.com' //location.host;
+        let protocal = 'wss'; // location.protocol.includes('https') ? 'wss' : 'ws';
         this.ws = new WebSocket(protocal + '://' + url);
         console.log('attempting to connect to', protocal + '://' + url)
         this.ws.onmessage = this.handleMessage.bind(this);
         this.id = Math.random().toString(16);
+        this.addHandeler(MessageType.LoginResponce, (msg) => this.login(msg));
+        this.ws.onopen = () => this.annonLogin();
     }
 
-    public setOnOpen(onOpen: (this: WebSocket, ev: Event) => void) {
-        this.ws.onopen = onOpen;
+    private login(msg: Message) {
+        this.username = msg.data.username;
+        this.id = msg.data.token;
+        this.onlogin(this.username);
     }
+
+    public onlogin: (username: string) => void = () => null;
+
+    private annonLogin() {
+        this.sendMessageToServer(MessageType.AnonymousLogin, {});
+    }
+
 
     private handleMessage(ev: MessageEvent) {
         let message = JSON.parse(ev.data) as Message;

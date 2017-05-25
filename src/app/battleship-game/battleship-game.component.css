@@ -6,6 +6,18 @@
   overflow: hidden;
 }
 
+.title {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.bold-button {
+  background-color: ghostwhite;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  border: 1px solid black;
+  font-size: 1.5em;
+  padding: 20px;
+}
+
 .game-board {
   border-collapse: collapse;
   margin: 0 auto;

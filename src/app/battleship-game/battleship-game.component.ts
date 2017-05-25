@@ -1,6 +1,6 @@
 import { ShipType, TileBelief, Direction, shipSizes, dirMappings, Point } from './battleship';
 import { Component, OnInit, NgZone } from '@angular/core';
-import { WebClient } from './client';
+import { WebClient, ClientState } from './client';
 
 
 @Component({
@@ -14,6 +14,7 @@ export class BattleshipGameComponent implements OnInit {
   public shipDir: Direction;
   public highlights: Set<String>;
   public placing: boolean = true;
+  public state =  ClientState;
 
   constructor(zone: NgZone) {
     this.client = new WebClient(zone);
@@ -22,8 +23,8 @@ export class BattleshipGameComponent implements OnInit {
     this.highlights = new Set();
   }
 
-  public inQueue() {
-    return !this.client.isInGame();
+  public getState() {
+    return this.client.getState() ;
   }
 
   public fire(row: number, col: number) {
@@ -56,7 +57,7 @@ export class BattleshipGameComponent implements OnInit {
   }
 
   public shipList(ships:Set<ShipType>) {
-    return Array.from(ships).map(ship => ShipType[ship]).join(', ');
+    return Array.from(ships).map(ship => ShipType[ship] + ' (' + shipSizes[ship] + ')').join(', ');
   }
 
   public place(row: number, col: number) {
