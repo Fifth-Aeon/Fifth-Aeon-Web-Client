@@ -1,3 +1,5 @@
+import { Queue } from 'typescript-collections';
+
 export enum MessageType {
     // General
     Info, ClientError,
@@ -30,30 +32,54 @@ export class Messenger {
     private username: string;
     private id: string;
     private ws: WebSocket;
+    private messageQueue: Queue<string> = new Queue<string>();
+    public onlogin: (username: string) => void = () => null;
+    private loggedIn: boolean = false;
 
     constructor() {
-        
         this.connections = new Map<string, any>();
         this.handlers = new Map();
-        let url = 'ws-battleship.herokuapp.com' //location.host;
-        let protocal = 'wss'; // location.protocol.includes('https') ? 'wss' : 'ws';
-        this.ws = new WebSocket(protocal + '://' + url);
-        console.log('attempting to connect to', protocal + '://' + url)
-        this.ws.onmessage = this.handleMessage.bind(this);
         this.id = Math.random().toString(16);
         this.addHandeler(MessageType.LoginResponce, (msg) => this.login(msg));
-        this.ws.onopen = () => this.annonLogin();
+        this.connect();
+    }
+
+    private connect() {
+        let urn = 'localhost'; //location.host;
+        let protocal = 'ws'; // location.protocol.includes('https') ? 'wss' : 'ws';
+        let url = protocal + '://' + urn;
+        this.ws = new WebSocket(url);
+        this.ws.onmessage = this.handleMessage.bind(this);
+        this.ws.onopen = () => this.onConnect();
+    }
+
+    private emptyMessageQueue() {
+        
+        while (!this.messageQueue.isEmpty()) {
+            console.log(this.messageQueue.peek());
+            this.ws.send(this.messageQueue.dequeue());
+        }
     }
 
     private login(msg: Message) {
         this.username = msg.data.username;
         this.id = msg.data.token;
+        this.loggedIn = true;
         this.onlogin(this.username);
+        this.emptyMessageQueue();
     }
 
-    public onlogin: (username: string) => void = () => null;
+
+    private onConnect() {
+        if (this.loggedIn) {
+            this.emptyMessageQueue();
+        } else {
+            this.annonLogin();
+        }
+    }
 
     private annonLogin() {
+        console.log('annon login');
         this.sendMessageToServer(MessageType.AnonymousLogin, {});
     }
 
@@ -88,7 +114,15 @@ export class Messenger {
     }
 
     public sendMessageToServer(messageType: MessageType, data: string | object) {
-        this.ws.send(this.makeMessage(messageType, data));
+        let message = this.makeMessage(messageType, data);
+        if (this.ws.readyState === this.ws.OPEN) {
+            console.log('ws is open', message);
+            this.ws.send(message);
+        } else {
+            console.log('add to queue');
+            this.messageQueue.add(message);
+            this.connect();
+        }
     }
 }
 
