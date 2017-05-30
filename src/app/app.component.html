@@ -1,1 +1,6 @@
-<bsc-battleship-game></bsc-battleship-game>
+<md-toolbar color="primary">
+  <span>Battleship - {{state[client.getState()]}} - {{client.isConnected() ? 'Connected' : 'Disconnected'}}</span>
+
+  <span></span>
+</md-toolbar>
+<router-outlet></router-outlet>

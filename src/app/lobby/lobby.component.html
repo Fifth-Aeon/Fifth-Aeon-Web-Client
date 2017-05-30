@@ -1,0 +1,7 @@
+<div class="lobby">
+  <p class="instructions">{{client.getInstuciton()}}</p>
+  <button md-raised-button color="primary" *ngIf="getState() === state.InLobby" (click)="client.join()">Join Game</button>
+
+  <md-progress-spinner *ngIf="getState() == state.UnAuth || getState() == state.InQueue" attr.color="primary" mode="indeterminate">
+  </md-progress-spinner>
+</div>

@@ -1,9 +1,12 @@
 .board-area {
   float: left;
-  width: 45%;
   text-align: center;
-  padding: 30px;
   overflow: hidden;
+  width: 100%;
+}
+
+md-progress-spinner {
+  margin: 0 auto;
 }
 
 .title {

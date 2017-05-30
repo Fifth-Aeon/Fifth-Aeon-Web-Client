@@ -1,7 +1,11 @@
 import { BattleshipGame, Direction, GameAction, GameActionType, GameEvent, GameEventType, Point, ShipType, TileBelief } from './battleship';
-import { Messenger, MessageType, Message } from '../messenger';
-import { NgZone } from '@angular/core';
+import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
+
+import { NgZone, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+
+
 
 //const url = location.host === 'localhost' ? 'localhost' : 'battleship-env.us-west-2.elasticbeanstalk.com';
 
@@ -10,6 +14,7 @@ export enum ClientState {
     UnAuth, InLobby, InQueue, InGame, Any
 }
 
+@Injectable()
 export class WebClient {
     private username: string;
     private opponentUsername: string;
@@ -22,8 +27,9 @@ export class WebClient {
     private finished: boolean = false;
     private unsunkShips: [Set<ShipType>, Set<ShipType>];
     private soundManager: SoundManager = new SoundManager();
+    private connected: boolean = false;
 
-    constructor(private zone: NgZone) {
+    constructor(private router: Router, private zone: NgZone) {
         this.game = new BattleshipGame(() => null);
         this.playerNumber = 0;
         this.messenger = new Messenger();
@@ -34,12 +40,19 @@ export class WebClient {
             this.changeState(ClientState.InLobby);
             this.username = username;
         }
+        this.messenger.connectChange = (status) => zone.run(() => this.connected = status);
+    }
+
+    public isConnected():boolean {
+        return this.connected;
     }
 
     public exitGame() {
+        this.sendGameAction(GameActionType.Quit, {});
         this.game = new BattleshipGame(() => null);
         this.playerNumber = 0;
         this.changeState(ClientState.InLobby);
+        this.router.navigate(['/lobby']);
     }
 
     public join() {
@@ -52,7 +65,10 @@ export class WebClient {
     }
 
     public canFire() {
-        return this.state == ClientState.InGame && this.game.hasStarted() && this.game.getTurn() == this.playerNumber;
+        return this.state == ClientState.InGame &&
+            this.game.hasStarted() &&
+            this.game.getTurn() == this.playerNumber &&
+            this.game.getWinner() == -1;
     }
 
     public canPlace(): boolean {
@@ -85,7 +101,6 @@ export class WebClient {
 
     private changeState(newState: ClientState) {
         this.zone.run(() => this.state = newState);
-
     }
 
     public getInstuciton() {
@@ -108,9 +123,7 @@ export class WebClient {
 
     public place(row: number, col: number, ship: ShipType, dir: Direction) {
         let loc = new Point(row, col);
-
         if (this.game.placeShip(this.playerNumber, ship, loc, dir)) {
-            console.log('Placing %s at (%d, %d) facing %s', ShipType[ship], loc.row, loc.col, Direction[dir])
             this.sendGameAction(GameActionType.PlaceShip, {
                 ship: ship,
                 loc: loc,
@@ -153,6 +166,8 @@ export class WebClient {
         this.playerNumber = msg.data.playerNumber;
         this.opponentNumber = 1 - this.playerNumber;
         this.game = new BattleshipGame(((p, error) => console.error(error)));
+            this.router.navigate(['/game']);
+
         this.zone.run(() => {
             this.opponentUsername = msg.data.opponent;
             this.state = ClientState.InGame;

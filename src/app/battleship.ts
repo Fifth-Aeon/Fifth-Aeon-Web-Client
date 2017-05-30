@@ -45,7 +45,7 @@ export interface GameAction {
 }
 
 export enum GameActionType {
-    PlaceShip, FinishPlacement, Fire
+    PlaceShip, FinishPlacement, Fire, Quit
 }
 
 export enum GameEventType {
@@ -72,7 +72,7 @@ export class BattleshipGame {
     private events: GameEvent[];
     private remainingHits: [number, number];
     private hitsPerShip: [number[], number[]];
-    private unsunkShips: [Set<ShipType>, Set<ShipType>]; 
+    private unsunkShips: [Set<ShipType>, Set<ShipType>];
     private playerReady: [boolean, boolean];
     private winner: number = -1;
 
@@ -112,6 +112,14 @@ export class BattleshipGame {
         this.addActionHandeler(GameActionType.Fire, (act) => {
             this.fireAt(act.player, new Point(act.params.target.row, act.params.target.col))
         });
+        this.addActionHandeler(GameActionType.Quit, (act) => {
+            this.quit(act.player);
+        })
+    }
+
+    private quit(player: number) {
+        this.winner = this.getOpponent(player);
+        this.addGameEvent(GameEventType.Ended, { winner: this.winner, quit:true });
     }
 
     private makeBoard(initial: TileBelief | ShipType): TileBelief[][] | ShipType[][] {
@@ -242,9 +250,9 @@ export class BattleshipGame {
 
         // Check if the game ended
         if (this.remainingHits[op] < 1) {
-            
             this.addGameEvent(GameEventType.Ended, {
-                winner: shootingPlayer
+                winner: shootingPlayer,
+                quit: false
             }, shootingPlayer, null)
             this.winner = shootingPlayer;
             this.playerTurn = 3;

@@ -8,7 +8,7 @@ export enum MessageType {
     AnonymousLogin, LoginResponce,
 
     // Queuing
-    JoinQueue, ExitQueue, StartGame,
+    JoinQueue, ExitQueue, QueueJoined, StartGame,
 
     // In Game
     Concede, GameEvent, GameAction
@@ -33,8 +33,11 @@ export class Messenger {
     private id: string;
     private ws: WebSocket;
     private messageQueue: Queue<string> = new Queue<string>();
-    public onlogin: (username: string) => void = () => null;
+    
     private loggedIn: boolean = false;
+
+    public onlogin: (username: string) => void = () => null;
+    public connectChange: (status: boolean) => void = () => null;
 
     constructor() {
         this.connections = new Map<string, any>();
@@ -51,10 +54,10 @@ export class Messenger {
         this.ws = new WebSocket(url);
         this.ws.onmessage = this.handleMessage.bind(this);
         this.ws.onopen = () => this.onConnect();
+        this.ws.onclose = () => this.connectChange(false);
     }
 
     private emptyMessageQueue() {
-        
         while (!this.messageQueue.isEmpty()) {
             console.log(this.messageQueue.peek());
             this.ws.send(this.messageQueue.dequeue());
@@ -71,6 +74,7 @@ export class Messenger {
 
 
     private onConnect() {
+        this.connectChange(true);
         if (this.loggedIn) {
             this.emptyMessageQueue();
         } else {
