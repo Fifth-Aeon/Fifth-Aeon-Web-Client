@@ -59,7 +59,6 @@ export class Messenger {
 
     private emptyMessageQueue() {
         while (!this.messageQueue.isEmpty()) {
-            console.log(this.messageQueue.peek());
             this.ws.send(this.messageQueue.dequeue());
         }
     }
@@ -83,7 +82,6 @@ export class Messenger {
     }
 
     private annonLogin() {
-        console.log('annon login');
         this.sendMessageToServer(MessageType.AnonymousLogin, {});
     }
 

@@ -8,11 +8,11 @@ import { WebClient } from './client';
 
 import { AppComponent } from './app.component';
 import { BattleshipGameComponent } from './battleship-game/battleship-game.component';
+import { InPlayGuard } from './in-play.guard';
 
 import { MdButtonModule, MdCheckboxModule, MdToolbarModule, MdProgressSpinnerModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LobbyComponent } from './lobby/lobby.component';
-
 
 @NgModule({
   declarations: [
@@ -27,13 +27,14 @@ import { LobbyComponent } from './lobby/lobby.component';
     BrowserAnimationsModule,
     MdButtonModule, MdCheckboxModule, MdToolbarModule,
     MdProgressSpinnerModule, RouterModule.forRoot([
-      { path: 'game', component: BattleshipGameComponent },
+      { path: 'game', component: BattleshipGameComponent, canActivate: [InPlayGuard] },
+      { path: 'lobby', component: LobbyComponent },
       { path: '', component: LobbyComponent },
       { path: '**', component: LobbyComponent }
-      
+
     ])
   ],
-  providers: [WebClient],
+  providers: [WebClient, InPlayGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
