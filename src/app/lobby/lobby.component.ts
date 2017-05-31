@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { WebClient, ClientState } from '../client';
 
@@ -10,9 +10,14 @@ import { WebClient, ClientState } from '../client';
   styleUrls: ['./lobby.component.css']
 })
 export class LobbyComponent implements OnInit {
-  public state = ClientState; 
+  public state = ClientState;
+  private gameId: string;
 
-  constructor(private router:Router, public client: WebClient) { 
+  constructor(route: ActivatedRoute, private router: Router, public client: WebClient) {
+    this.gameId = route.snapshot.paramMap.get('id');
+    if (this.gameId) {
+      this.client.joinPrivateGame(this.gameId);
+    }
   }
 
 

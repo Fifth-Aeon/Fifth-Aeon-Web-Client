@@ -2,6 +2,15 @@
   font-size: 2em;
 }
 
+button {
+  margin: 20px;
+}
+
+.url {
+  color:#07C;
+  text-decoration: underline;
+}
+
 
 md-progress-spinner {
   margin: 0 auto;

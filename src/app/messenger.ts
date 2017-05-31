@@ -1,4 +1,5 @@
 import { Queue } from 'typescript-collections';
+import { getWsUrl } from './url';
 
 export enum MessageType {
     // General
@@ -9,6 +10,8 @@ export enum MessageType {
 
     // Queuing
     JoinQueue, ExitQueue, QueueJoined, StartGame,
+    NewPrivateGame, JoinPrivateGame, CancelPrivateGame,
+    PrivateGameReady,
 
     // In Game
     Concede, GameEvent, GameAction
@@ -19,6 +22,11 @@ export interface Message {
     type: string;
     data: any;
 }
+
+
+// Minimum time before attempting to recconect again;
+let minConnectTime = 1000 * 5;
+let autoReconenctTime = 1000 * 10;
 
 
 /**
@@ -33,7 +41,8 @@ export class Messenger {
     private id: string;
     private ws: WebSocket;
     private messageQueue: Queue<string> = new Queue<string>();
-    
+    private lastConnectAttempt: number;
+
     private loggedIn: boolean = false;
 
     public onlogin: (username: string) => void = () => null;
@@ -45,12 +54,20 @@ export class Messenger {
         this.id = Math.random().toString(16);
         this.addHandeler(MessageType.LoginResponce, (msg) => this.login(msg));
         this.connect();
+        setInterval(() => {
+            if (!this.ws || this.ws.readyState === this.ws.OPEN)
+                return;
+            console.log('Attempting automatic reconnect');
+            this.connect();
+        }, autoReconenctTime);
     }
 
     private connect() {
-        let urn = 'localhost'; //location.host;
-        let protocal = 'ws'; // location.protocol.includes('https') ? 'wss' : 'ws';
-        let url = protocal + '://' + urn;
+        if (Date.now() - this.lastConnectAttempt < minConnectTime) {
+            return;
+        }
+        this.lastConnectAttempt = Date.now();
+        let url = getWsUrl();
         this.ws = new WebSocket(url);
         this.ws.onmessage = this.handleMessage.bind(this);
         this.ws.onopen = () => this.onConnect();
@@ -87,7 +104,8 @@ export class Messenger {
 
 
     private handleMessage(ev: MessageEvent) {
-        let message = JSON.parse(ev.data) as Message;
+        let message = this.readMessage(ev.data);
+        if (!message) return;
         let cb = this.handlers.get(message.type);
         if (!(message.data && message.source && message.type)) {
             console.error('Invalid message', message);
@@ -100,9 +118,20 @@ export class Messenger {
         }
     }
 
+    private readMessage(data: any): Message | null {
+        try {
+            let parsed = JSON.parse(data);
+            parsed.type = MessageType[parsed.type];
+            return parsed as Message;
+        } catch (e) {
+            console.error('Could not parse message json');
+            return null;
+        }
+    }
+
     private makeMessage(messageType: MessageType, data: string | object): string {
         return JSON.stringify({
-            type: messageType,
+            type: MessageType[messageType],
             data: data,
             source: this.id
         });
@@ -121,7 +150,7 @@ export class Messenger {
             console.log('ws is open', message);
             this.ws.send(message);
         } else {
-            console.log('add to queue');
+            console.log('add to queue', message);
             this.messageQueue.add(message);
             this.connect();
         }

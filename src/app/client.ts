@@ -4,6 +4,10 @@ import { SoundManager } from './sound';
 
 import { NgZone, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
+
+import { getHttpUrl } from './url';
+
 
 
 
@@ -11,7 +15,7 @@ import { Router } from '@angular/router';
 
 
 export enum ClientState {
-    UnAuth, InLobby, InQueue, InGame, Any
+    UnAuth, InLobby, Waiting, PrivateLobby, InQueue, InGame, Any
 }
 
 @Injectable()
@@ -29,7 +33,7 @@ export class WebClient {
     private soundManager: SoundManager = new SoundManager();
     private connected: boolean = false;
 
-    constructor(private router: Router, private zone: NgZone) {
+    constructor(private router: Router, private zone: NgZone, private sanitizer: DomSanitizer) {
         this.game = new BattleshipGame(() => null);
         this.playerNumber = 0;
         this.messenger = new Messenger();
@@ -39,11 +43,48 @@ export class WebClient {
         this.messenger.onlogin = (username) => {
             this.changeState(ClientState.InLobby);
             this.username = username;
+            if (this.toJoin) {
+                this.messenger.sendMessageToServer(MessageType.JoinPrivateGame, { gameId: this.toJoin });
+            }
         }
+        this.messenger.addHandeler(MessageType.QueueJoined, (msg) => this.changeState(ClientState.InQueue), this)
+        this.messenger.addHandeler(MessageType.PrivateGameReady, (msg) => this.privateGameReady(msg), this)
         this.messenger.connectChange = (status) => zone.run(() => this.connected = status);
     }
 
-    public isConnected():boolean {
+    private privateGameUrl: string;
+
+    private getInviteMessage() {
+        return `You are invited to play battleship. Go to the url ${this.privateGameUrl} to play.`;
+    }
+
+    public getPrivateGameUrl() {
+        return this.privateGameUrl;
+    }
+
+    public getPrivateGameEmailUrl() {
+        return this.sanitizer.bypassSecurityTrustUrl('mailto:?subject=Game Invite&body=' + encodeURIComponent(this.getInviteMessage()));
+    }
+
+    public getPrivateGameSMSUrl() {
+        return this.sanitizer.bypassSecurityTrustUrl('sms:?body=' + encodeURIComponent(this.getInviteMessage()));
+    }
+
+    private privateGameReady(msg: Message) {
+        this.privateGameUrl = getHttpUrl() + '/lobby/' + msg.data.gameId;
+        this.changeState(ClientState.PrivateLobby);
+    }
+
+    private toJoin: string;
+    public joinPrivateGame(gameId: string) {
+        if (!this.username) {
+            this.toJoin = gameId;
+            return;
+        }
+        this.messenger.sendMessageToServer(MessageType.JoinPrivateGame, { gameId: gameId });
+    }
+
+    public isConnected(): boolean {
         return this.connected;
     }
 
@@ -57,7 +98,13 @@ export class WebClient {
 
     public join() {
         this.messenger.sendMessageToServer(MessageType.JoinQueue, {});
-        this.changeState(ClientState.InQueue);
+        this.changeState(ClientState.Waiting);
+    }
+
+
+    public private() {
+        this.messenger.sendMessageToServer(MessageType.NewPrivateGame, {});
+        this.changeState(ClientState.Waiting);
     }
 
     public isInGame() {
@@ -107,7 +154,11 @@ export class WebClient {
         if (this.state == ClientState.UnAuth)
             return 'Attempting to login to server';
         if (this.state == ClientState.InLobby)
-            return 'Logged in as ' + this.username + ' press join to enter queue.';
+            return 'Logged in as ' + this.username + '.';
+        if (this.state == ClientState.Waiting)
+            return 'Waiting for server responce.';
+        if (this.state == ClientState.PrivateLobby)
+            return 'Private game ready, please invite a friend.';
         if (this.state == ClientState.InQueue)
             return 'In Queue. Waiting for an opponent.'
         if (this.game.getWinner() !== -1)
@@ -166,7 +217,7 @@ export class WebClient {
         this.playerNumber = msg.data.playerNumber;
         this.opponentNumber = 1 - this.playerNumber;
         this.game = new BattleshipGame(((p, error) => console.error(error)));
-            this.router.navigate(['/game']);
+        this.router.navigate(['/game']);
 
         this.zone.run(() => {
             this.opponentUsername = msg.data.opponent;
