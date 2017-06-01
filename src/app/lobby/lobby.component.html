@@ -2,16 +2,13 @@
   <p class="instructions">{{client.getInstuciton()}}</p>
 
   <div *ngIf="getState() === state.InLobby">
-    <button md-raised-button color="primary" (click)="client.join()">Public Game</button>
-    <button md-raised-button color="primary" (click)="client.private()">Private Game</button>
+    <button md-raised-button color="primary" (click)="client.join()"><md-icon>public</md-icon> Public Game</button>
+    <button md-raised-button color="primary" (click)="client.private()"><md-icon>vpn_key</md-icon>  Private Game</button>
   </div>
 
   <div *ngIf="getState() === state.PrivateLobby">
     <p>You can share with your friend via link, email or sms. Press one of the buttons below (the link will be copied to your clipboard)</p>
-
-    
-    <button md-fab mdTooltip="Copy link to clipboard" color="primary"  ngxClipboard [cbContent]="client.getPrivateGameUrl()"><md-icon>link</md-icon></button>
-
+    <button md-fab mdTooltip="Copy link to clipboard" color="primary" (click)="getLink()" ngxClipboard [cbContent]="client.getPrivateGameUrl()"><md-icon>link</md-icon></button>
     <a [href]="client.getPrivateGameEmailUrl()" target="_blank">
       <button md-fab mdTooltip="Invite via Email" color="primary"><md-icon>email</md-icon></button></a>
     <a [href]="client.getPrivateGameSMSUrl()">

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MdSnackBar } from '@angular/material';
+
 
 import { WebClient, ClientState } from '../client';
 
@@ -13,13 +15,18 @@ export class LobbyComponent implements OnInit {
   public state = ClientState;
   private gameId: string;
 
-  constructor(route: ActivatedRoute, private router: Router, public client: WebClient) {
+  constructor(public snackbar: MdSnackBar, route: ActivatedRoute, private router: Router, public client: WebClient) {
     this.gameId = route.snapshot.paramMap.get('id');
     if (this.gameId) {
       this.client.joinPrivateGame(this.gameId);
     }
   }
 
+  public getLink() {
+    this.snackbar.open('Copied url to clipboard', '', {
+      duration: 2000
+    });
+  }
 
   ngOnInit() {
   }

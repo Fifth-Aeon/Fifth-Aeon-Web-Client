@@ -147,10 +147,8 @@ export class Messenger {
     public sendMessageToServer(messageType: MessageType, data: string | object) {
         let message = this.makeMessage(messageType, data);
         if (this.ws.readyState === this.ws.OPEN) {
-            console.log('ws is open', message);
             this.ws.send(message);
         } else {
-            console.log('add to queue', message);
             this.messageQueue.add(message);
             this.connect();
         }

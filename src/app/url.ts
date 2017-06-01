@@ -1,14 +1,13 @@
 const isLocal = location.host.includes('localhost');
-const serverUrn = isLocal ? 'localhost' : 'ws-battleship.heroku.com';
+const serverWsUrn = isLocal ? 'localhost' : 'ws-battleship.herokuapp.com';
+const serverHttpUrn = isLocal ? 'localhost:4200' : 'battleship.williamritson.com'
 const serverWs = isLocal ? 'ws' : 'wss';
 const serverHttp = isLocal ? 'http' : 'https';
 
-console.log(location.host)
-
 export function getWsUrl() {
-    return serverWs + '://' + serverUrn;
+    return serverWs + '://' + serverWsUrn;
 }
 
 export function getHttpUrl() {
-    return serverHttp + '://' + serverUrn;
+    return serverHttp + '://' + serverHttpUrn;
 }

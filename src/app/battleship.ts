@@ -62,8 +62,8 @@ const playerNum = 2;
 const boardSize = 10;
 
 export class BattleshipGame {
-    private reality: ShipType[][][];
-    private beliefs: TileBelief[][][];
+    public reality: ShipType[][][];
+    public beliefs: TileBelief[][][];
     private unplacedPieces: ShipType[][];
     private readyPlayers: number;
     private gameStarted: boolean;
@@ -143,6 +143,10 @@ export class BattleshipGame {
 
     public getWinner() {
         return this.winner;
+    }
+
+    public getUnsunkShips() {
+        return this.unsunkShips;
     }
 
     public syncServerEvent(owner: number, event: GameEvent) {

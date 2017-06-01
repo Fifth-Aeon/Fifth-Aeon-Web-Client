@@ -60,7 +60,8 @@ export class BattleshipGameComponent implements OnInit {
     return this.placing && this.highlights.has(new Point(row, col).toString());
   }
 
-  public shipList(ships: Set<ShipType>) {
+  public shipList(player: number) {
+    let ships = this.client.getGame().getUnsunkShips()[player];
     return Array.from(ships).map(ship => ShipType[ship] + ' (' + shipSizes[ship] + ')').join(', ');
   }
 

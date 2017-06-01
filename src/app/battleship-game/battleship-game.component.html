@@ -1,5 +1,5 @@
 <div class="header">
-  <h2>{{client.username}} vs {{client.opponentUsername}}</h2>
+  <h2>{{client.getUsername()}} vs {{client.getOpponentUsername()}}</h2>
   <p class="instructions">{{client.getInstuciton()}}</p>
   <button md-raised-button color="primary" *ngIf="client.getGame().getWinner() !== -1" (click)="client.exitGame()">Exit Game</button>
 </div>
@@ -8,24 +8,24 @@
 <div class="board-area" [hidden]="this.nextShip < 5">
   <h2>Enemy Intel</h2>
   <table class="game-board">
-    <tr *ngFor="let row of client.getGame().beliefs[client.playerNumber]; let r = index; ">
+    <tr *ngFor="let row of client.getGame().beliefs[client.getPlayerdata().me]; let r = index; ">
       <td *ngFor="let cell of row; let c = index;" (click)="fire(r, c)" [ngClass]="intelStyle(cell, r, c)"></td>
     </tr>
   </table>
   <p [hidden]="!client.getGame().hasStarted()"> Unsunk Ships:
-    <span>{{shipList(client.getGame().unsunkShips[client.opponentNumber])}} </span>
+    <span>{{shipList(client.getPlayerdata().op)}} </span>
   </p>
 </div>
 
 <div class="board-area">
   <h2>Your Fleet</h2>
   <table class="game-board">
-    <tr *ngFor="let row of client.getGame().reality[client.playerNumber]; let r = index; ">
-      <td *ngFor="let cell of row; let c = index;" (mouseover)="hoverPreview(r, c)" (click)="place(r, c)" [ngClass]="forces(cell, r, c, client.getGame().beliefs[client.opponentNumber][r][c])"></td>
+    <tr *ngFor="let row of client.getGame().reality[client.getPlayerdata().me]; let r = index; ">
+      <td *ngFor="let cell of row; let c = index;" (mouseover)="hoverPreview(r, c)" (click)="place(r, c)" [ngClass]="forces(cell, r, c, client.getGame().beliefs[client.getPlayerdata().op][r][c])"></td>
     </tr>
   </table>
   <p [hidden]="!client.getGame().hasStarted()"> Unsunk Ships:
-    <span>{{shipList(client.getGame().unsunkShips[client.playerNumber])}} </span>
+    <span>{{shipList(client.getPlayerdata().me)}} </span>
   </p>
 
   <button md-raised-button color="primary"  (click)="toggleDir()" *ngIf="this.nextShip < 5">Change Direction</button>

@@ -5,14 +5,9 @@ import { SoundManager } from './sound';
 import { NgZone, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MdSnackBar } from '@angular/material';
 
 import { getHttpUrl } from './url';
-
-
-
-
-//const url = location.host === 'localhost' ? 'localhost' : 'battleship-env.us-west-2.elasticbeanstalk.com';
-
 
 export enum ClientState {
     UnAuth, InLobby, Waiting, PrivateLobby, InQueue, InGame, Any
@@ -33,7 +28,7 @@ export class WebClient {
     private soundManager: SoundManager = new SoundManager();
     private connected: boolean = false;
 
-    constructor(private router: Router, private zone: NgZone, private sanitizer: DomSanitizer) {
+    constructor(private snackbar: MdSnackBar, private router: Router, private zone: NgZone, private sanitizer: DomSanitizer) {
         this.game = new BattleshipGame(() => null);
         this.playerNumber = 0;
         this.messenger = new Messenger();
@@ -63,7 +58,7 @@ export class WebClient {
     }
 
     public getPrivateGameEmailUrl() {
-        return this.sanitizer.bypassSecurityTrustUrl('mailto:?subject=Game Invite&body=' + encodeURIComponent(this.getInviteMessage()));
+        return this.sanitizer.bypassSecurityTrustUrl('mailto:?subject=Battleship Invite&body=' + encodeURIComponent(this.getInviteMessage()));
     }
 
     public getPrivateGameSMSUrl() {
@@ -129,7 +124,7 @@ export class WebClient {
         } as GameAction);
     }
 
-    private namePlayer(player: number) {
+    private namePlayer(player: number, cap: boolean = false) {
         if (player == this.playerNumber)
             return 'you';
         return 'your opponent'
@@ -141,6 +136,15 @@ export class WebClient {
                 let sfx = event.params.hit ? 'explosion' : 'splash';
                 this.soundManager.playSound(sfx)
                 break;
+            case GameEventType.SunkShip:
+                let params = event.params;
+                let shipName = ShipType[params.ship].toLocaleLowerCase();
+                let message = event.owner === this.playerNumber ?
+                    `You sunk your oppponent\s ${shipName}.` : 
+                    `Your ${shipName} was sunk.`;
+                this.snackbar.open(message, '', { duration: 3000 });
+                break;
+
         }
 
         this.zone.run(() => this.game.syncServerEvent(this.playerNumber, event));
@@ -210,6 +214,14 @@ export class WebClient {
             me: this.playerNumber,
             op: this.opponentNumber
         }
+    }
+
+    public getUsername() {
+        return this.username;
+    }
+
+    public getOpponentUsername() {
+        return this.opponentUsername;
     }
 
     private startGame(msg: Message) {
