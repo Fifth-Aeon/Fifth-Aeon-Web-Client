@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdSnackBar } from '@angular/material';
 
-
+import { preload } from '../preloader';
 import { WebClient, ClientState } from '../client';
 
 
@@ -20,16 +20,14 @@ export class LobbyComponent implements OnInit {
     if (this.gameId) {
       this.client.joinPrivateGame(this.gameId);
     }
+    preload();
   }
 
   public getLink() {
-    this.snackbar.open('Copied url to clipboard', '', {
-      duration: 2000
-    });
+    this.snackbar.open('Copied url to clipboard', '', { duration: 2000 });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   public getState() {
     if (!this.client)

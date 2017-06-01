@@ -14,10 +14,13 @@ export class BattleshipGameComponent implements OnInit {
   public highlights: Set<String>;
   public placing: boolean = true;
   public state = ClientState;
+  public beliefs = TileBelief;
+  public shipLocs: Array<{ row: number, col: number, dir: Direction }> = [];
+  public size = 30;
+  public sizes = shipSizes;
 
   constructor(public client: WebClient) {
     this.nextShip = ShipType.Carrier;
-    this.shipDir = Direction.East;
     this.highlights = new Set();
   }
 
@@ -25,6 +28,10 @@ export class BattleshipGameComponent implements OnInit {
   public exit() {
     this.client.exitGame();
     return null;
+  }
+
+  public getSpriteUrl(ship: ShipType) {
+    return 'assets/' + ShipType[ship].toLowerCase() + '.png'
   }
 
   public getState() {
@@ -36,28 +43,42 @@ export class BattleshipGameComponent implements OnInit {
     this.client.fire(row, col);
   }
 
-  public toggleDir() {
-    if (this.shipDir == Direction.East)
-      this.shipDir = Direction.South;
-    else
-      this.shipDir = Direction.East;
-  }
-
-  private currPoint = new Point(-100, -100);
-  public hoverPreview(row: number, col: number) {
-    if (!this.placing)
-      return;
-    this.highlights.clear();
-    this.currPoint = new Point(row, col);
-    let copy = this.currPoint.copy();
-    for (let i = 0; i < shipSizes[this.nextShip]; i++) {
-      this.highlights.add(copy.toString());
-      copy.moveInDirection(this.shipDir);
+  public getRot(dir: Direction): number {
+    switch (dir) {
+      case Direction.North:
+        return 180;
+      case Direction.East:
+        return -90;
+      case Direction.South:
+        return 0;
+      case Direction.West:
+        return 90;
     }
   }
 
-  public isHighlighted(row: number, col: number) {
-    return this.placing && this.highlights.has(new Point(row, col).toString());
+  public markedLocs = new Map<String, Direction>();
+  public markOrigin: Point = null;
+  public mark(row: number, col: number) {
+    if (!this.placing)
+      return;
+    let clicked = new Point(row, col);
+    if (this.markedLocs.has(clicked.toString())) {
+      this.place(this.markOrigin.row, this.markOrigin.col, this.markedLocs.get(clicked.toString()));
+      this.markOrigin = null;
+      this.markedLocs.clear();
+    } else {
+      this.markedLocs.clear();
+      this.markOrigin = clicked;
+      for (let dir = 0; dir < 4; dir++) {
+        if (!this.client.canPlaceShip(this.nextShip, clicked, dir))
+          continue;
+        let copy = clicked.copy();
+        for (let i = 1; i < shipSizes[this.nextShip]; i++) {
+          copy.moveInDirection(dir);
+        }
+        this.markedLocs.set(copy.toString(), dir);
+      }
+    }
   }
 
   public shipList(player: number) {
@@ -65,30 +86,23 @@ export class BattleshipGameComponent implements OnInit {
     return Array.from(ships).map(ship => ShipType[ship] + ' (' + shipSizes[ship] + ')').join(', ');
   }
 
-  public place(row: number, col: number) {
+  public place(row: number, col: number, dir: Direction) {
+    console.log(row, col, Direction[dir]);
     if (!this.client.canPlace() || this.nextShip === 5) return;
-    if (this.client.place(row, col, this.nextShip, this.shipDir))
-      this.nextShip++;
+    if (!this.client.place(row, col, this.nextShip, dir))
+      return;
+    this.nextShip++;
+    this.shipLocs.push({ row: row, col: col, dir: dir });
     if (this.nextShip === 5) {
       this.client.finish();
       this.placing = false;
     }
   }
 
-  public intelStyle(cell: TileBelief) {
-    return {
-      hit: cell === TileBelief.Hit,
-      miss: cell === TileBelief.Miss,
-      unknown: cell === TileBelief.Unknown,
-    }
-  }
-
   public forces(cell: ShipType, row: number, col: number, opBelief: TileBelief) {
     return {
-      occupied: cell !== ShipType.None,
-      preview: this.isHighlighted(row, col),
-      hit: opBelief == TileBelief.Hit,
-      miss: opBelief == TileBelief.Miss
+      'basic-cell': true,
+      marked: this.markedLocs.has(`(${row}, ${col})`)
     }
   }
 

@@ -7,11 +7,24 @@
 
 <div class="board-area" [hidden]="this.nextShip < 5">
   <h2>Enemy Intel</h2>
-  <table class="game-board">
-    <tr *ngFor="let row of client.getGame().beliefs[client.getPlayerdata().me]; let r = index; ">
-      <td *ngFor="let cell of row; let c = index;" (click)="fire(r, c)" [ngClass]="intelStyle(cell, r, c)"></td>
-    </tr>
-  </table>
+  <svg class="game-board">
+     <g *ngFor="let row of client.getGame().beliefs[client.getPlayerdata().me]; let r = index;">
+      <g *ngFor="let col of row; let c = index;" 
+        attr.transform="translate({{ c * size}}, {{ r * size}})">
+      <rect (click)="fire(r, c)" 
+        class="basic-cell" 
+        [attr.width]="size " 
+        [attr.height]="size"/>          
+      </g>
+     </g>
+     <g *ngFor="let row of client.getGame().beliefs[client.getPlayerdata().me]; let r = index; ">
+      <g *ngFor="let cell of row; let c = index;" attr.transform="translate({{ c * size}}, {{ r * size}})">
+        <image *ngIf="cell == beliefs.Hit" xlink:href="assets/explosion.png"/>
+        <image *ngIf="cell == beliefs.Miss" xlink:href="assets/splash.png"/>
+      </g>
+     </g>
+  </svg>
+  
   <p [hidden]="!client.getGame().hasStarted()"> Unsunk Ships:
     <span>{{shipList(client.getPlayerdata().op)}} </span>
   </p>
@@ -19,14 +32,34 @@
 
 <div class="board-area">
   <h2>Your Fleet</h2>
-  <table class="game-board">
-    <tr *ngFor="let row of client.getGame().reality[client.getPlayerdata().me]; let r = index; ">
-      <td *ngFor="let cell of row; let c = index;" (mouseover)="hoverPreview(r, c)" (click)="place(r, c)" [ngClass]="forces(cell, r, c, client.getGame().beliefs[client.getPlayerdata().op][r][c])"></td>
-    </tr>
-  </table>
+  <svg class="game-board">
+    <g *ngFor="let row of client.getGame().reality[client.getPlayerdata().me]; let r = index; ">
+      <g *ngFor="let cell of row; let c = index;" attr.transform="translate({{ c * size}}, {{ r * size}})">
+        <rect (click)="mark(r, c)" 
+        [ngClass]="forces(cell, r, c, client.getGame().beliefs[client.getPlayerdata().op][r][c])" 
+        [attr.width]="size" 
+        [attr.height]="size" 
+         />  
+      </g>
+    </g>
+
+    <image *ngFor="let loc of shipLocs; let ship = index"
+     [attr.xlink:href]="getSpriteUrl(ship)"
+     [attr.width]="size" [attr.height]="sizes[ship] * size"
+     [attr.y]="loc.row * size"
+     [attr.x]="loc.col * size"
+     attr.transform="rotate({{getRot(loc.dir)}} {{loc.col * size + size/2}} {{loc.row * size + size/2}})"/>
+
+     <g *ngFor="let row of client.getGame().beliefs[client.getPlayerdata().op]; let r = index; ">
+      <g *ngFor="let cell of row; let c = index;" attr.transform="translate({{ c * size}}, {{ r * size}})">
+        <image *ngIf="cell == beliefs.Hit" xlink:href="assets/explosion.png" [attr.width]="size" [attr.height]="size"/>
+        <image *ngIf="cell == beliefs.Miss" xlink:href="assets/splash.png"  [attr.width]="size" [attr.height]="size"/>
+      </g>
+     </g>
+  </svg>
+
   <p [hidden]="!client.getGame().hasStarted()"> Unsunk Ships:
     <span>{{shipList(client.getPlayerdata().me)}} </span>
   </p>
 
-  <button md-raised-button color="primary"  (click)="toggleDir()" *ngIf="this.nextShip < 5">Change Direction</button>
 </div>

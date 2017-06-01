@@ -113,6 +113,10 @@ export class WebClient {
             this.game.getWinner() == -1;
     }
 
+    public canPlaceShip(ship: ShipType, point: Point, dir: Direction): boolean {
+        return this.game.canPlaceShip(this.playerNumber, ship, point, dir);
+    }
+
     public canPlace(): boolean {
         return this.state == ClientState.InGame && !this.game.hasStarted();
     }
@@ -140,7 +144,7 @@ export class WebClient {
                 let params = event.params;
                 let shipName = ShipType[params.ship].toLocaleLowerCase();
                 let message = event.owner === this.playerNumber ?
-                    `You sunk your oppponent\s ${shipName}.` : 
+                    `You sunk your oppponent\s ${shipName}.` :
                     `Your ${shipName} was sunk.`;
                 this.snackbar.open(message, '', { duration: 3000 });
                 break;
@@ -235,7 +239,6 @@ export class WebClient {
             this.opponentUsername = msg.data.opponent;
             this.state = ClientState.InGame;
         });
-
     }
 
 }

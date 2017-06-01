@@ -7,7 +7,7 @@
   </div>
 
   <div *ngIf="getState() === state.PrivateLobby">
-    <p>You can share with your via link, email or sms.</p>
+    <p>You can share via link, email or sms.</p>
     <button md-fab mdTooltip="Copy link to clipboard" color="primary" (click)="getLink()" ngxClipboard [cbContent]="client.getPrivateGameUrl()"><md-icon>link</md-icon></button>
     <a [href]="client.getPrivateGameEmailUrl()" target="_blank">
       <button md-fab mdTooltip="Invite via Email" color="primary"><md-icon>email</md-icon></button></a>
@@ -16,6 +16,6 @@
     </a>
   </div>
 
-  <md-progress-spinner *ngIf="getState() == state.UnAuth || getState() == state.InQueue" attr.color="primary" mode="indeterminate">
+  <md-progress-spinner *ngIf="getState() != state.InLobby && getState() != state.PrivateLobby" attr.color="primary" mode="indeterminate">
   </md-progress-spinner>
 </div>

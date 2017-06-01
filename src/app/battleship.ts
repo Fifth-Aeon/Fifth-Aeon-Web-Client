@@ -10,9 +10,6 @@ export enum ShipType {
     Carrier, Battleship, Cruiser, Submarine, Destroyer, None
 }
 
-export enum Direction {
-    North, East, South, West
-}
 
 export class Point {
     constructor(public row: number, public col: number) { }
@@ -54,6 +51,10 @@ export enum GameEventType {
 
 export class GameEvent {
     constructor(public type: GameEventType, public params: any, public owner: number = null, public redact: any = null) { }
+}
+
+export enum Direction {
+    North, East, South, West
 }
 
 export const shipSizes = [5, 4, 3, 3, 2];
@@ -294,7 +295,7 @@ export class BattleshipGame {
         return true;
     }
 
-    private canPlaceShip(player: number, ship: ShipType, location: Point, dir: Direction): boolean {
+    public canPlaceShip(player: number, ship: ShipType, location: Point, dir: Direction): boolean {
         if (this.unplacedPieces[player].indexOf(ship) === -1) {
             this.addError(player, 'You already placed a ' + ShipType[ship]);
             return false;
@@ -303,7 +304,6 @@ export class BattleshipGame {
         let crawler = location.copy();
         for (let i = 0; i < shipSizes[ship]; i++) {
             if (!board[crawler.row] || board[crawler.row][crawler.col] != ShipType.None) {
-                this.addError(player, 'That location would overlap with another ship.');
                 return false;
             }
             crawler.moveInDirection(dir);
