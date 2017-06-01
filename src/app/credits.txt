@@ -1,5 +1,14 @@
-Battleship Icon by Luke Anthony Firth, GB
-Splash by  Blaise Sewell
+App by William Ritson 
+
+Art
+Ships by Lowder2 
+Battleship Icon by Luke Anthony Firth
+Splash by Blaise Sewell
 Explosion By Hopkins
 
-Ship Sprites by Lowder2
+Sound Effects
+Grenade by ljudman
+Splash by Ploor
+
+Music
+Armies Advance by Muray Atkinson

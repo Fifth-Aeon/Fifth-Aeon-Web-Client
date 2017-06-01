@@ -3,7 +3,7 @@ import { getWsUrl } from './url';
 
 export enum MessageType {
     // General
-    Info, ClientError,
+    Info, ClientError, Connect,
 
     // Accounts
     AnonymousLogin, LoginResponce,
@@ -91,6 +91,7 @@ export class Messenger {
 
     private onConnect() {
         this.connectChange(true);
+        this.sendMessageToServer(MessageType.Connect, {});
         if (this.loggedIn) {
             this.emptyMessageQueue();
         } else {
