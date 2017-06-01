@@ -1,7 +1,11 @@
 import { Queue } from 'typescript-collections';
 import { Howler, Howl } from 'howler';
 
+import { Injectable } from '@angular/core';
+
+@Injectable()
 export class SoundManager {
+    private global = Howler;
     private playQueue: Queue<Howl> = new Queue<Howl>();
     private library: Map<string, Howl> = new Map<string, Howl>();
     private isPlaying: boolean = false;
@@ -16,6 +20,16 @@ export class SoundManager {
             src: ['assets/bgmusic.mp3'],
             volume: 0.1
         }));
+    }
+
+    private muted: boolean = false;
+    public toggleMute() {
+        this.muted = !this.muted;
+        this.global.mute(this.muted);
+    }
+
+    public isMuted(): boolean {
+        return this.muted;
     }
 
     public setMusic(sound: Howl) {

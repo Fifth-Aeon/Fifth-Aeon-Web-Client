@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { WebClient, ClientState } from './client';
+import { SoundManager } from './sound';
 
 @Component({
   selector: 'bsc-root',
@@ -8,7 +9,9 @@ import { WebClient, ClientState } from './client';
 })
 export class AppComponent {
   public state = ClientState;
-  constructor(public client: WebClient) {
+  constructor(public client: WebClient, public soundManager: SoundManager) {}
 
+  toggleMute() {
+    this.soundManager.toggleMute();
   }
 }

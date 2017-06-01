@@ -3,7 +3,7 @@ import { getWsUrl } from './url';
 
 export enum MessageType {
     // General
-    Info, ClientError, Connect,
+    Info, ClientError, Connect, Ping,
 
     // Accounts
     AnonymousLogin, LoginResponce,
@@ -27,6 +27,7 @@ export interface Message {
 // Minimum time before attempting to recconect again;
 let minConnectTime = 1000 * 5;
 let autoReconenctTime = 1000 * 10;
+let pingTime = 1000 * 15;
 
 
 /**
@@ -60,6 +61,7 @@ export class Messenger {
             console.log('Attempting automatic reconnect');
             this.connect();
         }, autoReconenctTime);
+        setInterval(() => this.sendMessageToServer(MessageType.Ping, {}), pingTime);
     }
 
     private connect() {
@@ -92,6 +94,7 @@ export class Messenger {
     private onConnect() {
         this.connectChange(true);
         this.sendMessageToServer(MessageType.Connect, {});
+        console.log('Connected, requesting queued messages.')
         if (this.loggedIn) {
             this.emptyMessageQueue();
         } else {

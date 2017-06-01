@@ -87,7 +87,6 @@ export class BattleshipGameComponent implements OnInit {
   }
 
   public place(row: number, col: number, dir: Direction) {
-    console.log(row, col, Direction[dir]);
     if (!this.client.canPlace() || this.nextShip === 5) return;
     if (!this.client.place(row, col, this.nextShip, dir))
       return;

@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 
 import { ClipboardModule } from 'ngx-clipboard';
 
-
+import { SoundManager } from './sound';
 import { WebClient } from './client';
 
 import { AppComponent } from './app.component';
@@ -39,7 +39,7 @@ import { LobbyComponent } from './lobby/lobby.component';
       { path: '**', component: LobbyComponent }
     ])
   ],
-  providers: [WebClient, InPlayGuard],
+  providers: [SoundManager, WebClient, InPlayGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

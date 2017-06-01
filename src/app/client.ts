@@ -25,10 +25,9 @@ export class WebClient {
     private opponentNumber: number
     private finished: boolean = false;
     private unsunkShips: [Set<ShipType>, Set<ShipType>];
-    private soundManager: SoundManager = new SoundManager();
     private connected: boolean = false;
 
-    constructor(private snackbar: MdSnackBar, private router: Router, private zone: NgZone, private sanitizer: DomSanitizer) {
+    constructor(private soundManager: SoundManager, private snackbar: MdSnackBar, private router: Router, private zone: NgZone, private sanitizer: DomSanitizer) {
         this.game = new BattleshipGame(() => null);
         this.playerNumber = 0;
         this.messenger = new Messenger();
