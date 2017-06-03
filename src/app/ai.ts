@@ -22,6 +22,16 @@ export abstract class AI {
 
     abstract start();
 
+    protected delayedFire(target: Point) {
+        console.log('df');
+        setTimeout(() => {
+            console.log('f');
+            this.runGameAction(GameActionType.Fire, {
+                target: target
+            });
+        }, 3500);
+    }
+
     protected placeShipsRandomly() {
         let locs = [];
         for (let i = 0; i < 5; i++) {
@@ -70,9 +80,7 @@ export class RandomAI extends AI {
             return;
         let idx = rng.integer(0, this.targets.length - 1);
         let target = this.targets.splice(idx, 1)[0];
-        this.runGameAction(GameActionType.Fire, {
-            target: target
-        });
+        this.delayedFire(target);
     }
 }
 
@@ -87,9 +95,7 @@ export class HunterSeeker extends AI {
         if (this.game.getTurn() != this.playerNumber)
             return;
         let target = this.getTarget();
-        this.runGameAction(GameActionType.Fire, {
-            target: target
-        });
+        this.delayedFire(target);
     }
 
     private getTarget(): Point {
@@ -130,9 +136,7 @@ export class HeuristicAI extends AI {
         if (this.game.getTurn() != this.playerNumber)
             return;
         let target = this.getTarget();
-        this.runGameAction(GameActionType.Fire, {
-            target: target
-        });
+        this.delayedFire(target);
     }
 
     private getTarget(): Point {

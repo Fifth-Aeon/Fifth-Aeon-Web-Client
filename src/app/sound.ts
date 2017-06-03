@@ -42,11 +42,12 @@ export class SoundManager {
     }
 
     public addSound(name: string, sound: Howl) {
-        sound.load();
         this.library.set(name, sound);
     }
 
     public playSound(name: string) {
+        console.log('add', name);
+        
         let sound = this.library.get(name);
         this.playQueue.enqueue(sound);
 

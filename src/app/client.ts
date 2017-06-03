@@ -151,6 +151,9 @@ export class WebClient {
     private handleGameEvent(event: GameEvent) {
         switch (event.type) {
             case GameEventType.Fired:
+                if (event.params.shooter != this.playerNumber) {
+                    this.soundManager.playSound('shot');
+                }
                 let sfx = event.params.hit ? 'explosion' : 'splash';
                 this.soundManager.playSound(sfx)
                 break;
