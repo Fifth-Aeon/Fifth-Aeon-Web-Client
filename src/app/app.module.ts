@@ -13,7 +13,7 @@ import { AppComponent } from './app.component';
 import { BattleshipGameComponent } from './battleship-game/battleship-game.component';
 import { InPlayGuard } from './in-play.guard';
 
-import { MdButtonModule, MdIconModule, MdTooltipModule, MdSnackBarModule, MdToolbarModule, MdProgressSpinnerModule } from '@angular/material';
+import { MdButtonModule, MdRadioModule, MdIconModule, MdTooltipModule, MdSnackBarModule, MdToolbarModule, MdProgressSpinnerModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LobbyComponent } from './lobby/lobby.component';
 
@@ -29,7 +29,7 @@ import { LobbyComponent } from './lobby/lobby.component';
     HttpModule,
     BrowserAnimationsModule,
     ClipboardModule,
-    MdButtonModule, MdIconModule, MdToolbarModule,
+    MdButtonModule, MdIconModule, MdToolbarModule, MdRadioModule,
     MdProgressSpinnerModule, MdTooltipModule, MdSnackBarModule,
     RouterModule.forRoot([
       { path: 'game', component: BattleshipGameComponent, canActivate: [InPlayGuard] },

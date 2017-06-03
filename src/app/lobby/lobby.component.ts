@@ -4,6 +4,7 @@ import { MdSnackBar } from '@angular/material';
 
 import { preload } from '../preloader';
 import { WebClient, ClientState } from '../client';
+import { AiDifficulty } from '../ai';
 
 
 @Component({
@@ -14,6 +15,8 @@ import { WebClient, ClientState } from '../client';
 export class LobbyComponent implements OnInit {
   public state = ClientState;
   private gameId: string;
+  public difficulty: AiDifficulty = AiDifficulty.Easy;
+  public diffs = AiDifficulty;
 
   constructor(public snackbar: MdSnackBar, route: ActivatedRoute, private router: Router, public client: WebClient) {
     this.gameId = route.snapshot.paramMap.get('id');
@@ -27,7 +30,7 @@ export class LobbyComponent implements OnInit {
     this.snackbar.open('Copied url to clipboard', '', { duration: 2000 });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   public getState() {
     if (!this.client)

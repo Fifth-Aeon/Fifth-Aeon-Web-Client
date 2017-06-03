@@ -1,6 +1,7 @@
 import { BattleshipGame, Direction, GameAction, GameActionType, GameEvent, GameEventType, Point, ShipType, TileBelief } from './battleship';
 import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
+import { AI, AiDifficulty, RandomAI, HunterSeeker, HeuristicAI } from './ai';
 
 import { NgZone, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -26,6 +27,8 @@ export class WebClient {
     private finished: boolean = false;
     private unsunkShips: [Set<ShipType>, Set<ShipType>];
     private connected: boolean = false;
+    private privateGameUrl: string;
+    private ai: AI;
 
     constructor(private soundManager: SoundManager, private snackbar: MdSnackBar, private router: Router, private zone: NgZone, private sanitizer: DomSanitizer) {
         this.game = new BattleshipGame(() => null);
@@ -46,7 +49,7 @@ export class WebClient {
         this.messenger.connectChange = (status) => zone.run(() => this.connected = status);
     }
 
-    private privateGameUrl: string;
+
 
     private getInviteMessage() {
         return `You are invited to play battleship. Go to the url ${this.privateGameUrl} to play.`;
@@ -120,11 +123,23 @@ export class WebClient {
         return this.state == ClientState.InGame && !this.game.hasStarted();
     }
 
-    private sendGameAction(type: GameActionType, params: any) {
-        this.messenger.sendMessageToServer(MessageType.GameAction, {
-            type: type,
-            params: params
-        } as GameAction);
+    private sendGameAction(type: GameActionType, params: any, isAi: boolean = false) {
+        if (!this.ai) {
+            this.messenger.sendMessageToServer(MessageType.GameAction, {
+                type: type,
+                params: params
+            } as GameAction);
+        } else {
+            let events = this.gameModel.handleAction({
+                type: type,
+                player: isAi ? 1 : 0,
+                params: params
+            });
+            for (let event of events) {
+                this.handleGameEvent(event);
+                this.ai.handleGameEvent(event);
+            }
+        }
     }
 
     private namePlayer(player: number, cap: boolean = false) {
@@ -228,6 +243,7 @@ export class WebClient {
     }
 
     private startGame(msg: Message) {
+        this.ai = null;
         this.gameId = msg.data.gameId;
         this.playerNumber = msg.data.playerNumber;
         this.opponentNumber = 1 - this.playerNumber;
@@ -237,6 +253,35 @@ export class WebClient {
         this.zone.run(() => {
             this.opponentUsername = msg.data.opponent;
             this.state = ClientState.InGame;
+        });
+    }
+
+    private gameModel: BattleshipGame;
+    public startAIGame(difficulty) {
+        this.playerNumber = 0;
+        this.opponentNumber = 1;
+        this.game = new BattleshipGame(() => null);
+        this.gameModel = new BattleshipGame(() => null);
+        let aiModel = new BattleshipGame(() => null);
+
+        let aiAction = (type: GameActionType, params: any) => this.sendGameAction(type, params, true);
+        switch (difficulty) {
+            case AiDifficulty.Easy:
+                this.ai = new RandomAI(1, aiModel, aiAction);
+                break;
+            case AiDifficulty.Medium:
+                this.ai = new HunterSeeker(1, aiModel, aiAction);
+                break;
+            case AiDifficulty.Hard:
+                this.ai = new HeuristicAI(1, aiModel, aiAction);
+                break;
+        }
+
+        this.router.navigate(['/game']);
+        this.zone.run(() => {
+            this.opponentUsername = AiDifficulty[difficulty] + ' A.I';
+            this.state = ClientState.InGame;
+            this.ai.start();
         });
     }
 

@@ -1,12 +1,29 @@
-import { BattleshipGame, Direction, Point, ShipType, TileBelief } from './battleship';
+import { BattleshipGame, Direction, GameActionType, GameAction, GameEvent, GameEventType, Point, ShipType, TileBelief } from './battleship';
 import * as randomJs from 'random-js';
 const rng = new randomJs();
 
-export abstract class AI {
-    constructor(protected playerNumber: number, protected game: BattleshipGame) { }
+function pick<T>(arr: Array<T>): T {
+    let idx = rng.integer(0, arr.length - 1);
+    return arr[idx];
+}
 
-    public getPlacement(): { ship: ShipType, loc: Point, dir: Direction }[] {
-        let res = [];
+export enum AiDifficulty {
+    Easy, Medium, Hard
+}
+
+export abstract class AI {
+    constructor(
+        protected playerNumber: number,
+        protected game: BattleshipGame,
+        protected runGameAction: (type: GameActionType, params: any) => void
+    ) { }
+
+    abstract handleGameEvent(event: GameEvent);
+
+    abstract start();
+
+    protected placeShipsRandomly() {
+        let locs = [];
         for (let i = 0; i < 5; i++) {
             let dat = {
                 ship: i,
@@ -14,21 +31,27 @@ export abstract class AI {
                 dir: rng.integer(0, 3)
             }
             if (this.game.placeShip(this.playerNumber, dat.ship, dat.loc, dat.dir)) {
-                res.push(dat);
+                locs.push(dat);
             } else {
                 i--;
             }
         }
-        return res;
+        for (let loc of locs) {
+            this.runGameAction(GameActionType.PlaceShip, {
+                ship: loc.ship,
+                loc: loc.loc,
+                dir: loc.dir
+            });
+        }
+        this.runGameAction(GameActionType.FinishPlacement, {});
     }
-
-    abstract getTarget(): {}
 }
 
 export class RandomAI extends AI {
     private targets: Point[];
-    constructor(playerNumber: number, game: BattleshipGame) {
-        super(playerNumber, game);
+
+    constructor(playerNumber: number, game: BattleshipGame, runGameAction: (type: GameActionType, params: any) => void) {
+        super(playerNumber, game, runGameAction);
         this.targets = [];
         for (let i = 0; i < 10; i++) {
             for (let j = 0; j < 10; j++) {
@@ -37,35 +60,105 @@ export class RandomAI extends AI {
         }
     }
 
-    public getTarget(): Point {
+    public start() {
+        this.placeShipsRandomly();
+    }
+
+    public handleGameEvent(event: GameEvent) {
+        this.game.syncServerEvent(this.playerNumber, event);
+        if (this.game.getTurn() != this.playerNumber)
+            return;
         let idx = rng.integer(0, this.targets.length - 1);
-        return this.targets.splice(idx, 1)[0];
+        let target = this.targets.splice(idx, 1)[0];
+        this.runGameAction(GameActionType.Fire, {
+            target: target
+        });
     }
 }
 
-/*
+
 export class HunterSeeker extends AI {
-    constructor(playerNumber: number, game: BattleshipGame) {
-        super(playerNumber, game);
+    public start() {
+        this.placeShipsRandomly();
     }
 
-    public getTarget(): Point {
+    public handleGameEvent(event: GameEvent) {
+        this.game.syncServerEvent(this.playerNumber, event);
+        if (this.game.getTurn() != this.playerNumber)
+            return;
+        let target = this.getTarget();
+        this.runGameAction(GameActionType.Fire, {
+            target: target
+        });
+    }
+
+    private getTarget(): Point {
         let intel = this.game.getBeliefs(this.playerNumber);
-        let priorityTargets = [];
-        let secondaryTargets = [];
+        let priorityTargets: Point[] = [];
+        let secondaryTargets: Point[] = [];
 
         for (let r = 0; r < intel.length; r++) {
             for (let c = 0; c < intel[r].length; c++) {
-                switch(intel[r][c]) {
-                    case TileBelief.Unknown:
-                        secondaryTargets.push(TileBelief.Unknown)
-                        break;
-                    case TileBelief.Hit:
-                        this.game.getAdjacent
+                let point = new Point(r, c);
+                if (intel[r][c] == TileBelief.Unknown) {
+                    let adjacent = point.getAdjacent(0, 10, 0, 10);
+                    let toAdd = secondaryTargets;
+                    for (let adj of adjacent) {
+                        if (intel[adj.row][adj.col] == TileBelief.Hit) {
+                            toAdd = priorityTargets;
+                        }
+                    }
+                    toAdd.push(point);
                 }
             }
         }
+
+        if (priorityTargets.length > 0)
+            return pick(priorityTargets);
+        return pick(secondaryTargets);
     }
 
 }
-*/
+
+export class HeuristicAI extends AI {
+    public start() {
+        this.placeShipsRandomly();
+    }
+
+    public handleGameEvent(event: GameEvent) {
+        this.game.syncServerEvent(this.playerNumber, event);
+        if (this.game.getTurn() != this.playerNumber)
+            return;
+        let target = this.getTarget();
+        this.runGameAction(GameActionType.Fire, {
+            target: target
+        });
+    }
+
+    private getTarget(): Point {
+        let intel = this.game.getBeliefs(this.playerNumber);
+        let priorityTargets: Point[] = [];
+        let secondaryTargets: Point[] = [];
+
+        for (let r = 0; r < intel.length; r++) {
+            for (let c = 0; c < intel[r].length; c++) {
+                let point = new Point(r, c);
+                if (intel[r][c] == TileBelief.Unknown) {
+                    let adjacent = point.getAdjacent(0, 10, 0, 10);
+                    let toAdd = secondaryTargets;
+                    for (let adj of adjacent) {
+                        if (intel[adj.row][adj.col] == TileBelief.Hit) {
+                            toAdd = priorityTargets;
+                        }
+                    }
+                    toAdd.push(point);
+                }
+            }
+        }
+
+        if (priorityTargets.length > 0)
+            return pick(priorityTargets);
+        return pick(secondaryTargets);
+    }
+
+}

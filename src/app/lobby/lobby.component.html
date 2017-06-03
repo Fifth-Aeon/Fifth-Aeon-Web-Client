@@ -3,7 +3,18 @@
 
   <div *ngIf="getState() === state.InLobby">
     <button md-raised-button color="primary" (click)="client.join()"><md-icon>public</md-icon> Public Game</button>
-    <button md-raised-button color="primary" (click)="client.private()"><md-icon>vpn_key</md-icon>  Private Game</button>
+    <button md-raised-button color="primary" (click)="client.private()"><md-icon>vpn_key</md-icon> Private Game</button>
+
+    <div>
+      <button md-raised-button color="primary" (click)="client.startAIGame(difficulty)"><md-icon>adb</md-icon><span> Play vs AI </span></button>
+      <div>
+        <md-radio-group [(ngModel)]="difficulty">
+          <md-radio-button *ngFor="let d of [diffs.Easy, diffs.Medium, diffs.Hard]" [value]="d">
+            {{diffs[d]}}
+          </md-radio-button>
+        </md-radio-group>
+      </div>
+    </div>
   </div>
 
   <div *ngIf="getState() === state.PrivateLobby">

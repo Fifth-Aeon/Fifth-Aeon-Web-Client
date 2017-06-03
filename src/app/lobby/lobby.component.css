@@ -11,7 +11,9 @@ button {
   text-decoration: underline;
 }
 
-
+md-radio-button {
+  margin:5px;
+}
 md-progress-spinner {
   margin: 0 auto;
 }

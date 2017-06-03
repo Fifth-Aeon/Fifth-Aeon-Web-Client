@@ -16,14 +16,23 @@ export class Point {
     public add(other: Point) {
         this.row += other.row;
         this.col += other.col;
+        return this;
     }
 
     public moveInDirection(dir: Direction) {
-        this.add(dirMappings[dir]);
+        return this.add(dirMappings[dir]);
     }
 
     public copy() {
         return new Point(this.row, this.col);
+    }
+
+    public getAdjacent(rowLow, rowHigh, colLow, colHigh) {
+        let adj:Point[] = [];
+        for (let i = 0; i < 4; i++) {
+            adj.push(this.copy().moveInDirection(i));
+        }
+        return adj.filter(point => point.inBounds(rowLow, rowHigh, colLow, colHigh));
     }
 
     public inBounds(rowLow, rowHigh, colLow, colHigh): boolean {
