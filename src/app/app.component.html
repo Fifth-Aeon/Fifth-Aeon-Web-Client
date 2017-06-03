@@ -2,11 +2,11 @@
   <span>Battleship</span>
   <span class="toolbar-spacer"></span>
   
-  <md-icon class="toolbar-icon" (click)="toggleMute()" *ngIf="soundManager.isMuted()" >volume_mute</md-icon>
-  <md-icon class="toolbar-icon" (click)="toggleMute()" *ngIf="!soundManager.isMuted()">volume_up</md-icon>
+  <md-icon class="toolbar-icon" mdTooltip="Turn volume on" (click)="toggleMute()" *ngIf="soundManager.isMuted()" >volume_mute</md-icon>
+  <md-icon class="toolbar-icon" mdTooltip="Turn volume off" (click)="toggleMute()" *ngIf="!soundManager.isMuted()">volume_up</md-icon>
 
-  <md-icon class="toolbar-icon" *ngIf="client.isConnected()" >cloud</md-icon>
-  <md-icon class="toolbar-icon" *ngIf="!client.isConnected()">cloud_off</md-icon>
+  <md-icon class="toolbar-icon" mdTooltip="Connected" *ngIf="client.isConnected()" >cloud</md-icon>
+  <md-icon class="toolbar-icon" mdTooltip="Disconnected" *ngIf="!client.isConnected()">cloud_off</md-icon>
   <span></span>
 </md-toolbar>
 <router-outlet></router-outlet>
