@@ -1,7 +1,7 @@
 import { BattleshipGame, Direction, GameAction, GameActionType, GameEvent, GameEventType, Point, ShipType, TileBelief } from './battleship';
 import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
-import { AI, AiDifficulty, RandomAI, HunterSeeker, HeuristicAI } from './ai';
+import { AI, AiDifficulty, RandomAI, HunterSeeker, PairtyAI } from './ai';
 
 import { NgZone, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -276,7 +276,7 @@ export class WebClient {
                 this.ai = new HunterSeeker(1, aiModel, aiAction);
                 break;
             case AiDifficulty.Hard:
-                this.ai = new HeuristicAI(1, aiModel, aiAction);
+                this.ai = new PairtyAI(1, aiModel, aiAction);
                 break;
         }
 

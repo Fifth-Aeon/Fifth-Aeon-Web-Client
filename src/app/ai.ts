@@ -1,11 +1,8 @@
-import { BattleshipGame, Direction, GameActionType, GameAction, GameEvent, GameEventType, Point, ShipType, TileBelief } from './battleship';
+import { BattleshipGame, Direction, GameActionType, GameAction, GameEvent, GameEventType, Point, ShipType, shipSizes, TileBelief } from './battleship';
 import * as randomJs from 'random-js';
+import { minBy, sample } from 'lodash';
 const rng = new randomJs();
 
-function pick<T>(arr: Array<T>): T {
-    let idx = rng.integer(0, arr.length - 1);
-    return arr[idx];
-}
 
 export enum AiDifficulty {
     Easy, Medium, Hard
@@ -18,18 +15,26 @@ export abstract class AI {
         protected runGameAction: (type: GameActionType, params: any) => void
     ) { }
 
-    abstract handleGameEvent(event: GameEvent);
+    public start() {
+        this.placeShipsRandomly();
+    }
 
-    abstract start();
+    public handleGameEvent(event: GameEvent) {
+        this.game.syncServerEvent(this.playerNumber, event);
+        if (this.game.getTurn() != this.playerNumber)
+            return;
+
+        this.delayedFire(this.getTarget());
+    }
+
+    abstract getTarget(): Point;
 
     protected delayedFire(target: Point) {
-        console.log('df');
         setTimeout(() => {
-            console.log('f');
             this.runGameAction(GameActionType.Fire, {
                 target: target
             });
-        }, 3500);
+        }, 3000);
     }
 
     protected placeShipsRandomly() {
@@ -70,17 +75,9 @@ export class RandomAI extends AI {
         }
     }
 
-    public start() {
-        this.placeShipsRandomly();
-    }
-
-    public handleGameEvent(event: GameEvent) {
-        this.game.syncServerEvent(this.playerNumber, event);
-        if (this.game.getTurn() != this.playerNumber)
-            return;
+    getTarget() {
         let idx = rng.integer(0, this.targets.length - 1);
-        let target = this.targets.splice(idx, 1)[0];
-        this.delayedFire(target);
+        return this.targets.splice(idx, 1)[0];
     }
 }
 
@@ -91,14 +88,14 @@ export class HunterSeeker extends AI {
     }
 
     public handleGameEvent(event: GameEvent) {
-        this.game.syncServerEvent(this.playerNumber, event);
-        if (this.game.getTurn() != this.playerNumber)
-            return;
-        let target = this.getTarget();
-        this.delayedFire(target);
+        super.handleGameEvent(event);
     }
 
-    private getTarget(): Point {
+    protected seek(targets: Point[]): Point {
+        return sample(targets);
+    }
+
+    public getTarget(): Point {
         let intel = this.game.getBeliefs(this.playerNumber);
         let priorityTargets: Point[] = [];
         let secondaryTargets: Point[] = [];
@@ -120,49 +117,38 @@ export class HunterSeeker extends AI {
         }
 
         if (priorityTargets.length > 0)
-            return pick(priorityTargets);
-        return pick(secondaryTargets);
+            return sample(priorityTargets);
+        return this.seek(secondaryTargets);
     }
 
 }
 
-export class HeuristicAI extends AI {
-    public start() {
-        this.placeShipsRandomly();
-    }
-
-    public handleGameEvent(event: GameEvent) {
-        this.game.syncServerEvent(this.playerNumber, event);
-        if (this.game.getTurn() != this.playerNumber)
-            return;
-        let target = this.getTarget();
-        this.delayedFire(target);
-    }
-
-    private getTarget(): Point {
-        let intel = this.game.getBeliefs(this.playerNumber);
-        let priorityTargets: Point[] = [];
-        let secondaryTargets: Point[] = [];
-
-        for (let r = 0; r < intel.length; r++) {
-            for (let c = 0; c < intel[r].length; c++) {
-                let point = new Point(r, c);
-                if (intel[r][c] == TileBelief.Unknown) {
-                    let adjacent = point.getAdjacent(0, 10, 0, 10);
-                    let toAdd = secondaryTargets;
-                    for (let adj of adjacent) {
-                        if (intel[adj.row][adj.col] == TileBelief.Hit) {
-                            toAdd = priorityTargets;
-                        }
-                    }
-                    toAdd.push(point);
-                }
+export class PairtyAI extends HunterSeeker {
+    private shipCouldExistInDir(point: Point, size: number, dir: number): boolean {
+        let grid = this.game.getBeliefs(this.playerNumber);
+        let crawler = point.copy();
+        for (let i = 0; i < size; i++) {
+            crawler.moveInDirection(dir);
+            if (!crawler.inBounds(0, 10, 0, 10) || grid[crawler.row][crawler.col] == TileBelief.Miss) {
+                return false;
             }
         }
-
-        if (priorityTargets.length > 0)
-            return pick(priorityTargets);
-        return pick(secondaryTargets);
+        return true;
     }
 
+    private isShipPossible(point: Point, ship: ShipType) {
+        let len = shipSizes[ship] - 1;
+        for (let dir = 0; dir < 4; dir++) {
+            if (this.shipCouldExistInDir(point, ship, dir))
+                return true;
+        }
+        return false;
+    }
+
+    protected seek(targets: Point[]): Point {
+        let ships = this.game.getUnsunkShips()[this.game.getOpponent(this.playerNumber)];
+        let smallest = minBy(ships, (ship) => shipSizes[ship]);
+        let okTargets = targets.filter(point => this.isShipPossible(point, smallest));
+        return sample(okTargets);
+    }
 }
