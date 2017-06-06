@@ -43,9 +43,10 @@
       </g>
     </g>
 
-    <image *ngFor="let loc of shipLocs; let ship = index"
-     [attr.xlink:href]="getSpriteUrl(ship)"
-     [attr.width]="size" [attr.height]="sizes[ship] * size"
+    <image *ngFor="let loc of shipLocs"
+    [class.preview] ="loc.preview"
+     [attr.xlink:href]="getSpriteUrl(loc.ship)"
+     [attr.width]="size" [attr.height]="sizes[loc.ship] * size"
      [attr.y]="loc.row * size"
      [attr.x]="loc.col * size"
      attr.transform="rotate({{getRot(loc.dir)}} {{loc.col * size + size/2}} {{loc.row * size + size/2}})"/>

@@ -13,13 +13,21 @@ md-progress-spinner {
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
-
-
 .game-board {
   border-collapse: collapse;
   margin: 0 auto;
   width: 300px;
   height: 300px;
+}
+
+.preview {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.preview:hover {
+  pointer-events: none;
+  opacity: 0.9;
 }
 
 .game-board tr td {
@@ -34,7 +42,6 @@ md-progress-spinner {
   overflow: hidden;
   text-align: center;
 }
-
 
 .basic-cell {
   stroke: black;

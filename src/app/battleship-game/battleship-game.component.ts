@@ -3,6 +3,8 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { ShipType, TileBelief, Direction, shipSizes, dirMappings, Point } from '../battleship';
 import { WebClient, ClientState } from '../client';
 
+import { remove } from 'lodash';
+
 @Component({
   selector: 'bsc-battleship-game',
   templateUrl: './battleship-game.component.html',
@@ -15,7 +17,7 @@ export class BattleshipGameComponent implements OnInit {
   public placing: boolean = true;
   public state = ClientState;
   public beliefs = TileBelief;
-  public shipLocs: Array<{ row: number, col: number, dir: Direction }> = [];
+  public shipLocs: Array<{ row: number, col: number, dir: Direction, ship: ShipType, preview: boolean }> = [];
   public size = 30;
   public sizes = shipSizes;
 
@@ -68,15 +70,19 @@ export class BattleshipGameComponent implements OnInit {
       this.markedLocs.clear();
     } else {
       this.markedLocs.clear();
+      remove(this.shipLocs, loc => loc.preview);
       this.markOrigin = clicked;
       for (let dir = 0; dir < 4; dir++) {
         if (!this.client.canPlaceShip(this.nextShip, clicked, dir))
           continue;
+        this.shipLocs.push({ row: row, col: col, dir: dir, ship: this.nextShip, preview: true });
+
         let copy = clicked.copy();
         for (let i = 1; i < shipSizes[this.nextShip]; i++) {
           copy.moveInDirection(dir);
+          this.markedLocs.set(copy.toString(), dir);
         }
-        this.markedLocs.set(copy.toString(), dir);
+
       }
     }
   }
@@ -87,11 +93,12 @@ export class BattleshipGameComponent implements OnInit {
   }
 
   public place(row: number, col: number, dir: Direction) {
+    remove(this.shipLocs, loc => loc.preview);
     if (!this.client.canPlace() || this.nextShip === 5) return;
     if (!this.client.place(row, col, this.nextShip, dir))
       return;
+    this.shipLocs.push({ row: row, col: col, dir: dir, ship: this.nextShip, preview: false });
     this.nextShip++;
-    this.shipLocs.push({ row: row, col: col, dir: dir });
     if (this.nextShip === 5) {
       this.client.finish();
       this.placing = false;
