@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MdSnackBar } from '@angular/material';
 
 import { preload } from '../preloader';
 import { WebClient, ClientState } from '../client';
@@ -17,13 +16,9 @@ export class LobbyComponent implements OnInit {
   public difficulty: AiDifficulty = AiDifficulty.Easy;
   public diffs = AiDifficulty;
 
-  constructor(public snackbar: MdSnackBar, private router: Router, public client: WebClient) {
+  constructor(private router: Router, public client: WebClient) {
     client.returnToLobby();
     preload();
-  }
-
-  public getLink() {
-    this.snackbar.open('Copied url to clipboard', '', { duration: 2000 });
   }
 
   ngOnInit() { }
@@ -31,7 +26,7 @@ export class LobbyComponent implements OnInit {
   public getState() {
     if (!this.client)
       return 0;
-    return this.client.getState();
+    return this.client.getState(); 
   }
 
 }
