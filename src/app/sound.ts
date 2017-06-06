@@ -11,6 +11,9 @@ export class SoundManager {
     private isPlaying: boolean = false;
     private delay: number = 100;
     private music: Howl;
+    private muted: boolean = false;
+    private onDone: Array<() => void> = [];
+
 
     constructor() {
         this.addSound('splash', new Howl({ src: ['assets/splash.mp3'] }));
@@ -21,8 +24,14 @@ export class SoundManager {
             volume: 0.1
         }));
     }
+    public doWhenDonePlaying(callback: () => void) {
+        if (this.muted || !this.isPlaying) {
+            callback();
+        } else {
+            this.onDone.push(callback);
+        }
+    }
 
-    private muted: boolean = false;
     public toggleMute() {
         this.muted = !this.muted;
         this.global.mute(this.muted);
@@ -46,10 +55,9 @@ export class SoundManager {
     }
 
     public playSound(name: string) {
-        console.log('add', name);
-        
         let sound = this.library.get(name);
-        this.playQueue.enqueue(sound);
+        this.playQueue.enqueue(sound)
+        console.log('play', name);
 
         if (!this.isPlaying) {
             this.isPlaying = true;
@@ -60,12 +68,18 @@ export class SoundManager {
     private playNext() {
         let sound = this.playQueue.dequeue();
         sound.play();
-        sound.on('end', () => {
+        console.log('playing');
+        sound.once('end', () => {
+            console.log('ended');
             setTimeout(() => {
+                console.log('next');
                 if (!this.playQueue.isEmpty())
                     this.playNext();
-                else
+                else {
                     this.isPlaying = false;
+                    this.onDone.forEach(cb => cb());
+                    this.onDone = [];
+                }
             }, this.delay);
         });
     }

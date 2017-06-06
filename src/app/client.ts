@@ -284,15 +284,16 @@ export class WebClient {
         let aiModel = new BattleshipGame(() => null);
 
         let aiAction = (type: GameActionType, params: any) => this.sendGameAction(type, params, true);
+        let delay = (cb: () => void) => this.soundManager.doWhenDonePlaying(cb);
         switch (difficulty) {
             case AiDifficulty.Easy:
-                this.ai = new RandomAI(1, aiModel, aiAction);
+                this.ai = new RandomAI(1, aiModel, delay, aiAction);
                 break;
             case AiDifficulty.Medium:
-                this.ai = new HunterSeeker(1, aiModel, aiAction);
+                this.ai = new HunterSeeker(1, aiModel, delay, aiAction);
                 break;
             case AiDifficulty.Hard:
-                this.ai = new ParityAI(1, aiModel, aiAction);
+                this.ai = new ParityAI(1, aiModel, delay, aiAction);
                 break;
         }
 

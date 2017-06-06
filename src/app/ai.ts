@@ -12,6 +12,7 @@ export abstract class AI {
     constructor(
         protected playerNumber: number,
         protected game: BattleshipGame,
+        protected delay: (cb: () => void) => void,
         protected runGameAction: (type: GameActionType, params: any) => void
     ) { }
 
@@ -30,11 +31,11 @@ export abstract class AI {
     abstract getTarget(): Point;
 
     protected delayedFire(target: Point) {
-        setTimeout(() => {
+        this.delay(() => {
             this.runGameAction(GameActionType.Fire, {
                 target: target
             });
-        }, 3000);
+        });
     }
 
     protected placeShipsRandomly() {
@@ -65,8 +66,8 @@ export abstract class AI {
 export class RandomAI extends AI {
     private targets: Point[];
 
-    constructor(playerNumber: number, game: BattleshipGame, runGameAction: (type: GameActionType, params: any) => void) {
-        super(playerNumber, game, runGameAction);
+    public start() {
+        super.start();
         this.targets = [];
         for (let i = 0; i < 10; i++) {
             for (let j = 0; j < 10; j++) {

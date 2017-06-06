@@ -12,3 +12,14 @@ Splash by Ploor
 
 Music
 Armies Advance by Muray Atkinson
+
+Libraries
+Angular 2
+Angular Material
+Cordova
+Howler 
+Express
+Lodash
+Typescript-collections
+ws
+random-js
