@@ -123,7 +123,7 @@ export class HunterSeeker extends AI {
 
 }
 
-export class PairtyAI extends HunterSeeker {
+export class ParityAI extends HunterSeeker {
     private shipCouldExistInDir(point: Point, size: number, dir: number): boolean {
         let grid = this.game.getBeliefs(this.playerNumber);
         let crawler = point.copy();
@@ -131,12 +131,12 @@ export class PairtyAI extends HunterSeeker {
             crawler.moveInDirection(dir);
             if (!crawler.inBounds(0, 10, 0, 10) || grid[crawler.row][crawler.col] == TileBelief.Miss) {
                 return false;
-            }
+            } 
         }
         return true;
     }
 
-    private isShipPossible(point: Point, ship: ShipType) {
+    private shipCouldExistAtPoint(point: Point, ship: ShipType) {
         let len = shipSizes[ship] - 1;
         for (let dir = 0; dir < 4; dir++) {
             if (this.shipCouldExistInDir(point, ship, dir))
@@ -148,7 +148,7 @@ export class PairtyAI extends HunterSeeker {
     protected seek(targets: Point[]): Point {
         let ships = this.game.getUnsunkShips()[this.game.getOpponent(this.playerNumber)];
         let smallest = minBy(ships, (ship) => shipSizes[ship]);
-        let okTargets = targets.filter(point => this.isShipPossible(point, smallest));
+        let okTargets = targets.filter(point => this.shipCouldExistAtPoint(point, smallest));
         return sample(okTargets);
     }
 }

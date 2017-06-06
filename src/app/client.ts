@@ -1,7 +1,7 @@
 import { BattleshipGame, Direction, GameAction, GameActionType, GameEvent, GameEventType, Point, ShipType, TileBelief } from './battleship';
 import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
-import { AI, AiDifficulty, RandomAI, HunterSeeker, PairtyAI } from './ai';
+import { AI, AiDifficulty, RandomAI, HunterSeeker, ParityAI } from './ai';
 
 import { NgZone, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -29,6 +29,8 @@ export class WebClient {
     private connected: boolean = false;
     private privateGameUrl: string;
     private ai: AI;
+    private privateGameId: string = null;
+
 
     constructor(private soundManager: SoundManager, private snackbar: MdSnackBar, private router: Router, private zone: NgZone, private sanitizer: DomSanitizer) {
         this.game = new BattleshipGame(() => null);
@@ -47,6 +49,18 @@ export class WebClient {
         this.messenger.addHandeler(MessageType.QueueJoined, (msg) => this.changeState(ClientState.InQueue), this)
         this.messenger.addHandeler(MessageType.PrivateGameReady, (msg) => this.privateGameReady(msg), this)
         this.messenger.connectChange = (status) => zone.run(() => this.connected = status);
+    }
+
+    public returnToLobby() {
+        switch (this.state) {
+            case ClientState.InGame:
+                this.exitGame();
+                break;
+            case ClientState.PrivateLobby:
+                this.messenger.sendMessageToServer(MessageType.CancelPrivateGame, { gameId: this.privateGameId });
+                this.privateGameId = null;
+                break;
+        }
     }
 
 
@@ -68,8 +82,10 @@ export class WebClient {
     }
 
     private privateGameReady(msg: Message) {
-        this.privateGameUrl = getHttpUrl() + '/lobby/' + msg.data.gameId;
+        this.privateGameUrl = getHttpUrl() + '/private/' + msg.data.gameId;
+        this.privateGameId = msg.data.gameId;
         this.changeState(ClientState.PrivateLobby);
+        this.router.navigate(['/private']);
     }
 
     private toJoin: string;
@@ -189,7 +205,7 @@ export class WebClient {
         if (this.game.getWinner() !== -1)
             return 'The game is over ' + this.namePlayer(this.game.getWinner()) + ' won.';
         if (!this.finished)
-            return 'Place your peices.';
+            return 'Place your fleet. Click a tile to position a ship then click a highlighted cell to confirm.';
         if (!this.game.hasStarted())
             return 'Waiting for your opponent.'
         if (this.game.getTurn() == this.playerNumber)
@@ -276,7 +292,7 @@ export class WebClient {
                 this.ai = new HunterSeeker(1, aiModel, aiAction);
                 break;
             case AiDifficulty.Hard:
-                this.ai = new PairtyAI(1, aiModel, aiAction);
+                this.ai = new ParityAI(1, aiModel, aiAction);
                 break;
         }
 

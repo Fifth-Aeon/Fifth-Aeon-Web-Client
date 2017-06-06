@@ -6,18 +6,15 @@ button {
   margin: 20px;
 }
 
-.url {
-  color:#07C;
-  text-decoration: underline;
-}
-
-md-radio-button {
-  margin:5px;
-}
 md-progress-spinner {
   margin: 0 auto;
 }
 .lobby {
     width: 100%;
     text-align: center;
+}
+
+
+md-radio-button {
+  margin:5px;
 }

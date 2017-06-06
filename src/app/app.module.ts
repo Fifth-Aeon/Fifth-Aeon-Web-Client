@@ -16,12 +16,14 @@ import { InPlayGuard } from './in-play.guard';
 import { MdButtonModule, MdRadioModule, MdIconModule, MdTooltipModule, MdSnackBarModule, MdToolbarModule, MdProgressSpinnerModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LobbyComponent } from './lobby/lobby.component';
+import { PrivateLobbyComponent } from './private-lobby/private-lobby.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BattleshipGameComponent,
-    LobbyComponent
+    LobbyComponent,
+    PrivateLobbyComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +35,8 @@ import { LobbyComponent } from './lobby/lobby.component';
     MdProgressSpinnerModule, MdTooltipModule, MdSnackBarModule,
     RouterModule.forRoot([
       { path: 'game', component: BattleshipGameComponent, canActivate: [InPlayGuard] },
-      { path: 'lobby/:id', component: LobbyComponent },
+      { path: 'private/:id', component: PrivateLobbyComponent },
+      { path: 'private', component: PrivateLobbyComponent },
       { path: 'lobby', component: LobbyComponent },
       { path: '', component: LobbyComponent },
       { path: '**', component: LobbyComponent }

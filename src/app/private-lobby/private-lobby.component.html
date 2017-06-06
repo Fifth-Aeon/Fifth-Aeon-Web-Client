@@ -1,0 +1,14 @@
+<div class="private-lobby">
+
+    <p class="instructions">{{client.getInstuciton()}}</p>
+
+
+  <p>You can share via link, email or sms.</p>
+  <button md-fab mdTooltip="Copy link to clipboard" color="primary" (click)="getLink()" ngxClipboard [cbContent]="client.getPrivateGameUrl()"><md-icon>link</md-icon></button>
+  <a [href]="client.getPrivateGameEmailUrl()" target="_blank">
+      <button md-fab mdTooltip="Invite via Email" color="primary"><md-icon>email</md-icon></button></a>
+  <a [href]="client.getPrivateGameSMSUrl()">
+      <button md-fab mdTooltip="Invite via SMS" color="primary" style="margin: 20px;"><md-icon>sms</md-icon></button>
+</a>
+
+</div>

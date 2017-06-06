@@ -14,15 +14,11 @@ import { AiDifficulty } from '../ai';
 })
 export class LobbyComponent implements OnInit {
   public state = ClientState;
-  private gameId: string;
   public difficulty: AiDifficulty = AiDifficulty.Easy;
   public diffs = AiDifficulty;
 
-  constructor(public snackbar: MdSnackBar, route: ActivatedRoute, private router: Router, public client: WebClient) {
-    this.gameId = route.snapshot.paramMap.get('id');
-    if (this.gameId) {
-      this.client.joinPrivateGame(this.gameId);
-    }
+  constructor(public snackbar: MdSnackBar, private router: Router, public client: WebClient) {
+    client.returnToLobby();
     preload();
   }
 
