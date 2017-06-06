@@ -10,6 +10,7 @@ import { WebClient, ClientState } from '../client';
   styleUrls: ['./private-lobby.component.css']
 })
 export class PrivateLobbyComponent implements OnInit {
+  public state = ClientState;
 
   constructor(public snackbar: MdSnackBar, route: ActivatedRoute, private router: Router, public client: WebClient) {
     let gameId = route.snapshot.paramMap.get('id');
@@ -19,6 +20,7 @@ export class PrivateLobbyComponent implements OnInit {
     if (client.getState() != ClientState.PrivateLobby) {
       client.returnToLobby();
     }
+    
   }
   public getLink() {
     this.snackbar.open('Copied url to clipboard', '', { duration: 2000 });

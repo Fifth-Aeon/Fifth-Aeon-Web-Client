@@ -6,7 +6,10 @@ body {
     margin: 0px;
 }
 
-
 .instructions {
   font-size: 2em;
+}
+
+md-progress-spinner {
+  margin: 0 auto;
 }

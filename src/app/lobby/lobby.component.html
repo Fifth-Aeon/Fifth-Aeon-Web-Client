@@ -1,8 +1,7 @@
 <div class="lobby">
   <p class="instructions">{{client.getInstuciton()}}</p>
 
-  <md-progress-spinner *ngIf="getState() != state.InLobby && getState() != state.PrivateLobby" attr.color="primary" mode="indeterminate">
-  </md-progress-spinner>
+  <md-progress-spinner *ngIf="getState() != state.InLobby" attr.color="primary" mode="indeterminate"></md-progress-spinner>
 
   <div *ngIf="getState() === state.InLobby">
     <button md-raised-button color="primary" (click)="client.join()"><md-icon>public</md-icon> Public Game</button>

@@ -11,7 +11,7 @@ import { MdSnackBar } from '@angular/material';
 import { getHttpUrl } from './url';
 
 export enum ClientState {
-    UnAuth, InLobby, Waiting, PrivateLobby, InQueue, InGame, Any
+    UnAuth, InLobby, Waiting, PrivateLobby, PrivateLobbyFail, InQueue, InGame, Any
 }
 
 @Injectable()
@@ -31,6 +31,8 @@ export class WebClient {
     private ai: AI;
     private privateGameId: string = null;
 
+    public onError: (error: string) => void = () => null;
+
 
     constructor(private soundManager: SoundManager, private snackbar: MdSnackBar, private router: Router, private zone: NgZone, private sanitizer: DomSanitizer) {
         this.game = new BattleshipGame(() => null);
@@ -38,12 +40,12 @@ export class WebClient {
         this.messenger = new Messenger();
         this.messenger.addHandeler(MessageType.StartGame, this.startGame, this);
         this.messenger.addHandeler(MessageType.GameEvent, (msg) => this.handleGameEvent(msg.data), this);
-        this.messenger.addHandeler(MessageType.ClientError, (msg) => console.error('Error:', msg.data), this);
+        this.messenger.addHandeler(MessageType.ClientError, this.clientError, this);
         this.messenger.onlogin = (username) => {
             this.changeState(ClientState.InLobby);
             this.username = username;
             if (this.toJoin) {
-                this.messenger.sendMessageToServer(MessageType.JoinPrivateGame, { gameId: this.toJoin });
+                this.joinPrivateGame(this.toJoin);
             }
         }
         this.messenger.addHandeler(MessageType.QueueJoined, (msg) => this.changeState(ClientState.InQueue), this)
@@ -51,16 +53,26 @@ export class WebClient {
         this.messenger.connectChange = (status) => zone.run(() => this.connected = status);
     }
 
+    private clientError(msg: Message) {
+        console.error(msg.data);
+        this.onError(msg.data);
+    }
+
     public returnToLobby() {
+        console.log('rtlb');
         switch (this.state) {
             case ClientState.InGame:
                 this.exitGame();
                 break;
             case ClientState.PrivateLobby:
-                this.messenger.sendMessageToServer(MessageType.CancelPrivateGame, { gameId: this.privateGameId });
-                this.privateGameId = null;
+                if (this.privateGameId) {
+                    this.messenger.sendMessageToServer(MessageType.CancelPrivateGame, { gameId: this.privateGameId });
+                    this.privateGameId = null;
+                }
                 break;
         }
+        this.router.navigate(['/lobby']);
+        this.changeState(ClientState.InLobby);
     }
 
 
@@ -90,11 +102,17 @@ export class WebClient {
 
     private toJoin: string;
     public joinPrivateGame(gameId: string) {
+        this.changeState(ClientState.PrivateLobby);
         if (!this.username) {
             this.toJoin = gameId;
             return;
         }
         this.messenger.sendMessageToServer(MessageType.JoinPrivateGame, { gameId: gameId });
+        this.onError = (err: string) => {
+            if (err.includes('No game with that id.')) {
+                this.changeState(ClientState.PrivateLobbyFail);
+            }
+        }
     }
 
     public isConnected(): boolean {
@@ -194,12 +212,15 @@ export class WebClient {
     public getInstuciton() {
         if (this.state == ClientState.UnAuth)
             return 'Attempting to login to server';
+
         if (this.state == ClientState.InLobby)
             return 'Logged in as ' + this.username + '.';
         if (this.state == ClientState.Waiting)
             return 'Waiting for server responce.';
         if (this.state == ClientState.PrivateLobby)
             return 'Private game ready, please invite a friend.';
+        if (this.state == ClientState.PrivateLobbyFail)
+            return 'Failed to join game (it may have been canceled).';
         if (this.state == ClientState.InQueue)
             return 'In Queue. Waiting for an opponent.'
         if (this.game.getWinner() !== -1)
