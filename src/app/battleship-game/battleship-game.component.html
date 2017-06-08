@@ -14,13 +14,13 @@
       <rect (click)="fire(r, c)" 
         class="basic-cell" 
         [attr.width]="size " 
-        [attr.height]="size"/>          
+        [attr.height]="size"/>    
       </g>
      </g>
      <g *ngFor="let row of client.getGame().beliefs[client.getPlayerdata().me]; let r = index; ">
-      <g *ngFor="let cell of row; let c = index;" attr.transform="translate({{ c * size}}, {{ r * size}})">
-        <image *ngIf="cell == beliefs.Hit" xlink:href="assets/explosion.png"/>
-        <image *ngIf="cell == beliefs.Miss" xlink:href="assets/splash.png"/>
+      <g *ngFor="let cell of row; let c = index;" attr.transform="translate({{ c * size}}, {{ r * size}})">        
+        <image *ngIf="cell == beliefs.Hit" xlink:href="assets/explosion.png" [attr.width]="size" [attr.height]="size"/>
+        <image *ngIf="cell == beliefs.Miss" xlink:href="assets/splash.png" [attr.width]="size" [attr.height]="size"/>
       </g>
      </g>
   </svg>

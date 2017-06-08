@@ -68,11 +68,8 @@ export class SoundManager {
     private playNext() {
         let sound = this.playQueue.dequeue();
         sound.play();
-        console.log('playing');
         sound.once('end', () => {
-            console.log('ended');
             setTimeout(() => {
-                console.log('next');
                 if (!this.playQueue.isEmpty())
                     this.playNext();
                 else {
