@@ -2,13 +2,13 @@ import { BattleshipGame, Direction, GameAction, GameActionType, GameEvent, GameE
 import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
 import { AI, AiDifficulty, RandomAI, HunterSeeker, ParityAI } from './ai';
+import { preload } from './preloader';
+import { getHttpUrl } from './url';
 
 import { NgZone, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MdSnackBar } from '@angular/material';
-
-import { getHttpUrl } from './url';
 
 export enum ClientState {
     UnAuth, InLobby, Waiting, PrivateLobby, PrivateLobbyFail, InQueue, InGame, Any
@@ -31,7 +31,7 @@ export class WebClient {
     private ai: AI;
     private privateGameId: string = null;
 
-    public onError: (error: string) => void = () => null;
+    private onError: (error: string) => void = () => null;
 
 
     constructor(private soundManager: SoundManager, private snackbar: MdSnackBar, private router: Router, private zone: NgZone, private sanitizer: DomSanitizer) {
@@ -51,6 +51,7 @@ export class WebClient {
         this.messenger.addHandeler(MessageType.QueueJoined, (msg) => this.changeState(ClientState.InQueue), this)
         this.messenger.addHandeler(MessageType.PrivateGameReady, (msg) => this.privateGameReady(msg), this)
         this.messenger.connectChange = (status) => zone.run(() => this.connected = status);
+        preload();
     }
 
     private clientError(msg: Message) {
@@ -59,7 +60,6 @@ export class WebClient {
     }
 
     public returnToLobby() {
-        console.log('rtlb');
         switch (this.state) {
             case ClientState.InGame:
                 this.exitGame();
@@ -188,8 +188,7 @@ export class WebClient {
                 if (event.params.shooter != this.playerNumber) {
                     this.soundManager.playSound('shot');
                 }
-                let sfx = event.params.hit ? 'explosion' : 'splash';
-                this.soundManager.playSound(sfx)
+                this.soundManager.playSound(event.params.hit ? 'explosion' : 'splash');
                 break;
             case GameEventType.SunkShip:
                 let params = event.params;
@@ -212,7 +211,6 @@ export class WebClient {
     public getInstuciton() {
         if (this.state == ClientState.UnAuth)
             return 'Attempting to login to server';
-
         if (this.state == ClientState.InLobby)
             return 'Logged in as ' + this.username + '.';
         if (this.state == ClientState.Waiting)
@@ -226,7 +224,7 @@ export class WebClient {
         if (this.game.getWinner() !== -1)
             return 'The game is over ' + this.namePlayer(this.game.getWinner()) + ' won.';
         if (!this.finished)
-            return 'Place your fleet. Click a tile to position a ship then click a highlighted cell to confirm.';
+            return 'Click tiles to place your ships.';
         if (!this.game.hasStarted())
             return 'Waiting for your opponent.'
         if (this.game.getTurn() == this.playerNumber)

@@ -1,4 +1,3 @@
-import { isComponentView } from '@angular/core/src/view/util';
 import * as randomJs from 'random-js';
 const rng = new randomJs();
 
@@ -9,7 +8,6 @@ export enum TileBelief {
 export enum ShipType {
     Carrier, Battleship, Cruiser, Submarine, Destroyer, None
 }
-
 
 export class Point {
     constructor(public row: number, public col: number) { }

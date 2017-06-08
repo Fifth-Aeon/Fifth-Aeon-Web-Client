@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { preload } from '../preloader';
 import { WebClient, ClientState } from '../client';
 import { AiDifficulty } from '../ai';
 
@@ -17,8 +16,8 @@ export class LobbyComponent implements OnInit {
   public diffs = AiDifficulty;
 
   constructor(private router: Router, public client: WebClient) {
+    if (client.getState() != ClientState.UnAuth && client.getState() != ClientState.Waiting)
     client.returnToLobby();
-    preload();
   }
 
   ngOnInit() { }
