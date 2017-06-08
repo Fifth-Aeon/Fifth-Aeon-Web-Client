@@ -64,6 +64,9 @@ export class WebClient {
             case ClientState.InGame:
                 this.exitGame();
                 break;
+            case ClientState.InQueue:
+                this.leaveQueue();
+                break;
             case ClientState.PrivateLobby:
                 if (this.privateGameId) {
                     this.messenger.sendMessageToServer(MessageType.CancelPrivateGame, { gameId: this.privateGameId });
@@ -128,8 +131,13 @@ export class WebClient {
     }
 
     public join() {
+        this.router.navigate(['/queue']);
         this.messenger.sendMessageToServer(MessageType.JoinQueue, {});
         this.changeState(ClientState.Waiting);
+    }
+
+    public leaveQueue() {
+        this.messenger.sendMessageToServer(MessageType.ExitQueue, {});
     }
 
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { WebClient, ClientState } from '../client';
@@ -17,7 +17,14 @@ export class LobbyComponent implements OnInit {
 
   constructor(private router: Router, public client: WebClient) {
     if (client.getState() != ClientState.UnAuth && client.getState() != ClientState.Waiting)
-    client.returnToLobby();
+      client.returnToLobby();
+  }
+
+  @HostListener('window:beforeunload')
+  public exit() {
+    if (this.client.getState() == ClientState.InQueue)
+      this.client.leaveQueue();
+    return null;
   }
 
   ngOnInit() { }
@@ -25,7 +32,7 @@ export class LobbyComponent implements OnInit {
   public getState() {
     if (!this.client)
       return 0;
-    return this.client.getState(); 
+    return this.client.getState();
   }
 
 }
