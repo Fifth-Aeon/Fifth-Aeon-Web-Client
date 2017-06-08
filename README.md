@@ -1,6 +1,8 @@
 # Battleship Client
 
-A client for a websockets based battleshipp game, written using Angular and Typescript.
+A client for a websockets based battleship game, written using Angular and Typescript.
+
+You can find the coresponding server at (https://github.com/WilliamRitson/Battleship-Server)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
 
