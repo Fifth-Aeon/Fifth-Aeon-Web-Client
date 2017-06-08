@@ -8,7 +8,7 @@
     <button md-raised-button color="primary" (click)="client.private()"><md-icon>vpn_key</md-icon> Private Game</button>
   </div>
 
-   <div *ngIf="getState() !== state.InQueue">
+   <div *ngIf="getState() === state.InLobby">
       <button md-raised-button color="primary" (click)="client.startAIGame(difficulty)"><md-icon>adb</md-icon><span> Play vs AI </span></button>
       <div>
         <md-radio-group [(ngModel)]="difficulty">
