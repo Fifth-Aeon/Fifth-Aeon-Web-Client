@@ -37,7 +37,6 @@ let pingTime = 1000 * 15;
  */
 export class Messenger {
     private handlers: Map<string, (msg: Message) => void>;
-    private connections: Map<string, any>;
     private username: string;
     private id: string;
     private ws: WebSocket;
@@ -50,7 +49,6 @@ export class Messenger {
     public connectChange: (status: boolean) => void = () => null;
 
     constructor() {
-        this.connections = new Map<string, any>();
         this.handlers = new Map();
         this.id = Math.random().toString(16);
         this.addHandeler(MessageType.LoginResponce, (msg) => this.login(msg));

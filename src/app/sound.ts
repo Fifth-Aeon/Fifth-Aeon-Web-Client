@@ -1,6 +1,5 @@
 import { Queue } from 'typescript-collections';
 import { Howler, Howl } from 'howler';
-
 import { Injectable } from '@angular/core';
 
 @Injectable()

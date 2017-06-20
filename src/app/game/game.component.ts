@@ -6,9 +6,9 @@ import { WebClient, ClientState } from '../client';
 import { remove } from 'lodash';
 
 @Component({
-  selector: 'bsc-battleship-game',
-  templateUrl: './battleship-game.component.html',
-  styleUrls: ['./battleship-game.component.css']
+  selector: 'bsc-game',
+  templateUrl: './game.component.html',
+  styleUrls: ['./game.component.css']
 })
 export class BattleshipGameComponent implements OnInit {
   public nextShip: ShipType;

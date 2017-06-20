@@ -10,7 +10,7 @@ import { SoundManager } from './sound';
 import { WebClient } from './client';
 
 import { AppComponent } from './app.component';
-import { BattleshipGameComponent } from './battleship-game/battleship-game.component';
+import { BattleshipGameComponent } from './game/game.component';
 import { InPlayGuard } from './in-play.guard';
 
 import { MdButtonModule, MdRadioModule, MdIconModule, MdTooltipModule, MdSnackBarModule, MdToolbarModule, MdProgressSpinnerModule } from '@angular/material';

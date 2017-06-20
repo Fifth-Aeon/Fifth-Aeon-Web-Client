@@ -1,7 +1,7 @@
-import { BattleshipGame, Direction, GameAction, GameActionType, GameEvent, GameEventType, Point, ShipType, TileBelief } from './battleship';
+import { Game, GameAction, GameSyncEvent, GameActionType, GameEventType } from './game_model/game';
+
 import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
-import { AI, AiDifficulty, RandomAI, HunterSeeker, ParityAI } from './ai';
 import { preload } from './preloader';
 import { getHttpUrl } from './url';
 
@@ -18,40 +18,42 @@ export enum ClientState {
 export class WebClient {
     private username: string;
     private opponentUsername: string;
+
     private messenger: Messenger;
     private gameId: string = null;
     private state: ClientState = ClientState.UnAuth;
-    private game: BattleshipGame = null;
+    private game: Game = null;
     private playerNumber: number;
     private opponentNumber: number
     private finished: boolean = false;
-    private unsunkShips: [Set<ShipType>, Set<ShipType>];
     private connected: boolean = false;
     private privateGameUrl: string;
-    private ai: AI;
     private privateGameId: string = null;
 
     private onError: (error: string) => void = () => null;
 
-
     constructor(private soundManager: SoundManager, private snackbar: MdSnackBar, private router: Router, private zone: NgZone, private sanitizer: DomSanitizer) {
-        this.game = new BattleshipGame(() => null);
+        this.game = new Game();
         this.playerNumber = 0;
         this.messenger = new Messenger();
+
+        this.messenger.onlogin = (username) => this.onLogin(username);
         this.messenger.addHandeler(MessageType.StartGame, this.startGame, this);
         this.messenger.addHandeler(MessageType.GameEvent, (msg) => this.handleGameEvent(msg.data), this);
-        this.messenger.addHandeler(MessageType.ClientError, this.clientError, this);
-        this.messenger.onlogin = (username) => {
-            this.changeState(ClientState.InLobby);
-            this.username = username;
-            if (this.toJoin) {
-                this.joinPrivateGame(this.toJoin);
-            }
-        }
+        this.messenger.addHandeler(MessageType.ClientError, (msg) => this.clientError(msg), this);
         this.messenger.addHandeler(MessageType.QueueJoined, (msg) => this.changeState(ClientState.InQueue), this)
         this.messenger.addHandeler(MessageType.PrivateGameReady, (msg) => this.privateGameReady(msg), this)
         this.messenger.connectChange = (status) => zone.run(() => this.connected = status);
+
         preload();
+    }
+
+    private onLogin(username: string) {
+        this.changeState(ClientState.InLobby);
+        this.username = username;
+        if (this.toJoin) {
+            this.joinPrivateGame(this.toJoin);
+        }
     }
 
     private clientError(msg: Message) {
@@ -77,8 +79,6 @@ export class WebClient {
         this.router.navigate(['/lobby']);
         this.changeState(ClientState.InLobby);
     }
-
-
 
     private getInviteMessage() {
         return `You are invited to play battleship. Go to the url ${this.privateGameUrl} to play.`;
@@ -124,7 +124,7 @@ export class WebClient {
 
     public exitGame() {
         this.sendGameAction(GameActionType.Quit, {});
-        this.game = new BattleshipGame(() => null);
+        this.game = new Game();
         this.playerNumber = 0;
         this.changeState(ClientState.InLobby);
         this.router.navigate(['/lobby']);
@@ -150,20 +150,7 @@ export class WebClient {
         return this.state == ClientState.InGame;
     }
 
-    public canFire() {
-        return this.state == ClientState.InGame &&
-            this.game.hasStarted() &&
-            this.game.getTurn() == this.playerNumber &&
-            this.game.getWinner() == -1;
-    }
-
-    public canPlaceShip(ship: ShipType, point: Point, dir: Direction): boolean {
-        return this.game.canPlaceShip(this.playerNumber, ship, point, dir);
-    }
-
-    public canPlace(): boolean {
-        return this.state == ClientState.InGame && !this.game.hasStarted();
-    }
+   
 
     private sendGameAction(type: GameActionType, params: any, isAi: boolean = false) {
         if (!this.ai) {
@@ -190,22 +177,9 @@ export class WebClient {
         return 'your opponent'
     }
 
-    private handleGameEvent(event: GameEvent) {
+    private handleGameEvent(event: GameSyncEvent) {
         switch (event.type) {
-            case GameEventType.Fired:
-                if (event.params.shooter != this.playerNumber) {
-                    this.soundManager.playSound('shot');
-                }
-                this.soundManager.playSound(event.params.hit ? 'explosion' : 'splash');
-                break;
-            case GameEventType.SunkShip:
-                let params = event.params;
-                let shipName = ShipType[params.ship].toLocaleLowerCase();
-                let message = event.owner === this.playerNumber ?
-                    `You sunk your oppponent\s ${shipName}.` :
-                    `Your ${shipName} was sunk.`;
-                this.snackbar.open(message, '', { duration: 3000 });
-                break;
+            
 
         }
 
