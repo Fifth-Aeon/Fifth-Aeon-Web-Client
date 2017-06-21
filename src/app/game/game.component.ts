@@ -7,7 +7,7 @@ import { Player } from '../game_model/player';
 
 
 @Component({
-  selector: 'bsc-game',
+  selector: 'ccg-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })

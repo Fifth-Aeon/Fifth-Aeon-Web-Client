@@ -3,7 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Card } from '../game_model/card';
 
 @Component({
-  selector: 'bsc-card',
+  selector: 'ccg-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css']
 })

@@ -5,7 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { WebClient, ClientState } from '../client';
 
 @Component({
-  selector: 'bsc-private-lobby',
+  selector: 'ccg-private-lobby',
   templateUrl: './private-lobby.component.html',
   styleUrls: ['./private-lobby.component.css']
 })

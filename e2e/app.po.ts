@@ -6,6 +6,6 @@ export class BattleshipClientPage {
   }
 
   getParagraphText() {
-    return element(by.css('bsc-root h1')).getText();
+    return element(by.css('ccg-root h1')).getText();
   }
 }

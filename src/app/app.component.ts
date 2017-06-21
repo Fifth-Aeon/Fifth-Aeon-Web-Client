@@ -3,7 +3,7 @@ import { WebClient, ClientState } from './client';
 import { SoundManager } from './sound';
 
 @Component({
-  selector: 'bsc-root',
+  selector: 'ccg-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

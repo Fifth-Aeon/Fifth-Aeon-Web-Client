@@ -6,7 +6,7 @@ import { AiDifficulty } from '../ai';
 
 
 @Component({
-  selector: 'bsc-lobby',
+  selector: 'ccg-lobby',
   templateUrl: './lobby.component.html',
   styleUrls: ['./lobby.component.css']
 })
