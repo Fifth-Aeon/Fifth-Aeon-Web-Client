@@ -1,66 +1,22 @@
 <div class="header">
   <h2>{{client.getUsername()}} vs {{client.getOpponentUsername()}}</h2>
-  <p class="instructions">{{client.getInstuciton()}}</p>
   <button md-raised-button color="primary" *ngIf="client.getGame().getWinner() !== -1" (click)="client.exitGame()">Exit Game</button>
 </div>
 
 
-<div class="board-area" [hidden]="this.nextShip < 5">
-  <h2>Enemy Intel</h2>
-  <svg class="game-board">
-     <g *ngFor="let row of client.getGame().beliefs[client.getPlayerdata().me]; let r = index;">
-      <g *ngFor="let col of row; let c = index;" 
-        attr.transform="translate({{ c * size}}, {{ r * size}})">
-      <rect (click)="fire(r, c)" 
-        class="basic-cell" 
-        [attr.width]="size " 
-        [attr.height]="size"/>    
-      </g>
-     </g>
-     <g *ngFor="let row of client.getGame().beliefs[client.getPlayerdata().me]; let r = index; ">
-      <g *ngFor="let cell of row; let c = index;" attr.transform="translate({{ c * size}}, {{ r * size}})">        
-        <image *ngIf="cell == beliefs.Hit" xlink:href="assets/explosion.png" [attr.width]="size" [attr.height]="size"/>
-        <image *ngIf="cell == beliefs.Miss" xlink:href="assets/splash.png" [attr.width]="size" [attr.height]="size"/>
-      </g>
-     </g>
-  </svg>
-  
-  <p [hidden]="!client.getGame().hasStarted()"> Unsunk Ships:
-    <span>{{shipList(client.getPlayerdata().op)}} </span>
-  </p>
+<!-- Enemy Hand -->
+<div></div>
+
+<!-- Enemy Board -->
+<div></div>
+
+<!-- Player Board -->
+<div></div>
+
+<!-- Player Hand -->
+<div>
+  <bsc-card *ngFor="let card of player.hand" [card]="card" ></bsc-card>
 </div>
 
-<div class="board-area">
-  <h2>Your Fleet</h2>
-  <svg class="game-board">
-    <g *ngFor="let row of client.getGame().reality[client.getPlayerdata().me]; let r = index; ">
-      <g *ngFor="let cell of row; let c = index;" attr.transform="translate({{ c * size}}, {{ r * size}})">
-        <rect (click)="mark(r, c)" 
-        [ngClass]="forces(cell, r, c, client.getGame().beliefs[client.getPlayerdata().op][r][c])" 
-        [attr.width]="size" 
-        [attr.height]="size" 
-         />  
-      </g>
-    </g>
 
-    <image *ngFor="let loc of shipLocs"
-    [class.preview] ="loc.preview"
-     [attr.xlink:href]="getSpriteUrl(loc.ship)"
-     [attr.width]="size" [attr.height]="sizes[loc.ship] * size"
-     [attr.y]="loc.row * size"
-     [attr.x]="loc.col * size"
-     attr.transform="rotate({{getRot(loc.dir)}} {{loc.col * size + size/2}} {{loc.row * size + size/2}})"/>
 
-     <g *ngFor="let row of client.getGame().beliefs[client.getPlayerdata().op]; let r = index; ">
-      <g *ngFor="let cell of row; let c = index;" attr.transform="translate({{ c * size}}, {{ r * size}})">
-        <image *ngIf="cell == beliefs.Hit" xlink:href="assets/explosion.png" [attr.width]="size" [attr.height]="size"/>
-        <image *ngIf="cell == beliefs.Miss" xlink:href="assets/splash.png"  [attr.width]="size" [attr.height]="size"/>
-      </g>
-     </g>
-  </svg>
-
-  <p [hidden]="!client.getGame().hasStarted()"> Unsunk Ships:
-    <span>{{shipList(client.getPlayerdata().me)}} </span>
-  </p>
-
-</div>

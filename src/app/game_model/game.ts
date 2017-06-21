@@ -14,7 +14,6 @@ enum GamePhase {
     play1, combat, play2, end, responceWindow
 }
 
-
 const game_phase_count = 4;
 
 export enum GameActionType {
@@ -93,6 +92,39 @@ export class Game {
     }
 
     /**
+     * Syncs an event that happened on the server into the state of this game model
+     * 
+     * @param {number} playerNumber 
+     * @param {SyncGameEvent} event 
+     * @memberof Game
+     */
+    public syncServerEvent(playerNumber: number, event: SyncGameEvent) {
+        // TODO
+    }
+
+    /**
+     * 
+     * Handles a players action and returns a list of events that
+     * resulted from that aciton.
+     * 
+     * @param {GameAction} action 
+     * @returns {SyncGameEvent[]} 
+     * @memberof Game
+     */
+    public handleAction(action: GameAction): SyncGameEvent[] {
+        let mark = this.events.length;
+        let handeler = this.actionHandelers.get(action.type);
+        if (!handeler)
+            return [];
+        let sig = handeler(action);
+        return this.events.slice(mark);
+    }
+
+    private addActionHandeler(type: GameActionType, cb: actionCb) {
+        this.actionHandelers.set(type, cb.bind(this));
+    }
+
+    /**
      * 
      * Returns the number of the player who has won the game.
      * If it is still in progress it will return -1;
@@ -101,6 +133,7 @@ export class Game {
      * @memberof Game
      */
     public getWinner() {
+        // TODO, check for winner
         return -1;
     }
 
@@ -133,7 +166,7 @@ export class Game {
             .map((query: string) => this.resolvePlayerUnity(query, player))
             .filter((unit: Unit) => unit);
         this.phase = GamePhase.combat
-        this.addGameEvent(new SyncGameEvent(GameEventType.attack, { attacking: this.attackers.map(e => e.toJson()) }));
+        this.addGameEvent(new SyncGameEvent(GameEventType.attack, { attacking: this.attackers.map(e => e.toString()) }));
         return true;
     }
 
@@ -148,7 +181,7 @@ export class Game {
                 this.resolvePlayerUnity(block[1], player)
             ])
             .filter((block: [Unit, Unit]) => block[0] && block[1]);
-        this.addGameEvent(new SyncGameEvent(GameEventType.block, { blocks: this.blockers.map(b => b.map(e => e.toJson())) }));
+        this.addGameEvent(new SyncGameEvent(GameEventType.block, { blocks: this.blockers.map(b => b.map(e => e.toString())) }));
         this.resolveCombat();
         return true;
     }
@@ -194,31 +227,8 @@ export class Game {
         this.events.push(event);
     }
 
-
-    /**
-     * 
-     * Handles a players action and returns a list of events that
-     * resulted from that aciton.
-     * 
-     * @param {GameAction} action 
-     * @returns {SyncGameEvent[]} 
-     * @memberof Game
-     */
-    public handleAction(action: GameAction): SyncGameEvent[] {
-        let mark = this.events.length;
-        let handeler = this.actionHandelers.get(action.type);
-        if (!handeler)
-            return [];
-        let sig = handeler(action);
-        return this.events.slice(mark);
-    }
-
     public isPlayerTurn(player: number) {
         return this.turn === player;
-    }
-
-    private addActionHandeler(type: GameActionType, cb: actionCb) {
-        this.actionHandelers.set(type, cb.bind(this));
     }
 
     public removeUnit(unit: Unit) {
@@ -259,6 +269,10 @@ ${playerBoard}`
             return params;
         }));
         this.board.addUnit(unit);
+    }
+
+    public getPlayer(playerNum: number) {
+        return this.players[playerNum];
     }
 
     public getBoard() {

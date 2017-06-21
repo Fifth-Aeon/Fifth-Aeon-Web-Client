@@ -10,20 +10,22 @@ import { SoundManager } from './sound';
 import { WebClient } from './client';
 
 import { AppComponent } from './app.component';
-import { BattleshipGameComponent } from './game/game.component';
+import { GameComponent } from './game/game.component';
 import { InPlayGuard } from './in-play.guard';
 
 import { MdButtonModule, MdRadioModule, MdIconModule, MdTooltipModule, MdSnackBarModule, MdToolbarModule, MdProgressSpinnerModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LobbyComponent } from './lobby/lobby.component';
 import { PrivateLobbyComponent } from './private-lobby/private-lobby.component';
+import { CardComponent } from './card/card.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BattleshipGameComponent,
+    GameComponent,
     LobbyComponent,
-    PrivateLobbyComponent
+    PrivateLobbyComponent,
+    CardComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +36,7 @@ import { PrivateLobbyComponent } from './private-lobby/private-lobby.component';
     MdButtonModule, MdIconModule, MdToolbarModule, MdRadioModule,
     MdProgressSpinnerModule, MdTooltipModule, MdSnackBarModule,
     RouterModule.forRoot([
-      { path: 'game', component: BattleshipGameComponent, canActivate: [InPlayGuard] },
+      { path: 'game', component: GameComponent, canActivate: [InPlayGuard] },
       { path: 'private/:id', component: PrivateLobbyComponent },
       { path: 'private', component: PrivateLobbyComponent },
       { path: 'lobby', component: LobbyComponent },

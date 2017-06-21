@@ -1,8 +1,4 @@
-import { parse, stringify } from 'circular-json';
-
-
 import { Game } from './game';
-//import { Sprite } from './sprite';
 import { Player } from './player';
 import { Card } from './card';
 import { EventGroup, EventType } from './gameEvent';
@@ -80,11 +76,6 @@ export abstract class Unit extends Card {
 
     public toString() {
         return `${this.name} (${this.cost}) - (${this.damage}/${this.life})`;
-    }
-
-    public toJson() {
-
-        return stringify(this);
     }
 
     public fight(target: Unit) {

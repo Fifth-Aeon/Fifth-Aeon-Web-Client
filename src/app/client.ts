@@ -1,4 +1,4 @@
-import { Game, GameAction, GameSyncEvent, GameActionType, GameEventType } from './game_model/game';
+import { Game, GameAction, SyncGameEvent, GameActionType, GameEventType } from './game_model/game';
 
 import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
@@ -150,25 +150,14 @@ export class WebClient {
         return this.state == ClientState.InGame;
     }
 
-   
+
 
     private sendGameAction(type: GameActionType, params: any, isAi: boolean = false) {
-        if (!this.ai) {
-            this.messenger.sendMessageToServer(MessageType.GameAction, {
-                type: type,
-                params: params
-            } as GameAction);
-        } else {
-            let events = this.gameModel.handleAction({
-                type: type,
-                player: isAi ? 1 : 0,
-                params: params
-            });
-            for (let event of events) {
-                this.handleGameEvent(event);
-                this.ai.handleGameEvent(event);
-            }
-        }
+        this.messenger.sendMessageToServer(MessageType.GameAction, {
+            type: type,
+            params: params
+        } as GameAction);
+
     }
 
     private namePlayer(player: number, cap: boolean = false) {
@@ -177,9 +166,9 @@ export class WebClient {
         return 'your opponent'
     }
 
-    private handleGameEvent(event: GameSyncEvent) {
+    private handleGameEvent(event: SyncGameEvent) {
         switch (event.type) {
-            
+
 
         }
 
@@ -203,40 +192,10 @@ export class WebClient {
             return 'Failed to join game (it may have been canceled).';
         if (this.state == ClientState.InQueue)
             return 'In Queue. Waiting for an opponent.'
-        if (this.game.getWinner() !== -1)
-            return 'The game is over ' + this.namePlayer(this.game.getWinner()) + ' won.';
-        if (!this.finished)
-            return 'Click tiles to place your ships.';
-        if (!this.game.hasStarted())
-            return 'Waiting for your opponent.'
-        if (this.game.getTurn() == this.playerNumber)
-            return 'It is your turn. Click a tile to fire.'
-        return 'It is your opponents turn. Please wait.'
+        return 'Error.'
     }
 
-    public place(row: number, col: number, ship: ShipType, dir: Direction) {
-        let loc = new Point(row, col);
-        if (this.game.placeShip(this.playerNumber, ship, loc, dir)) {
-            this.sendGameAction(GameActionType.PlaceShip, {
-                ship: ship,
-                loc: loc,
-                dir: dir
-            });
-            return true;
-        }
-    }
 
-    public finish() {
-        this.finished = true;
-        this.sendGameAction(GameActionType.FinishPlacement, {});
-    }
-
-    public fire(row: number, col: number) {
-        this.soundManager.playSound('shot');
-        this.sendGameAction(GameActionType.Fire, {
-            target: new Point(row, col)
-        });
-    }
 
     public getState() {
         return this.state;
@@ -263,11 +222,10 @@ export class WebClient {
     }
 
     private startGame(msg: Message) {
-        this.ai = null;
         this.gameId = msg.data.gameId;
         this.playerNumber = msg.data.playerNumber;
         this.opponentNumber = 1 - this.playerNumber;
-        this.game = new BattleshipGame(((p, error) => console.error(error)));
+        this.game = new Game();
         this.router.navigate(['/game']);
 
         this.zone.run(() => {
@@ -276,34 +234,5 @@ export class WebClient {
         });
     }
 
-    private gameModel: BattleshipGame;
-    public startAIGame(difficulty) {
-        this.playerNumber = 0;
-        this.opponentNumber = 1;
-        this.game = new BattleshipGame(() => null);
-        this.gameModel = new BattleshipGame(() => null);
-        let aiModel = new BattleshipGame(() => null);
-
-        let aiAction = (type: GameActionType, params: any) => this.sendGameAction(type, params, true);
-        let delay = (cb: () => void) => this.soundManager.doWhenDonePlaying(cb);
-        switch (difficulty) {
-            case AiDifficulty.Easy:
-                this.ai = new RandomAI(1, aiModel, delay, aiAction);
-                break;
-            case AiDifficulty.Medium:
-                this.ai = new HunterSeeker(1, aiModel, delay, aiAction);
-                break;
-            case AiDifficulty.Hard:
-                this.ai = new ParityAI(1, aiModel, delay, aiAction);
-                break;
-        }
-
-        this.router.navigate(['/game']);
-        this.zone.run(() => {
-            this.opponentUsername = AiDifficulty[difficulty] + ' A.I';
-            this.state = ClientState.InGame;
-            this.ai.start();
-        });
-    }
 
 }
