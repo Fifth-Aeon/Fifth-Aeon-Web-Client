@@ -5,7 +5,7 @@ import { Card } from '../game_model/card';
 @Component({
   selector: 'ccg-card',
   templateUrl: './card.component.html',
-  styleUrls: ['./card.component.css']
+  styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit {
   @Input() card: Card;

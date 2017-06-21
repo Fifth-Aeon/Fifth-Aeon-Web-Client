@@ -2,6 +2,8 @@ import { Queue } from 'typescript-collections';
 import { Howler, Howl } from 'howler';
 import { Injectable } from '@angular/core';
 
+const localStorageMuteKey = 'sound-is-muted';
+
 @Injectable()
 export class SoundManager {
     private global = Howler;
@@ -13,15 +15,15 @@ export class SoundManager {
     private muted: boolean = false;
     private onDone: Array<() => void> = [];
 
-
     constructor() {
         this.addSound('splash', new Howl({ src: ['assets/splash.mp3'] }));
         this.addSound('shot', new Howl({ src: ['assets/shot.mp3'] }));
         this.addSound('explosion', new Howl({ src: ['assets/explosion.mp3'] }));
         this.setMusic(new Howl({
             src: ['assets/bgmusic.mp3'],
-            volume: 0.1
+            volume: 0.0
         }));
+        this.muted = (localStorage.getItem(localStorageMuteKey) || 'false') == 'true';
     }
     public doWhenDonePlaying(callback: () => void) {
         if (this.muted || !this.isPlaying) {
@@ -34,6 +36,7 @@ export class SoundManager {
     public toggleMute() {
         this.muted = !this.muted;
         this.global.mute(this.muted);
+        localStorage.setItem(localStorageMuteKey, this.muted.toString());
     }
 
     public isMuted(): boolean {
@@ -56,7 +59,6 @@ export class SoundManager {
     public playSound(name: string) {
         let sound = this.library.get(name);
         this.playQueue.enqueue(sound)
-        console.log('play', name);
 
         if (!this.isPlaying) {
             this.isPlaying = true;

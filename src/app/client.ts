@@ -1,5 +1,4 @@
 import { Game, GameAction, SyncGameEvent, GameActionType, GameEventType } from './game_model/game';
-
 import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
 import { preload } from './preloader';
@@ -140,7 +139,6 @@ export class WebClient {
         this.messenger.sendMessageToServer(MessageType.ExitQueue, {});
     }
 
-
     public private() {
         this.messenger.sendMessageToServer(MessageType.NewPrivateGame, {});
         this.changeState(ClientState.Waiting);
@@ -149,8 +147,6 @@ export class WebClient {
     public isInGame() {
         return this.state == ClientState.InGame;
     }
-
-
 
     private sendGameAction(type: GameActionType, params: any, isAi: boolean = false) {
         this.messenger.sendMessageToServer(MessageType.GameAction, {
@@ -194,8 +190,6 @@ export class WebClient {
             return 'In Queue. Waiting for an opponent.'
         return 'Error.'
     }
-
-
 
     public getState() {
         return this.state;

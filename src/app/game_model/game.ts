@@ -1,8 +1,7 @@
-import { Dictionary } from 'typescript-collections';
 import { Board } from './board';
 import { Player } from './player';
 import { Card } from './card';
-import { Unit, Action } from './unit';
+import { Unit } from './unit';
 import { GameFormat } from './gameFormat';
 import { Resource } from './resource';
 import { GameEvent, EventType } from './gameEvent';
@@ -77,8 +76,8 @@ export class Game {
         this.turnNum = 1;
         this.actionHandelers = new Map<GameActionType, actionCb>();
         this.players = [
-            new Player(data.getRandomDeck(30), 0, this.format.initalResource[0], this.format.initialLife[0]),
-            new Player(data.getRandomDeck(30), 1, this.format.initalResource[1], this.format.initialLife[1])
+            new Player(data.getRandomDeck(format.minDeckSize), 0, this.format.initalResource[0], this.format.initialLife[0]),
+            new Player(data.getRandomDeck(format.minDeckSize), 1, this.format.initalResource[1], this.format.initialLife[1])
         ];
         this.events = [];
         this.attackers = [];
@@ -90,6 +89,8 @@ export class Game {
         this.addActionHandeler(GameActionType.declareAttackers, this.declareAttackers);
         this.addActionHandeler(GameActionType.declareBlockers, this.declareBlockers);
     }
+
+    // Syncronization --------------------------------------------------------
 
     /**
      * Syncs an event that happened on the server into the state of this game model
@@ -124,24 +125,24 @@ export class Game {
         this.actionHandelers.set(type, cb.bind(this));
     }
 
-    /**
-     * 
-     * Returns the number of the player who has won the game.
-     * If it is still in progress it will return -1;
-     * 
-     * @returns 
-     * @memberof Game
-     */
-    public getWinner() {
-        // TODO, check for winner
-        return -1;
+
+    // Game Logic --------------------------------------------------------
+
+    public startGame() {
+        this.turn = 0;
+        for (let i = 0; i < this.players.length; i++) {
+            this.players[i].drawCards(this.format.initialDraw[i]);
+        }
+        this.players[this.turn].startTurn();
+        this.getCurrentPlayerEntities().forEach(unit => unit.refresh());
+        this.phase = GamePhase.play1;
     }
 
     private resolveCard(query: string, player: Player): Card | null {
         return player.queryHand(query);
     }
 
-    private resolvePlayerUnity(query: string, player: Player): Unit {
+    private resolvePlayerUnit(query: string, player: Player): Unit {
         let options = this.board.getPlayerEntities(player.getPlayerNumber());
         return player.queryCards(query, options) as Unit;
     }
@@ -163,7 +164,7 @@ export class Game {
         if (!this.isPlayerTurn(act.player) || this.phase !== GamePhase.play1)
             return false;
         this.attackers = act.params['attackers']
-            .map((query: string) => this.resolvePlayerUnity(query, player))
+            .map((query: string) => this.resolvePlayerUnit(query, player))
             .filter((unit: Unit) => unit);
         this.phase = GamePhase.combat
         this.addGameEvent(new SyncGameEvent(GameEventType.attack, { attacking: this.attackers.map(e => e.toString()) }));
@@ -177,8 +178,8 @@ export class Game {
             return false;
         this.blockers = act.params['blockers']
             .map((block: any) => [
-                this.resolvePlayerUnity(block[0], op),
-                this.resolvePlayerUnity(block[1], player)
+                this.resolvePlayerUnit(block[0], op),
+                this.resolvePlayerUnit(block[1], player)
             ])
             .filter((block: [Unit, Unit]) => block[0] && block[1]);
         this.addGameEvent(new SyncGameEvent(GameEventType.block, { blocks: this.blockers.map(b => b.map(e => e.toString())) }));
@@ -235,30 +236,6 @@ export class Game {
         this.board.removeUnit(unit);
     }
 
-    public getPlayerSummary(playerNum: number): string {
-        let currPlayer = this.players[playerNum];
-        let otherPlayer = this.players[this.getOtherPlayerNumber(playerNum)];
-        let playerBoard = this.board.getPlayerEntities(playerNum).map(unit => unit.toString()).join("\n");
-        let enemyBoard = this.board.getPlayerEntities(this.getOtherPlayerNumber(playerNum)).map(unit => unit.toString()).join("\n");
-        return `Turn ${this.turnNum} - it is your ${this.isPlayerTurn(playerNum) ? 'turn' : 'opponent\'s turn'}
-You have ${currPlayer.getLife()} life and your oponent has ${otherPlayer.getLife()} life.
-${currPlayer.sumerize()}
-Your Board
-${playerBoard}
-Enemy Board
-${playerBoard}`
-    }
-
-    public startGame() {
-        this.turn = 0;
-        for (let i = 0; i < this.players.length; i++) {
-            this.players[i].drawCards(this.format.initialDraw[i]);
-        }
-        this.players[this.turn].startTurn();
-        this.getCurrentPlayerEntities().forEach(unit => unit.refresh());
-        this.phase = GamePhase.play1;
-    }
-
     public playUnit(ent: Unit, owner: number) {
         this.addUnit(ent, owner);
     }
@@ -270,6 +247,18 @@ ${playerBoard}`
         }));
         this.board.addUnit(unit);
     }
+
+    public nextTurn() {
+        this.turn = this.getOtherPlayerNumber(this.turn);
+        this.turnNum++;
+        let currentPlayerEntities = this.getCurrentPlayerEntities();
+        currentPlayerEntities.forEach(unit => unit.refresh());
+        this.addGameEvent(new SyncGameEvent(GameEventType.turnStart, { player: this.turn, turnNum: this.turnNum }));
+        this.attackers = [];
+        this.blockers = [];
+    }
+
+    // Getters and setters ---------------------------------------------------
 
     public getPlayer(playerNum: number) {
         return this.players[playerNum];
@@ -287,13 +276,16 @@ ${playerBoard}`
         return (playerNum + 1) % this.players.length
     }
 
-    public nextTurn() {
-        this.turn = this.getOtherPlayerNumber(this.turn);
-        this.turnNum++;
-        let currentPlayerEntities = this.getCurrentPlayerEntities();
-        currentPlayerEntities.forEach(unit => unit.refresh());
-        this.addGameEvent(new SyncGameEvent(GameEventType.turnStart, { player: this.turn, turnNum: this.turnNum }));
-        this.attackers = [];
-        this.blockers = [];
+    /**
+    * 
+    * Returns the number of the player who has won the game.
+    * If it is still in progress it will return -1;
+    * 
+    * @returns 
+    * @memberof Game
+    */
+    public getWinner() {
+        // TODO, check for winner
+        return -1;
     }
 }

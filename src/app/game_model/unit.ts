@@ -4,21 +4,6 @@ import { Card } from './card';
 import { EventGroup, EventType } from './gameEvent';
 import { Resource } from './resource';
 
-export enum ActionType {
-    move, attack, spell
-}
-
-export class Action {
-    constructor(
-        public type: ActionType,
-        public actor: Unit,
-        public row: number,
-        public col: number,
-        public executeAction: () => void
-    ) { }
-}
-
-
 export abstract class Unit extends Card {
     // Board 
     private parent: Game;
@@ -63,15 +48,6 @@ export abstract class Unit extends Card {
 
     public canActivate(): boolean {
         return this.exausted;
-    }
-
-    public getPossibleAcitons(): Array<Action> {
-        let actions: Action[] = [];
-
-        if (this.canActivate()) {
-
-        }
-        return actions;
     }
 
     public toString() {

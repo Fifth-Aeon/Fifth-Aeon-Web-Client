@@ -1,5 +1,25 @@
-<div>
-{{card.name}}
 
+  <svg class="card" viewport="260 340">
+    <g>
+      <text y="15">{{card.name}}</text>
+      <text y="15">{{card.resource}}</text>
+    </g>
 
-</div>
+    <g transform="translate(0 25)">
+      <rect width="260" height="150" class="image-border" />
+    </g>
+
+    <g transform="translate(0 175)">
+      <text y="15">{{card.getText()}}</text>
+    </g>
+
+    <g transform="translate(0 325)" *ngIf="card.isUnit()">
+      <rect width="15" height="15" class="image-border" />
+      <text y="15">{{card.damage}}</text>
+    </g>
+
+    <g transform="translate(245 325)" *ngIf="card.isUnit()">
+      <rect width="15" height="15" class="image-border" />
+      <text y="15">{{card.life}}</text>
+    </g>
+  </svg>

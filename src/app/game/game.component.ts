@@ -20,7 +20,8 @@ export class GameComponent implements OnInit {
     this.game = client.getGame();
     this.player = this.game.getPlayer(client.getPlayerdata().me);
     this.enemy = this.game.getPlayer(client.getPlayerdata().op);
-    console.log(this.player, this.enemy);
+    this.game.startGame();
+
   }
 
   @HostListener('window:beforeunload')
