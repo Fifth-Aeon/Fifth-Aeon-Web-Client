@@ -31,9 +31,6 @@ export abstract class Unit extends Card {
         return this.events;
     }
 
-    public getOwner(): Player {
-        return this.owner;
-    }
 
     public play(game: Game) {
         super.play(game);

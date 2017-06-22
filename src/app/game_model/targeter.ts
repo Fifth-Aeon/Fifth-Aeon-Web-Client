@@ -2,11 +2,11 @@ import { Game } from './game';
 import { Unit } from './unit';
 
 export abstract class Targeter<T> {
-    protected target:T;
-    public needsInput():boolean {
+    protected target: T;
+    public needsInput(): boolean {
         return true;
     }
-    public setTarget(target:T) {
+    public setTarget(target: T) {
         this.target = target;
     }
     public getTarget(game: Game): T {
@@ -16,11 +16,23 @@ export abstract class Targeter<T> {
     abstract getValidTargets(game: Game): Array<T>;
 }
 
+export class Untargeted extends Targeter<null> {
+    public getValidTargets(game: Game) {
+        return [];
+    }
+    public getText() {
+        return '';
+    }
+    public needsInput() {
+        return false;
+    }
+}
+
 export class SingleUnit extends Targeter<Unit> {
     public getValidTargets(game: Game) {
         return game.getBoard().getAllEntities();
     }
-    public getText () {
+    public getText() {
         return 'target unit';
     }
 }

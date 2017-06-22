@@ -9,10 +9,24 @@ import { Card } from '../game_model/card';
 })
 export class CardComponent implements OnInit {
   @Input() card: Card;
+  @Input() scale: number;
+  sizeY: number;
+  sizeX: number;
+  hovered: boolean = false;
 
   constructor() { }
 
+  public x() {
+    return (this.hovered ? 1.1 : 1) * 100 * this.scale;
+  }
+
+  public y() {
+    return (this.hovered ? 1.1 : 1) * 140 * this.scale;
+  }
+
   ngOnInit() {
+    if (!this.scale)
+      this.scale = 1.25;
   }
 
 }

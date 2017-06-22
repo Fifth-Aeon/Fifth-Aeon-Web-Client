@@ -22,7 +22,7 @@ export enum GameActionType {
 }
 
 export enum GameEventType {
-    attack, turnStart, phaseChange, playResource, mulligan, playCard, block
+    start, attack, turnStart, phaseChange, playResource, mulligan, playCard, block
 }
 
 export interface GameAction {
@@ -136,6 +136,12 @@ export class Game {
         this.players[this.turn].startTurn();
         this.getCurrentPlayerEntities().forEach(unit => unit.refresh());
         this.phase = GamePhase.play1;
+
+        this.addGameEvent(new SyncGameEvent(GameEventType.start, {
+            initialHands: this.players.map(player => {
+                return player.getHand().map(card => Serialize(card));
+            })
+        }));
     }
 
     private resolveCard(query: string, player: Player): Card | null {
@@ -269,7 +275,7 @@ export class Game {
     }
 
     public getCurrentPlayerEntities() {
-        return this.board.getAllEntities().filter(unit => this.isPlayerTurn(unit.getOwner().getPlayerNumber()));
+        return this.board.getAllEntities().filter(unit => this.isPlayerTurn(unit.getOwner()));
     }
 
     public getOtherPlayerNumber(playerNum: number): number {

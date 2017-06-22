@@ -1,4 +1,5 @@
 import { Game, GameAction, SyncGameEvent, GameActionType, GameEventType } from './game_model/game';
+import { data } from './game_model/gameData';
 import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
 import { preload } from './preloader';
@@ -8,6 +9,9 @@ import { NgZone, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MdSnackBar } from '@angular/material';
+import { Deserialize } from 'cerialize'
+
+import { Card } from './game_model/card';
 
 export enum ClientState {
     UnAuth, InLobby, Waiting, PrivateLobby, PrivateLobbyFail, InQueue, InGame, Any
@@ -45,6 +49,13 @@ export class WebClient {
         this.messenger.connectChange = (status) => zone.run(() => this.connected = status);
 
         preload();
+    }
+
+    public playCard(card: Card) {
+        console.log('play', card);
+        
+        this.sendGameAction(GameActionType.playCard, { id: card.getId() })
+
     }
 
     private onLogin(username: string) {
@@ -163,11 +174,7 @@ export class WebClient {
     }
 
     private handleGameEvent(event: SyncGameEvent) {
-        switch (event.type) {
-
-
-        }
-
+        console.log('event', event);
         this.zone.run(() => this.game.syncServerEvent(this.playerNumber, event));
     }
 
@@ -175,7 +182,7 @@ export class WebClient {
         this.zone.run(() => this.state = newState);
     }
 
-    public getInstuciton() {
+    public getInstruction() {
         if (this.state == ClientState.UnAuth)
             return 'Attempting to login to server';
         if (this.state == ClientState.InLobby)
@@ -215,6 +222,12 @@ export class WebClient {
         return this.opponentUsername;
     }
 
+    private unpackCard(proto: { id: string, data: string }) {
+        let card = data.getCard(proto.data);
+        card.setId(proto.id);
+        return card;
+    }
+
     private startGame(msg: Message) {
         this.gameId = msg.data.gameId;
         this.playerNumber = msg.data.playerNumber;
@@ -224,6 +237,11 @@ export class WebClient {
 
         this.zone.run(() => {
             this.opponentUsername = msg.data.opponent;
+            let cards: Card[] = msg.data.hand.map((proto) => this.unpackCard(proto));
+            let hand = this.game.getPlayer(this.playerNumber).getHand();
+            cards.forEach(card => {
+                hand.push(card);
+            });
             this.state = ClientState.InGame;
         });
     }

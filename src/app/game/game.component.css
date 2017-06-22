@@ -4,72 +4,8 @@
   overflow: hidden;
   width: 100%;
 }
-
-.title {
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-}
-
-.game-board {
-  border-collapse: collapse;
-  margin: 0 auto;
-  width: 300px;
-  height: 300px;
-}
-
-.preview {
-  pointer-events: none;
-  opacity: 0.4;
-}
-
-.preview:hover {
-  pointer-events: none;
-  opacity: 0.9;
-}
-
-.game-board tr td {
-  border: 1px solid black;
-  width: 30px;
-  height: 30px;
-  text-align: center;
-}
-
-.header {
+.area {
   width: 100%;
-  overflow: hidden;
-  text-align: center;
-}
-
-.basic-cell {
-  stroke: black;
-  stroke-width: 1;
-  stroke-opacity: 1;
-  fill: white;
-}
-
-.marked {
-  fill: yellow;
-}
-
-.basicCell.hit {
-  fill: red;
-}
-
-.basicCell.miss {
-  fill: blue;
-}
-
-.unknown {
-  fill: white;
-}
-
-.occupied {
-  fill: darkslategray;
-}
-
-.occupied.preview {
-  fill: red;
-}
-
-.occupied.hit {
-  fill: darkred;
+  height: 240px;
+  border: 1px solid grey;
 }

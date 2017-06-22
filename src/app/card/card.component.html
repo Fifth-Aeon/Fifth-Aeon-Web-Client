@@ -1,25 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+(mouseenter) ="hovered=true"  (mouseleave) ="hovered=false"
+ class="card" [attr.width]="x()" [attr.height]="y()">
+  <g>
+    <text y="15">{{card.name}}</text>
+    <text y="15">{{card.resource}}</text>
+  </g>
 
-  <svg class="card" viewport="260 340">
+  <g attr.transform="translate(0 {{y() * 0.15}})">
+    <rect [attr.width]="x()" [attr.height]="y() * 0.4" class="image-border" />
+  </g>
+
+  <g attr.transform="translate(0 {{y() * 0.55}})">
+    <rect [attr.width]="x()" [attr.height]="y() * 0.45" class="image-border" />
+  </g>
+
+
+
+<foreignObject  x="0" [attr.y]="y() * 0.55" [attr.width]="x()" [attr.height]="y() * 0.45">
+    <xhtml:p xmlns="http://www.w3.org/1999/xhtml" >
+           {{card.getText()}}
+    </xhtml:p>
+  </foreignObject>
+
+
+  <g attr.transform="translate(0 {{y() - 25}})" *ngIf="card.isUnit()">
     <g>
-      <text y="15">{{card.name}}</text>
-      <text y="15">{{card.resource}}</text>
+      <rect width="25" height="25" class="image-border" />
+      <text width="25" height="25" text-anchor="middle" y="17.5" x="12.5">{{card.damage}}</text>
     </g>
 
-    <g transform="translate(0 25)">
-      <rect width="260" height="150" class="image-border" />
+    <g attr.transform="translate({{x() - 25}} 0)">
+      <rect width="25" height="25" class="image-border" />
+      <text width="25" height="25" text-anchor="middle" y="17.5" x="12.5">{{card.life}}</text>
     </g>
-
-    <g transform="translate(0 175)">
-      <text y="15">{{card.getText()}}</text>
-    </g>
-
-    <g transform="translate(0 325)" *ngIf="card.isUnit()">
-      <rect width="15" height="15" class="image-border" />
-      <text y="15">{{card.damage}}</text>
-    </g>
-
-    <g transform="translate(245 325)" *ngIf="card.isUnit()">
-      <rect width="15" height="15" class="image-border" />
-      <text y="15">{{card.life}}</text>
-    </g>
-  </svg>
+  </g>
+</svg>

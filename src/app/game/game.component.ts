@@ -4,6 +4,7 @@ import { remove } from 'lodash';
 import { WebClient, ClientState } from '../client';
 import { Game } from '../game_model/game';
 import { Player } from '../game_model/player';
+import { Card } from '../game_model/card';
 
 
 @Component({
@@ -20,8 +21,6 @@ export class GameComponent implements OnInit {
     this.game = client.getGame();
     this.player = this.game.getPlayer(client.getPlayerdata().me);
     this.enemy = this.game.getPlayer(client.getPlayerdata().op);
-    this.game.startGame();
-
   }
 
   @HostListener('window:beforeunload')
@@ -31,6 +30,13 @@ export class GameComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  select(card: Card) {
+    let targeter = card.getTargeter();
+    if (!targeter.needsInput()) {
+      this.client.playCard(card);
+    }
   }
 
 }

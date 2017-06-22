@@ -1,11 +1,7 @@
-$card-width: 260px;
-$card-height: 340px;
+
 .card {
   margin: 10px;
-  width: $card-width;
-  height: $card-height;
   border: 1px solid black;
-  float: left;
 }
 
 .image-border {
@@ -14,3 +10,4 @@ $card-height: 340px;
   stroke-opacity: 1;
   fill: white;
 }
+

@@ -15,15 +15,14 @@ export class Player {
 
     constructor(cards: Array<Card>, private playerNumber: number, initResource: Resource, life: number) {
         this.deck = cards;
-        this.deck.forEach(card => card.setOwner(this));
+        this.deck.forEach(card => card.setOwner(this.playerNumber));
         this.hand = [];
         this.life = life;
         this.resource = initResource; // Todo, fix by ref
     }
 
-    public sumerize(): string {
-        let hand = this.hand.map(card => card.toString()).join("\n");
-        return `You have ${this.hand.length} cards in hand. \n${hand}`
+    public getHand() {
+        return this.hand;
     }
 
     public getPlayerNumber() {
@@ -74,12 +73,12 @@ export class Player {
     }
 
     public playCard(game: Game, card: Card) {
-        remove(this.hand, (toRem:Card) => toRem === card);
+        remove(this.hand, (toRem: Card) => toRem === card);
         card.play(game);
     }
 
     public removeCard(card: Card) {
-        remove(this.hand, (toRem:Card) => toRem === card);
+        remove(this.hand, (toRem: Card) => toRem === card);
     }
 
     public drawCard() {

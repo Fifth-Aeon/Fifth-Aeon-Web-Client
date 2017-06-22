@@ -1,29 +1,37 @@
-import { serialize, serializeAs } from 'cerialize';
+import { serialize, serializeAs, deserialize } from 'cerialize';
 
 import { Resource } from './resource';
 import { Game } from './game';
 import { Player } from './player';
 import { Mechanic } from './mechanic';
-import { Targeter } from './targeter';
+import { Targeter, Untargeted } from './targeter';
 import { remove } from 'lodash';
 
 
 export abstract class Card {
-    @serialize protected name: string;
-    @serialize protected id: string;
-    @serialize protected set: string;
-    @serialize protected rarity: number;
+    
+    @serialize @deserialize public name: string;
+    @serialize @deserialize protected id: string;
+    @serialize @deserialize protected set: string;
+    @serialize @deserialize protected rarity: number;
     @serializeAs(Mechanic) protected mechanics: Mechanic[] = [];
 
     @serializeAs(Resource) protected cost: Resource;
-    @serialize protected unit = false;
-    @serialize protected owner: Player;
-    @serialize protected dataId: string;
+    @serialize @deserialize protected unit = false;
+    @serialize @deserialize protected owner: number;
+    @serialize @deserialize abstract dataId: string;
 
-    protected targeter: Targeter<any>;
+    protected targeter: Targeter<any> = new Untargeted();
 
     constructor() {
         this.id = Math.random().toString(16)
+    }
+
+    public getDataId() {
+        return this.dataId;
+    }
+    public getId() {
+        return this.id;
     }
 
     public play(game: Game) {
@@ -38,8 +46,16 @@ export abstract class Card {
         return this.targeter;
     }
 
-    public setOwner(owner: Player) {
+    public setOwner(owner: number) {
         this.owner = owner;
+    }
+
+    public setId(id:string) {
+        this.id = id;
+    }
+
+    public getOwner() {
+        return this.owner;
     }
 
     public getName() {

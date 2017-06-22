@@ -3,7 +3,6 @@
   <button md-raised-button color="primary" *ngIf="client.getGame().getWinner() !== -1" (click)="client.exitGame()">Exit Game</button>
 </div>
 
-
 <!-- Enemy Hand -->
 <div></div>
 
@@ -11,13 +10,13 @@
 <div></div>
 
 <!-- Player Board -->
-<div>
-  <ccg-card *ngFor="let card of game.getBoard().getPlayerEntities(0)" [card]="card" ></ccg-card>
+<div class="area">
+  <ccg-card scale="2" *ngFor="let card of game.getBoard().getPlayerEntities(0)" [card]="card" ></ccg-card>
 </div>
 
 <!-- Player Hand -->
-<div>
-  <ccg-card *ngFor="let card of player.hand" [card]="card" ></ccg-card>
+<div class="area">
+  <ccg-card scale="1.4" *ngFor="let card of player.hand" [card]="card" (click)="select(card)"></ccg-card>
 </div>
 
 
