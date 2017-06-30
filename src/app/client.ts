@@ -52,10 +52,8 @@ export class WebClient {
     }
 
     public playCard(card: Card) {
-        console.log('play', card);
-        
+        this.game.playCard(this.game.getPlayer(this.playerNumber), card);
         this.sendGameAction(GameActionType.playCard, { id: card.getId() })
-
     }
 
     private onLogin(username: string) {
@@ -238,9 +236,9 @@ export class WebClient {
         this.zone.run(() => {
             this.opponentUsername = msg.data.opponent;
             let cards: Card[] = msg.data.hand.map((proto) => this.unpackCard(proto));
-            let hand = this.game.getPlayer(this.playerNumber).getHand();
+            let player = this.game.getPlayer(this.playerNumber);
             cards.forEach(card => {
-                hand.push(card);
+                player.addToHand(card);
             });
             this.state = ClientState.InGame;
         });
