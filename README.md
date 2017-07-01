@@ -1,6 +1,6 @@
-# Battleship Client
+# Card Game Client
 
-A client for a websockets based battleship game, written using Angular and Typescript.
+A client for a websockets based card game, written using Angular and Typescript.
 
 You can find the coresponding server at (https://github.com/WilliamRitson/Battleship-Server)
 
