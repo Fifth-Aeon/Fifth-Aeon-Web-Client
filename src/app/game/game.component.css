@@ -9,3 +9,7 @@
   height: 240px;
   border: 1px solid grey;
 }
+
+.pass-button {
+  float: right;
+}

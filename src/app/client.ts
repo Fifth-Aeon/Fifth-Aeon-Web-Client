@@ -51,10 +51,33 @@ export class WebClient {
         preload();
     }
 
+
+    // Game Actions -------------------------
     public playCard(card: Card) {
         this.game.playCard(this.game.getPlayer(this.playerNumber), card);
         this.sendGameAction(GameActionType.playCard, { id: card.getId() })
     }
+
+    public pass() {
+        this.sendGameAction(GameActionType.pass, {});
+    }
+
+    public playResource(type: string) {
+        this.sendGameAction(GameActionType.playResource, { type: type });
+    }
+
+    public declareAttackers(attackerIds: Array<string>) {
+        this.sendGameAction(GameActionType.declareAttackers, { attackers: attackerIds });
+    }
+
+    public declareBlockers(blockIds: Array<{ blocker: string, attacker: string }>) {
+        this.sendGameAction(GameActionType.declareBlockers, { blockers: blockIds });
+    }
+
+
+
+
+    // Misc --------------------
 
     private onLogin(username: string) {
         this.changeState(ClientState.InLobby);
@@ -162,7 +185,6 @@ export class WebClient {
             type: type,
             params: params
         } as GameAction);
-
     }
 
     private namePlayer(player: number, cap: boolean = false) {
@@ -204,7 +226,6 @@ export class WebClient {
         return this.game;
     }
 
-
     public getPlayerdata() {
         return {
             me: this.playerNumber,
@@ -220,26 +241,15 @@ export class WebClient {
         return this.opponentUsername;
     }
 
-    private unpackCard(proto: { id: string, data: string }) {
-        let card = data.getCard(proto.data);
-        card.setId(proto.id);
-        return card;
-    }
-
     private startGame(msg: Message) {
         this.gameId = msg.data.gameId;
         this.playerNumber = msg.data.playerNumber;
         this.opponentNumber = 1 - this.playerNumber;
         this.game = new Game();
         this.router.navigate(['/game']);
-
+    
         this.zone.run(() => {
             this.opponentUsername = msg.data.opponent;
-            let cards: Card[] = msg.data.hand.map((proto) => this.unpackCard(proto));
-            let player = this.game.getPlayer(this.playerNumber);
-            cards.forEach(card => {
-                player.addToHand(card);
-            });
             this.state = ClientState.InGame;
         });
     }

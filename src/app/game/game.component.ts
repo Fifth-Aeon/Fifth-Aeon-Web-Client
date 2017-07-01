@@ -15,12 +15,16 @@ import { Card } from '../game_model/card';
 export class GameComponent implements OnInit {
   public game: Game;
   public player: Player;
+  public playerNo: number;
   public enemy: Player;
+  public enemyNo: number;
 
   constructor(public client: WebClient) {
     this.game = client.getGame();
     this.player = this.game.getPlayer(client.getPlayerdata().me);
     this.enemy = this.game.getPlayer(client.getPlayerdata().op);
+    this.playerNo = client.getPlayerdata().me;
+    this.enemyNo = client.getPlayerdata().op;
   }
 
   @HostListener('window:beforeunload')
@@ -33,10 +37,16 @@ export class GameComponent implements OnInit {
   }
 
   select(card: Card) {
+    if (!card.isPlayable(this.game))
+      return;
     let targeter = card.getTargeter();
     if (!targeter.needsInput()) {
       this.client.playCard(card);
     }
+  }
+
+  endTurn() {
+    this.client.pass();
   }
 
 }

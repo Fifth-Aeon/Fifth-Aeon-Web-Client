@@ -9,26 +9,22 @@
     <p>{{client.getOpponentUsername()}} Life: {{enemy.getLife()}} Cards: {{enemy.getHand().length}}</p>
 </div>
 
-
 <!-- Enemy Board -->
 <div class="area">
-  <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerEntities(1)" [card]="card" ></ccg-card>
+  <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerUnits(enemyNo)" [card]="card" ></ccg-card>
 </div>
 
 <!-- Player Board -->
 <div class="area">
-  <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerEntities(0)" [card]="card" ></ccg-card>
+  <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerUnits(playerNo)" [card]="card" ></ccg-card>
 </div>
 
 <div>
     <p>{{client.getUsername()}} Life: {{player.getLife()}} Cards: {{player.getHand().length}}</p>
+    <button class="pass-button" (click)="endTurn()">End Turn</button>
 </div>
 
 <!-- Player Hand -->
 <div class="area">
   <ccg-card scale="1.4" *ngFor="let card of player.hand" [card]="card" (click)="select(card)"></ccg-card>
 </div>
-
-
-
-
