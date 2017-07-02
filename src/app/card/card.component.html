@@ -1,9 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg"
-(mouseenter) ="hovered=true"  (mouseleave) ="hovered=false"
- class="card" [attr.width]="x()" [attr.height]="y()">
+<svg xmlns="http://www.w3.org/2000/svg" (mouseenter)="hovered=true" (mouseleave)="hovered=false" class="card" [attr.width]="x()"
+  [attr.height]="y()">
   <g>
     <text y="15">{{card.name}}</text>
-    <text y="15">{{card.resource}}</text>
+    <text y="15" [attr.x]="x()" text-anchor="end">{{card.cost.asCost()}}</text>
   </g>
 
   <g attr.transform="translate(0 {{y() * 0.15}})">
@@ -14,14 +13,11 @@
     <rect [attr.width]="x()" [attr.height]="y() * 0.45" class="image-border" />
   </g>
 
-
-
-<foreignObject  x="0" [attr.y]="y() * 0.55" [attr.width]="x()" [attr.height]="y() * 0.45">
-    <xhtml:p xmlns="http://www.w3.org/1999/xhtml" >
-           {{card.getText()}}
+  <foreignObject x="0" [attr.y]="y() * 0.55" [attr.width]="x()" [attr.height]="y() * 0.45">
+    <xhtml:p xmlns="http://www.w3.org/1999/xhtml">
+      {{card.getText()}}
     </xhtml:p>
   </foreignObject>
-
 
   <g attr.transform="translate(0 {{y() - 25}})" *ngIf="card.isUnit()">
     <g>

@@ -6,7 +6,7 @@
 <div></div>
 
 <div>
-    <p>{{client.getOpponentUsername()}} Life: {{enemy.getLife()}} Cards: {{enemy.getHand().length}}</p>
+    <p>{{client.getOpponentUsername()}} Life: {{enemy.getLife()}} Cards: {{enemy.getHand().length}} Res: {{enemy.resource.asPool()}}</p>
 </div>
 
 <!-- Enemy Board -->
@@ -20,11 +20,13 @@
 </div>
 
 <div>
-    <p>{{client.getUsername()}} Life: {{player.getLife()}} Cards: {{player.getHand().length}}</p>
+    <p>{{client.getUsername()}} Life: {{player.getLife()}} Cards: {{player.getHand().length}} Res: {{player.resource.asPool()}}
+    </p>
     <button class="pass-button" (click)="endTurn()">End Turn</button>
 </div>
 
 <!-- Player Hand -->
 <div class="area">
+  <ccg-resource-selector></ccg-resource-selector>
   <ccg-card scale="1.4" *ngFor="let card of player.hand" [card]="card" (click)="select(card)"></ccg-card>
 </div>

@@ -63,6 +63,7 @@ export class WebClient {
     }
 
     public playResource(type: string) {
+        console.log('pr', type);
         this.sendGameAction(GameActionType.playResource, { type: type });
     }
 

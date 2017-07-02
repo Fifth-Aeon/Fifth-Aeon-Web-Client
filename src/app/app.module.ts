@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LobbyComponent } from './lobby/lobby.component';
 import { PrivateLobbyComponent } from './private-lobby/private-lobby.component';
 import { CardComponent } from './card/card.component';
+import { ResourceSelectorComponent } from './resource-selector/resource-selector.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { CardComponent } from './card/card.component';
     GameComponent,
     LobbyComponent,
     PrivateLobbyComponent,
-    CardComponent
+    CardComponent,
+    ResourceSelectorComponent
   ],
   imports: [
     BrowserModule,
