@@ -1,5 +1,6 @@
 import { Game, GameAction, SyncGameEvent, GameActionType, GameEventType } from './game_model/game';
 import { data } from './game_model/gameData';
+import { GameFormat } from './game_model/gameFormat';
 import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
 import { preload } from './preloader';
@@ -36,7 +37,7 @@ export class WebClient {
     private onError: (error: string) => void = () => null;
 
     constructor(private soundManager: SoundManager, private snackbar: MdSnackBar, private router: Router, private zone: NgZone, private sanitizer: DomSanitizer) {
-        this.game = new Game();
+        this.game = new Game(new GameFormat(), true);
         this.playerNumber = 0;
         this.messenger = new Messenger();
 
@@ -156,7 +157,7 @@ export class WebClient {
 
     public exitGame() {
         this.sendGameAction(GameActionType.Quit, {});
-        this.game = new Game();
+        this.game = new Game(new GameFormat(), true);
         this.playerNumber = 0;
         this.changeState(ClientState.InLobby);
         this.router.navigate(['/lobby']);
@@ -246,7 +247,7 @@ export class WebClient {
         this.gameId = msg.data.gameId;
         this.playerNumber = msg.data.playerNumber;
         this.opponentNumber = 1 - this.playerNumber;
-        this.game = new Game();
+        this.game = new Game(new GameFormat(), true);
         this.router.navigate(['/game']);
     
         this.zone.run(() => {
