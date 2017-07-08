@@ -68,8 +68,8 @@ export class WebClient {
         this.sendGameAction(GameActionType.playResource, { type: type });
     }
 
-    public declareAttackers(attackerIds: Array<string>) {
-        this.sendGameAction(GameActionType.declareAttackers, { attackers: attackerIds });
+    public toggleAttacker(unitId:string) {
+        this.sendGameAction(GameActionType.toggleAttack, { unitId: unitId });
     }
 
     public declareBlockers(blockIds: Array<{ blocker: string, attacker: string }>) {

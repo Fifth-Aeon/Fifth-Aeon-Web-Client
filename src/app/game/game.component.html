@@ -6,23 +6,23 @@
 <div></div>
 
 <div>
-    <p>{{client.getOpponentUsername()}} Life: {{enemy.getLife()}} Cards: {{enemy.getHand().length}} Res: {{enemy.resource.asPool()}}</p>
+  <p>{{client.getOpponentUsername()}} Life: {{enemy.getLife()}} Cards: {{enemy.getHand().length}} Res: {{enemy.resource.asPool()}}</p>
 </div>
 
 <!-- Enemy Board -->
 <div class="area">
-  <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerUnits(enemyNo)" [card]="card" ></ccg-card>
+  <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerUnits(enemyNo)" [card]="card" (click)="target(card)"></ccg-card>
 </div>
 
 <!-- Player Board -->
 <div class="area">
-  <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerUnits(playerNo)" [card]="card" ></ccg-card>
+  <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerUnits(playerNo)" [card]="card" (click)="activate(card)"></ccg-card>
 </div>
 
 <div>
-    <p>{{client.getUsername()}} Life: {{player.getLife()}} Cards: {{player.getHand().length}} Res: {{player.resource.asPool()}}
-    </p>
-    <button class="pass-button" (click)="endTurn()">End Turn</button>
+  <p>{{client.getUsername()}} Life: {{player.getLife()}} Cards: {{player.getHand().length}} Res: {{player.resource.asPool()}}
+  </p>
+  <button md-raised-button color="primary" class="pass-button" (click)="endTurn()">{{getPassText()}}</button>
 </div>
 
 <!-- Player Hand -->

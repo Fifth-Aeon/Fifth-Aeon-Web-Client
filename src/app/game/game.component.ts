@@ -5,6 +5,7 @@ import { WebClient, ClientState } from '../client';
 import { Game } from '../game_model/game';
 import { Player } from '../game_model/player';
 import { Card } from '../game_model/card';
+import { Unit } from '../game_model/unit';
 
 
 @Component({
@@ -36,7 +37,7 @@ export class GameComponent implements OnInit {
   ngOnInit() {
   }
 
-  select(card: Card) {
+  public select(card: Card) {
     if (!card.isPlayable(this.game))
       return;
     let targeter = card.getTargeter();
@@ -45,7 +46,27 @@ export class GameComponent implements OnInit {
     }
   }
 
-  endTurn() {
+  public getPassText(): string {
+    if (this.game.isPlayerTurn(this.playerNo)) {
+      if (this.game.isAttacking())
+        return 'Attack';
+      return 'End Turn';
+    } else {
+      return 'Enemy Turn';
+    }
+  }
+
+  public target(card: Card) {
+
+  }
+
+  public activate(card: Card) {
+    let unit = card as Unit;
+    unit.toggleAttacking();
+    this.client.toggleAttacker(unit.getId());
+  }
+
+  public endTurn() {
     this.client.pass();
   }
 

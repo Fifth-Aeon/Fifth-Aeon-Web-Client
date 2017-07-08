@@ -12,6 +12,7 @@ export class CardComponent implements OnInit {
   @Input() scale: number;
   sizeY: number;
   sizeX: number;
+  padding = 30;
   hovered: boolean = false;
 
   constructor() { }
