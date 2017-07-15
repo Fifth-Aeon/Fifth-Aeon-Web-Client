@@ -11,22 +11,22 @@
 
 <!-- Enemy Board -->
 <div class="area">
-  <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerUnits(enemyNo)" [card]="card" (click)="target(card)"></ccg-card>
+  <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerUnits(enemyNo)" [darkened]="card.isExausted()" [card]="card" (click)="target(card)"></ccg-card>
 </div>
 
 <!-- Player Board -->
 <div class="area">
-  <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerUnits(playerNo)" [card]="card" (click)="activate(card)"></ccg-card>
+  <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerUnits(playerNo)" [darkened]="card.isExausted()" [card]="card" (click)="activate(card)"></ccg-card>
 </div>
 
 <div>
-  <p>{{client.getUsername()}} Life: {{player.getLife()}} Cards: {{player.getHand().length}} Res: {{player.resource.asPool()}}
+  <p>{{client.getUsername()}} Life: {{player.getLife()}} Cards: {{player.getHand().length}} Res: {{player.resource.asPool()}} Phase: {{game.getPhase()}} -
   </p>
-  <button md-raised-button color="primary" class="pass-button" (click)="endTurn()">{{getPassText()}}</button>
+  <button [disabled]="!game.isActivePlayer(playerNo)" md-raised-button color="primary" class="pass-button" (click)="endTurn()">{{getPassText()}}</button>
 </div>
 
 <!-- Player Hand -->
 <div class="area">
   <ccg-resource-selector></ccg-resource-selector>
-  <ccg-card scale="1.4" *ngFor="let card of player.hand" [card]="card" (click)="select(card)"></ccg-card>
+  <ccg-card scale="1.4" *ngFor="let card of player.hand" [card]="card" [darkened]="!card.isPlayable(game)" (click)="select(card)"></ccg-card>
 </div>

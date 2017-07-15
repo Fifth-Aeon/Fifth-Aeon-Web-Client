@@ -14,6 +14,7 @@ export class CardComponent implements OnInit {
   sizeX: number;
   padding = 30;
   hovered: boolean = false;
+  @Input() darkened: boolean = false;
 
   constructor() { }
 

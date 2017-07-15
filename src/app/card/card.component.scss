@@ -1,6 +1,4 @@
-
-.card {
-}
+.card {}
 
 .image-border {
   stroke: black;
@@ -9,3 +7,6 @@
   fill: white;
 }
 
+.darkened {
+  filter: brightness(0.8);
+}

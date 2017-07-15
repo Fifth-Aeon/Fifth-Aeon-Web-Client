@@ -48,10 +48,16 @@ export class GameComponent implements OnInit {
 
   public getPassText(): string {
     if (this.game.isPlayerTurn(this.playerNo)) {
-      if (this.game.isAttacking())
-        return 'Attack';
+      if (this.game.isAttacking()) {
+        if (this.game.isActivePlayer(this.playerNo))
+          return 'Attack';
+        else
+          return 'Waiting';
+      }
       return 'End Turn';
     } else {
+      if (this.game.isActivePlayer(this.playerNo))
+        return 'Done Blocking'
       return 'Enemy Turn';
     }
   }
@@ -62,6 +68,8 @@ export class GameComponent implements OnInit {
 
   public activate(card: Card) {
     let unit = card as Unit;
+    if (!this.game.playerCanAttack(this.playerNo) && unit.canAttack())
+        return;
     unit.toggleAttacking();
     this.client.toggleAttacker(unit.getId());
   }
