@@ -18,5 +18,29 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-# Licence 
-The code is licensed under MIT (except libraries, which exist under various licenses). The assets (images and sounds) are not owned by me and exist under various licenses. Most are creative commons, some require a royalty free commercial license to use. If you fork this project, please replace the background music or purchase a license for it.
+# Ideas and Todo
+
+## Core 
+    
+* Block units
+    * Distribute damage
+* Target spells
+    * on players
+    * Instant speed
+
+## Card Ideas
+
+### Renewal
+* Armstice - Shuffle all units into their owners decks
+* Convert - Take control of an enemy unit
+
+### Necrosis Card Ideas
+* Rot - Give a unit -x/-x for each unit in the crypt
+
+### Synthesis Card Ideas
+* a
+
+### Growth Card Ideas
+* b
+
+

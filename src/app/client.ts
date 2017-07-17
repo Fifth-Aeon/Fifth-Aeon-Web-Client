@@ -13,6 +13,7 @@ import { MdSnackBar } from '@angular/material';
 import { Deserialize } from 'cerialize'
 
 import { Card } from './game_model/card';
+import { Unit } from './game_model/unit';
 
 export enum ClientState {
     UnAuth, InLobby, Waiting, PrivateLobby, PrivateLobbyFail, InQueue, InGame, Any
@@ -54,9 +55,12 @@ export class WebClient {
 
 
     // Game Actions -------------------------
-    public playCard(card: Card) {
+    public playCard(card: Card, target?: Unit) {
+        let targetId = target ? target.getId() : null;
+        if (target)
+            card.getTargeter().setTarget(target);
         this.game.playCard(this.game.getPlayer(this.playerNumber), card);
-        this.sendGameAction(GameActionType.playCard, { id: card.getId() })
+        this.sendGameAction(GameActionType.playCard, { id: card.getId(), target: { id: targetId } })
     }
 
     public pass() {
@@ -64,23 +68,22 @@ export class WebClient {
     }
 
     public playResource(type: string) {
-        console.log('pr', type);
         this.sendGameAction(GameActionType.playResource, { type: type });
     }
 
-    public toggleAttacker(unitId:string) {
+    public toggleAttacker(unitId: string) {
         this.sendGameAction(GameActionType.toggleAttack, { unitId: unitId });
     }
 
-    public declareBlockers(blockIds: Array<{ blocker: string, attacker: string }>) {
-        this.sendGameAction(GameActionType.declareBlockers, { blockers: blockIds });
+    public declareBlocker(blocker: Unit, blocked: Unit) {
+        blocker.setBlocking(blocked.getId());
+        this.sendGameAction(GameActionType.declareBlockers, {
+            blockerId: blocker.getId(),
+            blockedId: blocked.getId()
+        });
     }
 
-
-
-
     // Misc --------------------
-
     private onLogin(username: string) {
         this.changeState(ClientState.InLobby);
         this.username = username;
@@ -114,7 +117,7 @@ export class WebClient {
     }
 
     private getInviteMessage() {
-        return `You are invited to play battleship. Go to the url ${this.privateGameUrl} to play.`;
+        return `You are invited to play ccg. Go to the url ${this.privateGameUrl} to play.`;
     }
 
     public getPrivateGameUrl() {
@@ -249,7 +252,7 @@ export class WebClient {
         this.opponentNumber = 1 - this.playerNumber;
         this.game = new Game(new GameFormat(), true);
         this.router.navigate(['/game']);
-    
+
         this.zone.run(() => {
             this.opponentUsername = msg.data.opponent;
             this.state = ClientState.InGame;
