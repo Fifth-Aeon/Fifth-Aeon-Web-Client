@@ -62,6 +62,7 @@ export class GameComponent implements OnInit {
     let targeter = card.getTargeter();
     if (!targeter.needsInput()) {
       this.client.playCard(card);
+      this.selected = null;
     } else {
       this.selected = card;
     }
@@ -72,6 +73,7 @@ export class GameComponent implements OnInit {
     let phase = this.game.getPhase();
     if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.combat && this.blocker) {
       this.client.declareBlocker(this.blocker, target);
+      this.blocker = null;
     } else if (this.selected && this.game.isPlayerTurn(this.playerNo) && (phase == GamePhase.play1 || phase == GamePhase.play2)) {
       this.client.playCard(this.selected, target);
       this.selected = null;
@@ -93,6 +95,7 @@ export class GameComponent implements OnInit {
   }
 
   public endTurn() {
+    this.selected = null;
     this.client.pass();
   }
 

@@ -16,7 +16,7 @@
 
 <!-- Player Board -->
 <div class="area">
-  <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerUnits(playerNo)" [darkened]="card.isExausted()" [card]="card" (click)="activate(card)"></ccg-card>
+  <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerUnits(playerNo)" [darkened]="card.isExausted()" [card]="card"  [selected]="card == blocker" (click)="activate(card)"></ccg-card>
 </div>
 
 <div>
@@ -28,5 +28,5 @@
 <!-- Player Hand -->
 <div class="area">
   <ccg-resource-selector></ccg-resource-selector>
-  <ccg-card scale="1.4" *ngFor="let card of player.hand" [card]="card" [darkened]="!card.isPlayable(game)" (click)="select(card)"></ccg-card>
+  <ccg-card scale="1.4" *ngFor="let card of player.hand" [card]="card" [selected]="card == selected" [darkened]="!card.isPlayable(game)" (click)="select(card)"></ccg-card>
 </div>
