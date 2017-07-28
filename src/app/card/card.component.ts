@@ -29,7 +29,7 @@ export class CardComponent implements OnInit {
 
 
   public getImage() {
-    return 'assets/' + this.card.getImage();
+    return 'assets/png/' + this.card.getImage();
   }
   public glowType() {
     if (this.selected)

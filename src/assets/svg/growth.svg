@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 512 512"
+   style="height: 512px; width: 512px;"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="growth.svg"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\growth.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1536"
+     inkscape:window-height="801"
+     id="namedview10"
+     showgrid="false"
+     inkscape:zoom="0.4609375"
+     inkscape:cx="-113.89831"
+     inkscape:cy="256"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <ellipse
+     style="opacity:1;fill:#097505;fill-opacity:1;stroke:#000000;stroke-width:2.67897558;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     id="path4150"
+     cx="258.16949"
+     cy="257.08475"
+     rx="237.45892"
+     ry="237.90822" />
+  <g
+     class=""
+     transform="matrix(0.96008613,0,0,0.95423921,20.742385,9.5559325)"
+     id="g6">
+    <path
+       d="m 249.28,19.188 0,0.25 c -18.114,38.634 -45.065,72.36 -77.686,102.937 l 37.72,-3.938 -51.345,65.032 24.81,-7.907 -33.624,54.875 16.53,9.843 -65.25,92.157 36.095,0.188 -51.686,83.594 63.562,-8.126 12,32.094 66.438,-25.282 -11.344,78.375 52.938,0 -6.532,-68.217 38.188,16.406 10.187,-24.783 44.283,20.97 56.406,-20.75 -37.064,-64.094 -12.437,-2.282 6.78,17.19 7.844,19.905 -19.938,-7.78 -50.906,-19.908 0,35.751 -14.156,-8.594 -69.375,-42 -21.595,21.25 -18.03,17.75 2.155,-25.22 2.125,-24.655 18.188,1.56 9.218,-9.092 5.19,-5.094 6.218,3.75 61.375,37.156 0,-29.906 12.75,4.97 43.718,17.092 -5.092,-12.906 -6.157,-15.656 16.533,3.03 45.468,8.345 -34.53,-38.94 -23.625,14.033 -6.688,3.968 -5.125,-5.874 -14.28,-16.437 0.218,1.217 -18.406,3.22 -5.97,-34.313 -5.75,-33.063 22,25.345 31.188,35.875 43.907,-26.03 c -24.67,-19.543 -39.507,-33.87 -49.658,-48.814 l 0.813,12.656 1.97,31 -18.75,-24.75 -34.47,-45.437 -22.25,46.813 -13.844,29.125 -3.843,-32.032 -3.5,-28.843 16.532,-1.968 16.624,-34.97 6.594,-13.875 9.28,12.22 25,32.936 -0.75,-11.53 -0.906,-14.28 13.47,4.936 22.777,8.344 -26.125,-35.156 -55.843,-28.875 -8.938,20.218 -9.656,21.937 -7.72,-22.688 -7.468,-21.875 16.97,-5.78 3.718,-8.438 4,-9.125 8.844,4.593 49.375,25.53 16.467,-5.562 C 282.014,88.469 260.804,53.893 249.278,19.186 Z"
+       id="path8"
+       inkscape:connector-curvature="0"
+       style="fill:#000000" />
+  </g>
+  <!-- react-empty: 6 -->
+</svg>

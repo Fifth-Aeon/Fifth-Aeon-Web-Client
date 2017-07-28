@@ -87,22 +87,22 @@
 
       <g *ngFor="let type of card.getCost().getTyped(); let i = index" [ngSwitch]="type" >
         <image *ngSwitchCase="'G'"
-        xlink:href="assets/growth.png" 
+        xlink:href="assets/png/growth.png" 
         [attr.height]="y() * 0.10 - 5" 
         [attr.width]="y() * 0.10 - 5" 
         [attr.x]="30 + i * 18" y="2.5" />
         <image *ngSwitchCase="'S'"
-        xlink:href="assets/synthesis.png" 
+        xlink:href="assets/png/synthesis.png" 
         [attr.height]="y() * 0.10 - 5" 
         [attr.width]="y() * 0.10 - 5" 
         [attr.x]="30 + i * 18" y="2.5" />
         <image *ngSwitchCase="'N'"
-        xlink:href="assets/necrosis.png" 
+        xlink:href="assets/png/necrosis.png" 
         [attr.height]="y() * 0.10 - 5" 
         [attr.width]="y() * 0.10 - 5" 
         [attr.x]="30 + i * 18" y="2.5" />
         <image *ngSwitchCase="'R'"
-        xlink:href="assets/renewal.png" 
+        xlink:href="assets/png/renewal.png" 
         [attr.height]="y() * 0.10 - 5" 
         [attr.width]="y() * 0.10 - 5" 
         [attr.x]="30 + i * 18" y="2.5" />
