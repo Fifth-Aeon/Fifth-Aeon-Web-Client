@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-
 import { Card } from '../game_model/card';
+import { UnitType } from '../game_model/unit';
 
 enum GlowType {
   None, Select, Attack, Defense
@@ -21,8 +21,16 @@ export class CardComponent implements OnInit {
   @Input() darkened: boolean = false;
   @Input() selected: boolean = false;
 
+  getType(type: UnitType) {
+    return UnitType[type];
+  }
+
   constructor() { }
 
+
+  public getImage() {
+    return 'assets/' + this.card.getImage();
+  }
   public glowType() {
     if (this.selected)
       return GlowType.Select;

@@ -58,7 +58,7 @@ export class WebClient {
     public playCard(card: Card, target?: Unit) {
         let targetId = target ? target.getId() : null;
         if (target)
-            card.getTargeter().setTarget(target);
+            card.getTargeter().setTarget([target]);
         this.game.playCard(this.game.getPlayer(this.playerNumber), card);
         this.sendGameAction(GameActionType.playCard, { id: card.getId(), target: { id: targetId } })
     }
