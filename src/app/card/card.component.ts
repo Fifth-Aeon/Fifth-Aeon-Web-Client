@@ -42,11 +42,11 @@ export class CardComponent implements OnInit {
   }
 
   public x() {
-    return (this.hovered ? 1.1 : 1) * 100 * this.scale;
+    return (this.hovered ? 1.15 : 1) * 100 * this.scale;
   }
 
   public y() {
-    return (this.hovered ? 1.1 : 1) * 140 * this.scale;
+    return (this.hovered ? 1.15 : 1) * 140 * this.scale;
   }
 
   ngOnInit() {

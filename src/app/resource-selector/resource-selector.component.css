@@ -1,0 +1,11 @@
+.resource-selector {
+  position: relative;
+  height: 50px;
+  float: left;
+  left: 15px;
+}
+
+
+.darkened {
+  filter: brightness(0.5);
+}

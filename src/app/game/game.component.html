@@ -19,14 +19,15 @@
   <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerUnits(playerNo)" [darkened]="card.isExausted()" [card]="card"  [selected]="card == blocker" (click)="activate(card)"></ccg-card>
 </div>
 
-<div>
-  <p>{{client.getUsername()}} Life: {{player.getLife()}} Cards: {{player.getHand().length}} Res: {{player.resource.asPool()}}
+<div class="info-bar">
+  <ccg-resource-selector [canPlayResource]="canPlayResource()"></ccg-resource-selector>
+  <p class="info-text">{{client.getUsername()}} Life: {{player.getLife()}} Cards: {{player.getHand().length}} Res: {{player.resource.asPool()}}
   </p>
-  <button [disabled]="!game.isActivePlayer(playerNo)" md-raised-button color="primary" class="pass-button" (click)="endTurn()">{{getPassText()}}</button>
+  <button [disabled]="!game.isActivePlayer(playerNo)" 
+  md-raised-button color="primary" class="pass-button" (click)="endTurn()">{{getPassText()}}</button>
 </div>
 
 <!-- Player Hand -->
 <div class="area">
-  <ccg-resource-selector></ccg-resource-selector>
   <ccg-card scale="1.4" *ngFor="let card of player.hand" [card]="card" [selected]="card == selected" [darkened]="!card.isPlayable(game)" (click)="select(card)"></ccg-card>
 </div>

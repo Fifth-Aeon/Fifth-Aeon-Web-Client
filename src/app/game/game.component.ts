@@ -37,6 +37,11 @@ export class GameComponent implements OnInit {
   ngOnInit() {
   }
 
+  public canPlayResource() {
+    return this.game.getCurrentPlayer() == this.player &&
+      this.game.getCurrentPlayer().canPlayResource();
+  }
+
 
 
   public getPassText(): string {

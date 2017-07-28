@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { WebClient } from '../client';
 
 @Component({
@@ -10,8 +10,10 @@ export class ResourceSelectorComponent implements OnInit {
 
   constructor(private client: WebClient) { }
 
+  @Input() canPlayResource:boolean;
+
   playResource(type: string) {
-    if (!this.client.getGame().getCurrentPlayer().canPlayResource())
+    if (!this.canPlayResource)
       return;
     this.client.playResource(type);
   }
