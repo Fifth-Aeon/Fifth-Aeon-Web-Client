@@ -23,6 +23,7 @@
   <ccg-resource-selector [canPlayResource]="canPlayResource()"></ccg-resource-selector>
   <p class="info-text">{{client.getUsername()}} Life: {{player.getLife()}} Cards: {{player.getHand().length}} Res: {{player.resource.asPool()}}
   </p>
+  <!--<ccg-player-avatar></ccg-player-avatar>-->
   <button [disabled]="!game.isActivePlayer(playerNo)" 
   md-raised-button color="primary" class="pass-button" (click)="endTurn()">{{getPassText()}}</button>
 </div>

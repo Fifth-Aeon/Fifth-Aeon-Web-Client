@@ -19,6 +19,7 @@ import { LobbyComponent } from './lobby/lobby.component';
 import { PrivateLobbyComponent } from './private-lobby/private-lobby.component';
 import { CardComponent } from './card/card.component';
 import { ResourceSelectorComponent } from './resource-selector/resource-selector.component';
+import { PlayerAvatarComponent } from './player-avatar/player-avatar.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ResourceSelectorComponent } from './resource-selector/resource-selector
     LobbyComponent,
     PrivateLobbyComponent,
     CardComponent,
-    ResourceSelectorComponent
+    ResourceSelectorComponent,
+    PlayerAvatarComponent
   ],
   imports: [
     BrowserModule,

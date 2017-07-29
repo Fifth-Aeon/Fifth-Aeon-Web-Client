@@ -1,0 +1,17 @@
+.avatar {
+  position: absolute;
+  float: left;
+  width: 80px;
+  height: 100px;
+  top: 580px;
+  left: 50%;
+  transform: translate(-50%, -60%);
+}
+
+.buble-text {
+  font-family: "Impact";
+  fill: white;
+  stroke: black;
+  stroke-width: 0.75;
+  font-size: 25px;
+}
