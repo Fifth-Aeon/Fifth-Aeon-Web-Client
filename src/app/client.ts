@@ -56,12 +56,12 @@ export class WebClient {
 
 
     // Game Actions -------------------------
-    public playCard(card: Card, target?: Unit) {
-        let targetId = target ? target.getId() : null;
-        if (target)
-            card.getTargeter().setTarget([target]);
+    public playCard(card: Card, targets?: Unit[]) {
+        let targetIds = targets ? targets.map(target => target.getId()) : null;
+        if (targets)
+            card.getTargeter().setTarget(targets);
         this.game.playCard(this.game.getPlayer(this.playerNumber), card);
-        this.sendGameAction(GameActionType.playCard, { id: card.getId(), target: { id: targetId } })
+        this.sendGameAction(GameActionType.playCard, { id: card.getId(), targetIds: targetIds })
     }
 
     public pass() {

@@ -3,7 +3,7 @@ import { Card } from '../game_model/card';
 import { UnitType } from '../game_model/unit';
 
 enum GlowType {
-  None, Select, Attack, Defense
+  None, Select, Attack, Defense, Targeted
 }
 
 @Component({
@@ -20,6 +20,7 @@ export class CardComponent implements OnInit {
   hovered: boolean = false;
   @Input() darkened: boolean = false;
   @Input() selected: boolean = false;
+  @Input() target: boolean = false;
 
   getType(type: UnitType) {
     return UnitType[type];
@@ -38,6 +39,8 @@ export class CardComponent implements OnInit {
       return GlowType.Attack;
     if (this.card.isBlocking())
       return GlowType.Defense;
+    if (this.target)
+        return GlowType.Targeted;
     return GlowType.None;
   }
 

@@ -83,6 +83,7 @@ export class GameComponent implements OnInit {
   }
 
   selected: Card = null;
+  validTargets: Set<Unit> = new Set();
   public select(card: Card) {
     if (!card.isPlayable(this.game))
       return;
@@ -92,7 +93,20 @@ export class GameComponent implements OnInit {
       this.selected = null;
     } else {
       this.selected = card;
+      this.validTargets = new Set(this.selected.getTargeter().getValidTargets(card, this.game));
     }
+  }
+
+  public playTargeting(target: Unit) {
+    this.client.playCard(this.selected, [target]);
+    this.selected = null;
+    this.validTargets = new Set();
+  }
+
+  public canPlayTargeting(target: Unit) {
+    return this.selected && this.validTargets.has(target) &&
+      this.game.isPlayerTurn(this.playerNo) &&
+      (this.game.getPhase() == GamePhase.play1 || this.game.getPhase() == GamePhase.play2)
   }
 
   public target(card: Card) {
@@ -101,9 +115,9 @@ export class GameComponent implements OnInit {
     if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.combat && this.blocker) {
       this.client.declareBlocker(this.blocker, target);
       this.blocker = null;
-    } else if (this.selected && this.game.isPlayerTurn(this.playerNo) && (phase == GamePhase.play1 || phase == GamePhase.play2)) {
-      this.client.playCard(this.selected, target);
-      this.selected = null;
+    } else if (this.canPlayTargeting(target)) {
+      this.playTargeting(target);
+
     }
   }
 
@@ -111,7 +125,9 @@ export class GameComponent implements OnInit {
   public activate(card: Card) {
     let unit = card as Unit;
     let phase = this.game.getPhase();
-    if (this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.play1) {
+    if (this.canPlayTargeting(unit)) {
+      this.playTargeting(unit);
+    } else if (this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.play1) {
       if (!this.game.playerCanAttack(this.playerNo) && unit.canAttack())
         return;
       unit.toggleAttacking();
@@ -123,6 +139,7 @@ export class GameComponent implements OnInit {
 
   public endTurn() {
     this.selected = null;
+    this.validTargets = new Set();
     this.client.pass();
   }
 
