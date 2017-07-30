@@ -3,7 +3,7 @@ import { data } from './game_model/gameData';
 import { GameFormat } from './game_model/gameFormat';
 import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
-import { preload } from './preloader';
+import { Preloader } from './preloader';
 import { getHttpUrl } from './url';
 
 import { NgZone, Injectable } from '@angular/core';
@@ -37,7 +37,9 @@ export class WebClient {
 
     private onError: (error: string) => void = () => null;
 
-    constructor(private soundManager: SoundManager, private snackbar: MdSnackBar, private router: Router, private zone: NgZone, private sanitizer: DomSanitizer) {
+    constructor(private soundManager: SoundManager, private snackbar: MdSnackBar,
+        private router: Router, private zone: NgZone, private sanitizer: DomSanitizer,
+        preloader: Preloader) {
         this.game = new Game(new GameFormat(), true);
         this.playerNumber = 0;
         this.messenger = new Messenger();
@@ -50,7 +52,6 @@ export class WebClient {
         this.messenger.addHandeler(MessageType.PrivateGameReady, (msg) => this.privateGameReady(msg), this)
         this.messenger.connectChange = (status) => zone.run(() => this.connected = status);
 
-        preload();
     }
 
 

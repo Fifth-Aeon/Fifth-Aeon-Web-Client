@@ -1,0 +1,12 @@
+<h1  *ngIf="numberToPick > 0" md-dialog-title>Choose {{numberToPick == 1 ? 'a card' : numberToPick +' cards'}}</h1>
+<h1  *ngIf="numberToPick == 0" md-dialog-title>View Cards</h1>
+
+<div md-dialog-actions>
+    <ccg-card scale="1.4" *ngFor="let card of cards" [card]="card" [selected]="selected.has(card)" (click)="select(card)"></ccg-card>
+</div>
+
+<div md-dialog-actions>
+  <button md-button (click)="finish()" [disabled]="!canFinish()">Done</button>
+  <button md-button (click)="skip()" *ngIf="skippable">Skip</button>
+</div>
+

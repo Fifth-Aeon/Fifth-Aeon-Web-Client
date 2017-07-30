@@ -5,30 +5,40 @@
 <!-- Enemy Hand -->
 <div></div>
 
-<div>
-  <p>{{client.getOpponentUsername()}} Life: {{enemy.getLife()}} Cards: {{enemy.getHand().length}} Res: {{enemy.resource.asPool()}}</p>
+<div class="info-bar">
+  <p class="enemy-info-text">{{client.getOpponentUsername()}} Life: {{enemy.getLife()}} Cards: {{enemy.getHand().length}} Res: {{enemy.resource.asPool()}}</p>
+  <button color="primary" class="crypt-button" (click)="viewCrypt(enemyNo)" md-mini-fab><md-icon svgIcon="ccg:tombstone"></md-icon></button>
 </div>
 
 <!-- Enemy Board -->
 <div class="area">
-  <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerUnits(enemyNo)" [darkened]="card.isExausted()" [card]="card" (click)="target(card)"></ccg-card>
+  <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerUnits(enemyNo)" [darkened]="card.isExausted()" [card]="card"
+    (click)="target(card)"></ccg-card>
 </div>
 
 <!-- Player Board -->
 <div class="area">
-  <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerUnits(playerNo)" [darkened]="card.isExausted()" [card]="card"  [selected]="card == blocker" (click)="activate(card)"></ccg-card>
+  <ccg-card scale="1.4" *ngFor="let card of game.getBoard().getPlayerUnits(playerNo)" [darkened]="card.isExausted()" [card]="card"
+    [selected]="card == blocker" (click)="activate(card)"></ccg-card>
 </div>
 
 <div class="info-bar">
   <ccg-resource-selector [canPlayResource]="canPlayResource()"></ccg-resource-selector>
   <p class="info-text">{{client.getUsername()}} Life: {{player.getLife()}} Cards: {{player.getHand().length}} Res: {{player.resource.asPool()}}
   </p>
+
+    <button color="primary" class="crypt-button" (click)="viewCrypt(playerNo)" md-mini-fab><md-icon svgIcon="ccg:tombstone"></md-icon></button>
+
+
+
   <!--<ccg-player-avatar></ccg-player-avatar>-->
-  <button [disabled]="!game.isActivePlayer(playerNo)" 
-  md-raised-button color="primary" class="pass-button" (click)="endTurn()">{{getPassText()}}</button>
+  <button [disabled]="!game.isActivePlayer(playerNo)" md-raised-button color="primary" class="pass-button" (click)="endTurn()">{{getPassText()}}</button>
+
+
 </div>
 
 <!-- Player Hand -->
 <div class="area">
-  <ccg-card scale="1.4" *ngFor="let card of player.hand" [card]="card" [selected]="card == selected" [darkened]="!card.isPlayable(game)" (click)="select(card)"></ccg-card>
+  <ccg-card scale="1.4" *ngFor="let card of player.hand" [card]="card" [selected]="card == selected" [darkened]="!card.isPlayable(game)"
+    (click)="select(card)"></ccg-card>
 </div>

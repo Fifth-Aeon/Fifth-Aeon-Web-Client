@@ -1,37 +1,61 @@
-.board-area {
-  float: left;
-  text-align: center;
-  overflow: hidden;
-  width: 100%;
-}
+  .board-area {
+    float: left;
+    text-align: center;
+    overflow: hidden;
+    width: 100%;
+  }
 
-.area {
-  width: 100%;
-  height: 240px;
-  border: 1px solid grey;
-}
+  
 
-.info-bar {
-  height: 50px;
-}
+  .area {
+    width: 100%;
+    height: 240px;
+    border: 1px solid grey;
+  }
 
-.info-text {
-  line-height: 0px;
-  display: block;
-  width: 60%;
-  float: left;
-  margin: 0px;
-  position: relative;
-  top: 50%;
-  left: 30%;
-  transform: translate(-50%, -50%);
-}
+  .info-bar {
+    height: 50px;
+  }
 
-.pass-button {
-  float: right;
-  position: relative;
-  top: 50%;
-  margin-right: 15px;
-  transform: translateY(-50%);
-  vertical-align: top;
-}
+   .crypt-button {
+    display: inline-block;
+    position: absolute;
+    margin-top: 25px;
+    left: 30%;
+    transform: translateY(-50%);
+    vertical-align: top;
+  }
+
+  .enemy-info-text {
+    line-height: 25px;
+    width: 350px;
+    height: 30px;
+    float: left;
+    margin: 0px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .info-text {
+    position: absolute;
+    float: left;
+    left: 50%;
+
+    line-height: 50px;
+    width: 350px;
+    height: 30px;
+    margin: 0px;
+
+    transform: translate(-50%);
+  }
+
+  .pass-button {
+    float: right;
+    position: relative;
+    top: 50%;
+    margin-right: 15px;
+    transform: translateY(-50%);
+    vertical-align: top;
+  }

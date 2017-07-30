@@ -1,6 +1,10 @@
 import { Component, OnInit, HostListener } from '@angular/core';
+import { MdDialogRef, MdDialog, MdDialogConfig, MdIconRegistry } from '@angular/material';
+import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
+
 import { remove } from 'lodash';
 
+import { CardChooserComponent } from '../card-chooser/card-chooser.component';
 import { WebClient, ClientState } from '../client';
 import { Game, GamePhase } from '../game_model/game';
 import { Player } from '../game_model/player';
@@ -11,7 +15,8 @@ import { Unit } from '../game_model/unit';
 @Component({
   selector: 'ccg-game',
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.css']
+  styleUrls: ['./game.component.css'],
+  entryComponents: [CardChooserComponent]
 })
 export class GameComponent implements OnInit {
   public game: Game;
@@ -20,7 +25,9 @@ export class GameComponent implements OnInit {
   public enemy: Player;
   public enemyNo: number;
 
-  constructor(public client: WebClient) {
+  constructor(public client: WebClient, public dialog: MdDialog, registry: MdIconRegistry, sanitizer: DomSanitizer) {
+    let url = sanitizer.bypassSecurityTrustResourceUrl('assets/svg/tombstone.svg');
+    registry.addSvgIconInNamespace('ccg', 'tombstone', url);
     this.game = client.getGame();
     this.player = this.game.getPlayer(client.getPlayerdata().me);
     this.enemy = this.game.getPlayer(client.getPlayerdata().op);
@@ -32,6 +39,21 @@ export class GameComponent implements OnInit {
   public exit() {
     this.client.exitGame();
     return null;
+  }
+
+  openCardChooser(cards: Array<Card>, toPick: number = 1) {
+    let config = new MdDialogConfig();
+    config.disableClose = true;
+    let dialogRef = this.dialog.open(CardChooserComponent, config);
+    dialogRef.componentInstance.cards = cards;
+    dialogRef.componentInstance.numberToPick = toPick;
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
+  }
+
+  viewCrypt(player: number) {
+    this.openCardChooser(this.game.getCrypt(player), 0);
   }
 
   ngOnInit() {

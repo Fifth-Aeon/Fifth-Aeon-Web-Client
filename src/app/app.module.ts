@@ -8,18 +8,22 @@ import { ClipboardModule } from 'ngx-clipboard';
 
 import { SoundManager } from './sound';
 import { WebClient } from './client';
+import { Preloader } from './preloader';
 
 import { AppComponent } from './app.component';
 import { GameComponent } from './game/game.component';
 import { InPlayGuard } from './in-play.guard';
 
-import { MdButtonModule, MdRadioModule, MdIconModule, MdTooltipModule, MdSnackBarModule, MdToolbarModule, MdProgressSpinnerModule } from '@angular/material';
+import { MdButtonModule, MdRadioModule, MdIconModule,
+   MdTooltipModule, MdSnackBarModule, MdToolbarModule,
+    MdProgressSpinnerModule, MdDialogModule, MdListModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LobbyComponent } from './lobby/lobby.component';
 import { PrivateLobbyComponent } from './private-lobby/private-lobby.component';
 import { CardComponent } from './card/card.component';
 import { ResourceSelectorComponent } from './resource-selector/resource-selector.component';
 import { PlayerAvatarComponent } from './player-avatar/player-avatar.component';
+import { CardChooserComponent } from './card-chooser/card-chooser.component';
 
 @NgModule({
   declarations: [
@@ -29,8 +33,10 @@ import { PlayerAvatarComponent } from './player-avatar/player-avatar.component';
     PrivateLobbyComponent,
     CardComponent,
     ResourceSelectorComponent,
-    PlayerAvatarComponent
+    PlayerAvatarComponent,
+    CardChooserComponent
   ],
+  entryComponents: [CardChooserComponent],
   imports: [
     BrowserModule,
     FormsModule,
@@ -39,6 +45,7 @@ import { PlayerAvatarComponent } from './player-avatar/player-avatar.component';
     ClipboardModule,
     MdButtonModule, MdIconModule, MdToolbarModule, MdRadioModule,
     MdProgressSpinnerModule, MdTooltipModule, MdSnackBarModule,
+    MdDialogModule, MdListModule,
     RouterModule.forRoot([
       { path: 'game', component: GameComponent, canActivate: [InPlayGuard] },
       { path: 'private/:id', component: PrivateLobbyComponent },
@@ -48,7 +55,7 @@ import { PlayerAvatarComponent } from './player-avatar/player-avatar.component';
       { path: '**', component: LobbyComponent }
     ])
   ],
-  providers: [SoundManager, WebClient, InPlayGuard],
+  providers: [SoundManager, WebClient, Preloader, InPlayGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

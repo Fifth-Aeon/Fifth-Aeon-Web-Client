@@ -1,16 +1,16 @@
+import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
+import { Inject, Injectable, SecurityContext } from '@angular/core';
+
 const images = [
-    "assets/battleship.png",
-    "assets/carrier.png",
-    "assets/destroyer.png",
-    "assets/cruiser.png",
-    "assets/splash.png",
-    "assets/explosion.png",
-    "assets/submarine.png",
+    //"assets/svg/tombstone.svg"
 ]
 
-export function preload() {
-    for (let image of images) {
-        let img = new Image();
-        img.src = image;
+@Injectable()
+export class Preloader {
+    constructor( ) {       
+        for (let image of images) {
+            let img = new Image();
+            img.src = image;
+        }
     }
 }
