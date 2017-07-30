@@ -6,8 +6,8 @@
 <div></div>
 
 <div class="info-bar">
-  <p class="enemy-info-text">{{client.getOpponentUsername()}} Life: {{enemy.getLife()}} Cards: {{enemy.getHand().length}} Res: {{enemy.resource.asPool()}}</p>
-  <button color="primary" class="crypt-button" (click)="viewCrypt(enemyNo)" md-mini-fab><md-icon svgIcon="ccg:tombstone"></md-icon></button>
+  <p class="info-text">{{client.getOpponentUsername()}} Life: {{enemy.getLife()}} Cards: {{enemy.getHand().length}} Res: {{enemy.resource.asPool()}}</p>
+  <button mdTooltipPosition="below" mdTooltip="View enemy crypt." color="primary" class="crypt-button" (click)="viewCrypt(enemyNo)" md-mini-fab><md-icon svgIcon="ccg:tombstone"></md-icon></button>
 </div>
 
 <!-- Enemy Board -->
@@ -27,9 +27,7 @@
   <p class="info-text">{{client.getUsername()}} Life: {{player.getLife()}} Cards: {{player.getHand().length}} Res: {{player.resource.asPool()}}
   </p>
 
-    <button color="primary" class="crypt-button" (click)="viewCrypt(playerNo)" md-mini-fab><md-icon svgIcon="ccg:tombstone"></md-icon></button>
-
-
+  <button color="primary" mdTooltipPosition="above" mdTooltip="View your crypt." class="crypt-button" (click)="viewCrypt(playerNo)" md-mini-fab><md-icon svgIcon="ccg:tombstone"></md-icon></button>
 
   <!--<ccg-player-avatar></ccg-player-avatar>-->
   <button [disabled]="!game.isActivePlayer(playerNo)" md-raised-button color="primary" class="pass-button" (click)="endTurn()">{{getPassText()}}</button>
