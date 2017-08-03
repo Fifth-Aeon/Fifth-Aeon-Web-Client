@@ -51,7 +51,6 @@ export class WebClient {
         this.messenger.addHandeler(MessageType.QueueJoined, (msg) => this.changeState(ClientState.InQueue), this)
         this.messenger.addHandeler(MessageType.PrivateGameReady, (msg) => this.privateGameReady(msg), this)
         this.messenger.connectChange = (status) => zone.run(() => this.connected = status);
-
     }
 
 
@@ -62,6 +61,12 @@ export class WebClient {
             card.getTargeter().setTarget(targets);
         this.game.playCard(this.game.getPlayer(this.playerNumber), card);
         this.sendGameAction(GameActionType.playCard, { id: card.getId(), targetIds: targetIds })
+    }
+
+    public makeChoice(cards:Card[]) {
+        this.sendGameAction(GameActionType.CardChoice, {
+            choice: cards.map(card => card.getId())
+        });
     }
 
     public pass() {

@@ -33,6 +33,8 @@ export class GameComponent implements OnInit {
     this.enemy = this.game.getPlayer(client.getPlayerdata().op);
     this.playerNo = client.getPlayerdata().me;
     this.enemyNo = client.getPlayerdata().op;
+
+    this.game.promptCardChoice = this.openCardChooser.bind(this); 
   }
 
   @HostListener('window:beforeunload')
@@ -41,19 +43,26 @@ export class GameComponent implements OnInit {
     return null;
   }
 
-  openCardChooser(cards: Array<Card>, toPick: number = 1) {
+  openCardChooser(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null) {
+    if (player != this.playerNo) {
+        this.game.setDeferedChoice(callback); 
+        return;
+    }
     let config = new MdDialogConfig();
     config.disableClose = true;
     let dialogRef = this.dialog.open(CardChooserComponent, config);
     dialogRef.componentInstance.cards = cards;
     dialogRef.componentInstance.numberToPick = toPick;
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      if (callback) {
+        callback(result);
+        this.client.makeChoice(result);
+      }
     });
   }
 
   viewCrypt(player: number) {
-    this.openCardChooser(this.game.getCrypt(player), 0);
+    this.openCardChooser(this.playerNo, this.game.getCrypt(player), 0);
   }
 
   ngOnInit() {

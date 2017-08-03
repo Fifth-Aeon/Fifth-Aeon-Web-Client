@@ -28,10 +28,22 @@ export class CardComponent implements OnInit {
 
   constructor() { }
 
+  public getFontSize() {
+    let size = 16;
+    let length = this.card.getText().length;
+
+    size -= Math.floor(length / 30);
+
+    if (this.hovered)
+      size += 2;
+
+    return size + 'px';
+  }
 
   public getImage() {
     return 'assets/png/' + this.card.getImage();
   }
+
   public glowType() {
     if (this.selected)
       return GlowType.Select;
@@ -40,7 +52,7 @@ export class CardComponent implements OnInit {
     if (this.card.isBlocking())
       return GlowType.Defense;
     if (this.target)
-        return GlowType.Targeted;
+      return GlowType.Targeted;
     return GlowType.None;
   }
 

@@ -141,7 +141,7 @@
     </g>
 
     <foreignObject x="0" [attr.y]="y() * 0.55" [attr.width]="x()" [attr.height]="y() * 0.45">
-      <xhtml:p xmlns="http://www.w3.org/1999/xhtml" class="card-text">
+      <xhtml:p xmlns="http://www.w3.org/1999/xhtml" class="card-text" [style.font-size]="getFontSize()">
         {{card.getText()}}
       </xhtml:p>
     </foreignObject>
