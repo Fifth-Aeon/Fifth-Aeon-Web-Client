@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { WebClient } from '../client';
 
+import { HotkeysService, Hotkey } from 'angular2-hotkeys';
+
+
 @Component({
   selector: 'ccg-resource-selector',
   templateUrl: './resource-selector.component.html',
@@ -8,17 +11,30 @@ import { WebClient } from '../client';
 })
 export class ResourceSelectorComponent implements OnInit {
 
-  constructor(private client: WebClient) { }
+  private makeHotkey(key: string, resource: string) {
+    this.hotkeys.add(new Hotkey(key, (event: KeyboardEvent): boolean => {
+      this.playResource(resource);
+      return false;
+    }, [], 'Play ' + resource + ' resource.'));
+  }
+
+  constructor(private client: WebClient, private hotkeys: HotkeysService) {
+    let resources = ['Growth', 'Synthesis', 'Necrosis', 'Renewal'];
+    let keys = ['g', 's', 'd', 'r'];
+    for (let i = 0; i < 4; i++) {
+      this.makeHotkey(keys[i], resources[i]);
+    }
+  }
 
   @Input() canPlayResource: boolean;
 
-  public disableTip(){
-    if (!this.canPlayResource) 
+  public disableTip() {
+    if (!this.canPlayResource)
       return 'You can\'t play a resource right now.'
   }
 
   public tip(msg: string) {
-    if (!this.canPlayResource) 
+    if (!this.canPlayResource)
       return ''
     return msg;
   }

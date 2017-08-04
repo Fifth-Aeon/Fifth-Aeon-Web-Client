@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 
 import { ClipboardModule } from 'ngx-clipboard';
+import { HotkeyModule } from 'angular2-hotkeys';
 
 import { SoundManager } from './sound';
 import { WebClient } from './client';
@@ -44,7 +45,8 @@ import { RecordBarComponent } from './record-bar/record-bar.component';
     FormsModule,
     HttpModule,
     BrowserAnimationsModule,
-    ClipboardModule,
+    ClipboardModule, 
+    HotkeyModule.forRoot(),
     MdButtonModule, MdIconModule, MdToolbarModule, MdRadioModule,
     MdProgressSpinnerModule, MdTooltipModule, MdSnackBarModule,
     MdDialogModule, MdListModule,

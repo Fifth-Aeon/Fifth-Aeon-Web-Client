@@ -1,6 +1,8 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { MdDialogRef, MdDialog, MdDialogConfig, MdIconRegistry } from '@angular/material';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
+import { HotkeysService, Hotkey} from 'angular2-hotkeys';
+
 
 import { remove } from 'lodash';
 
@@ -25,7 +27,9 @@ export class GameComponent implements OnInit {
   public enemy: Player;
   public enemyNo: number;
 
-  constructor(public client: WebClient, public dialog: MdDialog, registry: MdIconRegistry, sanitizer: DomSanitizer) {
+  constructor(public client: WebClient, public dialog: MdDialog, 
+    registry: MdIconRegistry, sanitizer: DomSanitizer, 
+  private hotkeys: HotkeysService) {
     let url = sanitizer.bypassSecurityTrustResourceUrl('assets/svg/tombstone.svg');
     registry.addSvgIconInNamespace('ccg', 'tombstone', url);
     this.game = client.getGame();
@@ -35,6 +39,19 @@ export class GameComponent implements OnInit {
     this.enemyNo = client.getPlayerdata().op;
 
     this.game.promptCardChoice = this.openCardChooser.bind(this);
+    this.hotkeys.add(new Hotkey('space', (event: KeyboardEvent): boolean => {
+        this.pass();
+        return false; // Prevent bubbling
+    }, [], 'Pass'));
+  }
+
+ 
+  public pass() {
+    if (this.passDisabled())
+      return;
+    this.selected = null;
+    this.validTargets = new Set();
+    this.client.pass();
   }
 
   @HostListener('window:beforeunload')
@@ -159,10 +176,5 @@ export class GameComponent implements OnInit {
     }
   }
 
-  public endTurn() {
-    this.selected = null;
-    this.validTargets = new Set();
-    this.client.pass();
-  }
 
 }
