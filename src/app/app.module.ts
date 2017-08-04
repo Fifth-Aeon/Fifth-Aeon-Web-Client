@@ -24,6 +24,7 @@ import { CardComponent } from './card/card.component';
 import { ResourceSelectorComponent } from './resource-selector/resource-selector.component';
 import { PlayerAvatarComponent } from './player-avatar/player-avatar.component';
 import { CardChooserComponent } from './card-chooser/card-chooser.component';
+import { RecordBarComponent } from './record-bar/record-bar.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { CardChooserComponent } from './card-chooser/card-chooser.component';
     CardComponent,
     ResourceSelectorComponent,
     PlayerAvatarComponent,
-    CardChooserComponent
+    CardChooserComponent,
+    RecordBarComponent
   ],
   entryComponents: [CardChooserComponent],
   imports: [

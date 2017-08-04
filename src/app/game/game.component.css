@@ -5,6 +5,11 @@
     width: 100%;
   }
 
+  .game-area {
+    float: left;
+    width: calc(100% - 82px)
+  }
+
   .area {
     width: 100%;
     height: 252.5px;

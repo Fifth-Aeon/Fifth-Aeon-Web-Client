@@ -1,0 +1,8 @@
+<div class="record-bar">
+  <div class="record" 
+    *ngFor="let event of getItems(getPlayEvents())" 
+    [style.border-color]="isEnemy(event) ? 'crimson' : 'cornflowerblue'"
+    mdTooltipPosition="right" [mdTooltip]="getTip(event)">
+    <img [src]="getImage(getCard(event))"/>
+  </div>
+</div>
