@@ -1,4 +1,16 @@
 <div class="lobby">
+
+  <md-toolbar color="primary">
+  <span>CCG</span>
+  <span class="toolbar-spacer"></span>
+
+  <md-icon class="toolbar-icon" mdTooltip="Turn volume on" (click)="soundManager.toggleMute()" *ngIf="soundManager.isMuted()">volume_mute</md-icon>
+  <md-icon class="toolbar-icon" mdTooltip="Turn volume off" (click)="soundManager.toggleMute()" *ngIf="!soundManager.isMuted()">volume_up</md-icon>
+
+  <md-icon class="toolbar-icon" mdTooltip="Connected" *ngIf="client.isConnected()">cloud</md-icon>
+  <md-icon class="toolbar-icon" mdTooltip="Disconnected" *ngIf="!client.isConnected()">cloud_off</md-icon>
+
+</md-toolbar>
   <p class="instructions">{{client.getInstruction()}}</p>
 
   <md-progress-spinner *ngIf="getState() != state.InLobby" attr.color="primary" mode="indeterminate"></md-progress-spinner>

@@ -1,8 +1,11 @@
 import { Queue } from 'typescript-collections';
 import { Howler, Howl } from 'howler';
 import { Injectable } from '@angular/core';
+import { HotkeysService, Hotkey } from 'angular2-hotkeys';
+
 
 const localStorageMuteKey = 'sound-is-muted';
+
 
 @Injectable()
 export class SoundManager {
@@ -15,15 +18,24 @@ export class SoundManager {
     private muted: boolean = false;
     private onDone: Array<() => void> = [];
 
-    constructor() {
-        this.addSound('splash', new Howl({ src: ['assets/splash.mp3'] }));
-        this.addSound('shot', new Howl({ src: ['assets/shot.mp3'] }));
-        this.addSound('explosion', new Howl({ src: ['assets/explosion.mp3'] }));
+    constructor(hotkeys: HotkeysService) {
+
+        console.log('construct sound');
+        this.addSound('gong', new Howl({ src: ['assets/mp3/gong.mp3'], volume: 1.5 }));
+        this.addSound('magic', new Howl({ src: ['assets/mp3/warp.mp3'] }));
+        this.addSound('attack', new Howl({ src: ['assets/mp3/attack.mp3'] }));
         this.setMusic(new Howl({
-            src: ['assets/bgmusic.mp3'],
-            volume: 0.0
+            src: ['assets/mp3/crunk-knight.mp3'],
+            volume: 0.1
         }));
         this.muted = (localStorage.getItem(localStorageMuteKey) || 'false') == 'true';
+        this.global.mute(this.muted);
+
+        hotkeys.add(new Hotkey('m', (event: KeyboardEvent): boolean => {
+            this.toggleMute();
+            return false; // Prevent bubbling
+        }, [], 'Mute/Unmute'));
+
     }
     public doWhenDonePlaying(callback: () => void) {
         if (this.muted || !this.isPlaying) {
@@ -57,6 +69,10 @@ export class SoundManager {
     }
 
     public playSound(name: string) {
+        let sound = this.library.get(name).play();
+    }
+
+    public queueSound(name: string) {
         let sound = this.library.get(name);
         this.playQueue.enqueue(sound)
 

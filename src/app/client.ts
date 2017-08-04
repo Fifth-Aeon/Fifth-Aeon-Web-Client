@@ -63,7 +63,7 @@ export class WebClient {
         this.sendGameAction(GameActionType.playCard, { id: card.getId(), targetIds: targetIds })
     }
 
-    public makeChoice(cards:Card[]) {
+    public makeChoice(cards: Card[]) {
         this.sendGameAction(GameActionType.CardChoice, {
             choice: cards.map(card => card.getId())
         });
@@ -205,8 +205,19 @@ export class WebClient {
     }
 
     private handleGameEvent(event: SyncGameEvent) {
-        console.log('event', event);
+        console.log('event', GameEventType[event.type]);
         this.zone.run(() => this.game.syncServerEvent(this.playerNumber, event));
+        switch (event.type) {
+            case GameEventType.attackToggled:
+                this.soundManager.playSound('attack');
+                break;
+            case GameEventType.block:
+                this.soundManager.playSound('attack');
+                break;
+            case GameEventType.playCard:
+                this.soundManager.playSound('magic');
+                break;
+        }
     }
 
     private changeState(newState: ClientState) {
@@ -258,6 +269,8 @@ export class WebClient {
         this.opponentNumber = 1 - this.playerNumber;
         this.game = new Game(new GameFormat(), true);
         this.router.navigate(['/game']);
+
+        this.soundManager.playSound('gong');
 
         this.zone.run(() => {
             this.opponentUsername = msg.data.opponent;
