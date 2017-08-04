@@ -35,7 +35,7 @@
   <button color="primary" mdTooltipPosition="above" mdTooltip="View your crypt." class="crypt-button" (click)="viewCrypt(playerNo)" md-mini-fab><md-icon svgIcon="ccg:tombstone"></md-icon></button>
 
   <!--<ccg-player-avatar></ccg-player-avatar>-->
-  <button [disabled]="!game.isActivePlayer(playerNo)" md-raised-button color="primary" class="pass-button" (click)="endTurn()">{{getPassText()}}</button>
+  <button [disabled]="passDisabled()" md-raised-button color="primary" class="pass-button" (click)="endTurn()">{{getPassText()}}</button>
 
 
 </div>

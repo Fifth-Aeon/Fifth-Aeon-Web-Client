@@ -34,7 +34,7 @@ export class GameComponent implements OnInit {
     this.playerNo = client.getPlayerdata().me;
     this.enemyNo = client.getPlayerdata().op;
 
-    this.game.promptCardChoice = this.openCardChooser.bind(this); 
+    this.game.promptCardChoice = this.openCardChooser.bind(this);
   }
 
   @HostListener('window:beforeunload')
@@ -45,8 +45,8 @@ export class GameComponent implements OnInit {
 
   openCardChooser(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null) {
     if (player != this.playerNo) {
-        this.game.setDeferedChoice(callback); 
-        return;
+      this.game.setDeferedChoice(callback);
+      return;
     }
     let config = new MdDialogConfig();
     config.disableClose = true;
@@ -73,7 +73,16 @@ export class GameComponent implements OnInit {
       this.game.getCurrentPlayer().canPlayResource();
   }
 
+  public wouldEndTurn() {
+    return this.game.isPlayerTurn(this.playerNo) &&
+      (this.game.getPhase() == GamePhase.play1 && !this.game.isAttacking()) ||
+      (this.game.getPhase() == GamePhase.play2);
+  }
 
+  public passDisabled():boolean {
+    return !this.game.isActivePlayer(this.playerNo) ||
+      (this.wouldEndTurn() && this.canPlayResource());
+  }
 
   public getPassText(): string {
     if (this.game.isPlayerTurn(this.playerNo)) {
@@ -83,7 +92,11 @@ export class GameComponent implements OnInit {
         else
           return 'Waiting';
       }
-      return 'End Turn';
+      if (this.game) {
+        if (this.canPlayResource())
+          return 'Play a Resource'
+        return 'End Turn';
+      }
     } else {
       if (this.game.isActivePlayer(this.playerNo))
         return 'Done Blocking'
