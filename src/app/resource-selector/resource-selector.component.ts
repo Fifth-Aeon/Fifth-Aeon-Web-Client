@@ -19,7 +19,7 @@ export class ResourceSelectorComponent implements OnInit {
   }
 
   constructor(private client: WebClient, private hotkeys: HotkeysService) {
-    let resources = ['Growth', 'Synthesis', 'Necrosis', 'Renewal'];
+    let resources = ['Growth', 'Synthesis', 'Decay', 'Renewal'];
     let keys = ['g', 's', 'd', 'r'];
     for (let i = 0; i < 4; i++) {
       this.makeHotkey(keys[i], resources[i]);

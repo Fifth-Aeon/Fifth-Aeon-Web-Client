@@ -34,7 +34,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 * Armstice - Shuffle all units into their owners decks
 * Convert - Take control of an enemy unit
 
-### Necrosis Card Ideas
+### Decay Card Ideas
 * Rot - Give a unit -x/-x for each unit in the crypt
 
 ### Synthesis Card Ideas
