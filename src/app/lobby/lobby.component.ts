@@ -1,6 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 
 import { WebClient, ClientState } from '../client';
 import { AiDifficulty } from '../ai';
@@ -17,14 +16,11 @@ export class LobbyComponent implements OnInit {
   public difficulty: AiDifficulty = AiDifficulty.Easy;
   public diffs = AiDifficulty;
 
-  constructor(private router: Router, public client: WebClient, public soundManager: SoundManager, hotkeys:HotkeysService) {
+  constructor(private router: Router, public client: WebClient, public soundManager: SoundManager) {
     if (client.getState() != ClientState.UnAuth && client.getState() != ClientState.Waiting)
       client.returnToLobby();
 
-    hotkeys.add(new Hotkey('m', (event: KeyboardEvent): boolean => {
-      this.soundManager.toggleMute();
-      return false; // Prevent bubbling
-    }, [], 'Mute/Unmute'));
+
   }
 
   @HostListener('window:beforeunload')

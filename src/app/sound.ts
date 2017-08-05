@@ -19,8 +19,6 @@ export class SoundManager {
     private onDone: Array<() => void> = [];
 
     constructor(hotkeys: HotkeysService) {
-
-        console.log('construct sound');
         this.addSound('gong', new Howl({ src: ['assets/mp3/gong.mp3'], volume: 1.5 }));
         this.addSound('magic', new Howl({ src: ['assets/mp3/warp.mp3'] }));
         this.addSound('attack', new Howl({ src: ['assets/mp3/attack.mp3'] }));

@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { MdDialogRef, MdDialog, MdDialogConfig, MdIconRegistry } from '@angular/material';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
-import { HotkeysService, Hotkey} from 'angular2-hotkeys';
+import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 
 
 import { remove } from 'lodash';
@@ -27,9 +27,9 @@ export class GameComponent implements OnInit {
   public enemy: Player;
   public enemyNo: number;
 
-  constructor(public client: WebClient, public dialog: MdDialog, 
-    registry: MdIconRegistry, sanitizer: DomSanitizer, 
-  private hotkeys: HotkeysService) {
+  constructor(public client: WebClient, public dialog: MdDialog,
+    registry: MdIconRegistry, sanitizer: DomSanitizer,
+    private hotkeys: HotkeysService) {
     let url = sanitizer.bypassSecurityTrustResourceUrl('assets/svg/tombstone.svg');
     registry.addSvgIconInNamespace('ccg', 'tombstone', url);
     this.game = client.getGame();
@@ -40,12 +40,16 @@ export class GameComponent implements OnInit {
 
     this.game.promptCardChoice = this.openCardChooser.bind(this);
     this.hotkeys.add(new Hotkey('space', (event: KeyboardEvent): boolean => {
-        this.pass();
-        return false; // Prevent bubbling
+      this.pass();
+      return false; // Prevent bubblingf
     }, [], 'Pass'));
+    this.hotkeys.add(new Hotkey('a', (event: KeyboardEvent): boolean => {
+      this.client.attackWithAll();
+      return false; // Prevent bubblingf
+    }, [], 'Attack with all'));
   }
 
- 
+
   public pass() {
     if (this.passDisabled())
       return;
@@ -96,7 +100,7 @@ export class GameComponent implements OnInit {
       (this.game.getPhase() == GamePhase.play2);
   }
 
-  public passDisabled():boolean {
+  public passDisabled(): boolean {
     return !this.game.isActivePlayer(this.playerNo) ||
       (this.wouldEndTurn() && this.canPlayResource());
   }
@@ -151,12 +155,11 @@ export class GameComponent implements OnInit {
   public target(card: Card) {
     let target = card as Unit;
     let phase = this.game.getPhase();
-    if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.combat && this.blocker) {
+    if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.combat && this.blocker && this.blocker.canBlock(target)) {
       this.client.declareBlocker(this.blocker, target);
       this.blocker = null;
     } else if (this.canPlayTargeting(target)) {
       this.playTargeting(target);
-
     }
   }
 
@@ -169,8 +172,7 @@ export class GameComponent implements OnInit {
     } else if (this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.play1) {
       if (!this.game.playerCanAttack(this.playerNo) && unit.canAttack())
         return;
-      unit.toggleAttacking();
-      this.client.toggleAttacker(unit.getId());
+      this.client.toggleAttacker(unit);
     } else if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.combat) {
       this.blocker = unit;
     }

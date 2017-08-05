@@ -6,6 +6,8 @@ import { SoundManager } from './sound';
 import { Preloader } from './preloader';
 import { getHttpUrl } from './url';
 
+
+import { every } from 'lodash'
 import { NgZone, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -77,8 +79,25 @@ export class WebClient {
         this.sendGameAction(GameActionType.playResource, { type: type });
     }
 
-    public toggleAttacker(unitId: string) {
-        this.sendGameAction(GameActionType.toggleAttack, { unitId: unitId });
+    public attackWithAll() {
+        console.log('awa');
+        if (this.playerNumber != this.game.getCurrentPlayer().getPlayerNumber())
+            return;
+        let potential = this.game.getCurrentPlayerUnits().filter(unit => unit.canAttack());
+        console.log(potential);
+        if (every(potential, unit => unit.isAttacking())) {
+            potential.forEach(unit => this.toggleAttacker(unit))
+        } else {
+            potential.forEach(unit => {
+                if (!unit.isAttacking()) this.toggleAttacker(unit)
+            })
+        }
+    }
+
+    public toggleAttacker(unit: Unit) {
+        unit.toggleAttacking();
+
+        this.sendGameAction(GameActionType.toggleAttack, { unitId: unit.getId() });
     }
 
     public declareBlocker(blocker: Unit, blocked: Unit) {
