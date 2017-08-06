@@ -1,5 +1,6 @@
 <svg [class.darkened]="darkened" xmlns="http://www.w3.org/2000/svg" (mouseenter)="hovered=true" (mouseleave)="hovered=false"
-  class="card" [attr.width]="x() + padding" [attr.height]="y() + padding">
+  class="card" [attr.width]="x() + padding" [attr.height]="y() + padding"
+  >
 
   <defs>
     <filter id="selectGlow" height="300%" width="300%" x="-75%" y="-75%">
@@ -83,9 +84,8 @@
     </filter>
   </defs>
 
+  <rect  class="image-border" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()"/>
   <g [ngSwitch]="glowType()">
-    <rect *ngSwitchCase="0" class="image-border" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()"
-    />
     <rect *ngSwitchCase="1" class="image-border" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()"
       filter="url(#selectGlow)" />
     <rect *ngSwitchCase="2" class="image-border" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()"
@@ -96,11 +96,11 @@
       filter="url(#targetGlow)" />
   </g>
 
-  <g attr.transform="translate({{padding/2}} {{padding/2}})">
+  <g attr.transform="translate({{padding/2}} {{padding/2}})" [mdTooltipClass]="tooltipClass" mdTooltipShowDelay="700" mdTooltipPosition="right" [mdTooltip]="keywords()" >
 
     <g attr.transform="translate(0 {{y() * 0.10}})">
       <rect [attr.width]="x()" [attr.height]="y() * 0.4" class="image-border" />
-      <image [attr.xlink:href]="getImage()" [attr.width]="x()" [attr.height]="y() * 0.4" class="card-image image-border" />
+      <image  [attr.xlink:href]="getImage()" [attr.width]="x()" [attr.height]="y() * 0.4" class="card-image image-border" />
     </g>
 
     <g>
@@ -141,12 +141,13 @@
     </g>
 
     <foreignObject x="0" [attr.y]="y() * 0.55" [attr.width]="x()" [attr.height]="y() * 0.45">
-      <xhtml:p xmlns="http://www.w3.org/1999/xhtml" class="card-text" [style.font-size]="getFontSize()">
-        {{card.getText()}}
-      </xhtml:p>
+        <xhtml:p xmlns="http://www.w3.org/1999/xhtml"  
+        [style.font-size]="getFontSize()" class="card-text" 
+        [innerHTML]="htmlText(card.getText())">
+        </xhtml:p>
     </foreignObject>
 
-    <g attr.transform="translate(0 {{y() - 25}})" *ngIf="card.isUnit()">
+    <g attr.transform="translate(0 {{y() - 25}})" *ngIf="card.isUnit()" >
       <g attr.transform="translate({{25}} 0)">
         <rect [attr.width]="x() - 50" height="25" class="image-border" />
         <text [attr.width]="x() - 50" height="25" text-anchor="middle" y="17.5" [attr.x]="(x() - 50) / 2">{{getType(card.getType())}}</text>

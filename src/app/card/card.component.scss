@@ -22,6 +22,7 @@
   font-size: 25px;
 }
 
+
 .darkened {
   filter: brightness(0.8);
 }
@@ -31,6 +32,12 @@
   padding-left: 1px;
   padding-right: 1px;
   margin-top: 10px;
+  b {
+    margin: 0px;
+  }
+  span {
+    margin: 0px;
+  }
 }
 
 .life {}

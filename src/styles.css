@@ -13,3 +13,7 @@ body {
 md-progress-spinner {
   margin: 0 auto;
 }
+
+.multiline {
+  white-space: pre-line !important;
+}

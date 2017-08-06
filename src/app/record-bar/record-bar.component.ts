@@ -13,7 +13,7 @@ export class RecordBarComponent implements OnInit {
   @Input() playerNo: number;
 
   public getItems(arr: Array<any>) {
-    return arr.slice(Math.max(arr.length - 9, 0)).reverse();
+    return arr.slice(Math.max(arr.length - 10, 0)).reverse();
   }
 
   public getPlayEvents() {
