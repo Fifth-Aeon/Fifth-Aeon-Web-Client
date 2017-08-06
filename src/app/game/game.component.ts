@@ -2,10 +2,9 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { MdDialogRef, MdDialog, MdDialogConfig, MdIconRegistry } from '@angular/material';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
-
-
 import { remove } from 'lodash';
 
+import { OverlayService } from '../overlay.service';
 import { CardChooserComponent } from '../card-chooser/card-chooser.component';
 import { WebClient, ClientState } from '../client';
 import { Game, GamePhase } from '../game_model/game';
@@ -17,7 +16,7 @@ import { Unit } from '../game_model/unit';
 @Component({
   selector: 'ccg-game',
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.css'],
+  styleUrls: ['./game.component.scss'],
   entryComponents: [CardChooserComponent]
 })
 export class GameComponent implements OnInit {
@@ -29,9 +28,11 @@ export class GameComponent implements OnInit {
 
   constructor(public client: WebClient, public dialog: MdDialog,
     registry: MdIconRegistry, sanitizer: DomSanitizer,
-    private hotkeys: HotkeysService) {
+    private hotkeys: HotkeysService, public overlay:OverlayService) {
+
     let url = sanitizer.bypassSecurityTrustResourceUrl('assets/svg/tombstone.svg');
     registry.addSvgIconInNamespace('ccg', 'tombstone', url);
+
     this.game = client.getGame();
     this.player = this.game.getPlayer(client.getPlayerdata().me);
     this.enemy = this.game.getPlayer(client.getPlayerdata().op);
@@ -39,6 +40,18 @@ export class GameComponent implements OnInit {
     this.enemyNo = client.getPlayerdata().op;
 
     this.game.promptCardChoice = this.openCardChooser.bind(this);
+
+    this.addHotkeys();
+  }
+
+
+  @HostListener('window:beforeunload')
+  public exit() {
+    this.client.exitGame();
+    return null;
+  }
+
+  private addHotkeys() {
     this.hotkeys.add(new Hotkey('space', (event: KeyboardEvent): boolean => {
       this.pass();
       return false; // Prevent bubblingf
@@ -47,8 +60,6 @@ export class GameComponent implements OnInit {
       this.client.attackWithAll();
       return false; // Prevent bubblingf
     }, [], 'Attack with all'));
-
-    
   }
 
   public pass() {
@@ -59,13 +70,7 @@ export class GameComponent implements OnInit {
     this.client.pass();
   }
 
-  @HostListener('window:beforeunload')
-  public exit() {
-    this.client.exitGame();
-    return null;
-  }
-
-  openCardChooser(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null) {
+  public openCardChooser(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null) {
     if (player != this.playerNo) {
       this.game.setDeferedChoice(callback);
       return;
@@ -83,11 +88,11 @@ export class GameComponent implements OnInit {
     });
   }
 
-  viewCrypt(player: number) {
+  public viewCrypt(player: number) {
     this.openCardChooser(this.playerNo, this.game.getCrypt(player), 0);
   }
 
-  ngOnInit() {
+  public ngOnInit() {
   }
 
   public canPlayResource() {
@@ -105,8 +110,6 @@ export class GameComponent implements OnInit {
     return !this.game.isActivePlayer(this.playerNo) ||
       (this.wouldEndTurn() && this.canPlayResource());
   }
-
- 
 
   public getPassText(): string {
     if (this.game.isPlayerTurn(this.playerNo)) {
@@ -128,8 +131,8 @@ export class GameComponent implements OnInit {
     }
   }
 
-  selected: Card = null;
-  validTargets: Set<Unit> = new Set();
+  public selected: Card = null;
+  public validTargets: Set<Unit> = new Set();
   public select(card: Card) {
     if (!card.isPlayable(this.game))
       return;

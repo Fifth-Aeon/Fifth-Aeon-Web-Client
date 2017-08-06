@@ -10,14 +10,17 @@ import { HotkeyModule } from 'angular2-hotkeys';
 import { SoundManager } from './sound';
 import { WebClient } from './client';
 import { Preloader } from './preloader';
+import { OverlayService } from './overlay.service';
 
 import { AppComponent } from './app.component';
 import { GameComponent } from './game/game.component';
 import { InPlayGuard } from './in-play.guard';
 
-import { MdButtonModule, MdRadioModule, MdIconModule,
-   MdTooltipModule, MdSnackBarModule, MdToolbarModule,
-    MdProgressSpinnerModule, MdDialogModule, MdListModule } from '@angular/material';
+import {
+  MdButtonModule, MdRadioModule, MdIconModule,
+  MdTooltipModule, MdSnackBarModule, MdToolbarModule,
+  MdProgressSpinnerModule, MdDialogModule, MdListModule
+} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LobbyComponent } from './lobby/lobby.component';
 import { PrivateLobbyComponent } from './private-lobby/private-lobby.component';
@@ -39,7 +42,7 @@ import { EndDialogComponent } from './end-dialog/end-dialog.component';
     PlayerAvatarComponent,
     CardChooserComponent,
     RecordBarComponent,
-    EndDialogComponent
+    EndDialogComponent,
   ],
   entryComponents: [CardChooserComponent, EndDialogComponent],
   imports: [
@@ -47,7 +50,7 @@ import { EndDialogComponent } from './end-dialog/end-dialog.component';
     FormsModule,
     HttpModule,
     BrowserAnimationsModule,
-    ClipboardModule, 
+    ClipboardModule,
     HotkeyModule.forRoot(),
     MdButtonModule, MdIconModule, MdToolbarModule, MdRadioModule,
     MdProgressSpinnerModule, MdTooltipModule, MdSnackBarModule,
@@ -61,7 +64,7 @@ import { EndDialogComponent } from './end-dialog/end-dialog.component';
       { path: '**', component: LobbyComponent }
     ])
   ],
-  providers: [SoundManager, WebClient, Preloader, InPlayGuard],
+  providers: [SoundManager, WebClient, OverlayService, Preloader, InPlayGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

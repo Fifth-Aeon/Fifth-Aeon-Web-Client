@@ -1,6 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Card } from '../game_model/card';
 import { UnitType } from '../game_model/unit';
+
+import { OverlayService } from '../overlay.service';
 
 enum GlowType {
   None, Select, Attack, Defense, Targeted
@@ -22,11 +24,14 @@ export class CardComponent implements OnInit {
   @Input() selected: boolean = false;
   @Input() target: boolean = false;
 
+  constructor(private overlay: OverlayService, private element: ElementRef) {
+  }
+
   getType(type: UnitType) {
     return UnitType[type];
   }
 
-  constructor() { }
+
 
   public getFontSize() {
     let size = 16;
@@ -67,6 +72,8 @@ export class CardComponent implements OnInit {
   ngOnInit() {
     if (!this.scale)
       this.scale = 1.25;
+    this.overlay.registerCard(this.card.getId(), this.element);
+
   }
 
 }
