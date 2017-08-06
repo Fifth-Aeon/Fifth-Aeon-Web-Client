@@ -19,8 +19,22 @@ export class LobbyComponent implements OnInit {
   constructor(private router: Router, public client: WebClient, public soundManager: SoundManager) {
     if (client.getState() != ClientState.UnAuth && client.getState() != ClientState.Waiting)
       client.returnToLobby();
+  }
 
+  public join() {
+    this.client.join();
+    this.fullscreen();
+  }
 
+  public fullscreen() {
+    let fsRequester: any = document.documentElement;
+    if (fsRequester.mozRequestFullScreen) {
+      fsRequester.mozRequestFullScreen();
+    } else if (fsRequester.webkitRequestFullScreen) {
+      fsRequester.webkitRequestFullScreen();
+    } else if (fsRequester.requestFullscreen) {
+      fsRequester.requestFullscreen();
+    }
   }
 
   @HostListener('window:beforeunload')

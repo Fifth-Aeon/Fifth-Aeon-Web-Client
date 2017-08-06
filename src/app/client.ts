@@ -5,7 +5,11 @@ import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
 import { Preloader } from './preloader';
 import { getHttpUrl } from './url';
+import { Card } from './game_model/card';
+import { Unit } from './game_model/unit';
+import { EndDialogComponent } from './end-dialog/end-dialog.component';
 
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 
 import { every } from 'lodash'
 import { NgZone, Injectable } from '@angular/core';
@@ -14,8 +18,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MdSnackBar } from '@angular/material';
 import { Deserialize } from 'cerialize'
 
-import { Card } from './game_model/card';
-import { Unit } from './game_model/unit';
 
 export enum ClientState {
     UnAuth, InLobby, Waiting, PrivateLobby, PrivateLobbyFail, InQueue, InGame, Any
@@ -41,7 +43,7 @@ export class WebClient {
 
     constructor(private soundManager: SoundManager, private snackbar: MdSnackBar,
         private router: Router, private zone: NgZone, private sanitizer: DomSanitizer,
-        preloader: Preloader) {
+        preloader: Preloader,  public dialog: MdDialog) {
         this.game = new Game(new GameFormat(), true);
         this.playerNumber = 0;
         this.messenger = new Messenger();
@@ -80,11 +82,9 @@ export class WebClient {
     }
 
     public attackWithAll() {
-        console.log('awa');
         if (this.playerNumber != this.game.getCurrentPlayer().getPlayerNumber())
             return;
         let potential = this.game.getCurrentPlayerUnits().filter(unit => unit.canAttack());
-        console.log(potential);
         if (every(potential, unit => unit.isAttacking())) {
             potential.forEach(unit => this.toggleAttacker(unit))
         } else {
@@ -236,7 +236,22 @@ export class WebClient {
             case GameEventType.playCard:
                 this.soundManager.playSound('magic');
                 break;
+            case GameEventType.Ended:
+                this.openEndDialog(event.params.winner, event.params.quit);
+                break
         }
+    }
+
+    private openEndDialog(winner:number, quit:boolean) {
+        let playerWon = this.playerNumber === winner;
+        let config = new MdDialogConfig();
+        config.disableClose = true;
+        let dialogRef = this.dialog.open(EndDialogComponent, config);
+        dialogRef.componentInstance.winner = playerWon;
+        dialogRef.componentInstance.quit = quit;
+        dialogRef.afterClosed().subscribe(result => {
+            this.returnToLobby();
+        });
     }
 
     private changeState(newState: ClientState) {

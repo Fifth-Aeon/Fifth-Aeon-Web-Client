@@ -8,7 +8,6 @@ import { Card } from '../game_model/card';
   templateUrl: './card-chooser.component.html'
 })
 export class CardChooserComponent {
-
   public cards: Array<Card>;
   public numberToPick: number = 1;
   public skipable: boolean = true;
@@ -16,27 +15,25 @@ export class CardChooserComponent {
 
   constructor(public dialogRef: MdDialogRef<CardChooserComponent>) { }
 
-  select(card) {
+  public select(card) {
     if (this.selected.has(card)) {
-        this.selected.delete(card)
+      this.selected.delete(card);
     } else if (this.selected.size < this.numberToPick) {
       this.selected.add(card);
     }
   }
 
-  canFinish(): boolean {
+  public canFinish(): boolean {
     return this.selected.size >= this.numberToPick ||
       this.selected.size >= this.cards.length;
   }
 
-  finish() {
+  public finish() {
     this.dialogRef.close(Array.from(this.selected.values()));
   }
 
-  skip() {
+  public skip() {
     this.dialogRef.close([]);
   }
-
-
 }
 

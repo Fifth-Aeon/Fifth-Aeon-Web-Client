@@ -1,33 +1,35 @@
 <div class="lobby">
 
   <md-toolbar color="primary">
-  <span>CCG</span>
-  <span class="toolbar-spacer"></span>
+    <span>CCG</span>
+    <span class="toolbar-spacer"></span>
 
-  <md-icon class="toolbar-icon" mdTooltip="Turn volume on" (click)="soundManager.toggleMute()" *ngIf="soundManager.isMuted()">volume_mute</md-icon>
-  <md-icon class="toolbar-icon" mdTooltip="Turn volume off" (click)="soundManager.toggleMute()" *ngIf="!soundManager.isMuted()">volume_up</md-icon>
+    <md-icon class="toolbar-icon" mdTooltip="Turn volume on" (click)="soundManager.toggleMute()" *ngIf="soundManager.isMuted()">volume_mute</md-icon>
+    <md-icon class="toolbar-icon" mdTooltip="Turn volume off" (click)="soundManager.toggleMute()" *ngIf="!soundManager.isMuted()">volume_up</md-icon>
 
-  <md-icon class="toolbar-icon" mdTooltip="Connected" *ngIf="client.isConnected()">cloud</md-icon>
-  <md-icon class="toolbar-icon" mdTooltip="Disconnected" *ngIf="!client.isConnected()">cloud_off</md-icon>
+    <md-icon class="toolbar-icon" mdTooltip="Connected" *ngIf="client.isConnected()">cloud</md-icon>
+    <md-icon class="toolbar-icon" mdTooltip="Disconnected" *ngIf="!client.isConnected()">cloud_off</md-icon>
 
-</md-toolbar>
+  </md-toolbar>
   <p class="instructions">{{client.getInstruction()}}</p>
 
   <md-progress-spinner *ngIf="getState() != state.InLobby" attr.color="primary" mode="indeterminate"></md-progress-spinner>
 
   <div *ngIf="getState() === state.InLobby">
-    <button md-raised-button color="primary" (click)="client.join()"><md-icon>public</md-icon> Public Game</button>
+    <button md-raised-button color="primary" (click)="join()"><md-icon>public</md-icon> Public Game</button>
     <button md-raised-button color="primary" (click)="client.private()"><md-icon>vpn_key</md-icon> Private Game</button>
   </div>
 
-   <div *ngIf="getState() === state.InLobby">
-      <button md-raised-button color="primary" (click)="client.startAIGame(difficulty)"><md-icon>adb</md-icon><span> Play vs AI </span></button>
-      <div>
-        <md-radio-group [(ngModel)]="difficulty">
-          <md-radio-button *ngFor="let d of [diffs.Easy, diffs.Medium, diffs.Hard]" [value]="d">
-            {{diffs[d]}}
-          </md-radio-button>
-        </md-radio-group>
-      </div>
+<!--
+  <div *ngIf="getState() === state.InLobby">
+    <button md-raised-button color="primary" (click)="client.startAIGame(difficulty)"><md-icon>adb</md-icon><span> Play vs AI </span></button>
+    <div>
+      <md-radio-group [(ngModel)]="difficulty">
+        <md-radio-button *ngFor="let d of [diffs.Easy, diffs.Medium, diffs.Hard]" [value]="d">
+          {{diffs[d]}}
+        </md-radio-button>
+      </md-radio-group>
     </div>
+  </div>
+  -->
 </div>

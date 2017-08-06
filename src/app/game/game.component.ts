@@ -47,8 +47,9 @@ export class GameComponent implements OnInit {
       this.client.attackWithAll();
       return false; // Prevent bubblingf
     }, [], 'Attack with all'));
-  }
 
+    
+  }
 
   public pass() {
     if (this.passDisabled())
@@ -104,6 +105,8 @@ export class GameComponent implements OnInit {
     return !this.game.isActivePlayer(this.playerNo) ||
       (this.wouldEndTurn() && this.canPlayResource());
   }
+
+ 
 
   public getPassText(): string {
     if (this.game.isPlayerTurn(this.playerNo)) {

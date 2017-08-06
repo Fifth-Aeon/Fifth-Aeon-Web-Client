@@ -26,6 +26,7 @@ import { ResourceSelectorComponent } from './resource-selector/resource-selector
 import { PlayerAvatarComponent } from './player-avatar/player-avatar.component';
 import { CardChooserComponent } from './card-chooser/card-chooser.component';
 import { RecordBarComponent } from './record-bar/record-bar.component';
+import { EndDialogComponent } from './end-dialog/end-dialog.component';
 
 @NgModule({
   declarations: [
@@ -37,9 +38,10 @@ import { RecordBarComponent } from './record-bar/record-bar.component';
     ResourceSelectorComponent,
     PlayerAvatarComponent,
     CardChooserComponent,
-    RecordBarComponent
+    RecordBarComponent,
+    EndDialogComponent
   ],
-  entryComponents: [CardChooserComponent],
+  entryComponents: [CardChooserComponent, EndDialogComponent],
   imports: [
     BrowserModule,
     FormsModule,
