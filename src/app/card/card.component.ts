@@ -10,9 +10,11 @@ enum GlowType {
 
 const keywordsDefs = new Map<string, string>();
 keywordsDefs.set('Flying', 'Can only be blocked by units with flying.')
-keywordsDefs.set('Poisoned', 'This unit gets -1/-1 at the start of its owners turn.')
-keywordsDefs.set('Poison', 'Causes a unit to become poisoned. Poisoned units get -1/-1 at the start of their owners turn.')
-keywordsDefs.set('Venomous', 'Poisons any unit it damages. Poisoned units get -1/-1 at the start of their owners turn.')
+keywordsDefs.set('Lifesteal', 'When this unit deals damage its owner gains that much life.')
+keywordsDefs.set('Final Blow', 'Triggers whenever this unit deals lethal damage to another unit.')
+keywordsDefs.set('Poisoned', 'This unit gets -1/-1 at the start of its owner\'s turn.')
+keywordsDefs.set('Poison', 'Causes a unit to become poisoned. Poisoned units get -1/-1 at the start of their owner\'s turn.')
+keywordsDefs.set('Venomous', 'Poisons any unit it damages. Poisoned units get -1/-1 at the start of their owner\'s turn.')
 keywordsDefs.set('Affinity', 'Triggers the first time you play a unit of the same type.')
 keywordsDefs.set('Serenity', 'Triggers at the end of your turn if you did not attack that turn.')
 
