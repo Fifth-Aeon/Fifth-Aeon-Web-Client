@@ -18,6 +18,7 @@
   <div *ngIf="getState() === state.InLobby">
     <button md-raised-button color="primary" (click)="join()"><md-icon>public</md-icon> Public Game</button>
     <button md-raised-button color="primary" (click)="client.private()"><md-icon>vpn_key</md-icon> Private Game</button>
+    <button md-raised-button color="primary" (click)="client.deckEditor()"><md-icon svgIcon="ccg:deck"></md-icon> Edit Deck</button>
   </div>
 
 <!--

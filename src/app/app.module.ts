@@ -19,7 +19,8 @@ import { InPlayGuard } from './in-play.guard';
 import {
   MdButtonModule, MdRadioModule, MdIconModule,
   MdTooltipModule, MdSnackBarModule, MdToolbarModule,
-  MdProgressSpinnerModule, MdDialogModule, MdListModule
+  MdProgressSpinnerModule, MdDialogModule, MdListModule,
+  MdCardModule,
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LobbyComponent } from './lobby/lobby.component';
@@ -30,6 +31,7 @@ import { PlayerAvatarComponent } from './player-avatar/player-avatar.component';
 import { CardChooserComponent } from './card-chooser/card-chooser.component';
 import { RecordBarComponent } from './record-bar/record-bar.component';
 import { EndDialogComponent } from './end-dialog/end-dialog.component';
+import { DeckEditorComponent } from './deck-editor/deck-editor.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,7 @@ import { EndDialogComponent } from './end-dialog/end-dialog.component';
     CardChooserComponent,
     RecordBarComponent,
     EndDialogComponent,
+    DeckEditorComponent,
   ],
   entryComponents: [CardChooserComponent, EndDialogComponent],
   imports: [
@@ -54,9 +57,10 @@ import { EndDialogComponent } from './end-dialog/end-dialog.component';
     HotkeyModule.forRoot(),
     MdButtonModule, MdIconModule, MdToolbarModule, MdRadioModule,
     MdProgressSpinnerModule, MdTooltipModule, MdSnackBarModule,
-    MdDialogModule, MdListModule,
+    MdDialogModule, MdListModule, MdCardModule,
     RouterModule.forRoot([
       { path: 'game', component: GameComponent, canActivate: [InPlayGuard] },
+      { path: 'deck', component: DeckEditorComponent, },
       { path: 'private/:id', component: PrivateLobbyComponent },
       { path: 'private', component: PrivateLobbyComponent },
       { path: 'lobby', component: LobbyComponent },

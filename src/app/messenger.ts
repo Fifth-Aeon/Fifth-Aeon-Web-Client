@@ -6,7 +6,7 @@ export enum MessageType {
     Info, ClientError, Connect, Ping,
 
     // Accounts
-    AnonymousLogin, LoginResponce,
+    AnonymousLogin, LoginResponce, SetDeck,
 
     // Queuing
     JoinQueue, ExitQueue, QueueJoined, StartGame,
@@ -45,7 +45,7 @@ export class Messenger {
 
     private loggedIn: boolean = false;
 
-    public onlogin: (username: string) => void = () => null;
+    public onlogin: (data: any) => void = () => null;
     public connectChange: (status: boolean) => void = () => null;
 
     constructor() {
@@ -84,7 +84,7 @@ export class Messenger {
         this.username = msg.data.username;
         this.id = msg.data.token;
         this.loggedIn = true;
-        this.onlogin(this.username);
+        this.onlogin(msg.data);
         this.emptyMessageQueue();
     }
 

@@ -27,12 +27,7 @@ export class GameComponent implements OnInit {
   public enemyNo: number;
 
   constructor(public client: WebClient, public dialog: MdDialog,
-    registry: MdIconRegistry, sanitizer: DomSanitizer,
     private hotkeys: HotkeysService, public overlay:OverlayService) {
-
-    let url = sanitizer.bypassSecurityTrustResourceUrl('assets/svg/tombstone.svg');
-    registry.addSvgIconInNamespace('ccg', 'tombstone', url);
-
     this.game = client.getGame();
     this.player = this.game.getPlayer(client.getPlayerdata().me);
     this.enemy = this.game.getPlayer(client.getPlayerdata().op);
@@ -66,6 +61,7 @@ export class GameComponent implements OnInit {
     if (this.passDisabled())
       return;
     this.selected = null;
+    this.blocker = null;
     this.validTargets = new Set();
     this.client.pass();
   }

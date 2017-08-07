@@ -1,10 +1,13 @@
-import { Game, GameAction, SyncGameEvent, GameActionType, GameEventType, GamePhase} from './game_model/game';
+import { Game, GameAction, SyncGameEvent, GameActionType, GameEventType, GamePhase } from './game_model/game';
 import { data } from './game_model/gameData';
 import { GameFormat } from './game_model/gameFormat';
+
+import { DeckList } from './game_model/deckList';
 import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
 import { Preloader } from './preloader';
 import { getHttpUrl } from './url';
+
 import { Card } from './game_model/card';
 import { Unit } from './game_model/unit';
 import { EndDialogComponent } from './end-dialog/end-dialog.component';
@@ -27,6 +30,7 @@ export enum ClientState {
 export class WebClient {
     private username: string;
     private opponentUsername: string;
+    private deck: DeckList;
 
     private messenger: Messenger;
     private gameId: string = null;
@@ -115,9 +119,13 @@ export class WebClient {
     }
 
     // Misc --------------------
-    private onLogin(username: string) {
+    private onLogin(loginData: {username: string, token: string, deckList: string}) {
         this.changeState(ClientState.InLobby);
-        this.username = username;
+        this.username = loginData.username;
+        this.deck = new DeckList(new GameFormat());
+        this.deck.fromJson(loginData.deckList);
+        console.log(this.deck);
+        
         if (this.toJoin) {
             this.joinPrivateGame(this.toJoin);
         }
@@ -126,6 +134,12 @@ export class WebClient {
     private clientError(msg: Message) {
         console.error(msg.data);
         this.onError(msg.data);
+    }
+
+    public setDeck(deck: DeckList) {
+        this.messenger.sendMessageToServer(MessageType.SetDeck, {
+            deckList: deck.toJson()
+        });
     }
 
     public returnToLobby() {
@@ -149,6 +163,10 @@ export class WebClient {
 
     private getInviteMessage() {
         return `You are invited to play ccg. Go to the url ${this.privateGameUrl} to play.`;
+    }
+
+    public getDeck() {
+        return this.deck;
     }
 
     public getPrivateGameUrl() {
@@ -201,6 +219,10 @@ export class WebClient {
         this.router.navigate(['/queue']);
         this.messenger.sendMessageToServer(MessageType.JoinQueue, {});
         this.changeState(ClientState.Waiting);
+    }
+
+    public deckEditor() {
+        this.router.navigate(['/deck']);
     }
 
     public leaveQueue() {

@@ -1,0 +1,34 @@
+<div class="left">
+  <md-card id="card-selection">
+    <md-card-header>
+      <md-card-title>
+        <h1>Library</h1>
+      </md-card-title>
+    </md-card-header>
+    <md-card-content id="editor-cards" #content (window:resize)="onResize(content.getBoundingClientRect())">
+      <ccg-card scale="1.45" *ngFor="let card of pageCards" [card]="card" (click)="add(card)"></ccg-card>
+    </md-card-content>
+  </md-card>
+
+  <md-card id="card-selection-controls">
+    <md-card-content>
+      <button md-raised-button (click)="prev()" [disabled]="!canPrev()">Previous</button>
+      <button md-raised-button (click)="next()" [disabled]="!canNext()">Next</button>
+      <button md-raised-button (click)="done()" [disabled]="!deck.isValid()">Done</button>
+    </md-card-content>
+  </md-card>
+</div>
+
+
+<md-card id="deck-list">
+  <md-card-header>
+    <md-card-title>
+      <h1>Deck - {{deck.size()}} / {{format.minDeckSize}}</h1>
+    </md-card-title>
+  </md-card-header>
+  <md-card-content>
+    <md-list >
+      <md-list-item *ngFor="let record of deck.getRecordList()" (click)="deck.removeCard(record.card)"> {{record.card.getCost().asCost()}} - {{record.card.getName()}} - ({{record.number}}) </md-list-item>  
+    </md-list> 
+  </md-card-content>
+</md-card>
