@@ -1,9 +1,7 @@
 <div class="left">
   <md-card id="card-selection">
     <md-card-header>
-      <md-card-title>
-        <h1>Library</h1>
-      </md-card-title>
+
     </md-card-header>
     <md-card-content id="editor-cards" #content (window:resize)="onResize(content.getBoundingClientRect())">
       <ccg-card scale="1.45" *ngFor="let card of pageCards" [card]="card" (click)="add(card)"></ccg-card>

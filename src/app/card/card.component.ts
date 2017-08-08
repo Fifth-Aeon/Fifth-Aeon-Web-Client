@@ -17,9 +17,19 @@ keywordsDefs.set('Poison', 'Causes a unit to become poisoned. Poisoned units get
 keywordsDefs.set('Venomous', 'Poisons any unit it damages. Poisoned units get -1/-1 at the start of their owner\'s turn.')
 keywordsDefs.set('Affinity', 'Triggers the first time you play a unit of the same type.')
 keywordsDefs.set('Serenity', 'Triggers at the end of your turn if you did not attack that turn.')
+keywordsDefs.set('Mechanical', 'A unit of the Automaton, Structure or Vehicle types.')
+keywordsDefs.set('Biological', 'A unit of not of the Automaton, Structure or Vehicle types.')
+keywordsDefs.set('Lethal', 'Kill any unit damaged by this unit.')
+keywordsDefs.set('Shielded', 'The first time this takes damage, negate that damage.')
+keywordsDefs.set('Relentless', 'Refreshes at the end of each turn.')
+
 
 const keywords = Array.from(keywordsDefs.keys());
 const keywordRegex = new RegExp(keywords.join('|'), 'gi');
+
+function toProperCase(str:string) {
+  return str.replace(/\b\w/g, l => l.toUpperCase())
+}
 
 @Component({
   selector: 'ccg-card',
@@ -55,14 +65,12 @@ export class CardComponent implements OnInit {
   }
 
   public keywords() {
-    return this.getKeywords().map(key => key + ' - ' + keywordsDefs.get(key)).join(' \n\n ');
+    return this.getKeywords().map(key => toProperCase(key) + ' - ' + keywordsDefs.get(toProperCase(key))).join(' \n\n ');
   }
 
   public tooltipClass = {
     multiline: true
   }
-
-
 
   public getFontSize() {
     let size = 16;

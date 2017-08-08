@@ -1,10 +1,13 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
+import {sortBy} from 'lodash';
 
 import { WebClient } from '../client';
 import { GameFormat } from '../game_model/gameFormat';
 import { DeckList } from '../game_model/deckList';
 import { allCards } from '../game_model/cards/allCards';
 import { Card } from '../game_model/card';
+
+
 
 @Component({
   selector: 'bsc-deck-editor',
@@ -21,7 +24,8 @@ export class DeckEditorComponent implements OnInit {
   public format = new GameFormat();
 
   constructor(private client: WebClient) {
-    this.cards = Array.from(allCards.values()).map(factory => factory());
+    this.cards = Array.from(allCards.values()).map(factory => factory())
+    this.cards = sortBy(this.cards, (card:Card) => card.getCost().getColor() * 100 + card.getCost().getNumeric());
     this.setPage();
     this.deck = this.client.getDeck();;
   }

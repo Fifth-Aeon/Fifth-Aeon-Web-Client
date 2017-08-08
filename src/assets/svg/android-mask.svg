@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 1000 560"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="android-mask.svg"
+   width="1000"
+   height="560"
+   inkscape:version="0.92.1 r15371"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\android-mask.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2004"
+     id="namedview10"
+     showgrid="true"
+     inkscape:zoom="0.921875"
+     inkscape:cx="351.31025"
+     inkscape:cy="273.1292"
+     inkscape:window-x="-16"
+     inkscape:window-y="-16"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g6">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4491" />
+  </sodipodi:namedview>
+  <path
+     d="M 0,0 H 1000 V 560 H 0 Z"
+     id="path2"
+     inkscape:connector-curvature="0"
+     style="fill:#c9c9c9;stroke-width:1.46158493" />
+  <g
+     class=""
+     id="g6"
+     transform="translate(0,48)">
+    <path
+       d="m 507.213,1.269 v 302.863 h -18.69 V 1.296 C 427.12,4.301 373.083,35.708 339.285,82.632 l 35.022,60.658 c 3.862,-1.037 7.92,-1.598 12.11,-1.598 25.747,0 46.62,20.872 46.62,46.62 0,22.556 -16.02,41.37 -37.3,45.687 v 174.084 c 13.712,21.43 27.6,41.98 40.712,60.754 V 351.716 h 122.838 v 117.117 c 13.11,-18.773 27,-39.324 40.713,-60.754 V 234 c -21.282,-4.317 -37.302,-23.13 -37.302,-45.688 0,-25.747 20.873,-46.62 46.62,-46.62 4.19,0 8.25,0.562 12.113,1.6 l 35.13,-60.847 C 622.821,35.445 568.803,4.07 507.215,1.27 Z m 160.686,98.907 -29.74,51.52 c 10.824,8.537 17.782,21.76 17.782,36.615 0,22.54 -15.995,41.343 -37.254,45.68 v 144.095 c 9.833,-16.237 19.31,-32.676 28.014,-48.927 27.3,-50.976 46.564,-100.37 46.564,-132.36 0,-35.127 -9.22,-68.104 -25.365,-96.622 z m -339.973,0.157 c -16.196,28.486 -25.46,61.408 -25.46,96.465 0,31.992 19.267,81.385 46.567,132.36 8.704,16.253 18.182,32.694 28.016,48.933 v -144.1 c -21.26,-4.336 -37.254,-23.14 -37.254,-45.68 0,-14.856 6.957,-28.08 17.783,-36.617 l -29.653,-51.36 z m 127.213,270.07 v 101.283 h 85.46 V 370.402 h -85.46 z"
+       id="path4"
+       inkscape:connector-curvature="0"
+       style="fill:#170303" />
+  </g>
+  <!-- react-empty: 6 -->
+</svg>

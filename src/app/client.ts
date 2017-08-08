@@ -118,6 +118,10 @@ export class WebClient {
         });
     }
 
+    public isLoggedIn() {
+        return !(this.state == ClientState.UnAuth);
+    }
+
     // Misc --------------------
     private onLogin(loginData: {username: string, token: string, deckList: string}) {
         this.changeState(ClientState.InLobby);
