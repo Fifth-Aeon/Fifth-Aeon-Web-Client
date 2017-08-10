@@ -10,11 +10,11 @@
    viewBox="0 0 1000 560"
    version="1.1"
    id="svg8"
-   sodipodi:docname="field-gun.svg"
+   sodipodi:docname="crane.svg"
    width="1000"
    height="560"
    inkscape:version="0.92.1 r15371"
-   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\field-gun.png"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\crane.png"
    inkscape:export-xdpi="240"
    inkscape:export-ydpi="240">
   <metadata
@@ -25,7 +25,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -45,8 +45,8 @@
      id="namedview10"
      showgrid="true"
      inkscape:zoom="0.921875"
-     inkscape:cx="107.83226"
-     inkscape:cy="268.63604"
+     inkscape:cx="1019.6479"
+     inkscape:cy="479.99632"
      inkscape:window-x="-16"
      inkscape:window-y="-16"
      inkscape:window-maximized="1"
@@ -56,19 +56,19 @@
        id="grid4491" />
   </sodipodi:namedview>
   <path
-     d="M 0,0 H 1000 V 560 H 0 Z"
+     d="m 4,0 h 996 V 565 H 4 Z"
      id="path2"
      inkscape:connector-curvature="0"
-     style="fill:#c9c9c9;stroke-width:1.46158493;fill-opacity:1" />
+     style="fill:#c9c9c9;stroke:#ffffff;stroke-width:5.95365047" />
   <g
      class=""
      id="g6"
-     transform="matrix(1.3799261,0,0,1.3799261,144.16398,-113.75184)">
+     transform="matrix(1.1507841,0,0,1.1507841,190.6924,3.9127084)">
     <path
-       d="m 269.188,155.574 -16.644,6.852 112,272 16.644,-6.852 z m 192.825,34.781 -136.733,56.301 13.71,33.29 136.73,-56.301 z m -13.117,62.456 -103.35,43.06 6.585,14.94 86.545,-36.133 z m -172.44,13.95 -86.443,35.594 8.162,19.823 a 90.276,90.276 0 0 0 -10.62,7.736 c -26.465,22.463 -38.002,55.997 -39.413,82.63 l -128.286,47.975 6.02,16.964 140.055,-52.148 -0.065,-6.424 c -0.22,-22.04 10.067,-55.522 33.338,-75.273 21.751,-18.462 66.699,-30.458 106.637,-5.514 C 276.332,266.8 286.63,293.047 276.456,266.763 Z M 256.866,342 c -40.21,0 -73,32.79 -73,73 0,40.21 32.79,73 73,73 40.21,0 73,-32.79 73,-73 0,-40.21 -32.79,-73 -73,-73 z m 0,18 c 30.482,0 55,24.518 55,55 0,30.482 -24.518,55 -55,55 -30.482,0 -55,-24.518 -55,-55 0,-30.482 24.518,-55 55,-55 z m 1,21 c -18.119,0 -33,14.881 -33,33 0,18.119 14.881,33 33,33 18.119,0 33,-14.881 33,-33 0,-18.119 -14.881,-33 -33,-33 z"
+       d="M 213.293,19.46 29.691,120.34 H 67.066 L 200.555,46.994 184.736,120.34 h 18.41 l 11.584,-53.701 13.688,53.7 h 18.574 L 227.545,44.045 430.486,120.34 h 51.147 z M 25,138.34 v 30 h 462 v -30 z m 32,48 v 30 h 62 v -30 z m 144,0 v 46 h 30 v -46 z m 48,0 v 46 h 19.273 L 279,221.613 V 186.34 Z m 190,0 v 141.707 a 24.618,24.618 0 0 1 9,-1.707 c 3.166,0 6.2,0.61 9,1.707 V 186.34 Z m -238,64 v 242 h 30 v -242 z m 247,94 c -3.973,0 -7,3.027 -7,7 0,3.973 3.027,7 7,7 3.973,0 7,-3.027 7,-7 0,-3.973 -3.027,-7 -7,-7 z m -20.393,21.365 -16.421,24.635 h 21.63 l 9.743,-14.613 c -6.118,-1.384 -11.417,-5.04 -14.952,-10.022 z m 40.786,0 c -3.535,4.981 -8.834,8.638 -14.952,10.022 l 9.743,14.613 h 21.63 z M 409,408.34 v 30 h 78 v -30 z m -226,24.5 -60.4,45.3 10.8,14.4 49.6,-37.2 z m 66,0 v 22.5 l 49.6,37.2 10.8,-14.4 z"
        id="path4"
        inkscape:connector-curvature="0"
-       style="fill:#131210" />
+       style="fill:#000000" />
   </g>
   <!-- react-empty: 6 -->
 </svg>

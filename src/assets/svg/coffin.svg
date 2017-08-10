@@ -9,13 +9,16 @@
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    viewBox="0 0 1000 560"
    version="1.1"
-   id="svg8"
+   id="svg21"
    sodipodi:docname="coffin.svg"
    width="1000"
    height="560"
-   inkscape:version="0.92.1 r15371">
+   inkscape:version="0.92.1 r15371"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\coffin.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240">
   <metadata
-     id="metadata14">
+     id="metadata25">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
@@ -26,8 +29,6 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <defs
-     id="defs12" />
   <sodipodi:namedview
      pagecolor="#ffffff"
      bordercolor="#666666"
@@ -39,29 +40,66 @@
      inkscape:pageshadow="2"
      inkscape:window-width="3840"
      inkscape:window-height="2004"
-     id="namedview10"
-     showgrid="false"
-     inkscape:zoom="0.4609375"
-     inkscape:cx="-398.10169"
-     inkscape:cy="256"
+     id="namedview23"
+     showgrid="true"
+     inkscape:zoom="0.921875"
+     inkscape:cx="228.87948"
+     inkscape:cy="90.081326"
      inkscape:window-x="-16"
      inkscape:window-y="-16"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg8" />
+     inkscape:current-layer="svg21">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4502" />
+  </sodipodi:namedview>
+  <defs
+     id="defs13">
+    <filter
+       id="shadow-1"
+       height="3"
+       width="3"
+       x="-1"
+       y="-1">
+      <feFlood
+         flood-color="#9013fe"
+         result="flood"
+         id="feFlood2" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="atop"
+         result="composite"
+         id="feComposite4" />
+      <feGaussianBlur
+         in="composite"
+         stdDeviation="15"
+         result="blur"
+         id="feGaussianBlur6" />
+      <feOffset
+         result="offset"
+         id="feOffset8" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         operator="over"
+         id="feComposite10" />
+    </filter>
+  </defs>
   <path
-     d="M 0,2.440678 H 1006.6441 V 560 H 0 Z"
-     id="path2"
+     d="M 0,0 H 1000 V 560 H 0 Z"
+     id="path15"
      inkscape:connector-curvature="0"
-     style="fill:#7e1bd6;stroke-width:1.46323323" />
+     style="fill:#15151b;stroke:#ffffff;stroke-width:5.93913841" />
   <g
      class=""
-     id="g6"
-     transform="translate(227.79661,21.966102)">
+     transform="translate(230.157,26.126)"
+     id="g19">
     <path
        d="m 312.094,21.97 59.094,119.686 h 52.093 L 362.595,22 312.095,21.97 Z M 173,22.687 109.406,149.905 175.25,495.655 289.938,495.749 354.467,150 291.626,22.75 Z m 16.063,76.28 h 88.78 v 18.688 h -88.78 V 98.97 Z m 0,36.22 h 88.78 v 18.687 h -88.78 v -18.688 z m 182.5,25.156 -62.563,335.095 47.25,0.03 68.313,-335.124 h -53 z"
-       id="path4"
+       id="path17"
        inkscape:connector-curvature="0"
-       style="fill:#e6e5e5" />
+       style="fill:#9013fe;filter:url(#shadow-1)" />
   </g>
-  <!-- react-empty: 6 -->
+  <!-- react-empty: 13 -->
 </svg>

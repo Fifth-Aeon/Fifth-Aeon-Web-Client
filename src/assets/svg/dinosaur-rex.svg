@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 1000 560"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="dinosaur-rex.svg"
+   width="1000"
+   height="560"
+   inkscape:version="0.92.1 r15371"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\dinosaur-rex.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2004"
+     id="namedview10"
+     showgrid="true"
+     inkscape:zoom="1.84375"
+     inkscape:cx="135.2424"
+     inkscape:cy="150.29955"
+     inkscape:window-x="-16"
+     inkscape:window-y="-16"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg8">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4491" />
+  </sodipodi:namedview>
+  <path
+     d="M 0,0 H 1000 V 560 H 0 Z"
+     id="path2"
+     inkscape:connector-curvature="0"
+     style="fill:#417505;stroke-width:1.46158493"
+     inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\path2.png"
+     inkscape:export-xdpi="240"
+     inkscape:export-ydpi="240" />
+  <g
+     class=""
+     style="fill:#000000"
+     id="g6"
+     transform="matrix(1.0653583,0,0,1.0653583,271.84065,45.840781)">
+    <path
+       d="m 249.03,20.844 c -15.316,0.043 -30.757,3.48 -44,9.187 -7.74,-0.592 -15.25,-0.91 -22.5,-0.905 -90.62,0.073 -143.082,46.573 -163.968,126.313 -33.379389,116.86084 -19.9942088,228.88145 0,340.218 h 189.313 c -5.18,-54.53 5.24,-114.066 27.28,-154.625 -28.882,-4.973 -57.912,-8.197 -85.843,-9.217 l -7.656,-0.282 -1.22,-7.592 c -9.48,-58.97 -10.128,-119.04 22.064,-176.47 l 16.313,9.126 c -28.177,50.266 -29,102.555 -20.97,157.062 81.76,4.08 170.21,25.267 239.376,54.844 22.725,-5.73 33.816,-29.686 41.842,-65.5 l -31.968,21.625 -10.03,-44.438 -45.69,30.907 -10.78,-47.72 -43.25,29.22 -10.688,-47.313 -43.812,29.626 -15,-66.406 70.844,-47.906 10.687,47.344 43.813,-29.625 10.78,47.718 43.25,-29.25 10.032,44.407 45.656,-30.875 7.688,34.063 C 491.441,217.4 505.817,177.845 484.999,159.1 459.553,136.186 432.739,115.76 405.593,98.536 399.027,73.604 344.566,21.423 311.843,50.662 297.403,29.248 273.371,20.782 249.03,20.85 Z m 2.19,21.625 c 18.102,0 32.593,14.55 32.593,32.78 0,3.19 -0.453,6.25 -1.282,9.156 -3.084,-6.24 -9.503,-10.562 -16.936,-10.562 -10.436,0 -18.906,8.47 -18.906,18.906 0,6.22 3.018,11.713 7.656,15.156 -1.03,0.097 -2.07,0.125 -3.125,0.125 -18.104,0 -32.626,-14.55 -32.626,-32.78 0,-18.23 14.522,-32.78 32.625,-32.78 z"
+       id="path4"
+       style="fill:#000000"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccccccccccccccccccccccccccccccscsscsscc" />
+  </g>
+  <!-- react-empty: 13 -->
+</svg>

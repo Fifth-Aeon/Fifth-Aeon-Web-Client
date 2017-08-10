@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 1000 560"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="hooded-assassin.svg"
+   width="1000"
+   height="560"
+   inkscape:version="0.92.1 r15371"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\hooded-assassin.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2004"
+     id="namedview10"
+     showgrid="true"
+     inkscape:zoom="0.921875"
+     inkscape:cx="546.76289"
+     inkscape:cy="420.76044"
+     inkscape:window-x="-16"
+     inkscape:window-y="-16"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g6">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4491" />
+  </sodipodi:namedview>
+  <path
+     d="M 0,0 H 1000 V 560 H 0 Z"
+     id="path2"
+     style="fill:#370661;fill-opacity:1;stroke-width:1.46158493"
+     inkscape:connector-curvature="0" />
+  <g
+     class=""
+     id="g6"
+     transform="matrix(1.2659395,0,0,1.2659395,168.42585,2.6503787)"
+     style="fill:#f9f9f9">
+    <path
+       d="m 320.97205,66.13 c -28.807,-0.01 -55.439,14.149 -67.88,40.65 20.79,1.744 16,55.07 16,55.07 -11.814,16.687 -24.73,33.186 -36.589,50.146 0,0 -99.046,132.283 -178.378028,168.025 -28.049,22.593 -33.305,36.532 -44.1370003,52.649 -4.8770009,9.54 9.2570003,14.324 11.7010003,13.2 22.726,-10.461 25.176,-20.866 47.07,-35.675 12.805,-5.026 23.839008,-15.9 31.854028,-11.049 34.962,20.86 107.556,44.28 118.271,38.706 17.857,-9.263 -5.78,-43.585 16.174,-89.057 31.97,-3.352 58.916,-0.885 88.332,-12.094 3.483,50.279 10.106,54.59 6.766,107.092 l 71.2,1.045 0.698,-14.61 -41.814,-11.105 c 11.528,-56.054 11.816,-78.996 4.672,-127.996 -0.956,-6.622 -53.746,-8.275 -81.012,-3.79 24.449,-24.202 40.274,-45.24 47.506,-68.44 l 0.027,0.189 c 7.637,15.923 30.083,33.958 35.336,37.125 27.704,11.048 38.214,7.982 62.955,3.887 4.907,-0.784 27.47,24.537 44.807,9.597 2.642,-20.238 16.522,-20.369 -4.938,-32.71 -4.847,-2.73 -27.063,7.462 -31.418,6.898 -20.21,-2.481 -30.954,-5.211 -58.45,-12.703 -10.23,-13.187 -32.676,-56.136 -55.43,-59.744 6.535,-14.15 28.226,-53.108 73.664,-66.237 -20.943,-26.54 -49.925,-39.057 -76.987,-39.068 z m 82.405,46.722 c -46.658,19.516 -58.266,50.4 -58.266,50.4 l 9.916,7.644 c 0,0 9.646,-4.765 48.35,-58.044 z m 23.04,160.005 -4.658,11.418 c 5.233,-0.083 10.425,0.47 15.328,1.608 -12.774,30.856 -23.938,59.635 -28.181,93.094 l -0.908,7.558 4.863,-5.889 c 20.805,-25.671 32.303,-55.25 44.95,-85.78 4.203,2.656 8.24,5.885 12.071,9.35 l 4.78,-11.374 -20.518,-8.526 -31.767,66.579 24.062,-69.713 -20.021,-8.325 z"
+       id="path4"
+       inkscape:connector-curvature="0"
+       style="fill:#f9f9f9" />
+  </g>
+  <!-- react-empty: 6 -->
+</svg>

@@ -38,9 +38,9 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 * Rot - Give a unit -x/-x for each unit in the crypt
 
 ### Synthesis Card Ideas
-* a
+* Awakened One - Flying. Friendly synthesis units are immortal.
 
 ### Growth Card Ideas
-* b
+*
 
 

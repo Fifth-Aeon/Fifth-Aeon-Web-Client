@@ -7,14 +7,14 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   viewBox="0 0 1000 560"
+   viewBox="0 0 946.87504 525.00002"
    id="svg2"
    version="1.1"
-   inkscape:version="0.91 r13725"
+   inkscape:version="0.92.1 r15371"
    sodipodi:docname="cultist.svg"
-   width="1000"
+   width="1010"
    height="560"
-   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\resources\Cards\cultist.png"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\cultist.png"
    inkscape:export-xdpi="240"
    inkscape:export-ydpi="240">
   <metadata
@@ -25,7 +25,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -40,31 +40,53 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1536"
-     inkscape:window-height="801"
+     inkscape:window-width="3840"
+     inkscape:window-height="2004"
      id="namedview10"
      showgrid="false"
-     inkscape:zoom="0.4609375"
-     inkscape:cx="256"
-     inkscape:cy="256"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:zoom="2.6074563"
+     inkscape:cx="503.39317"
+     inkscape:cy="294.32919"
+     inkscape:window-x="-16"
+     inkscape:window-y="-16"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg2" />
+     inkscape:current-layer="svg2">
+    <inkscape:grid
+       type="xygrid"
+       id="grid818"
+       originx="0"
+       originy="-3.378218e-006" />
+  </sodipodi:namedview>
   <path
-     d="m 0,2.440678 1006.6441,0 0,557.559322 L 0,560 Z"
-     id="path4"
+     d="M -0.7627119,-0.7627119 H 946.11233 V 524.23731 H -0.7627119 Z"
+     id="path816"
      inkscape:connector-curvature="0"
-     style="fill:#310339" />
+     style="fill:#370661;fill-opacity:1;stroke-width:0.94111443" />
   <g
      class=""
      id="g6"
-     transform="matrix(1.1517481,0,0,1.1517481,204.15866,-9.2881828)">
+     transform="matrix(1.1029273,0,0,1.1029273,171.95068,-20.273471)"
+     style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-opacity:0.22486291">
     <path
-       d="M 258.495,20.105 C 176.67,77.45 133.118,142.24 128,207.63 l 92.155,54.124 -55.14,-56.092 c 3.663,-46.824 34.847,-93.22 93.44,-134.283 58.593,41.06 89.594,87.573 93.257,134.393 l -55.15,55.957 92.162,-53.947 C 383.61,142.397 340.32,77.45 258.494,20.105 Z M 221.72,165.123 c -7.276,0 -14.467,5.39 -21.096,13.498 13.207,15.957 29.007,16.098 42.19,0 -6.682,-8.27 -13.746,-13.5 -21.094,-13.497 z m 70.484,0 c -7.275,0 -14.467,5.39 -21.096,13.498 13.208,15.957 29.01,16.098 42.194,0 -6.683,-8.27 -13.75,-13.5 -21.098,-13.497 z m -154.47,73.31 -1.89,1.758 c -0.005,-0.03 -0.015,-0.06 -0.02,-0.09 l -0.13,0.232 -65.703,61.172 c 23.93,63.466 22.342,126.924 19.86,190.39 l 37.96,0 c -6.974,-34.9 -14.004,-77.445 -14.817,-121.09 9.11,6.8 20.807,11.917 34.938,14.743 -11.63,-10.79 -17.805,-24.947 -15.8,-39.158 15.38,7.1 32.653,9.094 50.66,4.612 -18.75,-8 -34.94,-23.658 -43.06,-43.756 26.933,14.15 55.292,18.642 79.36,9.774 -36.237,-8.91 -74.074,-37.57 -82.896,-75.346 0.505,-1.084 1.015,-2.165 1.54,-3.24 z m 236.533,0 c 0.302,0.62 0.59,1.247 0.886,1.87 l -0.11,-0.203 c -8.12,38.556 -46.53,67.887 -83.27,76.92 25.592,9.43 56.036,3.753 84.458,-12.58 -7.7,21.447 -24.524,38.192 -44.14,46.562 16.47,4.1 32.326,2.785 46.682,-2.9 1.297,13.63 -4.84,27.088 -16.003,37.445 14.82,-2.964 26.97,-8.446 36.258,-15.748 -0.722,43.995 -7.808,86.924 -14.836,122.095 l 37.96,0 c -2.484,-63.467 -4.072,-126.925 19.857,-190.39 l -67.743,-63.07 z"
-       id="path8"
-       inkscape:connector-curvature="0"
-       style="fill:#ffffff" />
+       style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-opacity:0.22486291"
+       d="M 258.495,20.105 C 176.67,77.45 133.118,142.24 128,207.63 l 92.155,54.124 -55.14,-56.092 c 3.663,-46.824 34.847,-93.22 93.44,-134.283 58.593,41.06 89.594,87.573 93.257,134.393 l -55.15,55.957 92.162,-53.947 C 383.61,142.397 340.32,77.45 258.494,20.105 Z"
+       id="path4588" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-opacity:0.22486291"
+       d="m 221.72,165.123 c -7.276,0 -14.467,5.39 -21.096,13.498 13.207,15.957 29.007,16.098 42.19,0 -6.682,-8.27 -13.746,-13.5 -21.094,-13.497 z"
+       id="path4586" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-opacity:0.22486291"
+       d="m 292.204,165.123 c -7.275,0 -14.467,5.39 -21.096,13.498 13.208,15.957 29.01,16.098 42.194,0 -6.683,-8.27 -13.75,-13.5 -21.098,-13.497 z"
+       id="path4584" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-opacity:0.22486291"
+       d="m 137.734,238.433 -1.89,1.758 c -0.005,-0.03 -0.015,-0.06 -0.02,-0.09 l -0.13,0.232 -65.703,61.172 c 23.93,63.466 22.342,126.924 19.86,190.39 h 37.96 c -6.974,-34.9 -14.004,-77.445 -14.817,-121.09 9.11,6.8 20.807,11.917 34.938,14.743 -11.63,-10.79 -17.805,-24.947 -15.8,-39.158 15.38,7.1 32.653,9.094 50.66,4.612 -18.75,-8 -34.94,-23.658 -43.06,-43.756 26.933,14.15 55.292,18.642 79.36,9.774 -36.237,-8.91 -74.074,-37.57 -82.896,-75.346 0.505,-1.084 1.015,-2.165 1.54,-3.24 z"
+       id="path4582" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-opacity:0.22486291"
+       d="m 374.267,238.433 c 0.302,0.62 0.59,1.247 0.886,1.87 l -0.11,-0.203 c -8.12,38.556 -46.53,67.887 -83.27,76.92 25.592,9.43 56.036,3.753 84.458,-12.58 -7.7,21.447 -24.524,38.192 -44.14,46.562 16.47,4.1 32.326,2.785 46.682,-2.9 1.297,13.63 -4.84,27.088 -16.003,37.445 14.82,-2.964 26.97,-8.446 36.258,-15.748 -0.722,43.995 -7.808,86.924 -14.836,122.095 h 37.96 c -2.484,-63.467 -4.072,-126.925 19.857,-190.39 l -67.743,-63.07 z"
+       id="path8" />
   </g>
   <!-- react-empty: 6 -->
 </svg>

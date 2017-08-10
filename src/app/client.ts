@@ -128,7 +128,6 @@ export class WebClient {
         this.username = loginData.username;
         this.deck = new DeckList(new GameFormat());
         this.deck.fromJson(loginData.deckList);
-        console.log(this.deck);
         
         if (this.toJoin) {
             this.joinPrivateGame(this.toJoin);
