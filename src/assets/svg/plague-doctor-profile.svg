@@ -13,7 +13,10 @@
    sodipodi:docname="plague-doctor-profile.svg"
    width="1000"
    height="560"
-   inkscape:version="0.92.1 r15371">
+   inkscape:version="0.92.1 r15371"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\plague-doctor-profile.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240">
   <metadata
      id="metadata14">
     <rdf:RDF>
@@ -22,7 +25,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -42,7 +45,7 @@
      id="namedview10"
      showgrid="false"
      inkscape:zoom="0.921875"
-     inkscape:cx="343.67188"
+     inkscape:cx="16.621033"
      inkscape:cy="264.59219"
      inkscape:window-x="-16"
      inkscape:window-y="-16"
@@ -52,7 +55,7 @@
      d="M -5.4237288,-2.9830509 H 1003.3899 V 558.91525 H -5.4237288 Z"
      id="path2"
      inkscape:connector-curvature="0"
-     style="fill:#f5c823;stroke-width:1.47049773" />
+     style="fill:#f8e71c;stroke-width:1.47049773;fill-opacity:1" />
   <g
      class=""
      id="g6"

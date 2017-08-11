@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
-import { Card } from '../game_model/card';
+import { Card, Location } from '../game_model/card';
 import { UnitType } from '../game_model/unit';
 
 import { OverlayService } from '../overlay.service';
@@ -27,7 +27,7 @@ keywordsDefs.set('Relentless', 'Refreshes at the end of each turn.')
 const keywords = Array.from(keywordsDefs.keys());
 const keywordRegex = new RegExp(keywords.join('|'), 'gi');
 
-function toProperCase(str:string) {
+function toProperCase(str: string) {
   return str.replace(/\b\w/g, l => l.toUpperCase())
 }
 
@@ -46,12 +46,30 @@ export class CardComponent implements OnInit {
   @Input() darkened: boolean = false;
   @Input() selected: boolean = false;
   @Input() target: boolean = false;
+  @Input() overlap: boolean = false;
 
   constructor(private overlay: OverlayService, private element: ElementRef) {
   }
 
   getType(type: UnitType) {
     return UnitType[type];
+  }
+
+  public getMargins() {
+    let marginLeft = -9;
+    let marginRight = -9;
+    if (this.overlap) {
+      if (this.hovered) {
+        marginRight = 41;
+        marginLeft = -9;
+      } else {
+        marginLeft = -50;
+      }
+    }
+    return {
+      'margin-left': marginLeft + 'px',
+      'margin-right': marginRight + 'px'
+    }
   }
 
 

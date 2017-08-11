@@ -31,6 +31,8 @@ export class RecordBarComponent implements OnInit {
   public getTip(event: SyncGameEvent): string {
     let name = this.isEnemy(event) ? 'Your opponent' : 'You';
     let card = this.getCard(event);
+    if (!card)
+      return '';
     let targetString = event.params.targetIds == null ? '' :
       ' targeting ' + event.params.targetIds.map((id) => this.game.getCardById(id)).map(card => card.getName())
         .join(' and ');

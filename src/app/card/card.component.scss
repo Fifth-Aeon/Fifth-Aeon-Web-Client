@@ -8,6 +8,11 @@
   font-family: serif;
 }
 
+.overlapped {
+  -webkit-transition: all 0.25s; /* Safari */
+  transition: all 0.25s; /* Safari */
+}
+
 .image-border {
   stroke: black;
   stroke-width: 1;

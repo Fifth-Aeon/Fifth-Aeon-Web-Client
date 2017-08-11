@@ -1,4 +1,4 @@
-<svg [class.darkened]="darkened" xmlns="http://www.w3.org/2000/svg" (mouseenter)="hovered=true" (mouseleave)="hovered=false"
+<svg [ngStyle]="getMargins()" [class.overlapped]="overlap" [class.darkened]="darkened" xmlns="http://www.w3.org/2000/svg" (mouseenter)="hovered=true" (mouseleave)="hovered=false"
   class="card" [attr.width]="x() + padding" [attr.height]="y() + padding"
   >
 
@@ -112,22 +112,22 @@
         xlink:href="assets/png/growth.png" 
         [attr.height]="y() * 0.10 - 5" 
         [attr.width]="y() * 0.10 - 5" 
-        [attr.x]="30 + i * 18" y="2.5" />
+        [attr.x]="(x() / 5) + (i * x() / 8)" y="2.5" />
         <image *ngSwitchCase="'S'"
         xlink:href="assets/png/synthesis.png" 
         [attr.height]="y() * 0.10 - 5" 
         [attr.width]="y() * 0.10 - 5" 
-        [attr.x]="30 + i * 18" y="2.5" />
+        [attr.x]="(x() / 5) + (i * x() / 8)" y="2.5" />
         <image *ngSwitchCase="'D'"
         xlink:href="assets/png/decay-icon.png" 
         [attr.height]="y() * 0.10 - 5" 
         [attr.width]="y() * 0.10 - 5" 
-        [attr.x]="30 + i * 18" y="2.5" />
+        [attr.x]="(x() / 5) + (i * x() / 8)" y="2.5" />
         <image *ngSwitchCase="'R'"
         xlink:href="assets/png/renewal.png" 
         [attr.height]="y() * 0.10 - 5" 
         [attr.width]="y() * 0.10 - 5" 
-        [attr.x]="30 + i * 18" y="2.5" />
+        [attr.x]="(x() / 5) + (i * x() / 8)" y="2.5" />
       </g>
     </g>
 

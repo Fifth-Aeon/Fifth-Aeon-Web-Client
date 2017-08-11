@@ -13,7 +13,10 @@
    sodipodi:docname="pope-crown.svg"
    width="1000"
    height="560"
-   inkscape:version="0.92.1 r15371">
+   inkscape:version="0.92.1 r15371"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\pope-crown.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240">
   <metadata
      id="metadata14">
     <rdf:RDF>
@@ -22,7 +25,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -40,19 +43,23 @@
      inkscape:window-width="3840"
      inkscape:window-height="2004"
      id="namedview10"
-     showgrid="false"
+     showgrid="true"
      inkscape:zoom="1.3037281"
-     inkscape:cx="746.90819"
+     inkscape:cx="515.64831"
      inkscape:cy="298.9305"
      inkscape:window-x="-16"
      inkscape:window-y="-16"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg8" />
+     inkscape:current-layer="svg8">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4484" />
+  </sodipodi:namedview>
   <path
-     d="M 0,0.00798299 H 1013.1525 V 560 H 0 Z"
+     d="M 0,0 H 1000 V 560 H 0 Z"
      id="path2"
      inkscape:connector-curvature="0"
-     style="fill:#f5c823;stroke-width:1.47115481" />
+     style="fill:#f8e71c;fill-opacity:1;stroke-width:1.46158493" />
   <g
      class=""
      id="g6"
