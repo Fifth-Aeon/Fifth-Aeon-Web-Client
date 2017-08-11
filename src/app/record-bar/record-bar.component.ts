@@ -31,11 +31,13 @@ export class RecordBarComponent implements OnInit {
   public getTip(event: SyncGameEvent): string {
     let name = this.isEnemy(event) ? 'Your opponent' : 'You';
     let card = this.getCard(event);
+    let targetString = '';
     if (!card)
       return '';
-    let targetString = event.params.targetIds == null ? '' :
-      ' targeting ' + event.params.targetIds.map((id) => this.game.getCardById(id)).map(card => card.getName())
-        .join(' and ');
+    if (event.params.targetIds != null) {
+      let targets = event.params.targetIds.map((id) => this.game.getCardById(id));
+      let targetString = ' targeting ' + targets.map(card => card ? card.getName() : 'unknown').join(' and ');
+    }
     let effectString = card.isUnit() ? '' : ` It has the effect "${card.getText()}"`;
     return `${name} played ${card.getName()}${targetString}.` + effectString;
   }

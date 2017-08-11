@@ -14,9 +14,7 @@ export class OverlayService {
   }
 
   public addBlocker(id: string, target: string) {
-
     this.blocks.push([id, target]);
-    console.log(this.blocks);
   }
 
   public removeBlocker(toRemove: string) {

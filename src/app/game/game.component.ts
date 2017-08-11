@@ -76,6 +76,7 @@ export class GameComponent implements OnInit {
     let dialogRef = this.dialog.open(CardChooserComponent, config);
     dialogRef.componentInstance.cards = cards;
     dialogRef.componentInstance.numberToPick = toPick;
+    dialogRef.componentInstance.setPage();
     dialogRef.afterClosed().subscribe(result => {
       if (callback) {
         callback(result);
@@ -133,8 +134,8 @@ export class GameComponent implements OnInit {
     if (!card.isPlayable(this.game))
       return;
     let targeter = card.getTargeter();
-    if (!targeter.needsInput()) {
-      this.client.playCard(card);
+    if (!targeter.needsInput() || this.selected == card && targeter.optional()) {
+      this.client.playCard(card, []);
       this.selected = null;
     } else {
       this.selected = card;
