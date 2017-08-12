@@ -109,17 +109,22 @@ export class WebClient {
     }
 
     public addBlockOverlay(blocker: string, blocked: string) {
+        if (blocked == null) {
+            this.overlay.removeBlocker(blocker);
+            return;
+        }
         if (this.game.getUnitById(blocker).getBlockedUnitId() != null)
             this.overlay.removeBlocker(blocker);
         this.overlay.addBlocker(blocker, blocked);
     }
 
-    public declareBlocker(blocker: Unit, blocked: Unit) {
-        this.addBlockOverlay(blocker.getId(), blocked.getId());
-        blocker.setBlocking(blocked.getId());
+    public declareBlocker(blocker: Unit, blocked: Unit | null) {
+        let blockedId = blocked ? blocked.getId() : null;
+        this.addBlockOverlay(blocker.getId(), blockedId);
+        blocker.setBlocking(blockedId);
         this.sendGameAction(GameActionType.declareBlockers, {
             blockerId: blocker.getId(),
-            blockedId: blocked.getId()
+            blockedId: blockedId
         });
     }
 

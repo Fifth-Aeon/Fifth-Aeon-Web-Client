@@ -214,7 +214,11 @@ export class GameComponent implements OnInit {
         this.tips.announce('You may only attack once each turn. All units attack at the same time.')
       }
     } else if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.combat) {
-      this.blocker = unit;
+      if (this.blocker == unit) {
+        this.client.declareBlocker(unit, null);
+      } else {
+        this.blocker = unit;
+      }
     }
   }
 
