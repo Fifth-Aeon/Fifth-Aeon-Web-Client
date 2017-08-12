@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { MdDialogRef, MdDialog, MdDialogConfig, MdIconRegistry } from '@angular/material';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { remove } from 'lodash';
 
@@ -10,15 +11,35 @@ import { CardChooserComponent } from '../card-chooser/card-chooser.component';
 import { WebClient, ClientState } from '../client';
 import { Game, GamePhase } from '../game_model/game';
 import { Player } from '../game_model/player';
-import { Card } from '../game_model/card';
+import { Card, Location } from '../game_model/card';
 import { Unit } from '../game_model/unit';
 
-
+//Deck Hand Board Crypt
 @Component({
   selector: 'ccg-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss'],
-  entryComponents: [CardChooserComponent]
+  entryComponents: [CardChooserComponent],
+  animations: [
+    trigger('location', [
+      state('void', style({ opacity: 0, transform: 'translateX(0) scale(1)' })),
+      state('Board', style({ opacity: 1, transform: 'translateX(0) scale(1)' })),
+      state('Crypt', style({ opacity: 0, display: 'none', transform: 'translateX(0) scale(1)' })),
+      transition('* => void', [
+        animate('1.5s ease', style({
+          opacity: 0,
+          filter: 'brightness(0.1)',
+          transform: 'translateX(0) scale(0.5)'
+        }))
+      ]),
+      transition('void => Board', [
+        animate('1.0s ease', style({
+          opacity: 1,
+          transform: 'translateX(0) scale(0.5)'
+        }))
+      ])
+    ])
+  ]
 })
 export class GameComponent implements OnInit {
   public game: Game;
@@ -26,6 +47,7 @@ export class GameComponent implements OnInit {
   public playerNo: number;
   public enemy: Player;
   public enemyNo: number;
+  public locations = Location;
 
   constructor(public client: WebClient, public dialog: MdDialog,
     private hotkeys: HotkeysService, public overlay: OverlayService,
@@ -47,6 +69,11 @@ export class GameComponent implements OnInit {
   public exit() {
     this.client.exitGame();
     return null;
+  }
+
+  public locationState(card:Card) {
+    console.log(card, Location[card.getLocation()])
+    return Location[card.getLocation()];
   }
 
   private addHotkeys() {
