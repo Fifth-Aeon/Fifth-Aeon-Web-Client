@@ -17,6 +17,7 @@ export class SoundManager {
     private music: Howl;
     private muted: boolean = false;
     private onDone: Array<() => void> = [];
+    private musicVolume = 0.1;
 
     constructor(hotkeys: HotkeysService) {
         this.addSound('gong', new Howl({ src: ['assets/mp3/gong.mp3'], volume: 1.5 }));
@@ -24,7 +25,6 @@ export class SoundManager {
         this.addSound('attack', new Howl({ src: ['assets/mp3/attack.mp3'] }));
         this.setMusic(new Howl({
             src: ['assets/mp3/crunk-knight.mp3'],
-            volume: 0.1
         }));
         this.muted = (localStorage.getItem(localStorageMuteKey) || 'false') == 'true';
         this.global.mute(this.muted);
@@ -33,8 +33,19 @@ export class SoundManager {
             this.toggleMute();
             return false; // Prevent bubbling
         }, [], 'Mute/Unmute'));
-
     }
+
+    public speak(text: string) {
+        if (!this.muted) {            
+            let msg = new SpeechSynthesisUtterance(text);
+            this.music.volume(this.musicVolume / 4);
+            speechSynthesis.speak(msg);
+            msg.onend = () => {
+                this.music.volume(this.musicVolume);                
+            }
+        }
+    }
+
     public doWhenDonePlaying(callback: () => void) {
         if (this.muted || !this.isPlaying) {
             callback();
@@ -57,8 +68,10 @@ export class SoundManager {
         this.music = sound;
         this.music.load();
         this.music.once("load", () => {
+            
             this.music.loop(true);
             this.music.play();
+            this.music.volume(this.musicVolume);
         })
     }
 

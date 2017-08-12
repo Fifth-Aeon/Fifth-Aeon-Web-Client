@@ -12,6 +12,7 @@ import { Card } from './game_model/card';
 import { Unit } from './game_model/unit';
 import { EndDialogComponent } from './end-dialog/end-dialog.component';
 import { OverlayService } from './overlay.service';
+import { TipService, TipType } from './tips';
 
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { every } from 'lodash'
@@ -45,7 +46,7 @@ export class WebClient {
 
     private onError: (error: string) => void = () => null;
 
-    constructor(private soundManager: SoundManager, private snackbar: MdSnackBar,
+    constructor(private soundManager: SoundManager, private tips: TipService,
         private router: Router, private zone: NgZone, private sanitizer: DomSanitizer,
         preloader: Preloader, public dialog: MdDialog, private overlay: OverlayService) {
         this.game = new Game(new GameFormat(), true);
@@ -59,7 +60,10 @@ export class WebClient {
         this.messenger.addHandeler(MessageType.QueueJoined, (msg) => this.changeState(ClientState.InQueue), this)
         this.messenger.addHandeler(MessageType.PrivateGameReady, (msg) => this.privateGameReady(msg), this)
         this.messenger.connectChange = (status) => zone.run(() => this.connected = status);
+
+        this.tips.playTip(TipType.StartGame);
     }
+
 
 
     // Game Actions -------------------------
@@ -69,6 +73,7 @@ export class WebClient {
             card.getTargeter().setTarget(targets);
         this.game.playCard(this.game.getPlayer(this.playerNumber), card);
         this.sendGameAction(GameActionType.playCard, { id: card.getId(), targetIds: targetIds })
+        this.tips.playCardTrigger(card, this.game);
     }
 
     public makeChoice(cards: Card[]) {
@@ -123,12 +128,12 @@ export class WebClient {
     }
 
     // Misc --------------------
-    private onLogin(loginData: {username: string, token: string, deckList: string}) {
+    private onLogin(loginData: { username: string, token: string, deckList: string }) {
         this.changeState(ClientState.InLobby);
         this.username = loginData.username;
         this.deck = new DeckList(new GameFormat());
         this.deck.fromJson(loginData.deckList);
-        
+
         if (this.toJoin) {
             this.joinPrivateGame(this.toJoin);
         }
@@ -258,6 +263,11 @@ export class WebClient {
         console.log('event', GameEventType[event.type]);
         this.zone.run(() => this.game.syncServerEvent(this.playerNumber, event));
         switch (event.type) {
+            case GameEventType.turnStart:
+                if (event.params.turn != this.playerNumber)
+                    return;
+                this.tips.turnStartTrigger(this.game, this.playerNumber);
+                break;
             case GameEventType.attackToggled:
                 this.soundManager.playSound('attack');
                 break;
@@ -266,6 +276,8 @@ export class WebClient {
                 this.soundManager.playSound('attack');
                 break;
             case GameEventType.phaseChange:
+                if (event.params.phase === GamePhase.combat)
+                    this.tips.blockPhaseTrigger(this.game, this.playerNumber);
                 if (event.params.phase === GamePhase.play2)
                     this.overlay.clearBlockers();
                 break;
@@ -275,6 +287,9 @@ export class WebClient {
             case GameEventType.Ended:
                 this.openEndDialog(event.params.winner, event.params.quit);
                 break
+            case GameEventType.playResource:
+                this.tips.playResourceTrigger(this.game, this.playerNumber);
+                break;
         }
     }
 

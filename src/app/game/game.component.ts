@@ -5,6 +5,7 @@ import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { remove } from 'lodash';
 
 import { OverlayService } from '../overlay.service';
+import { TipService, TipType } from '../tips';
 import { CardChooserComponent } from '../card-chooser/card-chooser.component';
 import { WebClient, ClientState } from '../client';
 import { Game, GamePhase } from '../game_model/game';
@@ -27,7 +28,8 @@ export class GameComponent implements OnInit {
   public enemyNo: number;
 
   constructor(public client: WebClient, public dialog: MdDialog,
-    private hotkeys: HotkeysService, public overlay:OverlayService) {
+    private hotkeys: HotkeysService, public overlay: OverlayService,
+    private tips: TipService) {
     this.game = client.getGame();
     this.player = this.game.getPlayer(client.getPlayerdata().me);
     this.enemy = this.game.getPlayer(client.getPlayerdata().op);
@@ -35,6 +37,7 @@ export class GameComponent implements OnInit {
     this.enemyNo = client.getPlayerdata().op;
 
     this.game.promptCardChoice = this.openCardChooser.bind(this);
+
 
     this.addHotkeys();
   }
@@ -49,11 +52,11 @@ export class GameComponent implements OnInit {
   private addHotkeys() {
     this.hotkeys.add(new Hotkey('space', (event: KeyboardEvent): boolean => {
       this.pass();
-      return false; // Prevent bubblingf
+      return false;
     }, [], 'Pass'));
     this.hotkeys.add(new Hotkey('a', (event: KeyboardEvent): boolean => {
       this.client.attackWithAll();
-      return false; // Prevent bubblingf
+      return false;
     }, [], 'Attack with all'));
   }
 
@@ -128,18 +131,38 @@ export class GameComponent implements OnInit {
     }
   }
 
+  private whyUnplayable(card: Card): string {
+    if (this.game.getCurrentPlayer().getPlayerNumber() != this.playerNo) {
+      return `You can only play cards on your own turn.`;
+    } else if (!this.player.getPool().meetsReq(card.getCost())) {
+      let diff = card.getCost().difference(this.player.getPool());
+      return `You need ${diff.map(diff => diff.diff + ' more ' + diff.name).join(' and ')} to play ${
+        card.getName().replace(/\./g, '')}.`;
+    } else {
+      return `Your board is too full to play a unit.`;
+    }
+  }
+
   public selected: Card = null;
   public validTargets: Set<Unit> = new Set();
   public select(card: Card) {
-    if (!card.isPlayable(this.game))
+    if (!card.isPlayable(this.game)) {
+      this.tips.announce(this.whyUnplayable(card));
       return;
+    }
     let targeter = card.getTargeter();
     if (!targeter.needsInput() || this.selected == card && targeter.optional()) {
       this.client.playCard(card, []);
       this.selected = null;
     } else {
       this.selected = card;
-      this.validTargets = new Set(this.selected.getTargeter().getValidTargets(card, this.game));
+      let targeter = this.selected.getTargeter();
+      this.validTargets = new Set(targeter.getValidTargets(card, this.game));
+      if (targeter.optional())
+        this.tips.playTip(TipType.OptionalTarget);
+      else
+        this.tips.playTip(TipType.NeedsTarget);
+
     }
   }
 
@@ -166,16 +189,30 @@ export class GameComponent implements OnInit {
     }
   }
 
+  private whyCantAttack(unit: Unit): string {
+    if (!unit.isReady())
+      return 'Units cannot attack the turn they are played.';
+    if (unit.isExausted())
+      return 'Exausted units cannot attack.';
+    return 'That unit cannot attack due to a special effect';
+  }
+
   public blocker: Unit;
   public activate(card: Card) {
     let unit = card as Unit;
     let phase = this.game.getPhase();
     if (this.canPlayTargeting(unit)) {
       this.playTargeting(unit);
-    } else if (this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.play1) {
-      if (!this.game.playerCanAttack(this.playerNo) && unit.canAttack())
-        return;
-      this.client.toggleAttacker(unit);
+    } else if (this.game.isPlayerTurn(this.playerNo)) {
+      if (phase == GamePhase.play1) {
+        if (!(this.game.playerCanAttack(this.playerNo) && unit.canAttack())) {
+          this.tips.announce(this.whyCantAttack(unit));
+          return;
+        }
+        this.client.toggleAttacker(unit);
+      } else {
+        this.tips.announce('You may only attack once each turn. All units attack at the same time.')
+      }
     } else if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.combat) {
       this.blocker = unit;
     }

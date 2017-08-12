@@ -11,6 +11,7 @@ import { SoundManager } from './sound';
 import { WebClient } from './client';
 import { Preloader } from './preloader';
 import { OverlayService } from './overlay.service';
+import { TipService } from './tips';
 
 import { AppComponent } from './app.component';
 import { GameComponent } from './game/game.component';
@@ -69,7 +70,7 @@ import { DeckEditorComponent } from './deck-editor/deck-editor.component';
       { path: '**', component: LobbyComponent }
     ])
   ],
-  providers: [SoundManager, WebClient, OverlayService, Preloader, InPlayGuard, LoggedInGuard],
+  providers: [SoundManager, WebClient, OverlayService, TipService, Preloader, InPlayGuard, LoggedInGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
