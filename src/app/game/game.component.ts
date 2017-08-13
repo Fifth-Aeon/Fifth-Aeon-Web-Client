@@ -22,20 +22,31 @@ import { Unit } from '../game_model/unit';
   entryComponents: [CardChooserComponent],
   animations: [
     trigger('location', [
-      state('void', style({ opacity: 0, transform: 'translateX(0) scale(1)' })),
-      state('Board', style({ opacity: 1, transform: 'translateX(0) scale(1)' })),
-      state('Crypt', style({ opacity: 0, display: 'none', transform: 'translateX(0) scale(1)' })),
+      state('void', style({ opacity: 0})),
       transition('* => void', [
         animate('1.5s ease', style({
           opacity: 0,
-          filter: 'brightness(0.1)',
-          transform: 'translateX(0) scale(0.5)'
+          filter: 'brightness(0)',
         }))
       ]),
       transition('void => Board', [
         animate('1.0s ease', style({
           opacity: 1,
-          transform: 'translateX(0) scale(0.5)'
+        }))
+      ])
+    ]),
+    trigger('inHand', [
+      state('in', style({transform: 'translateY(0)'})),
+      transition(':enter', [
+        animate('0.5s ease', style({
+          opacity: 1,
+          transform: 'translateY(-100%)'
+        }))
+      ]),
+      transition(':leave', [
+        animate('0.5s ease', style({
+          opacity: 0,
+          transform: 'translateY(100%)'
         }))
       ])
     ])
@@ -71,8 +82,11 @@ export class GameComponent implements OnInit {
     return null;
   }
 
+  public  isInHand(card:Card) {
+    return card.getLocation() == Location.Hand ? 'in' : 'teal';
+  }
+
   public locationState(card:Card) {
-    console.log(card, Location[card.getLocation()])
     return Location[card.getLocation()];
   }
 
