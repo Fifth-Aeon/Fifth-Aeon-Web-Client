@@ -1,0 +1,12 @@
+<svg class="resource-display">
+
+    <text class="resource-text" [attr.x]="0" [attr.y]="(iconSize + 40) / 2" text-anchor="mid">
+      {{resource.getNumeric()}}/{{resource.getMaxNumeric()}}</text>
+  <g *ngFor="let type of resourceTypes; let i = index" attr.transform="translate({{60 + (iconSize + padding) * i}} 0)" >
+    <image [attr.xlink:href]="type.icon" [attr.height]="iconSize" [attr.width]="iconSize" />
+    <text class="resource-text" [attr.x]="iconSize / 2 - 5" [attr.y]="iconSize + 20" text-anchor="mid">
+      {{resource.getOfType(type.name)}}</text>
+  </g>
+
+
+</svg>

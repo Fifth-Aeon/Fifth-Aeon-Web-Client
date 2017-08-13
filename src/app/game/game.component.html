@@ -1,9 +1,12 @@
 <ccg-record-bar [playerNo]="playerNo" [game]="game"></ccg-record-bar>
 <div class="game-area">
   <div class="info-bar">
-    <p class="info-text">{{client.getOpponentUsername()}} Life: {{enemy.getLife()}} Cards: {{enemy.getHand().length}} Res: {{enemy.resource.asPool()}}</p>
+    <p class="info-text">{{client.getOpponentUsername()}} Life: {{enemy.getLife()}} Cards: {{enemy.getHand().length}}</p>
     <button mdTooltipPosition="below" mdTooltip="View enemy crypt." color="primary" class="crypt-button" (click)="viewCrypt(enemyNo)"
       md-mini-fab><md-icon svgIcon="ccg:tombstone"></md-icon></button>
+
+      <ccg-resource-display [resource]="enemy.getPool()"></ccg-resource-display>
+      
   </div>
 
   <svg class="overlay">
@@ -34,16 +37,17 @@
 
   <div class="info-bar">
     <ccg-resource-selector [canPlayResource]="canPlayResource()"></ccg-resource-selector>
-    <p class="info-text">{{client.getUsername()}} Life: {{player.getLife()}} Cards: {{player.getHand().length}} Res: {{player.resource.asPool()}}
+    <p class="info-text">{{client.getUsername()}} Life: {{player.getLife()}} Cards: {{player.getHand().length}}
     </p>
 
     <button color="primary" mdTooltipPosition="above" mdTooltip="View your crypt." class="crypt-button" (click)="viewCrypt(playerNo)"
       md-mini-fab><md-icon svgIcon="ccg:tombstone"></md-icon></button>
 
-    <!--<ccg-player-avatar></ccg-player-avatar>-->
     <button [disabled]="passDisabled()" md-raised-button color="primary" class="pass-button" (click)="pass()">{{getPassText()}}</button>
+    
+    <ccg-resource-display [resource]="player.getPool()"></ccg-resource-display>
 
-
+    <!--<ccg-player-avatar></ccg-player-avatar>-->
   </div>
 
   <!-- Player Hand -->

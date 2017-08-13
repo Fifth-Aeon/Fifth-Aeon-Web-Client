@@ -34,6 +34,7 @@ import { CardChooserComponent } from './card-chooser/card-chooser.component';
 import { RecordBarComponent } from './record-bar/record-bar.component';
 import { EndDialogComponent } from './end-dialog/end-dialog.component';
 import { DeckEditorComponent } from './deck-editor/deck-editor.component';
+import { ResourceDisplayComponent } from './resource-display/resource-display.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { DeckEditorComponent } from './deck-editor/deck-editor.component';
     RecordBarComponent,
     EndDialogComponent,
     DeckEditorComponent,
+    ResourceDisplayComponent,
   ],
   entryComponents: [CardChooserComponent, EndDialogComponent],
   imports: [
