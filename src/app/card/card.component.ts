@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Card, Location } from '../game_model/card';
-import { UnitType } from '../game_model/unit';
+import { Unit, UnitType } from '../game_model/unit';
+
+import { allCards } from '../game_model/cards/allCards';
 
 import { OverlayService } from '../overlay.service';
 
@@ -23,9 +25,21 @@ keywordsDefs.set('Lethal', 'Kill any unit damaged by this unit.')
 keywordsDefs.set('Shielded', 'The first time this takes damage, negate that damage.')
 keywordsDefs.set('Relentless', 'Refreshes at the end of each turn.')
 
+const unitsDescs = new Map<string, string>();
+Array.from(allCards.values()).map(fact => fact())
+  .filter(card => card.isUnit())
+  .forEach(card => {
+    let unit = card as Unit;
+    let base = `${unit.getDamage()}/${unit.getLife()} ${UnitType[unit.getType()]}`;
+    if (unit.getText().length > 0)
+      base += ` with "${unit.getText()}"`
+    keywordsDefs.set(unit.getName(), base);
+  })
 
 const keywords = Array.from(keywordsDefs.keys());
 const keywordRegex = new RegExp(keywords.join('|'), 'gi');
+//const unitNames = Array.from(unitsDescs.keys());
+//const unitsRegex = new RegExp(unitNames.join('|'), 'gi');
 
 function toProperCase(str: string) {
   return str.replace(/\b\w/g, l => l.toUpperCase())
@@ -78,7 +92,7 @@ export class CardComponent implements OnInit {
     return text.replace(keywordRegex, '<b>$&</b>');
   }
 
-  public getKeywords() {
+  private getKeywords() {
     return Array.from(new Set(this.card.getText().match(keywordRegex)));
   }
 

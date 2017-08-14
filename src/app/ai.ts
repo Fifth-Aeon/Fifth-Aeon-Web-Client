@@ -51,6 +51,20 @@ export class BasicAI extends AI {
         this.eventHandlers.set(GameEventType.phaseChange, event => this.onPhaseChange(event.params));
     }
 
+    private getBestTarget(card: Card) {
+        let targets = card.getTargeter().getValidTargets(card, this.game);
+        return maxBy(targets, target => card.evaluateTarget(target));
+    }
+
+    private evaluateCard(card: Card) {
+        let score = 0;
+        if (card.getTargeter().needsInput()) {
+            let best = this.getBestTarget(card);
+            score += card.evaluateTarget(best);
+        }
+        return score + card.evaluate();
+    }
+
     private makeChoice(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null) {
         let choice = sampleSize(cards, toPick);
         if (callback) callback(choice);
@@ -76,9 +90,14 @@ export class BasicAI extends AI {
 
     private selectCardToPlay() {
         let playable = this.aiPlayer.getHand().filter(card => card.isPlayable(this.game));
-        let units = playable.filter(card => card.isUnit()) as Unit[];
-        if (units.length > 0) {
-            this.playCard(sample(units));
+        if (playable.length > 0) {
+            //console.log('eval', playable.map(card => 
+                //card.getName() + ' ' + this.evaluateCard(card)).join(' | '))
+            let toPlay = maxBy(playable, card => this.evaluateCard(card));
+            if (toPlay.getTargeter().needsInput())
+                this.playCard(toPlay, [this.getBestTarget(toPlay)]);
+            else
+                this.playCard(toPlay);
             this.selectCardToPlay();
         }
     }

@@ -180,8 +180,10 @@ export class GameComponent implements OnInit {
       let diff = card.getCost().difference(this.player.getPool());
       return `You need ${diff.map(diff => diff.diff + ' more ' + diff.name).join(' and ')} to play ${
         card.getName().replace(/\./g, '')}.`;
-    } else {
+    } else if (card.isUnit() && !this.game.getBoard().canPlayUnit(card as Unit)) {
       return `Your board is too full to play a unit.`;
+    } else {
+      return `There are no valid targets for ${card.getName()}.`
     }
   }
 
