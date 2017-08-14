@@ -5,12 +5,12 @@
     <button mdTooltipPosition="below" mdTooltip="View enemy crypt." color="primary" class="crypt-button" (click)="viewCrypt(enemyNo)"
       md-mini-fab><md-icon svgIcon="ccg:tombstone"></md-icon></button>
 
-    <svg class="card-display">
+    <svg class="card-display" mdTooltip="Your opponent has {{enemy.getHand().length}} cards in hand.">
       <image width="50" height="50" xlink:href="assets/png/card.png" />
       <text x="25" y="35" text-anchor="middle" class="number-text">{{enemy.getHand().length}}</text>
     </svg>
 
-    <svg class="life-display">
+    <svg class="life-display" mdTooltip="Your opponent has {{enemy.getLife()}} life.">
       <image width="50" height="50" xlink:href="assets/png/hearts.png" />
       <text x="25" y="35" text-anchor="middle" class="number-text">{{enemy.getLife()}}</text>
     </svg>
@@ -50,12 +50,12 @@
     <button color="primary" mdTooltipPosition="above" mdTooltip="View your crypt." class="crypt-button" (click)="viewCrypt(playerNo)"
       md-mini-fab><md-icon svgIcon="ccg:tombstone"></md-icon></button>
 
-    <svg class="card-display">
+    <svg class="card-display"  mdTooltipPosition="above" mdTooltip="You have {{player.getHand().length}} cards in your hand.">
       <image width="50" height="50" xlink:href="assets/png/card.png" />
       <text x="25" y="35" text-anchor="middle" class="number-text">{{player.getHand().length}}</text>
     </svg>
 
-    <svg class="life-display">
+    <svg class="life-display" mdTooltipPosition="above"  mdTooltip="You have {{player.getLife()}} life.">
       <image width="50" height="50" xlink:href="assets/png/hearts.png" />
       <text x="25" y="35" text-anchor="middle" class="number-text">{{player.getLife()}}</text>
     </svg>
@@ -69,7 +69,7 @@
 
   <!-- Player Hand -->
   <div class="area hand">
-    <ccg-card scale="1.5" *ngFor="let card of player.hand" [@inHand]="isInHand(card)" overlap="true" [card]="card" [selected]="card == selected"
+    <ccg-card scale="1.5" *ngFor="let card of player.getHand()" [@inHand]="isInHand(card)" overlap="true" [card]="card" [selected]="card == selected"
       [darkened]="!card.isPlayable(game)" (click)="select(card)"></ccg-card>
   </div>
 </div>

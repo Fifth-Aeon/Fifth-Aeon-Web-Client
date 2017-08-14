@@ -103,9 +103,9 @@
       <image  [attr.xlink:href]="getImage()" [attr.width]="x()" [attr.height]="y() * 0.4" class="card-image image-border" />
     </g>
 
-    <g mdTooltip="{{card.getName()}} {{card.cost.asSentance()}}." mdTooltipShowDelay="400" mdTooltipPosition="above" >
+    <g mdTooltip="{{card.getName()}} {{card.getCost().asSentance()}}." mdTooltipShowDelay="400" mdTooltipPosition="above" >
       <circle cx="10" [attr.cy]="y() * 0.10 / 2" r="17.5" fill="royalblue" stroke="black" stroke-width="1" />
-      <text class="buble-text" [attr.y]="y() * 0.10 / 2 + 7.5" [attr.x]="10" text-anchor="middle">{{card.cost.getNumeric()}}</text>
+      <text class="buble-text" [attr.y]="y() * 0.10 / 2 + 7.5" [attr.x]="10" text-anchor="middle">{{card.getCost().getNumeric()}}</text>
 
       <g *ngFor="let type of card.getCost().getTyped(); let i = index" [ngSwitch]="type" >
         <image *ngSwitchCase="'G'"

@@ -11,7 +11,7 @@ export class CardChooserComponent {
   public cards: Array<Card>;
   public pageCards: Array<Card>;
   public numberToPick: number = 1;
-  public skipable: boolean = true;
+  public skippable: boolean = true;
   public selected: Set<Card> = new Set();
   public pageNumber: number = 0;
   private pageSize: number = 5;
