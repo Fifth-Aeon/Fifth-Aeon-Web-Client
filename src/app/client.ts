@@ -1,15 +1,16 @@
 import { Game, GameAction, SyncGameEvent, GameActionType, GameEventType, GamePhase } from './game_model/game';
 import { data } from './game_model/gameData';
-import { GameFormat } from './game_model/gameFormat';
-
+import { GameFormat, standardFormat } from './game_model/gameFormat';
+import { Card } from './game_model/card';
+import { Unit } from './game_model/unit';
 import { DeckList } from './game_model/deckList';
+
 import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
 import { Preloader } from './preloader';
 import { getHttpUrl } from './url';
+import { AI, BasicAI } from './ai';
 
-import { Card } from './game_model/card';
-import { Unit } from './game_model/unit';
 import { EndDialogComponent } from './end-dialog/end-dialog.component';
 import { OverlayService } from './overlay.service';
 import { TipService, TipType } from './tips';
@@ -31,7 +32,7 @@ export enum ClientState {
 export class WebClient {
     private username: string;
     private opponentUsername: string;
-    private deck: DeckList;
+    private deck: DeckList = new DeckList(standardFormat);
 
     private messenger: Messenger;
     private gameId: string = null;
@@ -49,7 +50,7 @@ export class WebClient {
     constructor(private soundManager: SoundManager, private tips: TipService,
         private router: Router, private zone: NgZone, private sanitizer: DomSanitizer,
         preloader: Preloader, public dialog: MdDialog, private overlay: OverlayService) {
-        this.game = new Game(new GameFormat(), true);
+        this.game = new Game(standardFormat, true);
         this.playerNumber = 0;
         this.messenger = new Messenger();
 
@@ -63,8 +64,6 @@ export class WebClient {
 
         this.tips.playTip(TipType.StartGame);
     }
-
-
 
     // Game Actions -------------------------
     public playCard(card: Card, targets?: Unit[]) {
@@ -90,32 +89,9 @@ export class WebClient {
         this.sendGameAction(GameActionType.playResource, { type: type });
     }
 
-    public attackWithAll() {
-        if (this.playerNumber != this.game.getCurrentPlayer().getPlayerNumber())
-            return;
-        let potential = this.game.getCurrentPlayerUnits().filter(unit => unit.canAttack());
-        if (every(potential, unit => unit.isAttacking())) {
-            potential.forEach(unit => this.toggleAttacker(unit))
-        } else {
-            potential.forEach(unit => {
-                if (!unit.isAttacking()) this.toggleAttacker(unit)
-            })
-        }
-    }
-
     public toggleAttacker(unit: Unit) {
         unit.toggleAttacking();
         this.sendGameAction(GameActionType.toggleAttack, { unitId: unit.getId() });
-    }
-
-    public addBlockOverlay(blocker: string, blocked: string) {
-        if (blocked == null) {
-            this.overlay.removeBlocker(blocker);
-            return;
-        }
-        if (this.game.getUnitById(blocker).getBlockedUnitId() != null)
-            this.overlay.removeBlocker(blocker);
-        this.overlay.addBlocker(blocker, blocked);
     }
 
     public declareBlocker(blocker: Unit, blocked: Unit | null) {
@@ -128,19 +104,42 @@ export class WebClient {
         });
     }
 
-    public isLoggedIn() {
-        return !(this.state == ClientState.UnAuth);
-    }
-
     // Misc --------------------
     private onLogin(loginData: { username: string, token: string, deckList: string }) {
         this.changeState(ClientState.InLobby);
         this.username = loginData.username;
-        this.deck = new DeckList(new GameFormat());
+        this.deck = new DeckList(standardFormat);
         this.deck.fromJson(loginData.deckList);
 
         if (this.toJoin) {
             this.joinPrivateGame(this.toJoin);
+        }
+    }
+
+    public isLoggedIn() {
+        return !(this.state == ClientState.UnAuth);
+    }
+
+    public addBlockOverlay(blocker: string, blocked: string) {
+        if (blocked == null) {
+            this.overlay.removeBlocker(blocker);
+            return;
+        }
+        if (this.game.getUnitById(blocker).getBlockedUnitId() != null)
+            this.overlay.removeBlocker(blocker);
+        this.overlay.addBlocker(blocker, blocked);
+    }
+
+    public attackWithAll() {
+        if (this.playerNumber != this.game.getCurrentPlayer().getPlayerNumber())
+            return;
+        let potential = this.game.getCurrentPlayerUnits().filter(unit => unit.canAttack());
+        if (every(potential, unit => unit.isAttacking())) {
+            potential.forEach(unit => this.toggleAttacker(unit))
+        } else {
+            potential.forEach(unit => {
+                if (!unit.isAttacking()) this.toggleAttacker(unit)
+            })
         }
     }
 
@@ -222,7 +221,7 @@ export class WebClient {
 
     public exitGame() {
         this.sendGameAction(GameActionType.Quit, {});
-        this.game = new Game(new GameFormat(), true);
+        this.game = new Game(standardFormat, true);
         this.playerNumber = 0;
         this.changeState(ClientState.InLobby);
         this.router.navigate(['/lobby']);
@@ -251,7 +250,22 @@ export class WebClient {
         return this.state == ClientState.InGame;
     }
 
+    private sendEventsToAi(events: SyncGameEvent[]) {
+        for (let event of events) {
+            this.handleGameEvent(event);
+            this.ai.handleGameEvent(event);
+        }
+    }
+
     private sendGameAction(type: GameActionType, params: any, isAi: boolean = false) {
+        if (this.ai) {
+            this.sendEventsToAi(this.gameModel.handleAction({
+                type: type,
+                player: isAi ? 1 : 0,
+                params: params
+            }));
+            return;
+        }
         this.messenger.sendMessageToServer(MessageType.GameAction, {
             type: type,
             params: params
@@ -357,11 +371,9 @@ export class WebClient {
         this.gameId = msg.data.gameId;
         this.playerNumber = msg.data.playerNumber;
         this.opponentNumber = 1 - this.playerNumber;
-        this.game = new Game(new GameFormat(), true);
+        this.game = new Game(standardFormat, true);
         this.router.navigate(['/game']);
-
         this.soundManager.playSound('gong');
-
         this.zone.run(() => {
             this.opponentUsername = msg.data.opponent;
             this.state = ClientState.InGame;
@@ -369,4 +381,28 @@ export class WebClient {
     }
 
 
+    // AI stuff ------------------------------------
+    private gameModel: Game;
+    private ai: AI;
+    public startAIGame() {
+        this.playerNumber = 0;
+        this.opponentNumber = 1;
+        this.game = new Game(standardFormat, true);
+        this.gameModel = new Game(standardFormat, false, [this.deck, new DeckList(standardFormat)]);
+        let aiModel = new Game(standardFormat, true);
+
+        let aiAction = (type: GameActionType, params: any) => {
+            console.log('ai action', GameActionType[type], params);
+            this.sendGameAction(type, params, true)
+        };
+        let delay = (cb: () => void) => this.soundManager.doWhenDonePlaying(cb);
+        this.ai = new BasicAI(1, aiModel, aiAction);
+
+        this.router.navigate(['/game']);
+        this.zone.run(() => {
+            this.opponentUsername = 'A.I';
+            this.state = ClientState.InGame;
+            this.sendEventsToAi(this.gameModel.startGame());
+        });
+    }
 }

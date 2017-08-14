@@ -21,9 +21,9 @@
     <button md-raised-button color="primary" (click)="client.deckEditor()"><md-icon svgIcon="ccg:deck"></md-icon> Edit Deck</button>
   </div>
 
-<!--
   <div *ngIf="getState() === state.InLobby">
-    <button md-raised-button color="primary" (click)="client.startAIGame(difficulty)"><md-icon>adb</md-icon><span> Play vs AI </span></button>
+    <button md-raised-button color="primary" (click)="client.startAIGame()"><md-icon>adb</md-icon><span> Play vs A.I </span></button>
+    <!--
     <div>
       <md-radio-group [(ngModel)]="difficulty">
         <md-radio-button *ngFor="let d of [diffs.Easy, diffs.Medium, diffs.Hard]" [value]="d">
@@ -31,6 +31,7 @@
         </md-radio-button>
       </md-radio-group>
     </div>
-  </div>
   -->
+  </div>
+
 </div>
