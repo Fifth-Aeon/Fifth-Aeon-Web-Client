@@ -2,8 +2,22 @@
 @import '~https://fonts.googleapis.com/icon?family=Material+Icons';
 
 /* You can add global styles to this file, and also import other style files */
+
 body {
-    margin: 0px;
+  margin: 0px;
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
 
 .instructions {
@@ -18,11 +32,26 @@ md-progress-spinner {
   white-space: pre-line !important;
 }
 
-
 .number-text {
   font-family: "Impact";
   fill: white;
   stroke: black;
   stroke-width: 0.75;
   font-size: 25px;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
