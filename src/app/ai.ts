@@ -5,7 +5,7 @@ import { Card } from './game_model/card';
 import { Unit } from './game_model/unit';
 
 import * as randomJs from 'random-js';
-import { minBy, sample, maxBy } from 'lodash';
+import { minBy, sample, sampleSize, maxBy } from 'lodash';
 const rng = new randomJs();
 
 export enum AiDifficulty {
@@ -46,8 +46,15 @@ export class BasicAI extends AI {
         this.aiPlayer = this.game.getPlayer(this.playerNumber);
         this.enemyNumber = this.game.getOtherPlayerNumber(this.playerNumber);
 
+        this.game.promptCardChoice = this.makeChoice.bind(this);
         this.eventHandlers.set(GameEventType.turnStart, event => this.onTurnStart(event.params));
         this.eventHandlers.set(GameEventType.phaseChange, event => this.onPhaseChange(event.params));
+    }
+
+    private makeChoice(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null) {
+        let choice = sampleSize(cards, toPick);
+        if (callback) callback(choice);
+        this.runGameAction(GameActionType.CardChoice, { choice: choice.map(card => card.getId()) });
     }
 
     public handleGameEvent(event: SyncGameEvent) {
@@ -61,9 +68,10 @@ export class BasicAI extends AI {
         if (this.playerNumber !== params.turn)
             return;
         this.playResource();
-        this.attack();
-        this.selectCardToPlay();
-        this.pass();
+        if (!this.attack()) {
+            this.selectCardToPlay();
+            this.pass();
+        }
     }
 
     private selectCardToPlay() {
@@ -120,8 +128,11 @@ export class BasicAI extends AI {
                 attacked = true;
             }
         }
-        if (attacked) 
+        if (attacked) {
             this.delay(() => this.pass());
+            return true;
+        }
+        return false;
     }
 
     private canFavorablyBlock(attacker: Unit, blocker: Unit) {
