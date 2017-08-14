@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 512 512"
+   style="height: 512px; width: 512px;"
+   version="1.1"
+   id="svg21"
+   sodipodi:docname="hearts.svg"
+   inkscape:version="0.92.1 r15371"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\hearts.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240">
+  <metadata
+     id="metadata25">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2004"
+     id="namedview23"
+     showgrid="false"
+     inkscape:zoom="1.3037281"
+     inkscape:cx="243.33043"
+     inkscape:cy="209.65267"
+     inkscape:window-x="-16"
+     inkscape:window-y="-16"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg21" />
+  <defs
+     id="defs13">
+    <filter
+       id="shadow-1"
+       height="300%"
+       width="300%"
+       x="-100%"
+       y="-100%">
+      <feFlood
+         flood-color="#ba8888"
+         result="flood"
+         id="feFlood2" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="atop"
+         result="composite"
+         id="feComposite4" />
+      <feGaussianBlur
+         in="composite"
+         stdDeviation="30"
+         result="blur"
+         id="feGaussianBlur6" />
+      <feOffset
+         dx="0"
+         dy="0"
+         result="offset"
+         id="feOffset8" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         operator="over"
+         id="feComposite10" />
+    </filter>
+  </defs>
+  <g
+     class=""
+     transform="translate(1.4373419,21.494534)"
+     id="g19">
+    <path
+       d="m 480.25,156.355 c 0,161.24 -224.25,324.43 -224.25,324.43 0,0 -224.25,-163.19 -224.25,-324.43 0,-91.41 70.63,-125.13 107.77,-125.13 77.65,0 116.48,65.72 116.48,65.72 0,0 38.83,-65.73 116.48,-65.73 37.14,0.01 107.77,33.72 107.77,125.14 z"
+       transform="matrix(0.9,0,0,0.9,25.6,25.6)"
+       id="path17"
+       inkscape:connector-curvature="0"
+       style="fill:#bf0303;filter:url(#shadow-1)" />
+  </g>
+  <!-- react-empty: 6 -->
+</svg>

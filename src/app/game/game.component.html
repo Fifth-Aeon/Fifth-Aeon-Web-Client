@@ -1,12 +1,22 @@
 <ccg-record-bar [playerNo]="playerNo" [game]="game"></ccg-record-bar>
 <div class="game-area">
   <div class="info-bar">
-    <p class="info-text">{{client.getOpponentUsername()}} Life: {{enemy.getLife()}} Cards: {{enemy.getHand().length}}</p>
+    <p class="info-text">{{client.getOpponentUsername()}}</p>
     <button mdTooltipPosition="below" mdTooltip="View enemy crypt." color="primary" class="crypt-button" (click)="viewCrypt(enemyNo)"
       md-mini-fab><md-icon svgIcon="ccg:tombstone"></md-icon></button>
 
-      <ccg-resource-display [resource]="enemy.getPool()"></ccg-resource-display>
-      
+    <svg class="card-display">
+      <image width="50" height="50" xlink:href="assets/png/card.png" />
+      <text x="25" y="35" text-anchor="middle" class="number-text">{{enemy.getHand().length}}</text>
+    </svg>
+
+    <svg class="life-display">
+      <image width="50" height="50" xlink:href="assets/png/hearts.png" />
+      <text x="25" y="35" text-anchor="middle" class="number-text">{{enemy.getLife()}}</text>
+    </svg>
+
+    <ccg-resource-display [resource]="enemy.getPool()"></ccg-resource-display>
+
   </div>
 
   <svg class="overlay">
@@ -22,38 +32,44 @@
 
   <!-- Enemy Board -->
   <div class="area">
-    <ccg-card scale="1.5" *ngFor="let card of game.getBoard().getPlayerUnits(enemyNo)" 
-     [darkened]="card.isExausted()" [card]="card" [@location]="locationState(card)"
-      [target]="validTargets.has(card)" (click)="target(card)"></ccg-card>
+    <ccg-card scale="1.5" *ngFor="let card of game.getBoard().getPlayerUnits(enemyNo)" [darkened]="card.isExausted()" [card]="card"
+      [@location]="locationState(card)" [target]="validTargets.has(card)" (click)="target(card)"></ccg-card>
   </div>
 
   <!-- Player Board -->
   <div class="area">
-    <ccg-card scale="1.5" *ngFor="let card of game.getBoard().getPlayerUnits(playerNo)" 
-      [darkened]="card.isExausted()" [card]="card"   [@location]="locationState(card)"
-      [target]="validTargets.has(card)" [selected]="card == blocker" (click)="activate(card)">
+    <ccg-card scale="1.5" *ngFor="let card of game.getBoard().getPlayerUnits(playerNo)" [darkened]="card.isExausted()" [card]="card"
+      [@location]="locationState(card)" [target]="validTargets.has(card)" [selected]="card == blocker" (click)="activate(card)">
     </ccg-card>
   </div>
 
   <div class="info-bar">
     <ccg-resource-selector [canPlayResource]="canPlayResource()"></ccg-resource-selector>
-    <p class="info-text">{{client.getUsername()}} Life: {{player.getLife()}} Cards: {{player.getHand().length}}
-    </p>
+    <p class="info-text">{{client.getUsername()}} </p>
 
     <button color="primary" mdTooltipPosition="above" mdTooltip="View your crypt." class="crypt-button" (click)="viewCrypt(playerNo)"
       md-mini-fab><md-icon svgIcon="ccg:tombstone"></md-icon></button>
 
+    <svg class="card-display">
+      <image width="50" height="50" xlink:href="assets/png/card.png" />
+      <text x="25" y="35" text-anchor="middle" class="number-text">{{player.getHand().length}}</text>
+    </svg>
+
+    <svg class="life-display">
+      <image width="50" height="50" xlink:href="assets/png/hearts.png" />
+      <text x="25" y="35" text-anchor="middle" class="number-text">{{player.getLife()}}</text>
+    </svg>
+
     <button [disabled]="passDisabled()" md-raised-button color="primary" class="pass-button" (click)="pass()">{{getPassText()}}</button>
-    
+
     <ccg-resource-display [resource]="player.getPool()"></ccg-resource-display>
 
     <!--<ccg-player-avatar></ccg-player-avatar>-->
   </div>
 
   <!-- Player Hand -->
-  <div class="area hand"> 
-    <ccg-card scale="1.5" *ngFor="let card of player.hand" [@inHand]="isInHand(card)"
-      overlap="true" [card]="card" [selected]="card == selected" [darkened]="!card.isPlayable(game)"
-      (click)="select(card)"></ccg-card>
+  <div class="area hand">
+    <ccg-card scale="1.5" *ngFor="let card of player.hand" [@inHand]="isInHand(card)" overlap="true" [card]="card" [selected]="card == selected"
+      [darkened]="!card.isPlayable(game)" (click)="select(card)"></ccg-card>
   </div>
 </div>

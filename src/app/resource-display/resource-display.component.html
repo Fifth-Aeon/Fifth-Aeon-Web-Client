@@ -1,12 +1,11 @@
 <svg class="resource-display">
-
-    <text class="resource-text" [attr.x]="0" [attr.y]="(iconSize + 40) / 2" text-anchor="mid">
-      {{resource.getNumeric()}}/{{resource.getMaxNumeric()}}</text>
-  <g *ngFor="let type of resourceTypes; let i = index" attr.transform="translate({{60 + (iconSize + padding) * i}} 0)" >
+  <rect [attr.x]="0" [attr.y]="10" width="50" height="30" fill="royalblue"  rx="5" ry="5"  />
+  <text class="resource-text" [attr.x]="25" [attr.y]="(iconSize + 40) / 2" text-anchor="middle">
+    {{resource.getNumeric()}}/{{resource.getMaxNumeric()}}</text>
+  <g *ngFor="let type of resourceTypes; let i = index" attr.transform="translate({{60 + (iconSize + padding) * i}} 0)">
+    <rect [attr.width]="iconSize + padding/2" [attr.x]="-padding/4" [attr.height]="50" rx="5" ry="5" [attr.fill]="type.color" />
     <image [attr.xlink:href]="type.icon" [attr.height]="iconSize" [attr.width]="iconSize" />
-    <text class="resource-text" [attr.x]="iconSize / 2 - 5" [attr.y]="iconSize + 20" text-anchor="mid">
+    <text class="resource-text" [attr.x]="iconSize / 2 + 2" [attr.y]="iconSize + 20" text-anchor="middle">
       {{resource.getOfType(type.name)}}</text>
   </g>
-
-
 </svg>

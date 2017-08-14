@@ -69,6 +69,7 @@ export class GameComponent implements OnInit {
     this.playerNo = client.getPlayerdata().me;
     this.enemyNo = client.getPlayerdata().op;
 
+
     this.game.promptCardChoice = this.openCardChooser.bind(this);
 
 

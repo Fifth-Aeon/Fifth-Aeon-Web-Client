@@ -17,3 +17,12 @@ md-progress-spinner {
 .multiline {
   white-space: pre-line !important;
 }
+
+
+.number-text {
+  font-family: "Impact";
+  fill: white;
+  stroke: black;
+  stroke-width: 0.75;
+  font-size: 25px;
+}
