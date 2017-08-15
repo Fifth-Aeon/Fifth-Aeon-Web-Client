@@ -279,7 +279,7 @@ export class WebClient {
     }
 
     private handleGameEvent(event: SyncGameEvent) {
-        console.log('event', GameEventType[event.type]);
+        //console.log('event', GameEventType[event.type]);
         this.zone.run(() => this.game.syncServerEvent(this.playerNumber, event));
         switch (event.type) {
             case GameEventType.turnStart:
@@ -392,7 +392,7 @@ export class WebClient {
         let aiModel = new Game(standardFormat, true);
 
         let aiAction = (type: GameActionType, params: any) => {
-            console.log('ai action', GameActionType[type], params);
+            //console.log('ai action', GameActionType[type], params);
             this.sendGameAction(type, params, true)
         };
         let delay = (cb: () => void) => this.soundManager.doWhenDonePlaying(cb);
