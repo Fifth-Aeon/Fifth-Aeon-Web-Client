@@ -12,6 +12,10 @@ export class RecordBarComponent implements OnInit {
   @Input() game: Game;
   @Input() playerNo: number;
 
+  constructor() { }
+  
+  ngOnInit() {}
+  
   public getItems(arr: Array<any>) {
     return arr.slice(Math.max(arr.length - 10, 0)).reverse();
   }
@@ -34,9 +38,9 @@ export class RecordBarComponent implements OnInit {
     let targetString = '';
     if (!card)
       return '';
-    if (event.params.targetIds != null) {
+    if (event.params.targetIds != null && event.params.targetIds.length > 0) {
       let targets = event.params.targetIds.map((id) => this.game.getCardById(id));
-      let targetString = ' targeting ' + targets.map(card => card ? card.getName() : 'unknown').join(' and ');
+      targetString = ' targeting ' + targets.map(card => card ? card.getName() : 'unknown').join(' and ');
     }
     let effectString = card.isUnit() ? '' : ` It has the effect "${card.getText()}"`;
     return `${name} played ${card.getName()}${targetString}.` + effectString;
@@ -48,9 +52,6 @@ export class RecordBarComponent implements OnInit {
     return 'assets/png/' + card.getImage();
   }
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+ 
 
 }

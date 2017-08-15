@@ -94,6 +94,7 @@ export class BasicAI extends AI {
             console.log('eval', playable.map(card => 
                 card.getName() + ' ' + this.evaluateCard(card)).join(' | '))
             let toPlay = maxBy(playable, card => this.evaluateCard(card));
+            console.log('winner = ', toPlay.getName());
             if (toPlay.getTargeter().needsInput() && this.getBestTarget(toPlay))
                 this.playCard(toPlay, [this.getBestTarget(toPlay)]);
             else
@@ -104,6 +105,7 @@ export class BasicAI extends AI {
 
     public playCard(card: Card, targets: Unit[] = []) {
         let targetIds = targets.map(target => target.getId());
+        card.getTargeter().setTarget(targets);
         this.game.playCard(this.aiPlayer, card);
         this.runGameAction(GameActionType.playCard, { id: card.getId(), targetIds: targetIds });
     }

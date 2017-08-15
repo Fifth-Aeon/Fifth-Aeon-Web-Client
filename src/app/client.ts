@@ -66,10 +66,9 @@ export class WebClient {
     }
 
     // Game Actions -------------------------
-    public playCard(card: Card, targets?: Unit[]) {
-        let targetIds = targets ? targets.map(target => target.getId()) : null;
-        if (targets)
-            card.getTargeter().setTarget(targets);
+    public playCard(card: Card, targets: Unit[] = []) {
+        let targetIds = targets.map(target => target.getId());
+        card.getTargeter().setTarget(targets);
         this.game.playCard(this.game.getPlayer(this.playerNumber), card);
         this.sendGameAction(GameActionType.playCard, { id: card.getId(), targetIds: targetIds })
         this.tips.playCardTrigger(card, this.game);

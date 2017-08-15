@@ -2,6 +2,10 @@
   font-size: 2em;
 }
 
+h2 {
+  display: inline;
+}
+
 button {
   margin: 20px;
 }
@@ -9,11 +13,11 @@ button {
 md-progress-spinner {
   margin: 0 auto;
 }
+
 .lobby {
     width: 100%;
     text-align: center;
 }
-
 
 md-radio-button {
   margin:5px;

@@ -9,7 +9,7 @@ import { SoundManager } from '../sound';
 @Component({
   selector: 'ccg-lobby',
   templateUrl: './lobby.component.html',
-  styleUrls: ['./lobby.component.css']
+  styleUrls: ['./lobby.component.scss']
 })
 export class LobbyComponent implements OnInit {
   public state = ClientState;
