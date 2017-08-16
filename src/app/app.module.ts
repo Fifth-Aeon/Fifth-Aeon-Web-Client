@@ -22,7 +22,7 @@ import {
   MdButtonModule, MdRadioModule, MdIconModule,
   MdTooltipModule, MdSnackBarModule, MdToolbarModule,
   MdProgressSpinnerModule, MdDialogModule, MdListModule,
-  MdCardModule, MdSliderModule
+  MdCardModule, MdSliderModule, MdCheckboxModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LobbyComponent } from './lobby/lobby.component';
@@ -64,6 +64,7 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
     MdButtonModule, MdIconModule, MdToolbarModule, MdRadioModule,
     MdProgressSpinnerModule, MdTooltipModule, MdSnackBarModule,
     MdDialogModule, MdListModule, MdCardModule, MdSliderModule,
+    MdCheckboxModule,
     RouterModule.forRoot([
       { path: 'game', component: GameComponent, canActivate: [InPlayGuard] },
       { path: 'deck', component: DeckEditorComponent, canActivate: [LoggedInGuard] },

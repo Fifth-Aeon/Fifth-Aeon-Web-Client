@@ -15,7 +15,7 @@ export class SoundManager {
     private isPlaying: boolean = false;
     private delay: number = 100;
     private music: Howl;
-    private muted: boolean = false;
+    public muted: boolean = false;
     private onDone: Array<() => void> = [];
 
     //  Master, Music, Effects, Narrator

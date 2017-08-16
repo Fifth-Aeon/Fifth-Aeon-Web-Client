@@ -25,6 +25,8 @@ keywordsDefs.set('Lethal', 'Kill any unit damaged by this unit.')
 keywordsDefs.set('Shielded', 'The first time this takes damage, negate that damage.')
 keywordsDefs.set('Relentless', 'Refreshes at the end of each turn.')
 
+keywordsDefs.set('Statue', 'A 0/1 structure that cannot attack.')
+
 const unitsDescs = new Map<string, string>();
 Array.from(allCards.values()).map(fact => fact())
   .filter(card => card.isUnit())

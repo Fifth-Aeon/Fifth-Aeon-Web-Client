@@ -4,9 +4,7 @@ import { Player } from './game_model/player';
 import { Card } from './game_model/card';
 import { Unit } from './game_model/unit';
 
-import * as randomJs from 'random-js';
 import { minBy, sample, sampleSize, maxBy } from 'lodash';
-const rng = new randomJs();
 
 export enum AiDifficulty {
     Easy, Medium, Hard
@@ -67,8 +65,10 @@ export class BasicAI extends AI {
 
     private makeChoice(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null) {
         let choice = sampleSize(cards, toPick);
-        if (callback) callback(choice);
-        this.runGameAction(GameActionType.CardChoice, { choice: choice.map(card => card.getId()) });
+        if (callback) {
+            callback(choice);
+            this.runGameAction(GameActionType.CardChoice, { choice: choice.map(card => card.getId()) });
+        }
     }
 
     public handleGameEvent(event: SyncGameEvent) {
@@ -91,7 +91,7 @@ export class BasicAI extends AI {
     private selectCardToPlay() {
         let playable = this.aiPlayer.getHand().filter(card => card.isPlayable(this.game));
         if (playable.length > 0) {
-            console.log('eval', playable.map(card => 
+            console.log('eval', playable.map(card =>
                 card.getName() + ' ' + this.evaluateCard(card)).join(' | '))
             let toPlay = maxBy(playable, card => this.evaluateCard(card));
             console.log('winner = ', toPlay.getName());
