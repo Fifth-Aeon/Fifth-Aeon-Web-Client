@@ -22,7 +22,7 @@ import {
   MdButtonModule, MdRadioModule, MdIconModule,
   MdTooltipModule, MdSnackBarModule, MdToolbarModule,
   MdProgressSpinnerModule, MdDialogModule, MdListModule,
-  MdCardModule,
+  MdCardModule, MdSliderModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LobbyComponent } from './lobby/lobby.component';
@@ -35,6 +35,7 @@ import { RecordBarComponent } from './record-bar/record-bar.component';
 import { EndDialogComponent } from './end-dialog/end-dialog.component';
 import { DeckEditorComponent } from './deck-editor/deck-editor.component';
 import { ResourceDisplayComponent } from './resource-display/resource-display.component';
+import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 
 @NgModule({
   declarations: [
@@ -50,8 +51,9 @@ import { ResourceDisplayComponent } from './resource-display/resource-display.co
     EndDialogComponent,
     DeckEditorComponent,
     ResourceDisplayComponent,
+    SettingsDialogComponent,
   ],
-  entryComponents: [CardChooserComponent, EndDialogComponent],
+  entryComponents: [CardChooserComponent, EndDialogComponent, SettingsDialogComponent],
   imports: [
     BrowserModule,
     FormsModule,
@@ -61,7 +63,7 @@ import { ResourceDisplayComponent } from './resource-display/resource-display.co
     HotkeyModule.forRoot(),
     MdButtonModule, MdIconModule, MdToolbarModule, MdRadioModule,
     MdProgressSpinnerModule, MdTooltipModule, MdSnackBarModule,
-    MdDialogModule, MdListModule, MdCardModule,
+    MdDialogModule, MdListModule, MdCardModule, MdSliderModule,
     RouterModule.forRoot([
       { path: 'game', component: GameComponent, canActivate: [InPlayGuard] },
       { path: 'deck', component: DeckEditorComponent, canActivate: [LoggedInGuard] },

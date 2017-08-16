@@ -19,6 +19,7 @@
     <h2>Singleplayer</h2>
     <button md-raised-button color="primary" (click)="client.deckEditor()"><md-icon svgIcon="ccg:deck"></md-icon> Edit Deck</button>
     <button md-raised-button color="primary" (click)="client.startAIGame()"><md-icon>adb</md-icon><span> Play vs A.I </span></button>
+    <button md-raised-button color="primary" (click)="client.openSettings()"><md-icon>settings</md-icon><span> Settings</span></button>
   </div>
   <div *ngIf="getState() === state.InLobby">
     <h2>Multiplayer</h2>

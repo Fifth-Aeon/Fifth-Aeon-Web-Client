@@ -12,6 +12,7 @@ import { getHttpUrl } from './url';
 import { AI, BasicAI } from './ai';
 
 import { EndDialogComponent } from './end-dialog/end-dialog.component';
+import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 import { OverlayService } from './overlay.service';
 import { TipService, TipType } from './tips';
 
@@ -22,6 +23,8 @@ import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MdSnackBar } from '@angular/material';
 import { Deserialize } from 'cerialize'
+import { HotkeysService, Hotkey } from 'angular2-hotkeys';
+
 
 
 export enum ClientState {
@@ -49,7 +52,9 @@ export class WebClient {
 
     constructor(private soundManager: SoundManager, private tips: TipService,
         private router: Router, private zone: NgZone, private sanitizer: DomSanitizer,
-        preloader: Preloader, public dialog: MdDialog, private overlay: OverlayService) {
+        preloader: Preloader, public dialog: MdDialog, private overlay: OverlayService,
+        private hotkeys: HotkeysService) {
+
         this.game = new Game(standardFormat, true);
         this.playerNumber = 0;
         this.messenger = new Messenger();
@@ -63,6 +68,22 @@ export class WebClient {
         this.messenger.connectChange = (status) => zone.run(() => this.connected = status);
 
         this.tips.playTip(TipType.StartGame);
+        this.addHotkeys();
+
+    }
+
+    private addHotkeys() {
+        this.hotkeys.add(new Hotkey('esc', (event: KeyboardEvent): boolean => {
+            this.openSettings();
+            return false; // Prevent bubbling
+        }, [], 'Settings'));
+
+        this.hotkeys.add(new Hotkey('m', (event: KeyboardEvent): boolean => {
+            this.soundManager.toggleMute();
+            return false; // Prevent bubbling
+        }, [], 'Mute/Unmute'));
+
+        
     }
 
     // Game Actions -------------------------
@@ -321,6 +342,15 @@ export class WebClient {
         dialogRef.afterClosed().subscribe(result => {
             this.returnToLobby();
         });
+    }
+
+    public openSettings() {
+        let dialogRef = this.dialog.open(SettingsDialogComponent);
+        /*
+        dialogRef.afterClosed().subscribe(result => {
+            this.returnToLobby();
+        });
+        */
     }
 
     private changeState(newState: ClientState) {
