@@ -69,7 +69,6 @@ export class GameComponent implements OnInit {
     this.playerNo = client.getPlayerdata().me;
     this.enemyNo = client.getPlayerdata().op;
 
-
     this.game.promptCardChoice = this.openCardChooser.bind(this);
 
     // Workaround tooltip  not dissapering
@@ -80,7 +79,6 @@ export class GameComponent implements OnInit {
       }
     }, 30 * 1000);
     
-
     this.addHotkeys();
   }
 
