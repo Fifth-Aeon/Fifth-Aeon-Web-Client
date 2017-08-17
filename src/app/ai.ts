@@ -4,7 +4,7 @@ import { Player } from './game_model/player';
 import { Card } from './game_model/card';
 import { Unit } from './game_model/unit';
 
-import { minBy, sample, sampleSize, maxBy } from 'lodash';
+import { minBy, sample, sampleSize, maxBy, sortBy } from 'lodash';
 
 export enum AiDifficulty {
     Easy, Medium, Hard
@@ -91,10 +91,9 @@ export class BasicAI extends AI {
     private selectCardToPlay() {
         let playable = this.aiPlayer.getHand().filter(card => card.isPlayable(this.game));
         if (playable.length > 0) {
-            console.log('eval', playable.map(card =>
-                card.getName() + ' ' + this.evaluateCard(card)).join(' | '))
+            console.log('eval', sortBy(playable, card => -this.evaluateCard(card))
+                .map(card => card.getName() + ' ' + this.evaluateCard(card)).join(' | '))
             let toPlay = maxBy(playable, card => this.evaluateCard(card));
-            console.log('winner = ', toPlay.getName());
             if (toPlay.getTargeter().needsInput() && this.getBestTarget(toPlay))
                 this.playCard(toPlay, [this.getBestTarget(toPlay)]);
             else

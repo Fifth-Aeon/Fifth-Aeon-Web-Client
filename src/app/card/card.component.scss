@@ -9,8 +9,8 @@
 }
 
 .overlapped {
-  -webkit-transition: all 0.25s; /* Safari */
-  transition: all 0.25s; /* Safari */
+  -webkit-transition: all 0.25s;
+  transition: all 0.25s;
 }
 
 .image-border {
@@ -27,7 +27,6 @@
   stroke-width: 0.75;
   font-size: 25px;
 }
-
 
 .darkened {
   filter: brightness(0.8);
