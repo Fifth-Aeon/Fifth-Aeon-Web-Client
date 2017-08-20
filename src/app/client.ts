@@ -83,13 +83,13 @@ export class WebClient {
             return false; // Prevent bubbling
         }, [], 'Mute/Unmute'));
 
-        
+
     }
 
     // Game Actions -------------------------
     public playCard(card: Card, targets: Unit[] = []) {
         let targetIds = targets.map(target => target.getId());
-        card.getTargeter().setTarget(targets);
+        card.getTargeter().setTargets(targets);
         this.game.playCard(this.game.getPlayer(this.playerNumber), card);
         this.sendGameAction(GameActionType.playCard, { id: card.getId(), targetIds: targetIds })
         this.tips.playCardTrigger(card, this.game);
@@ -154,13 +154,12 @@ export class WebClient {
         if (this.playerNumber != this.game.getCurrentPlayer().getPlayerNumber())
             return;
         let potential = this.game.getCurrentPlayerUnits().filter(unit => unit.canAttack());
-        if (every(potential, unit => unit.isAttacking())) {
-            potential.forEach(unit => this.toggleAttacker(unit))
-        } else {
-            potential.forEach(unit => {
-                if (!unit.isAttacking()) this.toggleAttacker(unit)
-            })
-        }
+        let allAttacking = every(potential, unit => unit.isAttacking());
+        console.log(allAttacking, potential.map(unit => unit.getName()));
+        potential.forEach(unit => {
+            if (allAttacking || !unit.isAttacking())
+                this.toggleAttacker(unit)
+        })
     }
 
     private clientError(msg: Message) {
@@ -279,11 +278,16 @@ export class WebClient {
 
     private sendGameAction(type: GameActionType, params: any, isAi: boolean = false) {
         if (this.ai) {
-            this.sendEventsToAi(this.gameModel.handleAction({
+            let res = this.gameModel.handleAction({
                 type: type,
                 player: isAi ? 1 : 0,
                 params: params
-            }));
+            });
+            if (res == null) {
+                console.error('An action sent to game model by ', isAi ? 'the A.I' : 'the player', 'failed.', 'It was', GameActionType[type], 'with', params)
+                return;
+            }
+            this.sendEventsToAi(res);
             return;
         }
         this.messenger.sendMessageToServer(MessageType.GameAction, {
@@ -306,6 +310,8 @@ export class WebClient {
                 if (event.params.turn != this.playerNumber)
                     return;
                 this.tips.turnStartTrigger(this.game, this.playerNumber);
+                if (event.params.turnNum != 1)
+                    this.soundManager.playSound('bell');
                 break;
             case GameEventType.attackToggled:
                 this.soundManager.playSound('attack');
@@ -325,6 +331,10 @@ export class WebClient {
                 break;
             case GameEventType.Ended:
                 this.openEndDialog(event.params.winner, event.params.quit);
+                if (event.params.winner == this.playerNumber)
+                    this.soundManager.playImportantSound('fanfare');
+                else
+                    this.soundManager.playImportantSound('defeat');
                 break
             case GameEventType.playResource:
                 this.tips.playResourceTrigger(this.game, this.playerNumber);
@@ -397,12 +407,14 @@ export class WebClient {
     }
 
     private startGame(msg: Message) {
+        this.ai = null;
+        this.gameModel = null;
         this.gameId = msg.data.gameId;
         this.playerNumber = msg.data.playerNumber;
         this.opponentNumber = 1 - this.playerNumber;
         this.game = new Game(standardFormat, true);
         this.router.navigate(['/game']);
-        this.soundManager.playSound('gong');
+        this.soundManager.playImportantSound('gong');
         this.zone.run(() => {
             this.opponentUsername = msg.data.opponent;
             this.state = ClientState.InGame;
@@ -421,7 +433,7 @@ export class WebClient {
         let aiModel = new Game(standardFormat, true);
 
         let aiAction = (type: GameActionType, params: any) => {
-            //console.log('ai action', GameActionType[type], params);
+            console.log('ai action', GameActionType[type], params);
             this.sendGameAction(type, params, true)
         };
         let delay = (cb: () => void) => this.soundManager.doWhenDonePlaying(cb);

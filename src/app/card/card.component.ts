@@ -122,6 +122,7 @@ export class CardComponent implements OnInit {
     return 'assets/png/' + this.card.getImage();
   }
 
+  public glowTypes = GlowType;
   public glowType() {
     if (this.selected)
       return GlowType.Select;

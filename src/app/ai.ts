@@ -73,7 +73,7 @@ export class BasicAI extends AI {
 
     public handleGameEvent(event: SyncGameEvent) {
         this.game.syncServerEvent(this.playerNumber, event);
-        //console.log('AI', GameEventType[event.type], event.params);
+        console.log('AI', GameEventType[event.type], event.params, this.eventHandlers.get(event.type));
         if (this.eventHandlers.has(event.type))
             this.eventHandlers.get(event.type)(event);
     }
@@ -82,14 +82,19 @@ export class BasicAI extends AI {
         if (this.playerNumber !== params.turn)
             return;
         this.playResource();
+        
         if (!this.attack()) {
+            console.log('no attack')
             this.selectCardToPlay();
             this.pass();
+        } else {
+            console.log('an attack');
         }
     }
 
     private selectCardToPlay() {
         let playable = this.aiPlayer.getHand().filter(card => card.isPlayable(this.game));
+        console.log('playable', playable, 'hand', this.aiPlayer.getHand())
         if (playable.length > 0) {
             console.log('eval', sortBy(playable, card => -this.evaluateCard(card))
                 .map(card => card.getName() + ' ' + this.evaluateCard(card)).join(' | '))
@@ -104,7 +109,7 @@ export class BasicAI extends AI {
 
     public playCard(card: Card, targets: Unit[] = []) {
         let targetIds = targets.map(target => target.getId());
-        card.getTargeter().setTarget(targets);
+        card.getTargeter().setTargets(targets);
         this.game.playCard(this.aiPlayer, card);
         this.runGameAction(GameActionType.playCard, { id: card.getId(), targetIds: targetIds });
     }

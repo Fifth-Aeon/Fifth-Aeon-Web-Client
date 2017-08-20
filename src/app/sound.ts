@@ -20,15 +20,18 @@ export class SoundManager {
 
     //  Master, Music, Effects, Narrator
     private volume = [0.5, 0.5, 0.5, 0.5];
-    private baseVolume = [2, 0.2, 2, 2];
+    private baseVolume = [2, 0.15, 2, 2];
 
     constructor() {
         this.addSound('gong', new Howl({ src: ['assets/mp3/gong.mp3'] }), 1.5);
         this.addSound('magic', new Howl({ src: ['assets/mp3/warp.mp3'] }));
         this.addSound('attack', new Howl({ src: ['assets/mp3/attack.mp3'] }));
+        this.addSound('bell', new Howl({ src: ['assets/mp3/bell.mp3'] }));
         this.setMusic(new Howl({
             src: ['assets/mp3/crunk-knight.mp3'],
         }));
+        this.addSound('fanfare', new Howl({ src: ['assets/mp3/fanfare.mp3'] }));
+        this.addSound('defeat', new Howl({ src: ['assets/mp3/sad-part.mp3'] }));
         this.muted = (localStorage.getItem(localStorageMuteKey) || 'false') == 'true';
         this.global.mute(this.muted);
     }
@@ -96,6 +99,17 @@ export class SoundManager {
     public playSound(name: string) {
         let sound = this.library.get(name);
         sound.volume(this.getAdjustedVolume(VolumeType.Effects));
+        sound.play();
+    }
+
+    public playImportantSound(name: string) {
+        let sound = this.library.get(name);
+        sound.volume(this.getAdjustedVolume(VolumeType.Effects));
+        let time = 8000;
+        sound.once('end', () => {
+            this.music.fade(0, this.getAdjustedVolume(VolumeType.Music), time);
+        });
+        this.music.volume(0);
         sound.play();
     }
 
