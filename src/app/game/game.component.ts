@@ -73,7 +73,6 @@ export class GameComponent implements OnInit {
 
     // Workaround tooltip  not dissapering
     setInterval(() => {
-      console.log('clean');
       for (let tip of Array.from(document.getElementsByTagName('md-tooltip-component'))) {
         tip.parentElement.remove()
       }

@@ -1,8 +1,13 @@
-<svg [ngStyle]="getMargins()" [class.overlapped]="overlap" [class.darkened]="darkened" xmlns="http://www.w3.org/2000/svg" (mouseenter)="hovered=true" (mouseleave)="hovered=false"
-  class="card " [attr.width]="x() + padding" [attr.height]="y() + padding"
-  >
+<svg [ngStyle]="getMargins()" [class.overlapped]="overlap" [class.darkened]="darkened" xmlns="http://www.w3.org/2000/svg"
+  (mouseenter)="hovered=true" (mouseleave)="hovered=false" class="card " [attr.width]="x() + padding" [attr.height]="y() + padding">
 
   <defs>
+    <filter id="blank">
+      <feMerge>
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
     <filter id="selectGlow" height="300%" width="300%" x="-75%" y="-75%">
       <!-- Thicken out the original shape -->
       <feMorphology operator="dilate" radius="2" in="SourceAlpha" result="thicken" />
@@ -11,10 +16,10 @@
       <feGaussianBlur in="thicken" stdDeviation="4" result="blurred" />
 
       <!-- Change the colour -->
-      <feFlood flood-color="rgb(255,215,0)" result="glowColor" />
+      <feFlood flood-color="rgb(255,215,0)" result="selectColor" />
 
       <!-- Color in the glows -->
-      <feComposite in="glowColor" in2="blurred" operator="in" result="softGlow_colored" />
+      <feComposite in="selectColor" in2="blurred" operator="in" result="softGlow_colored" />
 
       <!--	Layer the effects together -->
       <feMerge>
@@ -31,10 +36,10 @@
       <feGaussianBlur in="thicken" stdDeviation="4" result="blurred" />
 
       <!-- Change the colour -->
-      <feFlood flood-color="rgb(0,191,255)" result="glowColor" />
+      <feFlood flood-color="rgb(0,191,255)" result="targetColor" />
 
       <!-- Color in the glows -->
-      <feComposite in="glowColor" in2="blurred" operator="in" result="softGlow_colored" />
+      <feComposite in="targetColor" in2="blurred" operator="in" result="softGlow_colored" />
 
       <!--	Layer the effects together -->
       <feMerge>
@@ -51,10 +56,10 @@
       <feGaussianBlur in="thicken" stdDeviation="4" result="blurred" />
 
       <!-- Change the colour -->
-      <feFlood flood-color="rgb(255,130,130)" result="glowColor" />
+      <feFlood flood-color="rgb(255,130,130)" result="attackColor" />
 
       <!-- Color in the glows -->
-      <feComposite in="glowColor" in2="blurred" operator="in" result="softGlow_colored" />
+      <feComposite in="attackColor" in2="blurred" operator="in" result="softGlow_colored" />
 
       <!--	Layer the effects together -->
       <feMerge>
@@ -71,10 +76,10 @@
       <feGaussianBlur in="thicken" stdDeviation="4" result="blurred" />
 
       <!-- Change the colour -->
-      <feFlood flood-color="rgb(144,238,144)" result="glowColor" />
+      <feFlood flood-color="rgb(144,238,144)" result="blockColor" />
 
       <!-- Color in the glows -->
-      <feComposite in="glowColor" in2="blurred" operator="in" result="softGlow_colored" />
+      <feComposite in="blockColor" in2="blurred" operator="in" result="softGlow_colored" />
 
       <!--	Layer the effects together -->
       <feMerge>
@@ -84,50 +89,39 @@
     </filter>
   </defs>
 
-  <rect  class="image-border" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()"/>
-  <g [ngSwitch]="glowType()">
-    <rect *ngSwitchCase="1" class="image-border" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()"
-      filter="url(#selectGlow)" />
-    <rect *ngSwitchCase="2" class="image-border" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()"
-      filter="url(#attackGlow)" />
-    <rect *ngSwitchCase="3" class="image-border" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()"
-      filter="url(#defenseGlow)" />
-      <rect *ngSwitchCase="4" class="image-border" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()"
-      filter="url(#targetGlow)" />
-  </g>
+  <rect class="image-border" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()"
+    attr.filter="url(#{{glow()}})" />
+  <!-- attr.filter="url(#{{glow()}})"
+  <rect [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()" 
+  />-->
 
-  <g attr.transform="translate({{padding/2}} {{padding/2}})" mdTooltipShowDelay="700" mdTooltipPosition="right" [mdTooltip]="keywords()"  >
+  <g [ngSwitch]="glowType()">
+    <rect *ngSwitchCase="1" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()" filter="url(#selectGlow)" />
+    <rect *ngSwitchCase="2" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()" filter="url(#attackGlow)"/>
+    <rect *ngSwitchCase="3" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()" filter="url(#defenseGlow)"/>
+    <rect *ngSwitchCase="4" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()" filter="url(#targetGlow)"/>
+  </g>
+  <g attr.transform="translate({{padding/2}} {{padding/2}})" [mdTooltipClass]="tooltipClass" mdTooltipShowDelay="700" mdTooltipPosition="right"
+    [mdTooltip]="keywords()">
 
     <g attr.transform="translate(0 {{y() * 0.10}})">
       <rect [attr.width]="x()" [attr.height]="y() * 0.4" class="image-border" />
-      <image  [attr.xlink:href]="getImage()" [attr.width]="x()" [attr.height]="y() * 0.4" class="card-image image-border" />
+      <image [attr.xlink:href]="getImage()" [attr.width]="x()" [attr.height]="y() * 0.4" class="card-image image-border" />
     </g>
 
-    <g  mdTooltip="{{card.getName()}} {{card.getCost().asSentance()}}." mdTooltipShowDelay="400" mdTooltipPosition="above" >
+    <g mdTooltip="{{card.getName()}} {{card.getCost().asSentance()}}." mdTooltipShowDelay="400" mdTooltipPosition="above">
       <circle cx="10" [attr.cy]="y() * 0.10 / 2" r="17.5" fill="royalblue" stroke="black" stroke-width="1" />
       <text class="buble-text" [attr.y]="y() * 0.10 / 2 + 7.5" [attr.x]="10" text-anchor="middle">{{card.getCost().getNumeric()}}</text>
 
-      <g *ngFor="let type of card.getCost().getTyped(); let i = index" [ngSwitch]="type" >
-        <image *ngSwitchCase="'G'"
-        xlink:href="assets/png/growth.png" 
-        [attr.height]="y() * 0.10 - 5" 
-        [attr.width]="y() * 0.10 - 5" 
-        [attr.x]="(x() / 5) + (i * x() / 8)" y="2.5" />
-        <image *ngSwitchCase="'S'"
-        xlink:href="assets/png/synthesis.png" 
-        [attr.height]="y() * 0.10 - 5" 
-        [attr.width]="y() * 0.10 - 5" 
-        [attr.x]="(x() / 5) + (i * x() / 8)" y="2.5" />
-        <image *ngSwitchCase="'D'"
-        xlink:href="assets/png/decay-icon.png" 
-        [attr.height]="y() * 0.10 - 5" 
-        [attr.width]="y() * 0.10 - 5" 
-        [attr.x]="(x() / 5) + (i * x() / 8)" y="2.5" />
-        <image *ngSwitchCase="'R'"
-        xlink:href="assets/png/renewal.png" 
-        [attr.height]="y() * 0.10 - 5" 
-        [attr.width]="y() * 0.10 - 5" 
-        [attr.x]="(x() / 5) + (i * x() / 8)" y="2.5" />
+      <g *ngFor="let type of card.getCost().getTyped(); let i = index" [ngSwitch]="type">
+        <image *ngSwitchCase="'G'" xlink:href="assets/png/growth.png" [attr.height]="y() * 0.10 - 5" [attr.width]="y() * 0.10 - 5"
+          [attr.x]="(x() / 5) + (i * x() / 8)" y="2.5" />
+        <image *ngSwitchCase="'S'" xlink:href="assets/png/synthesis.png" [attr.height]="y() * 0.10 - 5" [attr.width]="y() * 0.10 - 5"
+          [attr.x]="(x() / 5) + (i * x() / 8)" y="2.5" />
+        <image *ngSwitchCase="'D'" xlink:href="assets/png/decay-icon.png" [attr.height]="y() * 0.10 - 5" [attr.width]="y() * 0.10 - 5"
+          [attr.x]="(x() / 5) + (i * x() / 8)" y="2.5" />
+        <image *ngSwitchCase="'R'" xlink:href="assets/png/renewal.png" [attr.height]="y() * 0.10 - 5" [attr.width]="y() * 0.10 - 5"
+          [attr.x]="(x() / 5) + (i * x() / 8)" y="2.5" />
       </g>
     </g>
 
@@ -141,25 +135,23 @@
     </g>
 
     <foreignObject x="0" [attr.y]="y() * 0.55" [attr.width]="x()" [attr.height]="y() * 0.45">
-        <xhtml:p xmlns="http://www.w3.org/1999/xhtml"  
-        [style.font-size]="getFontSize()" class="card-text" 
-        [innerHTML]="htmlText(card.getText())">
-        </xhtml:p>
+      <xhtml:p xmlns="http://www.w3.org/1999/xhtml" [style.font-size]="getFontSize()" class="card-text" [innerHTML]="htmlText(card.getText())">
+      </xhtml:p>
     </foreignObject>
 
-    <g attr.transform="translate(0 {{y() - 25}})" *ngIf="card.isUnit()" >
+    <g attr.transform="translate(0 {{y() - 25}})" *ngIf="card.isUnit()">
       <g attr.transform="translate({{25}} 0)">
         <rect [attr.width]="x() - 50" height="25" class="image-border" />
         <text [attr.width]="x() - 50" height="25" text-anchor="middle" y="17.5" [attr.x]="(x() - 50) / 2">{{getType(card.getType())}}</text>
       </g>
 
-      <g   mdTooltipShowDelay="400" mdTooltipPosition="above"  mdTooltip="{{card.getName()}} deals {{card.damage}} damage.">
-        <circle r="17.5" cy="12.5" cx="12.5" height="25" fill="darkorange" stroke="black" stroke-width="1"  /> 
+      <g mdTooltipShowDelay="400" mdTooltipPosition="above" mdTooltip="{{card.getName()}} deals {{card.damage}} damage.">
+        <circle r="17.5" cy="12.5" cx="12.5" height="25" fill="darkorange" stroke="black" stroke-width="1" />
         <text class="buble-text" width="25" height="25" text-anchor="middle" y="21.5" x="12.5">{{card.damage}}</text>
       </g>
 
-      <g attr.transform="translate({{x() - 25}} 0)"  mdTooltipShowDelay="400" mdTooltipPosition="above"  mdTooltip="{{card.getName()}} has {{card.life}} out of {{card.maxLife}} life.">
-        <circle r="17.5" cy="12.5" cx="12.5" height="25" fill="firebrick" stroke="black" stroke-width="1"  />
+      <g attr.transform="translate({{x() - 25}} 0)" mdTooltipShowDelay="400" mdTooltipPosition="above" mdTooltip="{{card.getName()}} has {{card.life}} out of {{card.maxLife}} life.">
+        <circle r="17.5" cy="12.5" cx="12.5" height="25" fill="firebrick" stroke="black" stroke-width="1" />
         <text class="buble-text" width="25" height="25" text-anchor="middle" y="21.5" x="12.5">{{card.life}}</text>
       </g>
     </g>

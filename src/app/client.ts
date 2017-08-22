@@ -155,7 +155,6 @@ export class WebClient {
             return;
         let potential = this.game.getCurrentPlayerUnits().filter(unit => unit.canAttack());
         let allAttacking = every(potential, unit => unit.isAttacking());
-        console.log(allAttacking, potential.map(unit => unit.getName()));
         potential.forEach(unit => {
             if (allAttacking || !unit.isAttacking())
                 this.toggleAttacker(unit)

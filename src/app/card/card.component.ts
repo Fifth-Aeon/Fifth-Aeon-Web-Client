@@ -135,6 +135,21 @@ export class CardComponent implements OnInit {
     return GlowType.None;
   }
 
+  public glow() {
+    switch (this.glowType()) {
+      case GlowType.Select:
+        return 'selectGlow';
+      case GlowType.Targeted:
+        return 'targetGlow';
+      case GlowType.Attack:
+        return 'attackGlow';
+      case GlowType.Defense:
+        return 'defenseGlow';
+      default:
+        return 'blank';
+    }
+  }
+
   public x() {
     return (this.hovered ? 1.15 : 1) * 100 * this.scale;
   }
