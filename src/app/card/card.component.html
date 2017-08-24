@@ -89,18 +89,14 @@
     </filter>
   </defs>
 
-  <rect class="image-border" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()"
-    attr.filter="url(#{{glow()}})" />
-  <!-- attr.filter="url(#{{glow()}})"
-  <rect [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()" 
-  />-->
-
+  <rect class="image-border" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()"/>    
   <g [ngSwitch]="glowType()">
     <rect *ngSwitchCase="1" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()" filter="url(#selectGlow)" />
     <rect *ngSwitchCase="2" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()" filter="url(#attackGlow)"/>
     <rect *ngSwitchCase="3" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()" filter="url(#defenseGlow)"/>
     <rect *ngSwitchCase="4" [attr.x]="padding/2" [attr.y]="padding/2" fill="white" [attr.width]="x()" [attr.height]="y()" filter="url(#targetGlow)"/>
   </g>
+
   <g attr.transform="translate({{padding/2}} {{padding/2}})" [mdTooltipClass]="tooltipClass" mdTooltipShowDelay="700" mdTooltipPosition="right"
     [mdTooltip]="keywords()">
 

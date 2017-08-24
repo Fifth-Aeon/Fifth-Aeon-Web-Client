@@ -47,9 +47,7 @@ import { Unit } from '../game_model/unit';
           opacity: 0,
         }))
       ])
-
     ])
-
   ]
 })
 export class GameComponent implements OnInit {
@@ -77,7 +75,7 @@ export class GameComponent implements OnInit {
         tip.parentElement.remove()
       }
     }, 30 * 1000);
-    
+
     this.addHotkeys();
   }
 
@@ -117,10 +115,10 @@ export class GameComponent implements OnInit {
   }
 
   public openCardChooser(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null) {
-    if (player != this.playerNo) {
-      this.game.setDeferedChoice(callback);
+    this.game.setDeferedChoice(player, callback);
+    if (player != this.playerNo)  
       return;
-    }
+    
     let config = new MdDialogConfig();
     config.disableClose = true;
     let dialogRef = this.dialog.open(CardChooserComponent, config);
@@ -129,7 +127,6 @@ export class GameComponent implements OnInit {
     dialogRef.componentInstance.setPage();
     dialogRef.afterClosed().subscribe(result => {
       if (callback) {
-        callback(result);
         this.client.makeChoice(result);
       }
     });
@@ -149,8 +146,8 @@ export class GameComponent implements OnInit {
 
   public wouldEndTurn() {
     return this.game.isPlayerTurn(this.playerNo) &&
-      (this.game.getPhase() == GamePhase.play1 && !this.game.isAttacking()) ||
-      (this.game.getPhase() == GamePhase.play2);
+      (this.game.getPhase() == GamePhase.Play1 && !this.game.isAttacking()) ||
+      (this.game.getPhase() == GamePhase.Play2);
   }
 
   public passDisabled(): boolean {
@@ -224,13 +221,13 @@ export class GameComponent implements OnInit {
   public canPlayTargeting(target: Unit) {
     return this.selected && this.validTargets.has(target) &&
       this.game.isPlayerTurn(this.playerNo) &&
-      (this.game.getPhase() == GamePhase.play1 || this.game.getPhase() == GamePhase.play2)
+      (this.game.getPhase() == GamePhase.Play1 || this.game.getPhase() == GamePhase.Play2)
   }
 
   public target(card: Card) {
     let target = card as Unit;
     let phase = this.game.getPhase();
-    if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.combat && this.blocker && this.blocker.canBlock(target)) {
+    if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.Block && this.blocker && this.blocker.canBlock(target)) {
       this.client.declareBlocker(this.blocker, target);
       this.blocker = null;
     } else if (this.canPlayTargeting(target)) {
@@ -253,7 +250,7 @@ export class GameComponent implements OnInit {
     if (this.canPlayTargeting(unit)) {
       this.playTargeting(unit);
     } else if (this.game.isPlayerTurn(this.playerNo)) {
-      if (phase == GamePhase.play1) {
+      if (phase == GamePhase.Play1) {
         if (!(this.game.playerCanAttack(this.playerNo) && unit.canAttack())) {
           this.tips.announce(this.whyCantAttack(unit));
           return;
@@ -262,7 +259,7 @@ export class GameComponent implements OnInit {
       } else {
         this.tips.announce('You may only attack once each turn. All units attack at the same time.')
       }
-    } else if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.combat) {
+    } else if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.Block) {
       if (this.blocker == unit) {
         this.client.declareBlocker(unit, null);
       } else {
@@ -270,6 +267,5 @@ export class GameComponent implements OnInit {
       }
     }
   }
-
 
 }

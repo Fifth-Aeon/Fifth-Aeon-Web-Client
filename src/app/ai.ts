@@ -73,7 +73,7 @@ export class BasicAI extends AI {
 
     public handleGameEvent(event: SyncGameEvent) {
         this.game.syncServerEvent(this.playerNumber, event);
-        console.log('AI', GameEventType[event.type], event.params, this.eventHandlers.get(event.type));
+        console.log('AI', GameEventType[event.type], event.params, this.eventHandlers.get(event.type)); 
         if (this.eventHandlers.has(event.type))
             this.eventHandlers.get(event.type)(event);
     }
@@ -193,9 +193,9 @@ export class BasicAI extends AI {
     }
 
     private onPhaseChange(params: any) {
-        if (params.phase === GamePhase.combat && this.game.isActivePlayer(this.playerNumber))
+        if (params.phase === GamePhase.Block && this.game.isActivePlayer(this.playerNumber))
             this.block()
-        if (params.phase === GamePhase.play2 && this.game.isActivePlayer(this.playerNumber)) {
+        if (params.phase === GamePhase.Play2 && this.game.isActivePlayer(this.playerNumber)) {
             this.selectCardToPlay()
             this.pass();
         }

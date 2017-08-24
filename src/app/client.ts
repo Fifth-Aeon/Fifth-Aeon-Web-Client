@@ -82,8 +82,6 @@ export class WebClient {
             this.soundManager.toggleMute();
             return false; // Prevent bubbling
         }, [], 'Mute/Unmute'));
-
-
     }
 
     // Game Actions -------------------------
@@ -96,6 +94,7 @@ export class WebClient {
     }
 
     public makeChoice(cards: Card[]) {
+        this.game.makeDeferedChoice(cards);
         this.sendGameAction(GameActionType.CardChoice, {
             choice: cards.map(card => card.getId())
         });
@@ -162,7 +161,7 @@ export class WebClient {
     }
 
     private clientError(msg: Message) {
-        console.error(msg.data);
+        console.error(msg.data.message || msg.data);
         this.onError(msg.data);
     }
 
@@ -320,9 +319,9 @@ export class WebClient {
                 this.soundManager.playSound('attack');
                 break;
             case GameEventType.phaseChange:
-                if (event.params.phase === GamePhase.combat)
+                if (event.params.phase === GamePhase.Block)
                     this.tips.blockPhaseTrigger(this.game, this.playerNumber);
-                if (event.params.phase === GamePhase.play2)
+                if (event.params.phase === GamePhase.Play2)
                     this.overlay.clearBlockers();
                 break;
             case GameEventType.playCard:

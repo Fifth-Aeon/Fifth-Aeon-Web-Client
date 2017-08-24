@@ -13,6 +13,11 @@
   transition: all 0.25s;
 }
 
+.bordered {
+  stroke-width: 1;
+  stroke-opacity: 1;
+}
+
 .image-border {
   stroke: black;
   stroke-width: 1;
