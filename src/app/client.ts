@@ -282,7 +282,7 @@ export class WebClient {
                 params: params
             });
             if (res == null) {
-                console.error('An action sent to game model by ', isAi ? 'the A.I' : 'the player', 'failed.', 'It was', GameActionType[type], 'with', params)
+                console.error('An action sent to game model by', isAi ? 'the A.I' : 'the player', 'failed.', 'It was', GameActionType[type], 'with', params)
                 return;
             }
             this.sendEventsToAi(res);
@@ -431,7 +431,7 @@ export class WebClient {
         let aiModel = new Game(standardFormat, true);
 
         let aiAction = (type: GameActionType, params: any) => {
-            console.log('ai action', GameActionType[type], params);
+            console.log('A.I. action', GameActionType[type], params);
             this.sendGameAction(type, params, true)
         };
         let delay = (cb: () => void) => this.soundManager.doWhenDonePlaying(cb);

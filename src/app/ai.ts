@@ -5,6 +5,7 @@ import { Card } from './game_model/card';
 import { Unit } from './game_model/unit';
 
 import { minBy, sample, sampleSize, maxBy, sortBy } from 'lodash';
+import { Queue } from 'typescript-collections';
 
 export enum AiDifficulty {
     Easy, Medium, Hard
@@ -38,6 +39,7 @@ export class BasicAI extends AI {
     private eventHandlers: Map<GameEventType, (params: any) => void> = new Map();
     private enemyNumber: number;
     private aiPlayer: Player;
+    private actionSequence: Queue<() => void> = new Queue();
 
     constructor(playerNumber: number, game: Game, runGameAction: (type: GameActionType, params: any) => void) {
         super(playerNumber, game, runGameAction);
@@ -47,6 +49,16 @@ export class BasicAI extends AI {
         this.game.promptCardChoice = this.makeChoice.bind(this);
         this.eventHandlers.set(GameEventType.turnStart, event => this.onTurnStart(event.params));
         this.eventHandlers.set(GameEventType.phaseChange, event => this.onPhaseChange(event.params));
+        this.eventHandlers.set(GameEventType.ChoiceMade, event => this.continue());
+    }
+
+    private addActionToSequence(action: () => void) {
+        this.actionSequence.add(action.bind(this));
+    }
+
+    private continue() {
+        if (this.game.canTakeAction())
+            this.delay(this.actionSequence.dequeue());
     }
 
     private getBestTarget(card: Card) {
@@ -65,46 +77,48 @@ export class BasicAI extends AI {
 
     private makeChoice(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null) {
         let choice = sampleSize(cards, toPick);
+        this.game.setDeferedChoice(this.playerNumber, callback);
         if (callback) {
-            callback(choice);
+            this.game.makeDeferedChoice(choice);
             this.runGameAction(GameActionType.CardChoice, { choice: choice.map(card => card.getId()) });
         }
     }
 
     public handleGameEvent(event: SyncGameEvent) {
         this.game.syncServerEvent(this.playerNumber, event);
-        console.log('AI', GameEventType[event.type], event.params, this.eventHandlers.get(event.type)); 
+        console.log('A.I event -', GameEventType[event.type], event.params, this.eventHandlers.get(event.type));
         if (this.eventHandlers.has(event.type))
             this.eventHandlers.get(event.type)(event);
+    }
+
+    private sequenceActions(actions: Array<() => void>) {
+        this.actionSequence = new Queue();
+        for (let action of actions) {
+            this.addActionToSequence(action);
+        }
     }
 
     private onTurnStart(params: any) {
         if (this.playerNumber !== params.turn)
             return;
+        this.sequenceActions([this.selectCardToPlay, this.attack, this.pass]);
         this.playResource();
-        
-        if (!this.attack()) {
-            console.log('no attack')
-            this.selectCardToPlay();
-            this.pass();
-        } else {
-            console.log('an attack');
-        }
     }
 
     private selectCardToPlay() {
         let playable = this.aiPlayer.getHand().filter(card => card.isPlayable(this.game));
-        console.log('playable', playable, 'hand', this.aiPlayer.getHand())
+        console.log('hand', this.aiPlayer.getHand());
         if (playable.length > 0) {
             console.log('eval', sortBy(playable, card => -this.evaluateCard(card))
-                .map(card => card.getName() + ' ' + this.evaluateCard(card)).join(' | '))
+                .map(card => card.getName() + ' ' + this.evaluateCard(card)).join(' | '));
             let toPlay = maxBy(playable, card => this.evaluateCard(card));
             if (toPlay.getTargeter().needsInput() && this.getBestTarget(toPlay))
                 this.playCard(toPlay, [this.getBestTarget(toPlay)]);
             else
                 this.playCard(toPlay);
-            this.selectCardToPlay();
+            this.addActionToSequence(this.selectCardToPlay);
         }
+        this.continue();
     }
 
     public playCard(card: Card, targets: Unit[] = []) {
@@ -122,9 +136,10 @@ export class BasicAI extends AI {
         }
         let toPlay = maxBy(ResourceTypeNames, type => total.getOfType(type));
         this.runGameAction(GameActionType.playResource, { type: toPlay });
+        this.continue();
     }
 
-    private delay(cb: () => void, ms = 1000) {
+    private delay(cb: () => void, ms = 750) {
         window.setTimeout(cb, ms);
     }
 
@@ -151,11 +166,7 @@ export class BasicAI extends AI {
                 attacked = true;
             }
         }
-        if (attacked) {
-            this.delay(() => this.pass());
-            return true;
-        }
-        return false;
+        this.continue();
     }
 
     private canFavorablyBlock(attacker: Unit, blocker: Unit) {
@@ -167,21 +178,29 @@ export class BasicAI extends AI {
         this.runGameAction(GameActionType.toggleAttack, { unitId: unit.getId() });
     }
 
+    private makeBlockAction(params: { blocker: Unit, attacker: Unit }) {
+        return () => {
+            this.declareBlocker(params.blocker, params.attacker);
+            this.continue();
+        }
+    }
+
     private block() {
         let attackers = this.game.getAttackers().sort((a, b) => a.getDamage() - b.getDamage());
         let potentialBlockers = this.game.getBoard().getPlayerUnits(this.playerNumber)
             .filter(unit => !unit.isExausted());
-        let blocked = false;
+        let blocks = [];
         for (let attacker of attackers) {
             for (let blocker of potentialBlockers) {
                 if (this.canFavorablyBlock(attacker, blocker)) {
-                    this.declareBlocker(blocker, attacker);
                     potentialBlockers.splice(potentialBlockers.indexOf(blocker), 1);
-                    blocked = true;
+                    blocks.push({ blocker: blocker, attacker: attacker });
                 }
             }
         }
-        this.delay(() => this.pass(), blocked ? 2000 : 0);
+        let actions = blocks.map(block => this.makeBlockAction(block)).concat(this.pass);
+        this.sequenceActions(actions);
+        this.continue();
     }
 
     private declareBlocker(blocker: Unit, blocked: Unit) {
