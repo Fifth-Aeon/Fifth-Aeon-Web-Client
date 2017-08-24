@@ -70,6 +70,10 @@ export class WebClient {
         this.tips.playTip(TipType.StartGame);
         this.addHotkeys();
 
+        setInterval(() => {
+            if (this.ai)
+                this.ai.pulse()
+        }, 750);
     }
 
     private addHotkeys() {
@@ -431,7 +435,7 @@ export class WebClient {
         let aiModel = new Game(standardFormat, true);
 
         let aiAction = (type: GameActionType, params: any) => {
-            console.log('A.I. action', GameActionType[type], params);
+            console.log('A.I action', GameActionType[type], params);
             this.sendGameAction(type, params, true)
         };
         let delay = (cb: () => void) => this.soundManager.doWhenDonePlaying(cb);

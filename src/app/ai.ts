@@ -5,7 +5,8 @@ import { Card } from './game_model/card';
 import { Unit } from './game_model/unit';
 
 import { minBy, sample, sampleSize, maxBy, sortBy } from 'lodash';
-import { Queue } from 'typescript-collections';
+import { LinkedList } from 'typescript-collections';
+
 
 export enum AiDifficulty {
     Easy, Medium, Hard
@@ -33,13 +34,14 @@ export abstract class AI {
     ) { }
 
     abstract handleGameEvent(event: SyncGameEvent);
+    abstract pulse();
 }
 
 export class BasicAI extends AI {
     private eventHandlers: Map<GameEventType, (params: any) => void> = new Map();
     private enemyNumber: number;
     private aiPlayer: Player;
-    private actionSequence: Queue<() => void> = new Queue();
+    private actionSequence: LinkedList<() => void> = new LinkedList();
 
     constructor(playerNumber: number, game: Game, runGameAction: (type: GameActionType, params: any) => void) {
         super(playerNumber, game, runGameAction);
@@ -52,13 +54,33 @@ export class BasicAI extends AI {
         this.eventHandlers.set(GameEventType.ChoiceMade, event => this.continue());
     }
 
-    private addActionToSequence(action: () => void) {
-        this.actionSequence.add(action.bind(this));
+    public pulse() {
+        this.continue();
+    }
+
+    private addActionToSequence(action: () => void, front: boolean = false) {
+        this.actionSequence.add(action.bind(this), front ? 0 : this.actionSequence.size());
+
+    }
+
+    private sequenceActions(actions: Array<() => void>) {
+        this.actionSequence = new LinkedList();
+        for (let action of actions) {
+            this.addActionToSequence(action);
+        }
+    }
+
+    private dequeue(): () => void {
+        let val = this.actionSequence.first();
+        this.actionSequence.remove(val);
+        return val;
     }
 
     private continue() {
-        if (this.game.canTakeAction())
-            this.delay(this.actionSequence.dequeue());
+        if (!this.game.canTakeAction() || !this.game.isActivePlayer(this.playerNumber))
+            return;
+        let next = this.dequeue() || this.pass.bind(this);
+        next();
     }
 
     private getBestTarget(card: Card) {
@@ -76,12 +98,14 @@ export class BasicAI extends AI {
     }
 
     private makeChoice(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null) {
+        this.game.setDeferedChoice(this.playerNumber, callback);        
+        if (player != this.playerNumber)
+            return;
         let choice = sampleSize(cards, toPick);
-        this.game.setDeferedChoice(this.playerNumber, callback);
-        if (callback) {
-            this.game.makeDeferedChoice(choice);
-            this.runGameAction(GameActionType.CardChoice, { choice: choice.map(card => card.getId()) });
-        }
+        this.game.makeDeferedChoice(choice);
+        this.runGameAction(GameActionType.CardChoice, {
+            choice: choice.map(card => card.getId())
+        });
     }
 
     public handleGameEvent(event: SyncGameEvent) {
@@ -91,18 +115,12 @@ export class BasicAI extends AI {
             this.eventHandlers.get(event.type)(event);
     }
 
-    private sequenceActions(actions: Array<() => void>) {
-        this.actionSequence = new Queue();
-        for (let action of actions) {
-            this.addActionToSequence(action);
-        }
-    }
 
     private onTurnStart(params: any) {
         if (this.playerNumber !== params.turn)
             return;
-        this.sequenceActions([this.selectCardToPlay, this.attack, this.pass]);
         this.playResource();
+        this.sequenceActions([this.selectCardToPlay, this.attack]);
     }
 
     private selectCardToPlay() {
@@ -116,9 +134,8 @@ export class BasicAI extends AI {
                 this.playCard(toPlay, [this.getBestTarget(toPlay)]);
             else
                 this.playCard(toPlay);
-            this.addActionToSequence(this.selectCardToPlay);
+            this.addActionToSequence(this.selectCardToPlay, true);
         }
-        this.continue();
     }
 
     public playCard(card: Card, targets: Unit[] = []) {
@@ -136,12 +153,8 @@ export class BasicAI extends AI {
         }
         let toPlay = maxBy(ResourceTypeNames, type => total.getOfType(type));
         this.runGameAction(GameActionType.playResource, { type: toPlay });
-        this.continue();
     }
 
-    private delay(cb: () => void, ms = 750) {
-        window.setTimeout(cb, ms);
-    }
 
     private pass() {
         this.runGameAction(GameActionType.pass, {});
@@ -166,7 +179,8 @@ export class BasicAI extends AI {
                 attacked = true;
             }
         }
-        this.continue();
+        if (attacked)
+            this.addActionToSequence(this.pass);
     }
 
     private canFavorablyBlock(attacker: Unit, blocker: Unit) {
@@ -181,7 +195,6 @@ export class BasicAI extends AI {
     private makeBlockAction(params: { blocker: Unit, attacker: Unit }) {
         return () => {
             this.declareBlocker(params.blocker, params.attacker);
-            this.continue();
         }
     }
 
@@ -198,9 +211,8 @@ export class BasicAI extends AI {
                 }
             }
         }
-        let actions = blocks.map(block => this.makeBlockAction(block)).concat(this.pass);
+        let actions = blocks.map(block => this.makeBlockAction(block));
         this.sequenceActions(actions);
-        this.continue();
     }
 
     private declareBlocker(blocker: Unit, blocked: Unit) {
@@ -215,7 +227,6 @@ export class BasicAI extends AI {
         if (params.phase === GamePhase.Block && this.game.isActivePlayer(this.playerNumber))
             this.block()
         if (params.phase === GamePhase.Play2 && this.game.isActivePlayer(this.playerNumber)) {
-            this.selectCardToPlay()
             this.pass();
         }
     }
