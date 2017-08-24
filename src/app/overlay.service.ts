@@ -42,18 +42,18 @@ export class OverlayService {
         .filter(arrow => arrow != null);
       setTimeout(() => {
         this.targets = [];
-      }, 1500);
+      }, 1400);
       setTimeout(() => {
         this.card = null;        
       }, 3000);
     }, 50);
-
   }
 
   public onPlay(card: Card, game: Game, player: number) {
     if (card.isUnit())
       return;
-    this.addSpell(card, card.getTargeter().getTargets(card, game));
+    this.addSpell(card, card.getTargeter().getLastTargets());
+    console.log('targets', card.getTargeter().getTargets(card, game))
   }
 
   private toArrow(blockerIds: [string, string]): Arrow {
