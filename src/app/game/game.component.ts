@@ -175,25 +175,12 @@ export class GameComponent implements OnInit {
     }
   }
 
-  private whyUnplayable(card: Card): string {
-    if (this.game.getCurrentPlayer().getPlayerNumber() != this.playerNo) {
-      return `You can only play cards on your own turn.`;
-    } else if (!this.player.getPool().meetsReq(card.getCost())) {
-      let diff = card.getCost().difference(this.player.getPool());
-      return `You need ${diff.map(diff => diff.diff + ' more ' + diff.name).join(' and ')} to play ${
-        card.getName().replace(/\./g, '')}.`;
-    } else if (card.isUnit() && !this.game.getBoard().canPlayUnit(card as Unit)) {
-      return `Your board is too full to play a unit.`;
-    } else {
-      return `There are no valid targets for ${card.getName()}.`
-    }
-  }
 
   public selected: Card = null;
   public validTargets: Set<Unit> = new Set();
   public select(card: Card) {
     if (!card.isPlayable(this.game)) {
-      this.tips.announce(this.whyUnplayable(card));
+      this.tips.cannotPlayTip(this.playerNo, this.game, card);
       return;
     }
     let targeter = card.getTargeter();
@@ -235,13 +222,6 @@ export class GameComponent implements OnInit {
     }
   }
 
-  private whyCantAttack(unit: Unit): string {
-    if (!unit.isReady())
-      return 'Units cannot attack the turn they are played.';
-    if (unit.isExausted())
-      return 'Exausted units cannot attack.';
-    return 'That unit cannot attack due to a special effect';
-  }
 
   public blocker: Unit;
   public activate(card: Card) {
@@ -252,7 +232,7 @@ export class GameComponent implements OnInit {
     } else if (this.game.isPlayerTurn(this.playerNo)) {
       if (phase == GamePhase.Play1) {
         if (!(this.game.playerCanAttack(this.playerNo) && unit.canAttack())) {
-          this.tips.announce(this.whyCantAttack(unit));
+          this.tips.cannotAttackTip(unit, this.game);
           return;
         }
         this.client.toggleAttacker(unit);

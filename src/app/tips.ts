@@ -5,6 +5,7 @@ import { MdSnackBar } from '@angular/material';
 
 import { Game } from './game_model/game';
 import { Card } from './game_model/card';
+import { Unit } from './game_model/unit';
 
 
 export enum TipType {
@@ -90,5 +91,34 @@ export class TipService {
         if (game.isActivePlayer(playerNo))
             this.playTip(TipType.CanBlock);
     }
+
+    public cannotAttackTip(unit: Unit, game:Game) {
+        if (!unit.isReady())
+            this.announce('Units cannot attack the turn they are played.');
+        else if (unit.isExausted())
+            this.announce('Exausted units cannot attack.');
+        else if (!game.canTakeAction())
+            this.announce('You must wait for a choice to be made.');
+        else
+            this.announce('That unit cannot attack due to a special effect');
+    }
+
+    public cannotPlayTip(playerNo: number, game: Game, card: Card) {
+        let player = game.getPlayer(playerNo);
+        if (game.getCurrentPlayer().getPlayerNumber() != playerNo) {
+            this.announce(`You can only play cards on your own turn.`);
+        } else if (!player.getPool().meetsReq(card.getCost())) {
+            let diff = card.getCost().difference(player.getPool());
+            this.announce(`You need ${diff.map(diff => diff.diff + ' more ' + diff.name).join(' and ')} to play ${
+                card.getName().replace(/\./g, '')}.`);
+        } else if (card.isUnit() && !game.getBoard().canPlayUnit(card as Unit)) {
+            this.announce(`Your board is too full to play a unit.`);
+        } else if (!card.getTargeter().isTargetable(card, game)) {
+            this.announce(`There are no valid targets for ${card.getName()}.`);
+        } else {
+            this.announce(`You must wait for a choice to be made.`);
+        }
+    }
+
 
 }
