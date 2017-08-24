@@ -98,9 +98,12 @@ export class BasicAI extends AI {
 
     private makeChoice(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null) {
         this.game.setDeferedChoice(this.playerNumber, callback);
-        if (player != this.playerNumber)
+        if (player != this.playerNumber) {
+            console.log('A.I skip choice', player, this.playerNumber);
             return;
+        }
         let choice = sampleSize(cards, toPick);
+        console.log('A.I make choice', choice)
         if (callback) {
             this.game.makeDeferedChoice(choice);
             this.runGameAction(GameActionType.CardChoice, {

@@ -269,10 +269,12 @@ export class WebClient {
     }
 
     private sendEventsToAi(events: SyncGameEvent[]) {
-        for (let event of events) {
-            this.handleGameEvent(event);
-            this.ai.handleGameEvent(event);
-        }
+        setTimeout(() => {
+            for (let event of events) {
+                this.handleGameEvent(event);
+                this.ai.handleGameEvent(event);
+            }
+        }, 50);
     }
 
     private sendGameAction(type: GameActionType, params: any, isAi: boolean = false) {
@@ -434,7 +436,7 @@ export class WebClient {
 
         let aiAction = (type: GameActionType, params: any) => {
             console.log('A.I action', GameActionType[type], params);
-            this.sendGameAction(type, params, true)
+            this.sendGameAction(type, params, true);
         };
         let delay = (cb: () => void) => this.soundManager.doWhenDonePlaying(cb);
         this.ai = new BasicAI(1, aiModel, aiAction);

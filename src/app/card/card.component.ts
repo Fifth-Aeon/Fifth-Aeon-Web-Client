@@ -162,7 +162,6 @@ export class CardComponent implements OnInit {
   ngOnInit() {
     if (!this.scale)
       this.scale = 1.25;
-    console.log('register', this.card.getName(), 'with overlay');
     this.overlay.registerCard(this.card.getId(), this.element);
 
   }

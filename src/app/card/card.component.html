@@ -151,5 +151,13 @@
         <text class="buble-text" width="25" height="25" text-anchor="middle" y="21.5" x="12.5">{{card.life}}</text>
       </g>
     </g>
+
+    <!-- Select, Attack, Defense, Targeted -->
+    <g [ngSwitch]="glowType()">
+        <image *ngSwitchCase="1" [attr.x]="x()*0.15" [attr.y]="y() / 2 - (x() * 0.7) / 2" [attr.width]="x() * 0.7" [attr.height]="x() * 0.7" xlink:href="assets/png/virtual-marker.png" />
+        <image *ngSwitchCase="2" [attr.x]="x()*0.15" [attr.y]="y() / 2 - (x() * 0.7) / 2" [attr.width]="x() * 0.7" [attr.height]="x() * 0.7" xlink:href="assets/png/crossed-sabres.png" />
+        <image *ngSwitchCase="3" [attr.x]="x()*0.15" [attr.y]="y() / 2 - (x() * 0.7) / 2" [attr.width]="x() * 0.7" [attr.height]="x() * 0.7" xlink:href="assets/png/shield.png" />
+        <image *ngSwitchCase="4" [attr.x]="x()*0.15" [attr.y]="y() / 2 - (x() * 0.7) / 2" [attr.width]="x() * 0.7" [attr.height]="x() * 0.7" xlink:href="assets/png/crosshair.png" />
+    </g>    
   </g>
 </svg>

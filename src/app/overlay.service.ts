@@ -53,14 +53,13 @@ export class OverlayService {
     if (card.isUnit())
       return;
     this.addSpell(card, card.getTargeter().getLastTargets());
-    console.log('targets', card.getTargeter().getTargets(card, game))
   }
 
   private toArrow(blockerIds: [string, string]): Arrow {
     let blocker = this.cardsElements.get(blockerIds[0]);
     let blocked = this.cardsElements.get(blockerIds[1]);
     if (!blocker || !blocked) {
-      console.log(blockerIds, blocker, blocked);
+      console.error(blockerIds, blocker, blocked);
       return null;
     }
     var blockerRect = blocker.nativeElement.getElementsByClassName("card-image")[0].getBoundingClientRect();
