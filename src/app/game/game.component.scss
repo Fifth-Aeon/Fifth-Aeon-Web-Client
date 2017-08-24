@@ -25,6 +25,14 @@
     height: 50px;
   }
 
+  .overlayed-card {
+    
+    position: absolute;
+    left: 15%;
+    top: 40%;
+    z-index: 1000;
+  }
+
   .card-display {
     position: absolute;
     left: 40%;

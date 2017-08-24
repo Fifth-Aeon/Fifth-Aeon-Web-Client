@@ -22,10 +22,7 @@ import { NgZone, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MdSnackBar } from '@angular/material';
-import { Deserialize } from 'cerialize'
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
-
-
 
 export enum ClientState {
     UnAuth, InLobby, Waiting, PrivateLobby, PrivateLobbyFail, InQueue, InGame, Any
@@ -330,6 +327,7 @@ export class WebClient {
                 break;
             case GameEventType.playCard:
                 this.soundManager.playSound('magic');
+                this.overlay.onPlay(this.game.getCardById(event.params.played.id), this.game, this.playerNumber);
                 break;
             case GameEventType.Ended:
                 this.openEndDialog(event.params.winner, event.params.quit);

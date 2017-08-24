@@ -28,7 +28,13 @@
 
     <line *ngFor="let arrow of overlay.getBlockArrows()" [attr.x1]="arrow.x1" [attr.y1]="arrow.y1" [attr.x2]="arrow.x2" [attr.y2]="arrow.y2"
       marker-end="url(#arrow)" stroke="royalblue" stroke-width="5" />
+
+    <line *ngFor="let arrow of overlay.targets" [attr.x1]="arrow.x1" [attr.y1]="arrow.y1" [attr.x2]="arrow.x2" [attr.y2]="arrow.y2"
+      marker-end="url(#arrow)" stroke="royalblue" stroke-width="5" />
   </svg>
+
+  <ccg-card *ngIf="overlay.card" [@inHand]="isInHand(overlay.card)" class="overlayed-card" scale="1.6" [card]="overlay.card"></ccg-card>
+
 
   <!-- Enemy Board -->
   <div class="area">
@@ -50,12 +56,12 @@
     <button color="primary" mdTooltipPosition="above" mdTooltip="View your crypt." class="crypt-button" (click)="viewCrypt(playerNo)"
       md-mini-fab><md-icon svgIcon="ccg:tombstone"></md-icon></button>
 
-    <svg class="card-display"  mdTooltipPosition="above" mdTooltip="You have {{player.getHand().length}} cards in your hand.">
+    <svg class="card-display" mdTooltipPosition="above" mdTooltip="You have {{player.getHand().length}} cards in your hand.">
       <image width="50" height="50" xlink:href="assets/png/card.png" />
       <text x="25" y="35" text-anchor="middle" class="number-text">{{player.getHand().length}}</text>
     </svg>
 
-    <svg class="life-display" mdTooltipPosition="above"  mdTooltip="You have {{player.getLife()}} life.">
+    <svg class="life-display" mdTooltipPosition="above" mdTooltip="You have {{player.getLife()}} life.">
       <image width="50" height="50" xlink:href="assets/png/hearts.png" />
       <text x="25" y="35" text-anchor="middle" class="number-text">{{player.getLife()}}</text>
     </svg>

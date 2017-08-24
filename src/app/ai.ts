@@ -60,7 +60,6 @@ export class BasicAI extends AI {
 
     private addActionToSequence(action: () => void, front: boolean = false) {
         this.actionSequence.add(action.bind(this), front ? 0 : this.actionSequence.size());
-
     }
 
     private sequenceActions(actions: Array<() => void>) {
@@ -98,14 +97,16 @@ export class BasicAI extends AI {
     }
 
     private makeChoice(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null) {
-        this.game.setDeferedChoice(this.playerNumber, callback);        
+        this.game.setDeferedChoice(this.playerNumber, callback);
         if (player != this.playerNumber)
             return;
         let choice = sampleSize(cards, toPick);
-        this.game.makeDeferedChoice(choice);
-        this.runGameAction(GameActionType.CardChoice, {
-            choice: choice.map(card => card.getId())
-        });
+        if (callback) {
+            this.game.makeDeferedChoice(choice);
+            this.runGameAction(GameActionType.CardChoice, {
+                choice: choice.map(card => card.getId())
+            });
+        }
     }
 
     public handleGameEvent(event: SyncGameEvent) {
@@ -141,8 +142,9 @@ export class BasicAI extends AI {
     public playCard(card: Card, targets: Unit[] = []) {
         let targetIds = targets.map(target => target.getId());
         card.getTargeter().setTargets(targets);
-        this.game.playCard(this.aiPlayer, card);
         this.runGameAction(GameActionType.playCard, { id: card.getId(), targetIds: targetIds });
+        this.game.playCard(this.aiPlayer, card);
+
     }
 
     private playResource() {
