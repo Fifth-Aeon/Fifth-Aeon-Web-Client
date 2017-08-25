@@ -114,7 +114,7 @@ export class GameComponent implements OnInit {
     this.client.pass();
   }
 
-  public openCardChooser(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null) {
+  public openCardChooser(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null, message:string = '') {
     this.game.setDeferedChoice(player, callback);
     if (player != this.playerNo)  
       return;
@@ -124,6 +124,7 @@ export class GameComponent implements OnInit {
     let dialogRef = this.dialog.open(CardChooserComponent, config);
     dialogRef.componentInstance.cards = cards;
     dialogRef.componentInstance.numberToPick = toPick;
+    dialogRef.componentInstance.message = message;
     dialogRef.componentInstance.setPage();
     dialogRef.afterClosed().subscribe(result => {
       if (callback) {

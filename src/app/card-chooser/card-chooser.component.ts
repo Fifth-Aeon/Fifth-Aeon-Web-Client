@@ -15,6 +15,7 @@ export class CardChooserComponent {
   public selected: Set<Card> = new Set();
   public pageNumber: number = 0;
   private pageSize: number = 5;
+  public message: string;
 
   constructor(public dialogRef: MdDialogRef<CardChooserComponent>) {
     this.pageCards = [];
