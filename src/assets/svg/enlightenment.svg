@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 1000 560"
+   version="1.1"
+   id="svg21"
+   sodipodi:docname="enlightenment.svg"
+   width="1000"
+   height="560"
+   inkscape:version="0.92.1 r15371"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\enlightenment.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240">
+  <metadata
+     id="metadata25">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#0c0d0c"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2004"
+     id="namedview23"
+     showgrid="false"
+     inkscape:zoom="0.4609375"
+     inkscape:cx="256"
+     inkscape:cy="256"
+     inkscape:window-x="-16"
+     inkscape:window-y="-16"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg21" />
+  <defs
+     id="defs13">
+    <filter
+       id="shadow-1"
+       height="3"
+       width="3"
+       x="-1"
+       y="-1">
+      <feFlood
+         flood-color="#c9c9c9"
+         result="flood"
+         id="feFlood2" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="atop"
+         result="composite"
+         id="feComposite4" />
+      <feGaussianBlur
+         in="composite"
+         stdDeviation="15"
+         result="blur"
+         id="feGaussianBlur6" />
+      <feOffset
+         result="offset"
+         id="feOffset8" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         operator="over"
+         id="feComposite10" />
+    </filter>
+  </defs>
+  <g
+     class=""
+     transform="matrix(1.1041413,0,0,1.1041413,220.60876,60.047496)"
+     id="g19">
+    <path
+       d="m 251.828,15.982 -29.2,136.08 -56.74,-75.652 7.78,90.4 -49.154,-24.68 22.19,49.643 -67.16,-13.433 57.817,70.668 -55.48,-10.514 35.634,26.608 c 29.894,0.77 62.017,-2.565 90.597,4.35 18.697,4.522 36.167,14.302 48.255,32.74 0.414,0.632 0.82,1.274 1.22,1.923 0.402,-0.65 0.806,-1.29 1.22,-1.922 12.088,-18.44 29.558,-28.22 48.254,-32.742 27.64,-6.685 58.596,-3.782 87.643,-4.28 l 35.25,-26.676 -42.05,8.178 41.468,-80.596 -59.507,19.852 19.092,-77.352 -57.234,59.867 6.055,-109.607 -46.232,97.31 L 251.831,15.983 Z M 92.236,281.787 50.27,311.02 257.613,383.7 464.95,310.67 423.96,281.79 c -42.595,7.18 -92.04,-5.54 -126.02,10.345 l -0.116,0.05 -0.013,0.008 c -5.226,2.37 -9.962,5.418 -14.255,9.382 -7.564,6.774 -13.817,16.048 -18.36,28.694 l -7.777,13.763 -7.158,-12.67 c -5.434,-15.833 -13.453,-26.5 -23.324,-33.637 -0.157,-0.114 -0.316,-0.22 -0.473,-0.332 -0.63,-0.446 -1.267,-0.883 -1.912,-1.302 -33.565,-21.772 -86.63,-6.6 -132.314,-14.3 z m -64.26,41.3 -6.166,17.643 190.67,66.674 v 17.817 h 91.55 v -18.687 h -0.055 l 188.175,-65.804 -6.168,-17.642 -205.658,71.918 4.03,11.527 h -54.75 l 4.03,-11.527 -205.657,-71.918 z"
+       id="path17"
+       inkscape:connector-curvature="0"
+       style="fill:#c9c9c9;filter:url(#shadow-1)" />
+  </g>
+  <!-- react-empty: 13 -->
+</svg>

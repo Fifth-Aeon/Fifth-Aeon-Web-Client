@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 1000 560"
+   version="1.1"
+   id="svg21"
+   sodipodi:docname="carpet-bombing.svg"
+   width="1000"
+   height="560"
+   inkscape:version="0.92.1 r15371"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\carpet-bombing.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240">
+  <metadata
+     id="metadata25">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#0c0d0c"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2004"
+     id="namedview23"
+     showgrid="false"
+     inkscape:zoom="0.4609375"
+     inkscape:cx="256"
+     inkscape:cy="256"
+     inkscape:window-x="-16"
+     inkscape:window-y="-16"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg21" />
+  <defs
+     id="defs13">
+    <filter
+       id="shadow-1"
+       height="3"
+       width="3"
+       x="-1"
+       y="-1">
+      <feFlood
+         flood-color="#c9c9c9"
+         result="flood"
+         id="feFlood2" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="atop"
+         result="composite"
+         id="feComposite4" />
+      <feGaussianBlur
+         in="composite"
+         stdDeviation="15"
+         result="blur"
+         id="feGaussianBlur6" />
+      <feOffset
+         result="offset"
+         id="feOffset8" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         operator="over"
+         id="feComposite10" />
+    </filter>
+  </defs>
+  <g
+     class=""
+     transform="matrix(1.0387427,0,0,1.0387427,229.58863,19.464433)"
+     id="g19">
+    <path
+       d="m 28.416,414.373 9.6,8.58 c 0.337,0.256 0.628,0.567 0.86,0.92 a 3.68,3.68 0 0 1 0.76,-1 l 8.58,-9.6 c 1.06,-1.18 1.48,-0.71 1.56,0.49 0.08,1.2 0.81,13.27 0.88,14.28 a 2.6,2.6 0 0 1 -0.95,2.27 l -5.95,6.65 a 14.08,14.08 0 0 1 10.65,12.84 c 0.18,3.34 1.2,21.52 1.38,24.86 0.434,7.754 -5.5,14.392 -13.255,14.825 -7.754,0.434 -14.391,-5.5 -14.825,-13.255 -0.18,-3.34 -1.2,-21.52 -1.39,-24.85 a 14.07,14.07 0 0 1 9.15,-14 l -6.65,-5.94 a 2.55,2.55 0 0 1 -1.18,-2.16 c -0.06,-1 -0.67,-13.08 -0.73,-14.28 -0.06,-1.2 0.31,-1.71 1.51,-0.63 z m 86.895,-36.035 c 0.46,1.11 5.1,12.27 5.5,13.2 a 2.55,2.55 0 0 0 1.84,1.63 l 8.26,3.36 a 14.07,14.07 0 0 0 -3.91,16.24 c 1.3,3.07 8.39,19.85 9.68,22.93 3.021,7.155 11.27,10.506 18.425,7.485 7.155,-3.02 10.506,-11.27 7.485,-18.425 -1.29,-3.08 -6.403,-24.826 -7.693,-27.906 -2.394,-5.701 -10.214,-4.207 -16.367,-3.594 l 3.36,-8.27 a 2.6,2.6 0 0 0 0.13,-2.45 c -0.4,-0.93 -5.16,-12 -5.64,-13.15 -0.48,-1.15 -1,-1.41 -1.63,0.06 l -4.85,11.93 a 3.68,3.68 0 0 0 -0.37,1.22 3.71,3.71 0 0 0 -1.12,-0.58 l -11.93,-4.85 c -1.43,-0.57 -1.64,0.09 -1.18,1.16 z m 76.452,-64.348 c 0.702,0.931 7.827,10.74 8.434,11.54 a 2.55,2.55 0 0 0 2.134,1.164 l 8.817,1.325 a 14.07,14.07 0 0 0 0.047,16.696 c 1.98,2.678 12.804,17.336 14.786,20.023 4.544,6.445 13.498,7.894 19.842,3.21 6.344,-4.684 7.596,-13.668 2.775,-19.908 -1.973,-2.698 -12.805,-17.345 -14.777,-20.034 a 14.08,14.08 0 0 0 -15.962,-4.917 l 1.325,-8.817 a 2.6,2.6 0 0 0 -0.456,-2.415 c -0.608,-0.811 -7.84,-10.488 -8.555,-11.458 -0.716,-0.97 -1.336,-1.126 -1.573,0.437 l -1.919,12.73 a 3.68,3.68 0 0 0 -0.067,1.275 3.71,3.71 0 0 0 -1.228,-0.304 l -12.731,-1.918 c -1.594,-0.245 -1.618,0.391 -0.903,1.362 z m 52.19,-92.677 c 0.89,0.81 9.82,8.95 10.57,9.62 a 2.55,2.55 0 0 0 2.36,0.7 l 8.9,-0.46 a 14.07,14.07 0 0 0 3.35,16.37 c 2.48,2.23 16,14.42 18.49,16.66 5.783,5.068 14.564,4.55 19.711,-1.163 5.147,-5.714 4.75,-14.502 -0.892,-19.727 -2.48,-2.24 -16,-14.43 -18.49,-16.67 a 14.08,14.08 0 0 0 -16.68,-1.65 l -0.47,-8.91 a 2.6,2.6 0 0 0 -0.93,-2.28 l -10.6,-9.51 c -0.9,-0.8 -1.53,-0.84 -1.45,0.75 l 0.67,12.86 c -0.013,0.428 0.047,0.854 0.18,1.26 a 3.712,3.712 0 0 0 -1.26,0 l -12.86,0.67 c -1.62,0.03 -1.51,0.66 -0.61,1.47 z m 71.329,-114.095 c 11,-2.5 18.73,-8.87 23.52,-19.33 -26.62,-20 -76.72,-55.29 -110,-63.88 -4.81,-1.26 -15.81,-1.14 -19.63,-1.14 0,0 36.82,44.3 44.44,72.14 17.94,8.54 42.67,16.54 61.65,12.21 z m -232.76,-40 c -4.18,-1.67 -10.23,0 -12.65,0 0,0 6.84,13.55 11.57,25.63 9.46,-2.07 22.78,-4.12 35.45,-5.79 -11.9,-8.06 -24.76,-15.99 -34.39,-19.84 z m 408.18,49.72 c -4.89,-34.32 -88.13,-33.11 -134.54,-29.72 -7.84,24.16 -26.21,37.22 -52.6,37.22 -1.27,0 -2.55,0 -3.85,-0.09 -21.93,-1 -43.63,-10.24 -54.61,-15.64 a 147.59,147.59 0 0 1 -19.11,-11.11 c -1,-0.67 -1.83,-1.32 -2.65,-1.95 -32.9,1 -62.63,2.75 -87.09,5.15 -16.17,1.78 -37.68,4.76 -50.4,7.45 -12,2.86 -18.65,6 -18.65,9.37 0,12.59 94.83,22.8 211.81,22.8 116.98,0 211.81,-10.21 211.81,-22.8 a 2.6,2.6 0 0 0 -0.14,-0.68 z"
+       id="path17"
+       inkscape:connector-curvature="0"
+       style="fill:#c9c9c9;filter:url(#shadow-1)" />
+  </g>
+  <!-- react-empty: 13 -->
+</svg>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 1000 560"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="blacksmith.svg"
+   width="1000"
+   height="560"
+   inkscape:version="0.92.1 r15371"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\blacksmith.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2004"
+     id="namedview10"
+     showgrid="true"
+     inkscape:zoom="1.3037281"
+     inkscape:cx="211.87668"
+     inkscape:cy="251.63456"
+     inkscape:window-x="-16"
+     inkscape:window-y="-16"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg8">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4491" />
+  </sodipodi:namedview>
+  <path
+     d="M 0,0 H 1000 V 560 H 0 Z"
+     id="path2"
+     inkscape:connector-curvature="0"
+     style="fill:#f8e71c;stroke:#ffffff;stroke-width:5.93913841" />
+  <g
+     class=""
+     transform="matrix(1.1516242,0,0,1.1516242,181.36112,-11.360923)"
+     id="g6">
+    <path
+       d="M 210,25 C 199.988,25 190.628,30.32 183.26,40.145 175.892,49.968 171,64.15 171,80 c 0,15.85 4.892,30.032 12.26,39.855 7.368,9.825 16.728,15.145 26.74,15.145 10.012,0 19.372,-5.32 26.74,-15.145 C 244.108,110.032 249,95.85 249,80 249,64.15 244.108,49.968 236.74,40.145 229.372,30.32 220.012,25 210,25 Z m 219.746,17.512 -18.701,15.21 -22.76,-9.206 -7.72,15.271 85.86,36.313 16.807,-34.532 z m -5.264,59.392 -54.697,116.153 17.367,7.976 54.538,-116.853 -17.207,-7.276 z M 153,122.518 c -5.86,0.764 -11.17,1.81 -16,3.086 V 253 H 283 V 125.604 c -4.83,-1.276 -10.14,-2.322 -16,-3.086 v 59.044 l -4.975,2.489 c -34.146,17.073 -69.904,17.073 -104.05,0 L 153,181.563 Z m -34,9.982 a 61.312,61.312 0 0 0 -5.008,2.988 C 100.989,144.157 94.345,155.724 90.73,170.184 84.828,193.792 88.688,224.341 90.314,253 H 119 Z m 182,0 V 253 h 28.686 c 1.626,-28.659 5.486,-59.208 -0.416,-82.816 -3.615,-14.46 -10.26,-26.027 -23.262,-34.696 A 61.312,61.312 0 0 0 301,132.5 Z m -130,0.846 v 36.793 c 26.365,11.776 51.635,11.776 78,0 V 133.346 C 239.103,145.188 225.36,153 210,153 c -15.36,0 -29.103,-7.812 -39,-19.654 z m -16.951,137.058 -0.002,0.002 V 290.75 H 65.109 c 15.996,38.806 51.26,65.427 88.942,74.28 V 398 h 58.558 c -12.115,30.534 -33.527,55.682 -58.5,77.592 h -25.435 v 18.72 h 284.344 v -18.72 h -27.44 C 356.85,453.698 335.554,428.575 323.984,397.998 h 63.657 v -29.156 c 19.75,-6.995 39.5,-19.541 59.25,-36.719 -19.806,-17.518 -39.235,-27.25 -59.25,-31.937 v -29.782 z"
+       id="path4"
+       inkscape:connector-curvature="0"
+       style="fill:#000000" />
+  </g>
+  <!-- react-empty: 13 -->
+</svg>

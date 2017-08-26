@@ -24,6 +24,9 @@ keywordsDefs.set('Biological', 'A unit of not of the Automaton, Structure or Veh
 keywordsDefs.set('Lethal', 'Kill any unit damaged by this unit.')
 keywordsDefs.set('Shielded', 'The first time this takes damage, negate that damage.')
 keywordsDefs.set('Relentless', 'Refreshes at the end of each turn.')
+keywordsDefs.set('Deathless', 'When this dies, play it again at the end of the turn. It loses this ability.')
+keywordsDefs.set('Sleeping', 'This unit does not ready at the start of its owners turn. Instead its sleep counter decreases by 1.')
+keywordsDefs.set('Sleep', 'Exausts a unit and prevents it from readying.')
 
 keywordsDefs.set('Statue', 'A 0/1 structure that cannot attack.')
 
@@ -109,12 +112,13 @@ export class CardComponent implements OnInit {
   public getFontSize() {
     let size = 16;
     let length = this.card.getText().length;
-
-    size -= Math.floor(length / 30);
-
+    let type = this.card.isUnit();
     if (this.hovered)
       size += 2;
+    let limit = this.card.isUnit() ? 40 : 90;
 
+    if (length > limit)
+      size -= Math.floor((length - limit) / 8);
     return size + 'px';
   }
 
@@ -133,21 +137,6 @@ export class CardComponent implements OnInit {
     if (this.target)
       return GlowType.Targeted;
     return GlowType.None;
-  }
-
-  public glowColor() {
-    switch (this.glowType()) {
-      case GlowType.Select:
-        return 'rgb(255,215,0)';
-      case GlowType.Targeted:
-        return 'rgb(0,191,255)';
-      case GlowType.Attack:
-        return 'rgb(255,130,130)';
-      case GlowType.Defense:
-        return 'rgb(144,238,144)';
-      default:
-        return 'rgb(0,0,0)';
-    }
   }
 
 

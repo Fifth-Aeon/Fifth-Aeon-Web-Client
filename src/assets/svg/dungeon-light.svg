@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 1000 559.99999"
+   version="1.1"
+   id="svg21"
+   sodipodi:docname="dungeon-light.svg"
+   width="1000"
+   height="560"
+   inkscape:version="0.92.1 r15371"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\dungeon-light.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240">
+  <metadata
+     id="metadata25">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2004"
+     id="namedview23"
+     showgrid="true"
+     inkscape:zoom="1.0762165"
+     inkscape:cx="1192.0267"
+     inkscape:cy="268.01378"
+     inkscape:window-x="-16"
+     inkscape:window-y="-16"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg21">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4502"
+       originx="550"
+       originy="1025" />
+  </sodipodi:namedview>
+  <defs
+     id="defs13">
+    <filter
+       id="shadow-1"
+       height="3"
+       width="3"
+       x="-1"
+       y="-1">
+      <feFlood
+         flood-color="#f8e71c"
+         result="flood"
+         id="feFlood2" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="atop"
+         result="composite"
+         id="feComposite4" />
+      <feGaussianBlur
+         in="composite"
+         stdDeviation="15"
+         result="blur"
+         id="feGaussianBlur6" />
+      <feOffset
+         result="offset"
+         id="feOffset8" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         operator="over"
+         id="feComposite10" />
+    </filter>
+  </defs>
+  <path
+     d="M 0,-5 H 1010 V 564.99995 H 0 Z"
+     id="path15"
+     inkscape:connector-curvature="0"
+     style="fill:#111110;stroke:#ffffff;stroke-width:6.02181673" />
+  <g
+     class=""
+     transform="translate(232,-5)"
+     id="g19">
+    <path
+       d="m 128,65 c -4.37,0 -8.74,0.485 -13,1.469 V 151 h 26 V 66.469 C 136.73622,65.48896 132.37496,64.996137 128,65 Z M 97,74.354 C 83.018,84.017 73,101.452 73,128 v 23 h 24 z m 62,0 V 151 h 24 v -23 c 0,-26.548 -10.018,-43.983 -24,-53.646 z m 38.176,26.148 C 199.634,108.783 201,117.962 201,128 V 265 H 73.23 L 398,570 658,580 Z M 73,169 v 78 h 24 v -78 z m 42,0 v 78 h 26 v -78 z m 44,0 v 78 h 24 v -78 z"
+       id="path17"
+       inkscape:connector-curvature="0"
+       style="fill:#f8e71c;filter:url(#shadow-1)"
+       sodipodi:nodetypes="cccccccsccccccsccscccccccccccccccccccc" />
+  </g>
+  <!-- react-empty: 13 -->
+</svg>
