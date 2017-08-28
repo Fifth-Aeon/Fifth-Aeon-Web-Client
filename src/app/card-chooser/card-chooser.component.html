@@ -1,14 +1,13 @@
-<h1  *ngIf="numberToPick > 0" md-dialog-title>Choose {{numberToPick == 1 ? 'a card' : numberToPick +' cards'}} {{message}}.</h1>
-<h1  *ngIf="numberToPick == 0" md-dialog-title>View Cards</h1>
+<h1 *ngIf="numberToPick > 0" md-dialog-title>Choose {{numberToPick == 1 ? 'a card' : numberToPick +' cards'}} {{message}}.</h1>
+<h1 *ngIf="numberToPick == 0" md-dialog-title>View Cards</h1>
 
 <div md-dialog-actions>
-    <ccg-card scale="1.45" *ngFor="let card of pageCards" [card]="card" [selected]="selected.has(card)" (click)="select(card)"></ccg-card>
+  <ccg-card scale="1.45" *ngFor="let card of pageCards" [card]="card" [selected]="selected.has(card)" (click)="select(card)"></ccg-card>
 </div>
 
 <div md-dialog-actions>
   <button md-raised-button (click)="finish()" [disabled]="!canFinish()">Done</button>
-  <button md-raised-button (click)="prev()" [disabled]="!canPrev()">Previous</button>
-  <button md-raised-button (click)="next()" [disabled]="!canNext()">Next</button>
-  <button md-raised-button (click)="skip()" *ngIf="skippable">Skip</button>
+  <button md-icon-button   (click)="prev()"   mdTooltip="Previous page" [disabled]="!canPrev()"><md-icon>arrow_back</md-icon></button>
+  <button md-icon-button   (click)="next()"   mdTooltip="Next page" [disabled]="!canNext()"><md-icon>arrow_forward</md-icon></button>
+  <button md-raised-button (click)="skip()"   *ngIf="skippable">Skip</button>
 </div>
-

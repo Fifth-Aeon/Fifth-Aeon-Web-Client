@@ -10,11 +10,12 @@
 
   <md-card id="card-selection-controls">
     <md-card-content>
-      <button md-raised-button (click)="prev()" [disabled]="!canPrev()">Previous</button>
-      <button md-raised-button (click)="next()" [disabled]="!canNext()">Next</button>
-      <button md-raised-button (click)="done()" [disabled]="!deck.isValid()">Done</button>
-      <button md-raised-button (click)="deck.clear()" [disabled]="">Clear</button>
-      <button md-raised-button (click)="deck.generateRandomNColorDeck(1)" [disabled]="">Randomize</button>
+      <button md-icon-button   mdTooltipPosition="above" mdTooltip="Previous Page." (click)="prev()" [disabled]="!canPrev()"><md-icon>arrow_back</md-icon></button>
+      <button md-icon-button   mdTooltipPosition="above" mdTooltip="Next Page." (click)="next()" [disabled]="!canNext()"><md-icon>arrow_forward</md-icon></button>
+      <button md-raised-button mdTooltipPosition="above" mdTooltip="Done editing deck." color="primary" (click)="done()" [disabled]="!deck.isValid()">Done</button>
+      <button md-raised-button mdTooltipPosition="above" mdTooltip="Clear all cards from deck." color="warn" (click)="deck.clear()" [disabled]="">Clear</button>
+      <button md-raised-button mdTooltipPosition="above" mdTooltip="Fill deck with random cards." color="warn" (click)="randomize()"
+        [disabled]="">Randomize</button>
     </md-card-content>
   </md-card>
 </div>
@@ -27,8 +28,8 @@
     </md-card-title>
   </md-card-header>
   <md-card-content>
-    <md-list >
-      <md-list-item *ngFor="let record of deck.getRecordList()" (click)="deck.removeCard(record.card)"> {{record.card.getCost().asCost()}} - {{record.card.getName()}} - ({{record.number}}) </md-list-item>  
-    </md-list> 
+    <md-list>
+      <md-list-item *ngFor="let record of deck.getRecordList()" (click)="deck.removeCard(record.card)"> {{record.card.getCost().asCost()}} - {{record.card.getName()}} - ({{record.number}}) </md-list-item>
+    </md-list>
   </md-card-content>
 </md-card>

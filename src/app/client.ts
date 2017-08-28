@@ -27,6 +27,7 @@ import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 export enum ClientState {
     UnAuth, InLobby, Waiting, PrivateLobby, PrivateLobbyFail, InQueue, InGame, Any
 }
+const deckStore = 'deck-store';
 
 @Injectable()
 export class WebClient {
@@ -129,8 +130,13 @@ export class WebClient {
         this.changeState(ClientState.InLobby);
         this.username = loginData.username;
         this.deck = new DeckList(standardFormat);
-        this.deck.fromJson(loginData.deckList);
 
+        this.deck.fromJson(loginData.deckList);
+        let stored = localStorage.getItem(deckStore);
+        if (stored) {
+            this.deck.fromJson(stored);
+            this.setDeck(this.deck);
+        }
         if (this.toJoin) {
             this.joinPrivateGame(this.toJoin);
         }
@@ -167,6 +173,7 @@ export class WebClient {
     }
 
     public setDeck(deck: DeckList) {
+        localStorage.setItem(deckStore, deck.toJson());
         this.messenger.sendMessageToServer(MessageType.SetDeck, {
             deckList: deck.toJson()
         });

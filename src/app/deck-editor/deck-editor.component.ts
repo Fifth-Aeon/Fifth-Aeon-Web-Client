@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import {sortBy} from 'lodash';
+import { sortBy, random } from 'lodash';
 
 import { WebClient } from '../client';
 import { GameFormat } from '../game_model/gameFormat';
@@ -25,7 +25,7 @@ export class DeckEditorComponent implements OnInit {
 
   constructor(private client: WebClient) {
     this.cards = Array.from(allCards.values()).map(factory => factory())
-    this.cards = sortBy(this.cards, (card:Card) => card.getCost().getColor() * 100 + card.getCost().getNumeric());
+    this.cards = sortBy(this.cards, (card: Card) => card.getCost().getColor() * 100 + card.getCost().getNumeric());
     this.setPage();
     this.deck = this.client.getDeck();;
   }
@@ -39,6 +39,10 @@ export class DeckEditorComponent implements OnInit {
   public done() {
     this.client.setDeck(this.deck);
     this.client.returnToLobby();
+  }
+
+  public randomize() {
+    this.deck.generateRandomNColorDeck(random(1, 4)); 
   }
 
   public add(card: Card) {
