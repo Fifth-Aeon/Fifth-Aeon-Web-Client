@@ -28,6 +28,7 @@
     "core-js": "^2.5.0",
     "howler": "^2.0.4",
     "lodash": "^4.17.4",
+    "ng2-fittext": "^1.0.24",
     "ngx-clipboard": "^8.0.4",
     "random-js": "^1.0.8",
     "rxjs": "^5.4.3",

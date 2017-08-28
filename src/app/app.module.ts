@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 
 import { ClipboardModule } from 'ngx-clipboard';
 import { HotkeyModule } from 'angular2-hotkeys';
+import { Ng2FittextModule } from "ng2-fittext/ng2fittext";
+
 
 import { SoundManager } from './sound';
 import { WebClient } from './client';
@@ -61,10 +63,11 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
     BrowserAnimationsModule,
     ClipboardModule,
     HotkeyModule.forRoot(),
+    Ng2FittextModule,
     MdButtonModule, MdIconModule, MdToolbarModule, MdRadioModule,
     MdProgressSpinnerModule, MdTooltipModule, MdSnackBarModule,
     MdDialogModule, MdListModule, MdCardModule, MdSliderModule,
-    MdCheckboxModule,
+    MdCheckboxModule, 
     RouterModule.forRoot([
       { path: 'game', component: GameComponent, canActivate: [InPlayGuard] },
       { path: 'deck', component: DeckEditorComponent, canActivate: [LoggedInGuard] },
