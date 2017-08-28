@@ -13,6 +13,8 @@
       <button md-raised-button (click)="prev()" [disabled]="!canPrev()">Previous</button>
       <button md-raised-button (click)="next()" [disabled]="!canNext()">Next</button>
       <button md-raised-button (click)="done()" [disabled]="!deck.isValid()">Done</button>
+      <button md-raised-button (click)="deck.clear()" [disabled]="">Clear</button>
+      <button md-raised-button (click)="deck.generateRandomNColorDeck(1)" [disabled]="">Randomize</button>
     </md-card-content>
   </md-card>
 </div>

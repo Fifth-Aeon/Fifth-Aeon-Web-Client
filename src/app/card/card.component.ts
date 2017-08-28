@@ -91,8 +91,6 @@ export class CardComponent implements OnInit {
     }
   }
 
-
-
   public htmlText(text: string) {
     return text.replace(keywordRegex, '<b>$&</b>');
   }
@@ -110,11 +108,8 @@ export class CardComponent implements OnInit {
   }
 
   public getFontSize() {
-    let size = 16;
     let length = this.card.getText().length;
-    let type = this.card.isUnit();
-    if (this.hovered)
-      size += 2;
+    let size = this.hovered ? 18 : 16;
     let limit = this.card.isUnit() ? 40 : 90;
 
     if (length > limit)
