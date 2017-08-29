@@ -1,3 +1,13 @@
+// Vendor
+import { every } from 'lodash'
+import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { NgZone, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
+import { MdSnackBar } from '@angular/material';
+import { HotkeysService, Hotkey } from 'angular2-hotkeys';
+
+// Game Model
 import { Game, GameAction, SyncGameEvent, GameActionType, GameEventType, GamePhase } from './game_model/game';
 import { data } from './game_model/gameData';
 import { GameFormat, standardFormat } from './game_model/gameFormat';
@@ -5,28 +15,25 @@ import { Card } from './game_model/card';
 import { Unit } from './game_model/unit';
 import { DeckList } from './game_model/deckList';
 
+// Client side
 import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
 import { Preloader } from './preloader';
 import { DecksService } from './decks.service';
 import { getHttpUrl } from './url';
 import { AI, BasicAI } from './ai';
-
 import { EndDialogComponent } from './end-dialog/end-dialog.component';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 import { OverlayService } from './overlay.service';
 import { TipService, TipType } from './tips';
 
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
-import { every } from 'lodash'
-import { NgZone, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
-import { MdSnackBar } from '@angular/material';
-import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 
 export enum ClientState {
     UnAuth, InLobby, Waiting, PrivateLobby, PrivateLobbyFail, InQueue, InGame, Any
+}
+
+export enum GameType {
+    AiGame, PublicGame, PrivateGame
 }
 
 @Injectable()
@@ -417,11 +424,17 @@ export class WebClient {
         return this.opponentUsername;
     }
 
-    public selectDeckAndStartGame(aiGame: boolean) {
-        if (aiGame) {
-            this.onDeckSelected = this.startAIGame;
-        } else {
-            this.onDeckSelected = this.join;
+    public selectDeckAndStartGame(type: GameType) {
+        switch (type) {
+            case GameType.AiGame:
+                this.onDeckSelected = this.startAIGame;
+                break;
+            case GameType.PrivateGame:
+                this.onDeckSelected = this.private;
+                break;
+            case GameType.PublicGame:
+                this.onDeckSelected = this.join;
+                break;
         }
         this.router.navigate(['/select']);
 

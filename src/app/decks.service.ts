@@ -68,6 +68,7 @@ export class DecksService {
   }
 
   public finishEditing() {
+    this.editingDeck.genMetadata();
     this.save();
     this.client.openDeckSelector();
   }
@@ -79,7 +80,12 @@ export class DecksService {
   }
 
   public newDeck(index: number) {
-    this.decks.push(new DeckList(standardFormat));
+    this.decks.unshift(new DeckList(standardFormat));
+    this.save()
+  }
+
+  public cancelSelect() {
+    this.client.returnToLobby();
   }
 
   public getCurrentDeck() { 
