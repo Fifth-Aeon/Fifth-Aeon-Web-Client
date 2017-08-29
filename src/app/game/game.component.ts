@@ -153,16 +153,19 @@ export class GameComponent implements OnInit {
 
   public passDisabled(): boolean {
     return !this.game.isActivePlayer(this.playerNo) ||
+      !this.game.canTakeAction() ||
       (this.wouldEndTurn() && this.canPlayResource());
   }
 
   public getPassText(): string {
+    if (!this.game.canTakeAction())
+      return 'Waiting for Choice'
     if (this.game.isPlayerTurn(this.playerNo)) {
       if (this.game.isAttacking()) {
         if (this.game.isActivePlayer(this.playerNo))
           return 'Attack';
         else
-          return 'Waiting';
+          return 'Waiting for Blocks';
       }
       if (this.game) {
         if (this.canPlayResource())
