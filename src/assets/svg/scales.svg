@@ -43,7 +43,7 @@
      id="namedview23"
      showgrid="true"
      inkscape:zoom="0.921875"
-     inkscape:cx="256.54164"
+     inkscape:cx="-70.509207"
      inkscape:cy="510.98006"
      inkscape:window-x="-16"
      inkscape:window-y="-16"
@@ -90,7 +90,7 @@
      d="M 0,0 H 1010 V 560 H 0 Z"
      id="path15"
      inkscape:connector-curvature="0"
-     style="fill:#2f2f25;stroke:#ffffff;stroke-width:5.96876049" />
+     style="fill:#2f2f25;stroke:#ffffff;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none" />
   <g
      class=""
      transform="matrix(1.245101,0,0,1.245101,176.07838,-33.411552)"

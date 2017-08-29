@@ -25,27 +25,27 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
      id="defs12" />
   <sodipodi:namedview
-     pagecolor="#ffffff"
+     pagecolor="#417505"
      bordercolor="#666666"
      borderopacity="1"
      objecttolerance="10"
      gridtolerance="10"
      guidetolerance="10"
-     inkscape:pageopacity="0"
+     inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:window-width="3840"
      inkscape:window-height="2004"
      id="namedview10"
      showgrid="true"
      inkscape:zoom="3.6875001"
-     inkscape:cx="338.51051"
+     inkscape:cx="256.7478"
      inkscape:cy="418.71656"
      inkscape:window-x="-16"
      inkscape:window-y="-16"
@@ -55,11 +55,6 @@
        type="xygrid"
        id="grid4491" />
   </sodipodi:namedview>
-  <path
-     d="M 0,-5 H 1000 V 560 H 0 Z"
-     id="path2"
-     inkscape:connector-curvature="0"
-     style="fill:#417505;stroke:#ffffff;stroke-width:5.96559334" />
   <g
      class=""
      id="g6"

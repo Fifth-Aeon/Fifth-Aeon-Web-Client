@@ -30,21 +30,21 @@
     </rdf:RDF>
   </metadata>
   <sodipodi:namedview
-     pagecolor="#ffffff"
+     pagecolor="#2f2f25"
      bordercolor="#666666"
      borderopacity="1"
      objecttolerance="10"
      gridtolerance="10"
      guidetolerance="10"
-     inkscape:pageopacity="0"
+     inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:window-width="3840"
      inkscape:window-height="2004"
      id="namedview23"
      showgrid="true"
-     inkscape:zoom="1.84375"
-     inkscape:cx="775.12986"
-     inkscape:cy="208.77914"
+     inkscape:zoom="1.0096186"
+     inkscape:cx="1507.5"
+     inkscape:cy="800.70575"
      inkscape:window-x="-16"
      inkscape:window-y="-16"
      inkscape:window-maximized="1"
@@ -86,11 +86,6 @@
          id="feComposite10" />
     </filter>
   </defs>
-  <path
-     d="M 0,0 H 1000 V 560 H 0 Z"
-     id="path15"
-     inkscape:connector-curvature="0"
-     style="fill:#2f2f25;stroke:#ffffff;stroke-width:5.93913889" />
   <g
      class=""
      transform="matrix(1.1157848,0,0,1.1840775,216.41976,-23.100277)"

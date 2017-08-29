@@ -30,25 +30,25 @@
     </rdf:RDF>
   </metadata>
   <sodipodi:namedview
-     pagecolor="#ffffff"
+     pagecolor="#15151b"
      bordercolor="#666666"
      borderopacity="1"
      objecttolerance="10"
      gridtolerance="10"
      guidetolerance="10"
-     inkscape:pageopacity="0"
+     inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:window-width="3840"
      inkscape:window-height="2004"
      id="namedview23"
      showgrid="true"
-     inkscape:zoom="1.3037281"
-     inkscape:cx="333.24368"
-     inkscape:cy="230.30413"
+     inkscape:zoom="0.92187498"
+     inkscape:cx="-288.30854"
+     inkscape:cy="124.46724"
      inkscape:window-x="-16"
      inkscape:window-y="-16"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g19">
+     inkscape:current-layer="svg21">
     <inkscape:grid
        type="xygrid"
        id="grid4502" />
@@ -86,11 +86,6 @@
          id="feComposite10" />
     </filter>
   </defs>
-  <path
-     d="M 0,0 H 1000 V 560 H 0 Z"
-     id="path15"
-     inkscape:connector-curvature="0"
-     style="fill:#15151b;stroke:#ffffff;stroke-width:5.93913889" />
   <g
      class=""
      id="g19"

@@ -32,20 +32,20 @@
   <defs
      id="defs12" />
   <sodipodi:namedview
-     pagecolor="#ffffff"
+     pagecolor="#370661"
      bordercolor="#666666"
      borderopacity="1"
      objecttolerance="10"
      gridtolerance="10"
      guidetolerance="10"
-     inkscape:pageopacity="0"
+     inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:window-width="3840"
      inkscape:window-height="2004"
      id="namedview10"
      showgrid="true"
      inkscape:zoom="1.3037281"
-     inkscape:cx="474.62671"
+     inkscape:cx="243.36683"
      inkscape:cy="220.45497"
      inkscape:window-x="-16"
      inkscape:window-y="-16"
@@ -55,11 +55,6 @@
        type="xygrid"
        id="grid4491" />
   </sodipodi:namedview>
-  <path
-     d="M 0,-20 H 1000 V 580 H 0 Z"
-     id="path2"
-     inkscape:connector-curvature="0"
-     style="fill:#370661;fill-opacity:1;stroke:#ffffff;stroke-width:6.14759254" />
   <g
      class=""
      id="g6"
