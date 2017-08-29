@@ -8,6 +8,7 @@ import { DeckList } from './game_model/deckList';
 import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
 import { Preloader } from './preloader';
+import { DecksService } from './decks.service';
 import { getHttpUrl } from './url';
 import { AI, BasicAI } from './ai';
 
@@ -27,7 +28,6 @@ import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 export enum ClientState {
     UnAuth, InLobby, Waiting, PrivateLobby, PrivateLobbyFail, InQueue, InGame, Any
 }
-const deckStore = 'deck-store';
 
 @Injectable()
 export class WebClient {
@@ -77,21 +77,21 @@ export class WebClient {
     private addHotkeys() {
         this.hotkeys.add(new Hotkey('esc', (event: KeyboardEvent): boolean => {
             this.openSettings();
-            return false; // Prevent bubbling
+            return false;
         }, [], 'Settings'));
 
         this.hotkeys.add(new Hotkey('m', (event: KeyboardEvent): boolean => {
             this.soundManager.toggleMute();
-            return false; // Prevent bubbling
+            return false;
         }, [], 'Mute/Unmute'));
     }
 
-    // Game Actions -------------------------
+    // Game Actions -------------------------------------------------------------------------
     public playCard(card: Card, targets: Unit[] = []) {
         let targetIds = targets.map(target => target.getId());
         card.getTargeter().setTargets(targets);
         this.game.playCard(this.game.getPlayer(this.playerNumber), card);
-        this.sendGameAction(GameActionType.playCard, { id: card.getId(), targetIds: targetIds })
+        this.sendGameAction(GameActionType.playCard, { id: card.getId(), targetIds: targetIds });
         this.tips.playCardTrigger(card, this.game);
     }
 
@@ -132,11 +132,6 @@ export class WebClient {
         this.deck = new DeckList(standardFormat);
 
         this.deck.fromJson(loginData.deckList);
-        let stored = localStorage.getItem(deckStore);
-        if (stored) {
-            this.deck.fromJson(stored);
-            this.setDeck(this.deck);
-        }
         if (this.toJoin) {
             this.joinPrivateGame(this.toJoin);
         }
@@ -172,13 +167,21 @@ export class WebClient {
         this.onError(msg.data);
     }
 
+    // Decks -----------------------------------------------------
+    public onDeckSelected: () => void;
+
     public setDeck(deck: DeckList) {
-        localStorage.setItem(deckStore, deck.toJson());
+        if (!deck) {
+            console.error('setting undef deck', deck)
+            return;
+        }
+        this.deck = deck;
         this.messenger.sendMessageToServer(MessageType.SetDeck, {
             deckList: deck.toJson()
         });
     }
 
+    // Transitions -----------------------------------------------
     public returnToLobby() {
         switch (this.state) {
             case ClientState.InGame:
@@ -258,7 +261,11 @@ export class WebClient {
         this.changeState(ClientState.Waiting);
     }
 
-    public deckEditor() {
+    public openDeckSelector() {
+        this.router.navigate(['/select']);
+    }
+
+    public openDeckEditor() {
         this.router.navigate(['/deck']);
     }
 
@@ -365,11 +372,6 @@ export class WebClient {
 
     public openSettings() {
         let dialogRef = this.dialog.open(SettingsDialogComponent);
-        /*
-        dialogRef.afterClosed().subscribe(result => {
-            this.returnToLobby();
-        });
-        */
     }
 
     private changeState(newState: ClientState) {
@@ -415,6 +417,16 @@ export class WebClient {
         return this.opponentUsername;
     }
 
+    public selectDeckAndStartGame(aiGame: boolean) {
+        if (aiGame) {
+            this.onDeckSelected = this.startAIGame;
+        } else {
+            this.onDeckSelected = this.join;
+        }
+        this.router.navigate(['/select']);
+
+    }
+
     private startGame(msg: Message) {
         this.ai = null;
         this.gameModel = null;
@@ -429,7 +441,6 @@ export class WebClient {
             this.state = ClientState.InGame;
         });
     }
-
 
     // AI stuff ------------------------------------
     private gameModel: Game;

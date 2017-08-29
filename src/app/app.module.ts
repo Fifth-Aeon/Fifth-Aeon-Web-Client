@@ -13,6 +13,7 @@ import { SoundManager } from './sound';
 import { WebClient } from './client';
 import { Preloader } from './preloader';
 import { OverlayService } from './overlay.service';
+import { DecksService } from './decks.service';
 import { TipService } from './tips';
 
 import { AppComponent } from './app.component';
@@ -24,7 +25,7 @@ import {
   MdButtonModule, MdRadioModule, MdIconModule,
   MdTooltipModule, MdSnackBarModule, MdToolbarModule,
   MdProgressSpinnerModule, MdDialogModule, MdListModule,
-  MdCardModule, MdSliderModule, MdCheckboxModule
+  MdCardModule, MdSliderModule, MdCheckboxModule, MdPaginatorModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LobbyComponent } from './lobby/lobby.component';
@@ -38,6 +39,7 @@ import { EndDialogComponent } from './end-dialog/end-dialog.component';
 import { DeckEditorComponent } from './deck-editor/deck-editor.component';
 import { ResourceDisplayComponent } from './resource-display/resource-display.component';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
+import { DeckChooserComponent } from './deck-chooser/deck-chooser.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +56,7 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
     DeckEditorComponent,
     ResourceDisplayComponent,
     SettingsDialogComponent,
+    DeckChooserComponent,
   ],
   entryComponents: [CardChooserComponent, EndDialogComponent, SettingsDialogComponent],
   imports: [
@@ -67,10 +70,11 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
     MdButtonModule, MdIconModule, MdToolbarModule, MdRadioModule,
     MdProgressSpinnerModule, MdTooltipModule, MdSnackBarModule,
     MdDialogModule, MdListModule, MdCardModule, MdSliderModule,
-    MdCheckboxModule, 
+    MdCheckboxModule, MdPaginatorModule,
     RouterModule.forRoot([
       { path: 'game', component: GameComponent, canActivate: [InPlayGuard] },
       { path: 'deck', component: DeckEditorComponent, canActivate: [LoggedInGuard] },
+      { path: 'select', component: DeckChooserComponent, canActivate: [LoggedInGuard] },
       { path: 'private/:id', component: PrivateLobbyComponent },
       { path: 'private', component: PrivateLobbyComponent },
       { path: 'lobby', component: LobbyComponent },
@@ -78,7 +82,7 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
       { path: '**', component: LobbyComponent }
     ])
   ],
-  providers: [SoundManager, WebClient, OverlayService, TipService, Preloader, InPlayGuard, LoggedInGuard],
+  providers: [SoundManager, WebClient, DecksService, OverlayService, TipService, Preloader, InPlayGuard, LoggedInGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

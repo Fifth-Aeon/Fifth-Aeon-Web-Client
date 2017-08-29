@@ -17,13 +17,13 @@
 
   <div *ngIf="getState() === state.InLobby">
     <h2>Singleplayer</h2>
-    <button md-raised-button color="primary" (click)="client.deckEditor()"><md-icon svgIcon="ccg:deck"></md-icon> Edit Deck</button>
-    <button md-raised-button color="primary" (click)="client.startAIGame()"><md-icon>adb</md-icon><span> Play vs A.I </span></button>
+    <!--<button md-raised-button color="primary" (click)="client.openDeckSelector()"><md-icon svgIcon="ccg:deck"></md-icon> Manage Decks</button>-->
+    <button md-raised-button color="primary" (click)="client.selectDeckAndStartGame(true)"><md-icon>adb</md-icon><span> Play vs A.I </span></button>
     <button md-raised-button color="primary" (click)="client.openSettings()"><md-icon>settings</md-icon><span> Settings</span></button>
   </div>
   <div *ngIf="getState() === state.InLobby">
     <h2>Multiplayer</h2>
-    <button md-raised-button color="primary" (click)="join()"><md-icon>public</md-icon> Public Game</button>
+    <button md-raised-button color="primary" (click)="client.selectDeckAndStartGame(false)"><md-icon>public</md-icon> Public Game</button>
     <button md-raised-button color="primary" (click)="client.private()"><md-icon>vpn_key</md-icon> Private Game</button>
   </div>
 

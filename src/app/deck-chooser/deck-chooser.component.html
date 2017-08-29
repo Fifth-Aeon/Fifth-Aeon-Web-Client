@@ -1,0 +1,15 @@
+<h1>Choose a deck</h1>
+
+<md-card *ngFor="let deck of decksService.getDecks(); let i = index" class="deck-card">
+  <md-card-header>
+    <md-card-title>{{deck.name}}</md-card-title>
+  </md-card-header>
+  <img md-card-image src="assets/png/{{deck.avatar}}">
+  <md-card-actions>
+    <button md-mini-fab (click)="decksService.setCurrentDeck(i)" color="primary" mdTooltipPosition="above" mdTooltip="Select Deck" ><md-icon>check</md-icon></button>    
+    <button md-mini-fab (click)="decksService.editDeck(i)" mdTooltipPosition="above" mdTooltip="Edit Deck" ><md-icon>mode_edit</md-icon></button>    
+    <button md-mini-fab (click)="decksService.deleteDeck(i)" color="warn" mdTooltipPosition="above" mdTooltip="Delete Deck"><md-icon>delete</md-icon></button>
+  </md-card-actions>
+</md-card>
+
+<button md-fab class="new-button" (click)="decksService.newDeck()" color="primary" mdTooltipPosition="above" mdTooltip="New Deck"><md-icon>add</md-icon></button>
