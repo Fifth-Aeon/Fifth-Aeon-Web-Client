@@ -25,7 +25,7 @@
   fill: white;
 }
 
-.buble-text {
+.bubble-text {
   font-family: "Impact";
   fill: white;
   stroke: black;
@@ -37,11 +37,18 @@
   filter: brightness(0.8);
 }
 
+.text-container {
+  padding: 1px;
+}
+
+.card-name {
+  font-size: 14px;
+}
+
 .card-text {
   text-align: center;
-  padding-left: 1px;
-  padding-right: 1px;
-  margin-top: 2px;
+  padding: 0px;
+  margin: 0px;
   b {
     margin: 0px;
   }

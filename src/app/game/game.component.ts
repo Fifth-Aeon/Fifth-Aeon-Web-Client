@@ -157,6 +157,10 @@ export class GameComponent implements OnInit {
       (this.wouldEndTurn() && this.canPlayResource());
   }
 
+  public getAreaScale(height:number, padding:number) {
+    return (height - (17.5 - 10 + padding) * 2) / 140
+  }
+
   public getPassText(): string {
     if (!this.game.canTakeAction())
       return 'Waiting for Choice'

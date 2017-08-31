@@ -70,6 +70,28 @@ export class CardComponent implements OnInit {
   constructor(private overlay: OverlayService, private element: ElementRef) {
   }
 
+  public getResUrl(type: string) {
+    switch (type) {
+      case 'G':
+        return 'assets/png/growth.png';
+      case 'S':
+        return 'assets/png/synthesis.png';
+      case 'D':
+        return 'assets/png/decay-icon.png';
+      case 'R':
+        return 'assets/png/renewal.png';
+    }
+  }
+
+  public getSymbolSize() {
+    return this.y() * 0.10 - 3;
+  }
+
+  public getSymbolPadding() {
+    // Area - symbol size / max symbols
+    return (this.x() - 27.5 - this.getSymbolSize() * 6) / (12);
+  }
+
   getType(type: UnitType) {
     return UnitType[type];
   }
