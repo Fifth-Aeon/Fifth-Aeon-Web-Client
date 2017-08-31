@@ -11,10 +11,9 @@
     width: $game-area-width;
   }
 
-  $zone-height: 252.5px;
   .area {
     width: 100%;
-    height: $zone-height;
+    height: calc((100vh - 106px)/3);
     border: 1px solid grey;
   }
 
@@ -26,7 +25,6 @@
   }
 
   .overlayed-card {
-    
     position: absolute;
     left: 15%;
     top: 40%;
@@ -44,7 +42,7 @@
     display: inline-block;
     position: absolute;
     margin-top: 25px;
-    left: 30%;
+    left: 35%;
     transform: translateY(-50%);
     vertical-align: top;
   }
@@ -61,6 +59,7 @@
   }
 
   .info-bar {
+    border-left: 1px solid grey;
     height: 50px;
   }
 

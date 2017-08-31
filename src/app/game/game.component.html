@@ -38,13 +38,13 @@
 
   <!-- Enemy Board -->
   <div class="area">
-    <ccg-card scale="1.5" *ngFor="let card of game.getBoard().getPlayerUnits(enemyNo)" [darkened]="card.isExausted()" [card]="card"
+    <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerUnits(enemyNo)" [darkened]="card.isExausted()" [card]="card"
       [@location]="locationState(card)" [target]="validTargets.has(card)" (click)="target(card)"></ccg-card>
   </div>
 
   <!-- Player Board -->
   <div class="area">
-    <ccg-card scale="1.5" *ngFor="let card of game.getBoard().getPlayerUnits(playerNo)" [darkened]="card.isExausted()" [card]="card"
+    <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerUnits(playerNo)" [darkened]="card.isExausted()" [card]="card"
       [@location]="locationState(card)" [target]="validTargets.has(card)" [selected]="card == blocker" (click)="activate(card)">
     </ccg-card>
   </div>
