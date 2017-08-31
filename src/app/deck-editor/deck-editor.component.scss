@@ -14,15 +14,23 @@
   }
 }
 
+.mat-mini-fab  {
+  margin: 10px;
+}
 .left {
   float: left;
   width: 70%;
 }
 
 #card-selection-controls {
+  box-sizing: border-box;
   float: left;
   width: 100%;
-  margin: 20px;
+
+  height: 100px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 0px;
   margin-bottom: 0px;
 }
 

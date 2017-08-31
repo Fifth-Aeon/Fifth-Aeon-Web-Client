@@ -7,11 +7,15 @@
       margin-right: 10px;
       margin-left: 10px;
   }
-  float:left;
+  display: inline-block;
   width: 250px;
   height: 250px;
   margin: 20px;
   overflow: hidden;
+}
+
+.deck-zone {
+  text-align: center;
 }
 
 .new-button {

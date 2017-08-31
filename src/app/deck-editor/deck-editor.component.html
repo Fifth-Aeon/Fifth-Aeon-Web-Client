@@ -10,12 +10,11 @@
 
   <md-card id="card-selection-controls">
     <md-card-content>
-      <button md-icon-button   mdTooltipPosition="above" mdTooltip="Previous Page." (click)="prev()" [disabled]="!canPrev()"><md-icon>arrow_back</md-icon></button>
-      <button md-icon-button   mdTooltipPosition="above" mdTooltip="Next Page." (click)="next()" [disabled]="!canNext()"><md-icon>arrow_forward</md-icon></button>
-      <button md-raised-button mdTooltipPosition="above" mdTooltip="Done editing deck." color="primary" (click)="done()" [disabled]="!deck.isValid()">Done</button>
-      <button md-raised-button mdTooltipPosition="above" mdTooltip="Clear all cards from deck." color="warn" (click)="deck.clear()" [disabled]="">Clear</button>
-      <button md-raised-button mdTooltipPosition="above" mdTooltip="Fill deck with random cards." color="warn" (click)="randomize()"
-        [disabled]="">Randomize</button>
+      <button md-mini-fab mdTooltipPosition="above" mdTooltip="Previous Page." (click)="prev()" [disabled]="!canPrev()"><md-icon>arrow_back</md-icon></button>
+      <button md-mini-fab mdTooltipPosition="above" mdTooltip="Next Page." (click)="next()" [disabled]="!canNext()"><md-icon>arrow_forward</md-icon></button>
+      <button md-mini-fab mdTooltipPosition="above" mdTooltip="Done editing deck." color="primary" (click)="done()" [disabled]="!deck.isValid()"><md-icon>check</md-icon></button>
+      <button md-mini-fab mdTooltipPosition="above" mdTooltip="Clear all cards from deck." color="warn" (click)="deck.clear()"><md-icon>delete</md-icon></button>
+      <button md-mini-fab mdTooltipPosition="above" mdTooltip="Fill deck with random cards." color="warn" (click)="randomize()" ><md-icon>shuffle</md-icon></button>
     </md-card-content>
   </md-card>
 </div>
