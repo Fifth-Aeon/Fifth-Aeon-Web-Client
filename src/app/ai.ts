@@ -216,15 +216,17 @@ export class BasicAI extends AI {
                 }
             }
         }
-        let actions = blocks.map(block => this.makeBlockAction(block));
+        let actions = blocks.map(block => {
+            return this.makeBlockAction(block)
+        });
         this.sequenceActions(actions);
     }
 
-    private declareBlocker(blocker: Unit, blocked: Unit) {
-        blocker.setBlocking(blocker.getId());
+    private declareBlocker(blocker: Unit, attacker: Unit) {
+        blocker.setBlocking(attacker.getId());
         this.runGameAction(GameActionType.declareBlockers, {
             blockerId: blocker.getId(),
-            blockedId: blocked.getId()
+            blockedId: attacker.getId()
         });
     }
 
