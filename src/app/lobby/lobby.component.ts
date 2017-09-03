@@ -2,7 +2,6 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { WebClient, ClientState } from '../client';
-import { AiDifficulty } from '../ai';
 import { SoundManager } from '../sound';
 
 
@@ -13,8 +12,6 @@ import { SoundManager } from '../sound';
 })
 export class LobbyComponent implements OnInit {
   public state = ClientState;
-  public difficulty: AiDifficulty = AiDifficulty.Easy;
-  public diffs = AiDifficulty;
 
   constructor(private router: Router, public client: WebClient, public soundManager: SoundManager) {
     if (client.getState() != ClientState.UnAuth && client.getState() != ClientState.Waiting)

@@ -9,20 +9,23 @@ import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 
 // Game Model
 import { Game, GameAction, GameSyncEvent, GameActionType, SyncEventType, GamePhase } from './game_model/game';
+import { ServerGame  } from './game_model/serverGame';
+import { ClientGame } from './game_model/clientGame';
 import { data } from './game_model/gameData';
 import { GameFormat, standardFormat } from './game_model/gameFormat';
 import { Card } from './game_model/card';
 import { Unit } from './game_model/unit';
 import { DeckList } from './game_model/deckList';
 import { Log } from './game_model/log';
-
+import { AI, BasicAI } from './game_model/ai';
+ 
 // Client side
 import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
 import { Preloader } from './preloader';
 import { DecksService } from './decks.service';
 import { getHttpUrl } from './url';
-import { AI, BasicAI } from './ai';
+
 import { EndDialogComponent } from './end-dialog/end-dialog.component';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 import { OverlayService } from './overlay.service';
@@ -46,7 +49,6 @@ export class WebClient {
     private messenger: Messenger;
     private gameId: string = null;
     private state: ClientState = ClientState.UnAuth;
-    private game: Game = null;
     private playerNumber: number;
     private opponentNumber: number
     private finished: boolean = false;
@@ -55,6 +57,10 @@ export class WebClient {
     private privateGameId: string = null;
     public log:Log;
 
+    private game: ClientGame;
+    private gameModel: ServerGame;
+    private ai: AI;
+
     private onError: (error: string) => void = () => null;
 
     constructor(private soundManager: SoundManager, private tips: TipService,
@@ -62,7 +68,7 @@ export class WebClient {
         preloader: Preloader, public dialog: MdDialog, private overlay: OverlayService,
         private hotkeys: HotkeysService) {
 
-        this.game = new Game(standardFormat, true);
+        this.game = new ClientGame();
         this.playerNumber = 0;
         this.messenger = new Messenger();
         this.log = new Log(this.playerNumber)
@@ -260,7 +266,7 @@ export class WebClient {
 
     public exitGame() {
         this.sendGameAction(GameActionType.Quit, {});
-        this.game = new Game(standardFormat, true);
+        this.game = new ClientGame();
         this.playerNumber = 0;
         this.changeState(ClientState.InLobby);
         this.router.navigate(['/lobby']);
@@ -451,7 +457,7 @@ export class WebClient {
         this.log.setPlayer(this.playerNumber);
         this.opponentNumber = 1 - this.playerNumber;
         this.log.clear();
-        this.game = new Game(standardFormat, true, this.log);
+        this.game = new ClientGame(this.log);
         this.router.navigate(['/game']);
         this.soundManager.playImportantSound('gong');
         this.zone.run(() => {
@@ -461,16 +467,15 @@ export class WebClient {
     }
 
     // AI stuff ------------------------------------
-    private gameModel: Game;
-    private ai: AI;
+    
     public startAIGame() {
         this.playerNumber = 0;
         this.opponentNumber = 1;
         this.log.clear();
         this.log.setPlayer(0);
-        this.game = new Game(standardFormat, true, this.log);
-        this.gameModel = new Game(standardFormat, false, null, [this.deck, new DeckList(standardFormat)]);
-        let aiModel = new Game(standardFormat, true);
+        this.game = new ClientGame(this.log);
+        this.gameModel = new ServerGame(standardFormat, [this.deck, new DeckList(standardFormat)]);
+        let aiModel = new ClientGame();
 
         let aiAction = (type: GameActionType, params: any) => {
             console.log('A.I action', GameActionType[type], params);
