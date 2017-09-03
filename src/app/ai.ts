@@ -1,4 +1,4 @@
-import { Game, GameActionType, GamePhase, GameAction, SyncGameEvent, GameEventType } from './game_model/game';
+import { Game, GameActionType, GamePhase, GameAction, GameSyncEvent, SyncEventType } from './game_model/game';
 import { Resource, ResourceTypeNames } from './game_model/resource';
 import { Player } from './game_model/player';
 import { Card } from './game_model/card';
@@ -33,12 +33,12 @@ export abstract class AI {
         protected runGameAction: (type: GameActionType, params: any) => void
     ) { }
 
-    abstract handleGameEvent(event: SyncGameEvent);
+    abstract handleGameEvent(event: GameSyncEvent);
     abstract pulse();
 }
 
 export class BasicAI extends AI {
-    private eventHandlers: Map<GameEventType, (params: any) => void> = new Map();
+    private eventHandlers: Map<SyncEventType, (params: any) => void> = new Map();
     private enemyNumber: number;
     private aiPlayer: Player;
     private actionSequence: LinkedList<() => void> = new LinkedList();
@@ -49,9 +49,9 @@ export class BasicAI extends AI {
         this.enemyNumber = this.game.getOtherPlayerNumber(this.playerNumber);
 
         this.game.promptCardChoice = this.makeChoice.bind(this);
-        this.eventHandlers.set(GameEventType.turnStart, event => this.onTurnStart(event.params));
-        this.eventHandlers.set(GameEventType.phaseChange, event => this.onPhaseChange(event.params));
-        this.eventHandlers.set(GameEventType.ChoiceMade, event => this.continue());
+        this.eventHandlers.set(SyncEventType.TurnStart, event => this.onTurnStart(event.params));
+        this.eventHandlers.set(SyncEventType.PhaseChange, event => this.onPhaseChange(event.params));
+        this.eventHandlers.set(SyncEventType.ChoiceMade, event => this.continue());
     }
 
     public pulse() {
@@ -112,9 +112,9 @@ export class BasicAI extends AI {
         }
     }
 
-    public handleGameEvent(event: SyncGameEvent) {
+    public handleGameEvent(event: GameSyncEvent) {
         this.game.syncServerEvent(this.playerNumber, event);
-        console.log('A.I event -', GameEventType[event.type], event.params, this.eventHandlers.get(event.type));
+        console.log('A.I event -', SyncEventType[event.type], event.params, this.eventHandlers.get(event.type));
         if (this.eventHandlers.has(event.type))
             this.eventHandlers.get(event.type)(event);
     }
@@ -145,7 +145,7 @@ export class BasicAI extends AI {
     public playCard(card: Card, targets: Unit[] = []) {
         let targetIds = targets.map(target => target.getId());
         card.getTargeter().setTargets(targets);
-        this.runGameAction(GameActionType.playCard, { id: card.getId(), targetIds: targetIds });
+        this.runGameAction(GameActionType.PlayCard, { id: card.getId(), targetIds: targetIds });
         this.game.playCard(this.aiPlayer, card);
 
     }
@@ -157,12 +157,12 @@ export class BasicAI extends AI {
             total.add(card.getCost());
         }
         let toPlay = maxBy(ResourceTypeNames, type => total.getOfType(type));
-        this.runGameAction(GameActionType.playResource, { type: toPlay });
+        this.runGameAction(GameActionType.PlayResource, { type: toPlay });
     }
 
 
     private pass() {
-        this.runGameAction(GameActionType.pass, {});
+        this.runGameAction(GameActionType.Pass, {});
     }
 
     private attack() {
@@ -194,7 +194,7 @@ export class BasicAI extends AI {
 
     private declareAttacker(unit: Unit) {
         unit.toggleAttacking();
-        this.runGameAction(GameActionType.toggleAttack, { unitId: unit.getId() });
+        this.runGameAction(GameActionType.ToggleAttack, { unitId: unit.getId() });
     }
 
     private makeBlockAction(params: { blocker: Unit, attacker: Unit }) {
@@ -224,7 +224,7 @@ export class BasicAI extends AI {
 
     private declareBlocker(blocker: Unit, attacker: Unit) {
         blocker.setBlocking(attacker.getId());
-        this.runGameAction(GameActionType.declareBlockers, {
+        this.runGameAction(GameActionType.DeclareBlocker, {
             blockerId: blocker.getId(),
             blockedId: attacker.getId()
         });

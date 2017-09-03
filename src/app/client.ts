@@ -8,7 +8,7 @@ import { MdSnackBar } from '@angular/material';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 
 // Game Model
-import { Game, GameAction, SyncGameEvent, GameActionType, GameEventType, GamePhase } from './game_model/game';
+import { Game, GameAction, GameSyncEvent, GameActionType, SyncEventType, GamePhase } from './game_model/game';
 import { data } from './game_model/gameData';
 import { GameFormat, standardFormat } from './game_model/gameFormat';
 import { Card } from './game_model/card';
@@ -102,7 +102,7 @@ export class WebClient {
         let targetIds = targets.map(target => target.getId());
         card.getTargeter().setTargets(targets);
         this.game.playCard(this.game.getPlayer(this.playerNumber), card);
-        this.sendGameAction(GameActionType.playCard, { id: card.getId(), targetIds: targetIds });
+        this.sendGameAction(GameActionType.PlayCard, { id: card.getId(), targetIds: targetIds });
         this.tips.playCardTrigger(card, this.game);
     }
 
@@ -114,23 +114,23 @@ export class WebClient {
     }
 
     public pass() {
-        this.sendGameAction(GameActionType.pass, {});
+        this.sendGameAction(GameActionType.Pass, {});
     }
 
     public playResource(type: string) {
-        this.sendGameAction(GameActionType.playResource, { type: type });
+        this.sendGameAction(GameActionType.PlayResource, { type: type });
     }
 
     public toggleAttacker(unit: Unit) {
         unit.toggleAttacking();
-        this.sendGameAction(GameActionType.toggleAttack, { unitId: unit.getId() });
+        this.sendGameAction(GameActionType.ToggleAttack, { unitId: unit.getId() });
     }
 
     public declareBlocker(blocker: Unit, blocked: Unit | null) {
         let blockedId = blocked ? blocked.getId() : null;
         this.addBlockOverlay(blocker.getId(), blockedId);
         blocker.setBlocking(blockedId);
-        this.sendGameAction(GameActionType.declareBlockers, {
+        this.sendGameAction(GameActionType.DeclareBlocker, {
             blockerId: blocker.getId(),
             blockedId: blockedId
         });
@@ -293,7 +293,7 @@ export class WebClient {
         return this.state == ClientState.InGame;
     }
 
-    private sendEventsToAi(events: SyncGameEvent[]) {
+    private sendEventsToAi(events: GameSyncEvent[]) {
         setTimeout(() => {
             for (let event of events) {
                 this.handleGameEvent(event);
@@ -328,42 +328,42 @@ export class WebClient {
         return 'your opponent'
     }
 
-    private handleGameEvent(event: SyncGameEvent) {
+    private handleGameEvent(event: GameSyncEvent) {
         //console.log('event', GameEventType[event.type]);
         this.zone.run(() => this.game.syncServerEvent(this.playerNumber, event));
         switch (event.type) {
-            case GameEventType.turnStart:
+            case SyncEventType.TurnStart:
                 if (event.params.turn != this.playerNumber)
                     return;
                 this.tips.turnStartTrigger(this.game, this.playerNumber);
                 if (event.params.turnNum != 1)
                     this.soundManager.playSound('bell');
                 break;
-            case GameEventType.attackToggled:
+            case SyncEventType.AttackToggled:
                 this.soundManager.playSound('attack');
                 break;
-            case GameEventType.block:
+            case SyncEventType.Block:
                 this.addBlockOverlay(event.params.blockerId, event.params.blockedId)
                 this.soundManager.playSound('attack');
                 break;
-            case GameEventType.phaseChange:
+            case SyncEventType.PhaseChange:
                 if (event.params.phase === GamePhase.Block)
                     this.tips.blockPhaseTrigger(this.game, this.playerNumber);
                 if (event.params.phase === GamePhase.Play2)
                     this.overlay.clearBlockers();
                 break;
-            case GameEventType.playCard:
+            case SyncEventType.PlayCard:
                 this.soundManager.playSound('magic');
                 this.overlay.onPlay(this.game.getCardById(event.params.played.id), this.game, this.playerNumber);
                 break;
-            case GameEventType.Ended:
+            case SyncEventType.Ended:
                 this.openEndDialog(event.params.winner, event.params.quit);
                 if (event.params.winner == this.playerNumber)
                     this.soundManager.playImportantSound('fanfare');
                 else
                     this.soundManager.playImportantSound('defeat');
                 break
-            case GameEventType.playResource:
+            case SyncEventType.PlayResource:
                 this.tips.playResourceTrigger(this.game, this.playerNumber);
                 break;
         }

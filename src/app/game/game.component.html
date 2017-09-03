@@ -1,4 +1,4 @@
-<ccg-record-bar [playerNo]="playerNo" [game]="game"></ccg-record-bar>
+<ccg-record-bar [log]="game.getLog()"></ccg-record-bar>
 <div class="game-area">
   <div class="info-bar">
     <p class="info-text">{{client.getOpponentUsername()}}</p>
