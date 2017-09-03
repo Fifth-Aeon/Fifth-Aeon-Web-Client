@@ -32,7 +32,7 @@ export class DeckEditorComponent implements OnInit {
 
   public onResize(rect: ClientRect) {
     let width = rect.right - rect.left;
-    this.pageSize = Math.floor(width / 175) * 2;
+    this.pageSize = Math.floor(width / 180) * 2;
     this.setPage();
   }
 

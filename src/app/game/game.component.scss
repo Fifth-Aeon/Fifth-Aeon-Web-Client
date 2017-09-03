@@ -5,10 +5,11 @@
     width: 100%;
   }
 
-  $game-area-width: calc(100% - 82px);
+ 
+
   .game-area {
     float: left;
-    width: $game-area-width;
+    width: calc(100% - 82px);
   }
 
   .area {

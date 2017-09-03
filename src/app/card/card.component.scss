@@ -13,6 +13,11 @@
   transition: all 0.25s;
 }
 
+.hovered {
+  z-index: 10;
+  //transform: translate(-2%, -50%);
+}
+
 .bordered {
   stroke-width: 1;
   stroke-opacity: 1;
@@ -56,4 +61,3 @@
     margin: 0px;
   }
 }
-

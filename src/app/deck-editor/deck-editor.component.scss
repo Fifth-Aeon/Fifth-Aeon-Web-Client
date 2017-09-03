@@ -1,12 +1,17 @@
+$margin: 3vh;
+$double-margin: $margin * 2;
+$left-width: calc(70vw - #{$double-margin});
+
 #card-selection {
+  box-sizing: border-box;
+  height: 82vh;
+  width: $left-width;
+  margin: $margin;
   float: left;
-  width: 100%;
-  height: 550px;
-  margin: 20px;
-  overflow: hidden;
+  overflow-y:scroll ;
+  padding: 12px;
   md-card-content {
-    padding-top: 140px;
-    overflow: hidden;
+    padding-top: 120px;
   }
   md-card-actions {
     position: relative;
@@ -14,31 +19,35 @@
   }
 }
 
-.mat-mini-fab  {
-  margin: 10px;
-}
-.left {
-  float: left;
-  width: 70%;
-}
-
 #card-selection-controls {
   box-sizing: border-box;
+  width: $left-width;
+  height: 9vh;
+  padding: calc((9vh / 2) - 30px);
   float: left;
-  width: 100%;
-
-  height: 100px;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-top: 0px;
-  margin-bottom: 0px;
+  margin: 0px;
+  margin-left: $margin;
 }
 
 #deck-list {
-  margin: 20px;
-  margin-bottom: 0px;
-  height: 675px;
-  width: 20%;
-  float: right;
+  box-sizing: border-box;
+  width: calc(30vw - #{$double-margin});
+  height: 94vh;
+  margin: 0px;
+  margin-right: $margin;
+  float: left;
   overflow-y: scroll;
+  margin-top: $margin;
 }
+
+.mat-fab {
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.left {
+  float: left;
+  width: $left-width;
+  margin-right: $double-margin;
+}
+
