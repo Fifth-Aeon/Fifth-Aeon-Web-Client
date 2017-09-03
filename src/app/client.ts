@@ -14,6 +14,7 @@ import { GameFormat, standardFormat } from './game_model/gameFormat';
 import { Card } from './game_model/card';
 import { Unit } from './game_model/unit';
 import { DeckList } from './game_model/deckList';
+import { Log } from './game_model/log';
 
 // Client side
 import { Messenger, MessageType, Message } from './messenger';
@@ -52,6 +53,7 @@ export class WebClient {
     private connected: boolean = false;
     private privateGameUrl: string;
     private privateGameId: string = null;
+    public log:Log;
 
     private onError: (error: string) => void = () => null;
 
@@ -63,6 +65,8 @@ export class WebClient {
         this.game = new Game(standardFormat, true);
         this.playerNumber = 0;
         this.messenger = new Messenger();
+        this.log = new Log(this.playerNumber)
+
 
         this.messenger.onlogin = (username) => this.onLogin(username);
         this.messenger.addHandeler(MessageType.StartGame, this.startGame, this);
@@ -437,7 +441,6 @@ export class WebClient {
                 break;
         }
         this.router.navigate(['/select']);
-
     }
 
     private startGame(msg: Message) {
@@ -445,8 +448,10 @@ export class WebClient {
         this.gameModel = null;
         this.gameId = msg.data.gameId;
         this.playerNumber = msg.data.playerNumber;
+        this.log.setPlayer(this.playerNumber);
         this.opponentNumber = 1 - this.playerNumber;
-        this.game = new Game(standardFormat, true);
+        this.log.clear();
+        this.game = new Game(standardFormat, true, this.log);
         this.router.navigate(['/game']);
         this.soundManager.playImportantSound('gong');
         this.zone.run(() => {
@@ -461,8 +466,10 @@ export class WebClient {
     public startAIGame() {
         this.playerNumber = 0;
         this.opponentNumber = 1;
-        this.game = new Game(standardFormat, true);
-        this.gameModel = new Game(standardFormat, false, [this.deck, new DeckList(standardFormat)]);
+        this.log.clear();
+        this.log.setPlayer(0);
+        this.game = new Game(standardFormat, true, this.log);
+        this.gameModel = new Game(standardFormat, false, null, [this.deck, new DeckList(standardFormat)]);
         let aiModel = new Game(standardFormat, true);
 
         let aiAction = (type: GameActionType, params: any) => {
