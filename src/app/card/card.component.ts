@@ -27,6 +27,7 @@ keywordsDefs.set('Relentless', 'Refreshes at the end of each turn.')
 keywordsDefs.set('Deathless', 'When this dies, play it again at the end of the turn. It loses this ability.')
 keywordsDefs.set('Sleeping', 'This unit does not ready at the start of its owners turn. Instead its sleep counter decreases by 1.')
 keywordsDefs.set('Sleep', 'Exausts a unit and prevents it from readying.')
+keywordsDefs.set('Robotic', 'Immune to sleep and poison.')
 
 keywordsDefs.set('Statue', 'A 0/1 structure that cannot attack.')
 
