@@ -158,27 +158,27 @@ export class GameComponent implements OnInit {
   }
 
   public getAreaScale(height:number, padding:number) {
-    return (height - (17.5 - 10 + padding) * 2) / 140
+    return (height - (17.5 - 10 + padding) * 2) / 140;
   }
 
   public getPassText(): string {
     if (!this.game.canTakeAction())
-      return 'Waiting for Choice'
+      return 'Waiting for Choice';
     if (this.game.isPlayerTurn(this.playerNo)) {
       if (this.game.isAttacking()) {
         if (this.game.isActivePlayer(this.playerNo))
           return 'Attack';
         else
-          return 'Waiting for Blocks';
+          return 'Waiting for Blocks';;
       }
       if (this.game) {
         if (this.canPlayResource())
-          return 'Play a Resource'
+          return 'Play a Resource';
         return 'End Turn';
       }
     } else {
       if (this.game.isActivePlayer(this.playerNo))
-        return 'Done Blocking'
+        return 'Done Blocking';
       return 'Enemy Turn';
     }
   }
@@ -245,7 +245,7 @@ export class GameComponent implements OnInit {
         }
         this.client.toggleAttacker(unit);
       } else {
-        this.tips.announce('You may only attack once each turn. All units attack at the same time.')
+        this.tips.announce('You may only attack once each turn. All units attack at the same time.');
       }
     } else if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.Block) {
       if (this.blocker == unit) {

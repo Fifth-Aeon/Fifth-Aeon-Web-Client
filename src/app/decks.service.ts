@@ -79,7 +79,7 @@ export class DecksService {
     this.save();
   }
 
-  public newDeck(index: number) {
+  public newDeck() {
     this.decks.unshift(new DeckList(standardFormat));
     this.save()
   }

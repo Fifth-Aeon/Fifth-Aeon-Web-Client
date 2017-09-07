@@ -11,10 +11,11 @@
    style="height: 512px; width: 512px;"
    id="svg2"
    version="1.1"
-   inkscape:version="0.91 r13725"
+   inkscape:version="0.92.1 r15371"
    sodipodi:docname="synthesis.svg"
-   inkscape:export-xdpi="240"
-   inkscape:export-ydpi="240">
+   inkscape:export-xdpi="12"
+   inkscape:export-ydpi="12"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\synthesis-small.png">
   <metadata
      id="metadata14">
     <rdf:RDF>
@@ -38,15 +39,15 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1536"
-     inkscape:window-height="801"
+     inkscape:window-width="3840"
+     inkscape:window-height="2004"
      id="namedview10"
      showgrid="false"
      inkscape:zoom="0.61914063"
-     inkscape:cx="240.65615"
+     inkscape:cx="-246.30915"
      inkscape:cy="241.67628"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-x="-16"
+     inkscape:window-y="-16"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg2" />
   <ellipse

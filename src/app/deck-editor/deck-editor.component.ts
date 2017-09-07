@@ -15,7 +15,7 @@ import { Card } from '../game_model/card';
   styleUrls: ['./deck-editor.component.scss']
 })
 export class DeckEditorComponent implements OnInit {
-  private cards: Array<Card>;
+  public cards: Array<Card>;
   public allCards = allCards;
   public pageCards: Array<Card>;
   public pageNumber: number = 0;

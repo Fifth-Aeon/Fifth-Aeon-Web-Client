@@ -12,11 +12,11 @@
    version="1.1"
    inkscape:version="0.92.1 r15371"
    sodipodi:docname="decay-icon.svg"
-   inkscape:export-xdpi="240"
-   inkscape:export-ydpi="240"
+   inkscape:export-xdpi="12.413306"
+   inkscape:export-ydpi="12.413306"
    width="494.95273"
    height="491.51236"
-   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\decay-icon.png">
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\decay-small.png">
   <metadata
      id="metadata14">
     <rdf:RDF>
@@ -44,7 +44,7 @@
      id="namedview10"
      showgrid="false"
      inkscape:zoom="0.921875"
-     inkscape:cx="-539.12914"
+     inkscape:cx="-866.17999"
      inkscape:cy="151.91351"
      inkscape:window-x="-16"
      inkscape:window-y="-16"

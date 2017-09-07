@@ -30,21 +30,21 @@
     </rdf:RDF>
   </metadata>
   <sodipodi:namedview
-     pagecolor="#ffffff"
+     pagecolor="#111110"
      bordercolor="#666666"
      borderopacity="1"
      objecttolerance="10"
      gridtolerance="10"
      guidetolerance="10"
-     inkscape:pageopacity="0"
+     inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:window-width="3840"
      inkscape:window-height="2004"
      id="namedview23"
      showgrid="true"
      inkscape:zoom="1.0762165"
-     inkscape:cx="1192.0267"
-     inkscape:cy="268.01378"
+     inkscape:cx="911.87861"
+     inkscape:cy="305.18102"
      inkscape:window-x="-16"
      inkscape:window-y="-16"
      inkscape:window-maximized="1"
@@ -88,17 +88,12 @@
          id="feComposite10" />
     </filter>
   </defs>
-  <path
-     d="M 0,-5 H 1010 V 564.99995 H 0 Z"
-     id="path15"
-     inkscape:connector-curvature="0"
-     style="fill:#111110;stroke:#ffffff;stroke-width:6.02181673" />
   <g
      class=""
      transform="translate(232,-5)"
      id="g19">
     <path
-       d="m 128,65 c -4.37,0 -8.74,0.485 -13,1.469 V 151 h 26 V 66.469 C 136.73622,65.48896 132.37496,64.996137 128,65 Z M 97,74.354 C 83.018,84.017 73,101.452 73,128 v 23 h 24 z m 62,0 V 151 h 24 v -23 c 0,-26.548 -10.018,-43.983 -24,-53.646 z m 38.176,26.148 C 199.634,108.783 201,117.962 201,128 V 265 H 73.23 L 398,570 658,580 Z M 73,169 v 78 h 24 v -78 z m 42,0 v 78 h 26 v -78 z m 44,0 v 78 h 24 v -78 z"
+       d="m 128,65 c -4.37,0 -8.74,0.485 -13,1.469 V 151 h 26 V 66.469 C 136.73622,65.48896 132.37496,64.996137 128,65 Z M 97,74.354 C 83.018,84.017 73,101.452 73,128 v 23 h 24 z m 62,0 V 151 h 24 v -23 c 0,-26.548 -10.018,-43.983 -24,-53.646 z m 38.176,26.148 C 199.634,108.783 201,117.962 201,128 V 265 H 73.23 L 398,570 H 668 Z M 73,169 v 78 h 24 v -78 z m 42,0 v 78 h 26 v -78 z m 44,0 v 78 h 24 v -78 z"
        id="path17"
        inkscape:connector-curvature="0"
        style="fill:#f8e71c;filter:url(#shadow-1)"

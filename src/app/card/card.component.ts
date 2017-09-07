@@ -74,13 +74,13 @@ export class CardComponent implements OnInit {
   public getResUrl(type: string) {
     switch (type) {
       case 'G':
-        return 'assets/png/growth.png';
+        return 'assets/png/growth-small.png';
       case 'S':
-        return 'assets/png/synthesis.png';
+        return 'assets/png/synthesis-small.png';
       case 'D':
-        return 'assets/png/decay-icon.png';
+        return 'assets/png/decay-small.png';
       case 'R':
-        return 'assets/png/renewal.png';
+        return 'assets/png/renewal-small.png';
     }
   }
 

@@ -23,6 +23,11 @@
   stroke-opacity: 1;
 }
 
+.text-holder {
+  //font-size: 18px;
+  padding: 1px;
+}
+
 .image-border {
   stroke: black;
   stroke-width: 1;
@@ -40,10 +45,6 @@
 
 .darkened {
   filter: brightness(0.8);
-}
-
-.text-container {
-  padding: 1px;
 }
 
 .card-name {

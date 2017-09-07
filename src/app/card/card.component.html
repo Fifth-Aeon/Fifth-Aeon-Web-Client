@@ -125,7 +125,7 @@
       <text [attr.y]="15" [attr.x]="x() / 2" text-anchor="middle" class="card-name">{{card.getName()}}</text>
     </g>
 
-    <foreignObject  x="0" [attr.y]="y() * 0.60"
+    <foreignObject  x="0" [attr.y]="y() * 0.60" class="text-holder"
       [attr.width]="x()" [attr.height]="card.isUnit() ? y() * 0.40 - 30 : y() * 0.40">
       <xhtml:p xmlns="http://www.w3.org/1999/xhtml" 
        fittext="true" activateOnResize="true" [modelToWatch]="card.getText() + hovered"
