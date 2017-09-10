@@ -23,15 +23,15 @@ import { Unit } from '../game_model/unit';
   animations: [
     trigger('location', [
       state('void', style({ opacity: 0 })),
-      transition('* => void', [
+      transition(':enter', [
+        animate('1.0s ease', style({
+          opacity: 1,
+        }))
+      ]),
+      transition(':leave', [
         animate('1.5s ease', style({
           opacity: 0,
           filter: 'brightness(0)',
-        }))
-      ]),
-      transition('void => Board', [
-        animate('1.0s ease', style({
-          opacity: 1,
         }))
       ])
     ]),
