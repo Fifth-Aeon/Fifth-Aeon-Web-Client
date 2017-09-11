@@ -33,18 +33,18 @@
       marker-end="url(#arrow)" stroke="royalblue" stroke-width="5" />
   </svg>
 
-  <ccg-card *ngIf="overlay.card" [@inHand]="isInHand(overlay.card)" class="overlayed-card" scale="1.6" [card]="overlay.card"></ccg-card>
+  <ccg-card *ngIf="overlay.card" [@inHand]="isInHand(overlay.card)" class="overlayed-card" scale="1.6" [card]="overlay.card" [game]="game"></ccg-card>
 
 
   <!-- Enemy Board -->
   <div class="area">
-    <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerUnits(enemyNo)" [darkened]="card.isExausted()" [card]="card"
+    <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerUnits(enemyNo)" [darkened]="card.isExausted()" [card]="card" [game]="game"
       [@location]="locationState(card)" [target]="validTargets.has(card)" (click)="target(card)"></ccg-card>
   </div>
 
   <!-- Player Board -->
   <div class="area">
-    <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerUnits(playerNo)" [darkened]="card.isExausted()" [card]="card"
+    <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerUnits(playerNo)" [darkened]="card.isExausted()" [card]="card" [game]="game"
       [@location]="locationState(card)" [target]="validTargets.has(card)" [selected]="card == blocker" (click)="activate(card)">
     </ccg-card>
   </div>
@@ -75,7 +75,7 @@
 
   <!-- Player Hand -->
   <div class="area hand">
-    <ccg-card scale="1.5" *ngFor="let card of player.getHand()" [@inHand]="isInHand(card)" overlap="true" [card]="card" [selected]="card == selected"
+    <ccg-card scale="1.5" *ngFor="let card of player.getHand()" [@inHand]="isInHand(card)" overlap="true" [card]="card" [game]="game" [selected]="card == selected" 
       [darkened]="!card.isPlayable(game)" (click)="select(card)"></ccg-card>
   </div>
 </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
 import { Card, Location } from '../game_model/card';
 import { Unit, UnitType } from '../game_model/unit';
+import { Game } from '../game_model/game';
 
 import { allCards } from '../game_model/cards/allCards';
 
@@ -37,8 +38,8 @@ Array.from(allCards.values()).map(fact => fact())
   .forEach(card => {
     let unit = card as Unit;
     let base = `${unit.getDamage()}/${unit.getLife()} ${UnitType[unit.getType()]}`;
-    if (unit.getText().length > 0)
-      base += ` with "${unit.getText()}"`
+    if (unit.getText(this.game).length > 0)
+      base += ` with "${unit.getText(this.game)}"`
     keywordsDefs.set(unit.getName(), base);
   })
 
@@ -58,6 +59,7 @@ function toProperCase(str: string) {
 })
 export class CardComponent implements OnInit {
   @Input() card: Card;
+  @Input() game: Game;
   @Input() scale: number;
   sizeY: number;
   sizeX: number;
@@ -119,7 +121,7 @@ export class CardComponent implements OnInit {
   }
 
   private getKeywords() {
-    return Array.from(new Set(this.card.getText().match(keywordRegex)));
+    return Array.from(new Set(this.card.getText(this.game).match(keywordRegex)));
   }
 
   public keywords() {
@@ -128,16 +130,6 @@ export class CardComponent implements OnInit {
 
   public tooltipClass = {
     multiline: true
-  }
-
-  public getFontSize() {
-    let length = this.card.getText().length;
-    let size = this.hovered ? 18 : 16;
-    let limit = this.card.isUnit() ? 40 : 90;
-
-    if (length > limit)
-      size -= Math.floor((length - limit) / 8);
-    return size + 'px';
   }
 
   public getImage() {

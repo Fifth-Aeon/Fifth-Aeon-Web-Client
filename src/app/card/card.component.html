@@ -128,8 +128,8 @@
     <foreignObject  x="0" [attr.y]="y() * 0.60" class="text-holder"
       [attr.width]="x()" [attr.height]="card.isUnit() ? y() * 0.40 - 30 : y() * 0.40">
       <xhtml:p xmlns="http://www.w3.org/1999/xhtml" 
-       fittext="true" activateOnResize="true" [modelToWatch]="card.getText() + hovered"
-       useMaxFontSize="false"  class="card-text" [innerHTML]="htmlText(card.getText())">
+       fittext="true" activateOnResize="true" [modelToWatch]="card.getText(game) + hovered"
+       useMaxFontSize="false"  class="card-text" [innerHTML]="htmlText(card.getText(game))">
       </xhtml:p> 
     </foreignObject>
 
