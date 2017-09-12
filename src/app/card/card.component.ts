@@ -29,6 +29,7 @@ keywordsDefs.set('Deathless', 'When this dies, play it again at the end of the t
 keywordsDefs.set('Sleeping', 'This unit does not ready at the start of its owners turn. Instead its sleep counter decreases by 1.')
 keywordsDefs.set('Sleep', 'Exausts a unit and prevents it from readying.')
 keywordsDefs.set('Robotic', 'Immune to sleep and poison.')
+keywordsDefs.set('Immortal', 'Whenever this unit dies, play it from the crypt at the end of the turn (it keeps this ability).')
 
 keywordsDefs.set('Statue', 'A 0/1 structure that cannot attack.')
 
