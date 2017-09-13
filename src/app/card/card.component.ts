@@ -62,6 +62,7 @@ export class CardComponent implements OnInit {
   @Input() card: Card;
   @Input() game: Game;
   @Input() scale: number;
+  @Input() distFromMid: number;
   sizeY: number;
   sizeX: number;
   padding = 30;
@@ -111,10 +112,18 @@ export class CardComponent implements OnInit {
         marginLeft = -50;
       }
     }
-    return {
+    let rotation = this.hovered ? 0 : 3 * this.distFromMid;
+    let dispY = Math.abs(this.distFromMid == 0 ? 0.5 : this.distFromMid) * 4;
+    marginRight -= Math.abs(this.distFromMid) * 5;
+    marginLeft  -= Math.abs(this.distFromMid) * 5;
+    if (this.hovered && this.overlap)
+      dispY = -10;
+    let css = {
       'margin-left': marginLeft + 'px',
-      'margin-right': marginRight + 'px'
+      'margin-right': marginRight + 'px',
+      'transform': `translateY(-${50 - dispY}%) rotate(${rotation}deg)`
     }
+    return css;
   }
 
   public htmlText(text: string) {
@@ -163,6 +172,7 @@ export class CardComponent implements OnInit {
     if (!this.scale)
       this.scale = 1.25;
     this.overlay.registerCard(this.card.getId(), this.element);
+    this.distFromMid = this.distFromMid || 0;
 
   }
 

@@ -75,7 +75,9 @@
 
   <!-- Player Hand -->
   <div class="area hand">
-    <ccg-card scale="1.5" *ngFor="let card of player.getHand()" [@inHand]="isInHand(card)" overlap="true" [card]="card" [game]="game" [selected]="card == selected" 
+    <ccg-card scale="1.5" *ngFor="let card of player.getHand(); let i = index" 
+    [@inHand]="isInHand(card)" overlap="true" [card]="card" [game]="game" [selected]="card == selected" 
+    [distFromMid]="(i + 0.5) - player.getHand().length / 2"
       [darkened]="!card.isPlayable(game)" (click)="select(card)"></ccg-card>
   </div>
 </div>
