@@ -5,7 +5,7 @@
     <md-card-header>
       <md-card-title>{{deck.name}}</md-card-title>
     </md-card-header>
-    <img md-card-image src="assets/png/{{deck.avatar}}">
+    <img (click)="decksService.setCurrentDeck(i)" md-card-image src="assets/png/{{deck.avatar}}">
     <md-card-actions>
       <button md-mini-fab (click)="decksService.setCurrentDeck(i)" color="primary" mdTooltipPosition="above" mdTooltip="Select Deck"><md-icon>check</md-icon></button>
       <button md-mini-fab (click)="decksService.editDeck(i)" mdTooltipPosition="above" mdTooltip="Edit Deck"><md-icon>mode_edit</md-icon></button>

@@ -97,7 +97,7 @@ export class CardComponent implements OnInit {
     return (this.x() - 27.5 - this.getSymbolSize() * 6) / (12);
   }
 
-  getType(type: UnitType) {
+  public getType(type: UnitType) {
     return UnitType[type];
   }
 
@@ -113,7 +113,7 @@ export class CardComponent implements OnInit {
       }
     }
     let rotation = this.hovered ? 0 : 3 * this.distFromMid;
-    let dispY = Math.abs(this.distFromMid == 0 ? 0.5 : this.distFromMid) * 4;
+    let dispY =  this.overlap ? Math.abs(this.distFromMid == 0 ? 0.5 : this.distFromMid) * 4 : 0;
     marginRight -= Math.abs(this.distFromMid) * 5;
     marginLeft  -= Math.abs(this.distFromMid) * 5;
     if (this.hovered && this.overlap)

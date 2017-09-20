@@ -92,7 +92,7 @@ export class TipService {
             this.playTip(TipType.CanBlock);
     }
 
-    public cannotAttackTip(unit: Unit, game:Game) {
+    public cannotAttackTip(unit: Unit, game: Game) {
         if (!unit.isReady())
             this.announce('Units cannot attack the turn they are played.');
         else if (unit.isExausted())
@@ -120,5 +120,16 @@ export class TipService {
         }
     }
 
+    public markUnread() {
+        this.played = {};
+        localStorage.setItem(tipLocalStore, JSON.stringify(this.played));        
+    }
+
+    public markRead() {
+        for (let i = 0; i < 8; i++) {
+            this.played[i] = true;
+        }
+        localStorage.setItem(tipLocalStore, JSON.stringify(this.played));
+    }
 
 }

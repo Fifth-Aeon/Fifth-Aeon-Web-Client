@@ -1,18 +1,26 @@
 <div md-dialog-content>
-  <h1>Volume</h1>
-  <table>
-    <tbody *ngFor="let volume of volumes; let i = index;">
-      <tr>
-        <td>{{volumeNames[volume[0]]}}:</td>
-        <td>
-          <md-slider (change)="sound.changeVolume( volume[0], $event.value)" min="0" max="1" step="0.01" [value]="volume[1]"></md-slider>
-        </td>
-        <td *ngIf="i == 0">  
-          <md-checkbox  (change)="sound.toggleMute()" [ngModel]="sound.isMuted()">Mute all</md-checkbox>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+
+  <md-tab-group>
+    <md-tab label="Volume">
+      <table>
+        <tbody *ngFor="let volume of volumes; let i = index;">
+          <tr>
+            <td>{{volumeNames[volume[0]]}}:</td>
+            <td>
+              <md-slider (change)="sound.changeVolume( volume[0], $event.value)" min="0" max="1" step="0.01" [value]="volume[1]"></md-slider>
+            </td>
+            <td *ngIf="i == 0">
+              <md-checkbox (change)="sound.toggleMute()" [ngModel]="sound.isMuted()">Mute all</md-checkbox>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </md-tab>
+    <md-tab label="Tips">
+        <button md-raised-button color="primary" md-button (click)="tips.markUnread()">Reset Tips</button>
+        <button md-raised-button color="warn" md-button (click)="tips.markRead()"> Disable Tips</button>
+    </md-tab>
+  </md-tab-group>
 
 </div>
 

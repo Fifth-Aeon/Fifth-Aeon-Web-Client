@@ -59,7 +59,7 @@ export class OverlayService {
     let blocker = this.cardsElements.get(blockerIds[0]);
     let blocked = this.cardsElements.get(blockerIds[1]);
     if (!blocker || !blocked) {
-      console.error(blockerIds, blocker, blocked);
+      console.error (blockerIds, blocker, blocked);
       return null;
     }
     var blockerRect = blocker.nativeElement.getElementsByClassName("card-image")[0].getBoundingClientRect();
