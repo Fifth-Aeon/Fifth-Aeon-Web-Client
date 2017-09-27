@@ -9,7 +9,7 @@ import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 
 // Game Model
 import { Game, GameAction, GameSyncEvent, GameActionType, SyncEventType, GamePhase } from './game_model/game';
-import { ServerGame  } from './game_model/serverGame';
+import { ServerGame } from './game_model/serverGame';
 import { ClientGame } from './game_model/clientGame';
 import { data } from './game_model/gameData';
 import { GameFormat, standardFormat } from './game_model/gameFormat';
@@ -18,7 +18,7 @@ import { Unit } from './game_model/unit';
 import { DeckList } from './game_model/deckList';
 import { Log } from './game_model/log';
 import { AI, BasicAI } from './game_model/ai';
- 
+
 // Client side
 import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
@@ -55,7 +55,7 @@ export class WebClient {
     private connected: boolean = false;
     private privateGameUrl: string;
     private privateGameId: string = null;
-    public log:Log;
+    public log: Log;
 
     private game: ClientGame;
     private gameModel: ServerGame;
@@ -68,7 +68,7 @@ export class WebClient {
         preloader: Preloader, public dialog: MdDialog, private overlay: OverlayService,
         private hotkeys: HotkeysService) {
 
-        this.game = new ClientGame();
+        this.initGame();
         this.playerNumber = 0;
         this.messenger = new Messenger();
         this.log = new Log(this.playerNumber)
@@ -91,6 +91,10 @@ export class WebClient {
         }, 750);
     }
 
+    private initGame() {
+        this.game = new ClientGame((type, params) => this.sendGameAction(type, params, false), this.log);
+    }
+
     private addHotkeys() {
         this.hotkeys.add(new Hotkey('esc', (event: KeyboardEvent): boolean => {
             this.openSettings();
@@ -105,41 +109,28 @@ export class WebClient {
 
     // Game Actions -------------------------------------------------------------------------
     public playCard(card: Card, targets: Unit[] = []) {
-        let targetIds = targets.map(target => target.getId());
-        card.getTargeter().setTargets(targets);
-        this.game.playCard(this.game.getPlayer(this.playerNumber), card);
-        this.sendGameAction(GameActionType.PlayCard, { id: card.getId(), targetIds: targetIds });
+        this.game.playCardExtern(card, targets);
         this.tips.playCardTrigger(card, this.game);
     }
 
     public makeChoice(cards: Card[]) {
-        this.game.makeDeferedChoice(cards);
-        this.sendGameAction(GameActionType.CardChoice, {
-            choice: cards.map(card => card.getId())
-        });
+        this.game.makeChoice(cards);
     }
 
     public pass() {
-        this.sendGameAction(GameActionType.Pass, {});
+        this.game.pass();
     }
 
     public playResource(type: string) {
-        this.sendGameAction(GameActionType.PlayResource, { type: type });
+        this.game.playResource(type);
     }
 
     public toggleAttacker(unit: Unit) {
-        unit.toggleAttacking();
-        this.sendGameAction(GameActionType.ToggleAttack, { unitId: unit.getId() });
+        this.game.declareAttacker(unit);
     }
 
     public declareBlocker(blocker: Unit, blocked: Unit | null) {
-        let blockedId = blocked ? blocked.getId() : null;
-        this.addBlockOverlay(blocker.getId(), blockedId);
-        blocker.setBlocking(blockedId);
-        this.sendGameAction(GameActionType.DeclareBlocker, {
-            blockerId: blocker.getId(),
-            blockedId: blockedId
-        });
+        this.game.declareBlocker(blocker, blocked);
     }
 
     // Misc --------------------
@@ -266,7 +257,7 @@ export class WebClient {
 
     public exitGame() {
         this.sendGameAction(GameActionType.Quit, {});
-        this.game = new ClientGame();
+        this.initGame();
         this.playerNumber = 0;
         this.changeState(ClientState.InLobby);
         this.router.navigate(['/lobby']);
@@ -457,7 +448,7 @@ export class WebClient {
         this.log.setPlayer(this.playerNumber);
         this.opponentNumber = 1 - this.playerNumber;
         this.log.clear();
-        this.game = new ClientGame(this.log);
+        this.initGame();
         this.router.navigate(['/game']);
         this.soundManager.playImportantSound('gong');
         this.zone.run(() => {
@@ -467,22 +458,22 @@ export class WebClient {
     }
 
     // AI stuff ------------------------------------
-    
+
+  
     public startAIGame() {
         this.playerNumber = 0;
         this.opponentNumber = 1;
         this.log.clear();
         this.log.setPlayer(0);
-        this.game = new ClientGame(this.log);
+        this.initGame();
         this.gameModel = new ServerGame(standardFormat, [this.deck, new DeckList(standardFormat)]);
-        let aiModel = new ClientGame();
+        let aiModel = new ClientGame((type, params) => this.sendGameAction(type, params, true));
 
         let aiAction = (type: GameActionType, params: any) => {
             console.log('A.I action', GameActionType[type], params);
             this.sendGameAction(type, params, true);
         };
-        let delay = (cb: () => void) => this.soundManager.doWhenDonePlaying(cb);
-        this.ai = new BasicAI(1, aiModel, aiAction);
+        this.ai = new BasicAI(1, aiModel);
 
         this.router.navigate(['/game']);
         this.zone.run(() => {
