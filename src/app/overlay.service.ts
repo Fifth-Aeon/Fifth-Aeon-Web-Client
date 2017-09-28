@@ -14,6 +14,8 @@ export class OverlayService {
   private cardsElements: Map<string, ElementRef> = new Map();
   private blocks: Array<[string, string]> = [];
   public targets: Array<Arrow> = [];
+  public static arrowTimer: number = 1500;
+  public static cardTimer: number = 2500;
 
   constructor() { }
 
@@ -33,33 +35,36 @@ export class OverlayService {
     this.blocks = [];
   }
 
-  public addSpell(spell: Card, targets: Array<Unit>) {
-    this.card = spell;
-    setTimeout(() => {
-      this.targets = targets
-        .map(target => [spell.getId(), target.getId()] as [string, string])
-        .map((target) => this.toArrow(target))
-        .filter(arrow => arrow != null);
+  public addTargets(card: Card, targets: Array<Unit>) {
+    if (!card.isUnit()) {
+      this.card = card;
       setTimeout(() => {
-        this.targets = [];
-      }, 1400);
+        this.card = null;
+      }, OverlayService.cardTimer);
+    }
+    if (targets != null && targets.length > 0) {
       setTimeout(() => {
-        this.card = null;        
-      }, 3000);
-    }, 50);
+        this.targets = targets
+          .map(target => [card.getId(), target.getId()] as [string, string])
+          .map((target) => this.toArrow(target))
+          .filter(arrow => arrow != null);
+        setTimeout(() => {
+          this.targets = [];
+        }, OverlayService.arrowTimer);
+      }, 0);
+    }
   }
 
   public onPlay(card: Card, game: Game, player: number) {
-    if (card.isUnit())
-      return;
-    this.addSpell(card, card.getTargeter().getLastTargets());
+    let targets = card.getTargeter().getLastTargets();
+    this.addTargets(card, targets);
   }
 
   private toArrow(blockerIds: [string, string]): Arrow {
     let blocker = this.cardsElements.get(blockerIds[0]);
     let blocked = this.cardsElements.get(blockerIds[1]);
     if (!blocker || !blocked) {
-      console.error (blockerIds, blocker, blocked);
+      console.error(blockerIds, blocker, blocked);
       return null;
     }
     var blockerRect = blocker.nativeElement.getElementsByClassName("card-image")[0].getBoundingClientRect();

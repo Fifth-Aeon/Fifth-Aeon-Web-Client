@@ -14,6 +14,8 @@ import { Player } from '../game_model/player';
 import { Card, Location } from '../game_model/card';
 import { Unit } from '../game_model/unit';
 
+const deathFadeTime = OverlayService.arrowTimer + 200;
+
 //Deck Hand Board Crypt
 @Component({
   selector: 'ccg-game',
@@ -29,7 +31,7 @@ import { Unit } from '../game_model/unit';
         }))
       ]),
       transition(':leave', [
-        animate('1.5s ease', style({
+        animate(deathFadeTime + 'ms ease', style({
           opacity: 0,
           filter: 'brightness(0)',
         }))
