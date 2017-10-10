@@ -136,7 +136,7 @@
     <g attr.transform="translate(0 {{y() - 25}})" *ngIf="card.isUnit()">
       <g attr.transform="translate({{25}} 0)">
         <rect [attr.width]="x() - 50" height="25" class="image-border" />
-        <text [attr.width]="x() - 50" height="25" text-anchor="middle" y="17.5" [attr.x]="(x() - 50) / 2">{{getType(card.getType())}}</text>
+        <text [attr.width]="x() - 50" height="25" text-anchor="middle" y="17.5" [attr.x]="(x() - 50) / 2">{{getType(card.getUnitType())}}</text>
       </g>
 
       <g mdTooltipShowDelay="400" mdTooltipPosition="above" mdTooltip="{{card.getName()}} deals {{card.damage}} damage.">

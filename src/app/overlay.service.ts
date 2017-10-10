@@ -2,7 +2,8 @@ import { Injectable, ElementRef } from '@angular/core';
 import { remove } from 'lodash';
 
 import { Unit } from 'app/game_model/unit';
-import { Card } from 'app/game_model/card';
+import { Card, CardType } from 'app/game_model/card';
+import { Item } from 'app/game_model/item';
 import { Game } from 'app/game_model/game';
 
 
@@ -57,6 +58,9 @@ export class OverlayService {
 
   public onPlay(card: Card, game: Game, player: number) {
     let targets = card.getTargeter().getLastTargets();
+    if (card.getCardType() == CardType.Item) {
+      targets.push((card as Item).getHostTargeter().getLastTargets()[0]);
+    }
     this.addTargets(card, targets);
   }
 

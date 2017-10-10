@@ -10,9 +10,12 @@ import { TipService, TipType } from '../tips';
 import { CardChooserComponent } from '../card-chooser/card-chooser.component';
 import { WebClient, ClientState } from '../client';
 import { Game, GamePhase } from '../game_model/game';
+import { ClientGame } from '../game_model/clientGame';
 import { Player } from '../game_model/player';
-import { Card, Location } from '../game_model/card';
+import { Card, CardType, Location } from '../game_model/card';
 import { Unit } from '../game_model/unit';
+import { Item } from '../game_model/item';
+import { Targeter } from '../game_model/targeter';
 
 const deathFadeTime = OverlayService.arrowTimer + 200;
 
@@ -53,7 +56,7 @@ const deathFadeTime = OverlayService.arrowTimer + 200;
   ]
 })
 export class GameComponent implements OnInit {
-  public game: Game;
+  public game: ClientGame;
   public player: Player;
   public playerNo: number;
   public enemy: Player;
@@ -116,11 +119,11 @@ export class GameComponent implements OnInit {
     this.client.pass();
   }
 
-  public openCardChooser(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null, message:string = '') {
+  public openCardChooser(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null, message: string = '') {
     this.game.setDeferedChoice(player, callback);
-    if (player != this.playerNo)  
+    if (player != this.playerNo)
       return;
-    
+
     let config = new MdDialogConfig();
     config.disableClose = true;
     let dialogRef = this.dialog.open(CardChooserComponent, config);
@@ -159,7 +162,7 @@ export class GameComponent implements OnInit {
       (this.wouldEndTurn() && this.canPlayResource());
   }
 
-  public getAreaScale(height:number, padding:number) {
+  public getAreaScale(height: number, padding: number) {
     return (height - (17.5 - 10 + padding) * 2) / 140;
   }
 
@@ -185,40 +188,72 @@ export class GameComponent implements OnInit {
     }
   }
 
+  private doestNotNeedTarget(card: Card): boolean {
+    let targeter = card.getTargeter();
+    if (card.getCardType() == CardType.Item && !this.host)
+      return false;
+    return !targeter.needsInput() || this.selected == card && targeter.optional()
+  }
+
 
   public selected: Card = null;
+  private targeters: Targeter[];
   public validTargets: Set<Unit> = new Set();
+
   public select(card: Card) {
     if (!card.isPlayable(this.game)) {
       this.tips.cannotPlayTip(this.playerNo, this.game, card);
       return;
     }
+
     let targeter = card.getTargeter();
-    if (!targeter.needsInput() || this.selected == card && targeter.optional()) {
+    if (this.doestNotNeedTarget(card)) {
       this.client.playCard(card, []);
       this.selected = null;
     } else {
-      this.selected = card;
-      let targeter = this.selected.getTargeter();
-      this.validTargets = new Set(targeter.getValidTargets(card, this.game));
-      if (targeter.optional())
-        this.tips.playTip(TipType.OptionalTarget);
-      else
-        this.tips.playTip(TipType.NeedsTarget);
-
+      this.setSelected(card);
     }
+  }
+
+  private host: Unit;
+  private setSelected(card: Card) {
+    let targeter = card.getTargeter();
+    this.selected = card;
+    if (card.getCardType() == CardType.Item && this.host == null) {
+      let item = card as Item;
+      this.validTargets = new Set(item.getHostTargeter().getValidTargets(card, this.game));
+      return;
+    }
+    this.validTargets = new Set(targeter.getValidTargets(card, this.game));
+    if (targeter.optional())
+      this.tips.playTip(TipType.OptionalTarget);
+    else
+      this.tips.playTip(TipType.NeedsTarget);
+  }
+
+  public setHost(host: Unit) {
+    let item = this.selected as Item;
+    this.host = host;
+    if (this.doestNotNeedTarget(this.selected)) {
+      this.game.playCardExtern(this.selected, [], this.host);
+      this.selected = null;
+      this.host = null;
+    }
+    this.setSelected(this.selected);
+
   }
 
   public playTargeting(target: Unit) {
     this.client.playCard(this.selected, [target]);
     this.selected = null;
+    this.host = null;
     this.validTargets = new Set();
   }
 
   public canPlayTargeting(target: Unit) {
     return this.selected && this.validTargets.has(target) &&
       this.game.isPlayerTurn(this.playerNo) &&
-      (this.game.getPhase() == GamePhase.Play1 || this.game.getPhase() == GamePhase.Play2)
+      (this.game.getPhase() == GamePhase.Play1 || this.game.getPhase() == GamePhase.Play2);
   }
 
   public target(card: Card) {
@@ -238,7 +273,10 @@ export class GameComponent implements OnInit {
     let unit = card as Unit;
     let phase = this.game.getPhase();
     if (this.canPlayTargeting(unit)) {
-      this.playTargeting(unit);
+      if (this.selected.getCardType() == CardType.Item && this.host == null)
+        this.setHost(unit);
+      else
+        this.playTargeting(unit);
     } else if (this.game.isPlayerTurn(this.playerNo)) {
       if (phase == GamePhase.Play1) {
         if (!(this.game.playerCanAttack(this.playerNo) && unit.canAttack())) {
