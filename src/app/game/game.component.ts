@@ -113,9 +113,7 @@ export class GameComponent implements OnInit {
   public pass() {
     if (this.passDisabled())
       return;
-    this.selected = null;
-    this.blocker = null;
-    this.validTargets = new Set();
+    this.clear();
     this.client.pass();
   }
 
@@ -209,7 +207,7 @@ export class GameComponent implements OnInit {
     let targeter = card.getTargeter();
     if (this.doestNotNeedTarget(card)) {
       this.client.playCard(card, []);
-      this.selected = null;
+      this.clear();
     } else {
       this.setSelected(card);
     }
@@ -236,24 +234,26 @@ export class GameComponent implements OnInit {
     this.host = host;
     if (this.doestNotNeedTarget(this.selected)) {
       this.game.playCardExtern(this.selected, [], this.host);
-      this.selected = null;
-      this.host = null;
+      this.clear();
     }
     this.setSelected(this.selected);
-
   }
 
   public playTargeting(target: Unit) {
     this.client.playCard(this.selected, [target]);
-    this.selected = null;
-    this.host = null;
-    this.validTargets = new Set();
+    this.clear();
   }
 
   public canPlayTargeting(target: Unit) {
     return this.selected && this.validTargets.has(target) &&
       this.game.isPlayerTurn(this.playerNo) &&
       (this.game.getPhase() == GamePhase.Play1 || this.game.getPhase() == GamePhase.Play2);
+  }
+
+  private clear() {
+    this.selected = null;
+    this.host = null;
+    this.validTargets = new Set();
   }
 
   public target(card: Card) {
