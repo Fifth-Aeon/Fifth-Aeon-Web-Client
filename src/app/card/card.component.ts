@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
-import { Card, Location } from '../game_model/card';
+import { Card, Location, CardType } from '../game_model/card';
 import { Unit, UnitType } from '../game_model/unit';
 import { Game } from '../game_model/game';
 
@@ -95,6 +95,10 @@ export class CardComponent implements OnInit {
   public getSymbolPadding() {
     // Area - symbol size / max symbols
     return (this.x() - 27.5 - this.getSymbolSize() * 6) / (12);
+  }
+
+  public isItem(card:Card) {
+    return card.getCardType() == CardType.Item;
   }
 
   public getType(type: UnitType) {
