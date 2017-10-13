@@ -190,7 +190,7 @@ export class GameComponent implements OnInit {
     let targeter = card.getTargeter();
     if (card.getCardType() == CardType.Item && !this.host)
       return false;
-    return !targeter.needsInput() || this.selected == card && targeter.optional()
+    return !targeter.needsInput() || this.selected == card && targeter.isOptional()
   }
 
 
@@ -223,7 +223,7 @@ export class GameComponent implements OnInit {
       return;
     }
     this.validTargets = new Set(targeter.getValidTargets(card, this.game));
-    if (targeter.optional())
+    if (targeter.isOptional())
       this.tips.playTip(TipType.OptionalTarget);
     else
       this.tips.playTip(TipType.NeedsTarget);
@@ -235,12 +235,13 @@ export class GameComponent implements OnInit {
     if (this.doestNotNeedTarget(this.selected)) {
       this.game.playCardExtern(this.selected, [], this.host);
       this.clear();
+      return;
     }
     this.setSelected(this.selected);
   }
 
   public playTargeting(target: Unit) {
-    this.client.playCard(this.selected, [target]);
+    this.game.playCardExtern(this.selected, [target], this.host);
     this.clear();
   }
 

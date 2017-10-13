@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 1000 560"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="dripping-blade.svg"
+   width="1000"
+   height="560"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\dripping-blade.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240"
+   inkscape:version="0.92.1 r15371">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     pagecolor="#370661"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2004"
+     id="namedview10"
+     showgrid="false"
+     inkscape:zoom="1.84375"
+     inkscape:cx="510.39585"
+     inkscape:cy="258.71707"
+     inkscape:window-x="-16"
+     inkscape:window-y="-16"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg8"
+     showguides="false" />
+  <g
+     class=""
+     transform="matrix(1.1502973,0,0,1.1502973,188.29918,-21.459857)"
+     id="g6"
+     style="fill:#f9f9f9;fill-opacity:1">
+    <path
+       d="m 17.406,17.156 -52.80875,1.979491 C 44.14225,53.472491 196.33,128.72 279.312,152.313 225.525,98.153 154.142,48.62 100.094,17.156 Z m 118.813,0 c 59.04,36.955 129.675,89.52 179.218,146.5 l 19.28,22.22 -28.562,-7 C 218.233,157.345 23.043314,56.47069 -66.050686,18.22769 L -166.48161,19.148113 C 1.7163877,92.788113 362.659,245.305 493.75,268.25 455.993,227.122 417.573,190.09 379.5,156.75 314.105,99.484 250,53.816 192.03,17.156 H 136.22 Z M 42.843,148 c 17.93,33.19 29.747,103.934 20.125,139.938 -2.986,11.166 -19.064,40.526 -19.064,53.812 0,18.01 14.468,32.664 32.47,32.22 18,-0.446 32.435,-16.15 32.436,-34.158 0,-13.366 -16.692,-41.73 -19.75,-52.78 C 78.394,248.472 95.774,194.878 120.686,179.25 94.746,169.31 68.739,158.9 42.842,148 Z m 169.312,64.375 c 43.138,48.155 51.117,154.67 39.375,197.5 -3.242,11.835 -20.53,43.375 -20.53,57.563 0,19.116 14.893,33.87 34,33.718 19.107,-0.15 34.688,-15.164 34.688,-34.28 0,-14.103 -15.892,-45.715 -19.813,-57.22 -14.753,-43.3 -3.968,-143.785 21.25,-141.187 22.02,2.264 25.332,49.124 16.28,79.936 -2.083,7.093 -12.028,25.58 -12.03,34.125 0,11.517 9.02,20.468 20.53,20.376 11.512,-0.093 20.53,-9.203 20.533,-20.72 0,-8.494 -8.95,-26.975 -11.313,-33.905 -8.155,-23.937 3.22,-74.906 20.906,-91.967 -45.956,-12.332 -94.36,-27.076 -143.874,-43.938 z m 173,51.53 c 18.477,25.58 24.733,78.443 12.78,123.158 -3.71,13.88 -23.684,50.358 -23.686,66.875 0,22.387 17.997,40.613 40.375,40.062 22.378,-0.55 40.344,-20.05 40.344,-42.438 0,-16.616 -20.764,-51.887 -24.564,-65.625 -13.298,-48.074 7.292,-89.676 35.906,-103.78 -25.73,-5.033 -52.903,-11.147 -81.156,-18.25 z"
+       id="path4"
+       inkscape:connector-curvature="0"
+       style="fill:#f9f9f9;fill-opacity:1"
+       sodipodi:nodetypes="ccccccccccccccccccsccccccccscsccccccccccccccscccc" />
+  </g>
+  <!-- react-empty: 6 -->
+</svg>
