@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 1000 560"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="meditation.svg"
+   width="1000"
+   height="560"
+   inkscape:version="0.92.1 r15371"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\meditation.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     pagecolor="#f8e71c"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2004"
+     id="namedview10"
+     showgrid="false"
+     inkscape:zoom="0.4609375"
+     inkscape:cx="256"
+     inkscape:cy="256"
+     inkscape:window-x="-16"
+     inkscape:window-y="-16"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg8" />
+  <g
+     class=""
+     transform="matrix(1.1616645,0,0,1.1616645,201.01487,-7.3693766)"
+     id="g6">
+    <path
+       d="m 263.375,19.375 c -11.768,0 -22.676,6.137 -31.156,17.22 -7.267,9.494 -12.397,22.54 -13.72,37.25 11.14,-4.926 22.473,-7.91 33.813,-9 V 83.25 c -10.965,1.377 -22.008,5.008 -33.157,11.03 1.968,12.487 6.703,23.502 13.063,31.814 8.48,11.082 19.387,17.22 31.155,17.22 11.768,0 22.707,-6.138 31.188,-17.22 6.167,-8.06 10.783,-18.667 12.843,-30.688 C 295.334,88.574 283.21,84.409 270.998,83.062 V 64.75 c 12.676,1.087 25.22,4.516 37.344,10.188 -1.155,-15.158 -6.336,-28.614 -13.78,-38.344 -8.482,-11.082 -19.42,-17.22 -31.19,-17.22 z m -46.594,117.25 c -10.442,4.8 -18.39,11.182 -22.593,18.47 l -0.375,-0.095 -41.625,64.438 -50.656,-21.97 c -29.375,-16.118 -61.574,24 -30.624,41.688 l 94.47,44.063 38.03,-50.064 c 18.7,33.703 16.77,67.43 -10.97,101.156 -8.344,-0.642 -16.37,-0.958 -23.967,-0.906 -40.312,0.278 -68.942,10.254 -73.907,28.78 l 0.03,0.002 c -4.44,16.58 10.992,36.67 39.126,55.28 55.675,29.297 95.38,38.468 156.968,42.344 h 1.562 l 0.438,0.125 c 0.424,0.026 0.823,0.07 1.25,0.094 l -0.032,0.314 92.063,28.72 -22.19,-53.72 -180.184,-59.844 5.875,-17.72 71.81,23.845 71.845,-23.844 5.875,17.719 -48.094,15.97 94.438,31.374 c 33.494,-20.046 52.528,-42.468 47.656,-60.656 -5.95,-22.21 -45.925,-32.107 -99.25,-27.782 -26.392,-33.215 -26.196,-66.41 -9.53,-99.625 L 361,283.22 455.47,239.156 c 30.95,-17.687 -1.25,-57.806 -30.626,-41.687 L 374.156,219.437 332.562,155 H 332.5 c -4.217,-7.246 -12.135,-13.596 -22.53,-18.375 -0.2,0.27 -0.392,0.547 -0.595,0.813 -11.268,14.725 -27.633,24.562 -46,24.562 -18.367,0 -34.732,-9.837 -46,-24.563 -0.203,-0.265 -0.394,-0.543 -0.594,-0.812 z m -63.686,311 -16.72,40.5 69.876,-21.78 c -17.624,-4.574 -34.93,-10.634 -53.156,-18.72 z"
+       id="path4"
+       inkscape:connector-curvature="0"
+       style="fill:#000000" />
+  </g>
+  <!-- react-empty: 6 -->
+</svg>
