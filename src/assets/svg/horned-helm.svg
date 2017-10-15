@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 1000 560"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="horned-helm.svg"
+   width="1000"
+   height="560"
+   inkscape:version="0.92.1 r15371"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\horned-helm.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     pagecolor="#370661"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2004"
+     id="namedview10"
+     showgrid="false"
+     inkscape:zoom="0.4609375"
+     inkscape:cx="256"
+     inkscape:cy="256"
+     inkscape:window-x="-16"
+     inkscape:window-y="-16"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg8" />
+  <g
+     class=""
+     transform="matrix(1.1050073,0,0,1.1050073,216.31525,-6.2060699)"
+     id="g6">
+    <path
+       d="m 69.313,18.75 c -1.574,2.353 -3.376,4.513 -4.813,7 -35.31,61.15 -14.316,139.444 46.844,174.75 0.822,0.475 1.64,0.92 2.47,1.375 6.942,-20.223 16.297,-38.746 27.592,-54.844 C 94.434,119.624 68.316,69.611 69.312,18.751 Z m 366.218,0 c 1,51.074 -25.34,101.293 -72.686,128.625 -0.06,0.035 -0.128,0.06 -0.188,0.094 11.25,16.126 20.54,34.673 27.438,54.905 1.143,-0.615 2.275,-1.222 3.406,-1.875 61.16,-35.306 82.154,-113.6 46.844,-174.75 -1.437,-2.487 -3.24,-4.647 -4.813,-7 z m -183.655,83.063 c -49.747,0 -94.34,38.94 -117.188,97.687 34.868,-8.738 76.5,-12.77 118.282,-12.78 40.775,-0.013 81.443,3.814 115.843,12.124 -22.932,-58.378 -67.38,-97.03 -116.938,-97.03 z m 1.094,103.593 c -61.1,0.017 -122.17,10.173 -156.44,27.875 v 59.69 c 38.836,-8.845 89.384,-13.424 140.626,-14.158 L 219.28,395 h 59.97 L 261.375,278.78 c 55.228,0.506 109.26,5.38 148.25,14.158 V 233.28 C 375.245,215.51 314.08,205.39 252.969,205.406 Z m -61.064,94.78 c -11.582,0.002 -20.094,8.333 -20.094,18.002 0,9.668 8.512,18 20.094,18 11.583,0 20.125,-8.332 20.125,-18 0,-9.67 -8.54,-18 -20.124,-18 z m 114.688,0.002 c -11.583,0 -20.094,8.33 -20.094,18 0,9.668 8.51,18 20.094,18 11.582,0 20.125,-8.332 20.125,-18 0,-9.67 -8.544,-18 -20.126,-18 z m 44.625,2.625 -51.159,191.125 81.844,-21.25 V 306.75 c -9.6,-1.504 -19.885,-2.81 -30.687,-3.938 z m -203.25,0.593 c -10.817,1.254 -21.174,2.733 -30.845,4.438 v 164.844 l 81.844,21.25 -51,-190.532 z"
+       id="path4"
+       inkscape:connector-curvature="0"
+       style="fill:#ffffff" />
+  </g>
+  <!-- react-empty: 6 -->
+</svg>

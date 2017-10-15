@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 1000 560"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="submarine.svg"
+   width="1000"
+   height="560"
+   inkscape:version="0.92.1 r15371"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\submarine.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     pagecolor="#c9c9c9"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2004"
+     id="namedview10"
+     showgrid="false"
+     inkscape:zoom="0.4609375"
+     inkscape:cx="256"
+     inkscape:cy="256"
+     inkscape:window-x="-16"
+     inkscape:window-y="-16"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg8" />
+  <g
+     class=""
+     transform="matrix(1.5230024,0,0,1.5230024,95.845037,-116.431)"
+     id="g6">
+    <path
+       d="m 315,144 v 21.75 L 292,160 276,240 H 164 C 114.846,256.385 82.746,267.1 61.422,274.846 L 52,256 36,240 v 44.918 C 20.047,292.31 20,296.316 20,304 c 0,7.712 0.05,11.717 16,19.162 V 368 l 16,-16 9.352,-18.703 c 21.094,7.734 52.752,18.418 101.072,34.703 H 372 c 160,-16 160,-128 0,-128 h -16 v -64 l -23,-5.75 V 144 Z M 148,263 h 256 v 18 H 148 Z"
+       id="path4"
+       inkscape:connector-curvature="0"
+       style="fill:#000000" />
+  </g>
+  <!-- react-empty: 6 -->
+</svg>

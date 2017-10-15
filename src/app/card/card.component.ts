@@ -12,8 +12,14 @@ enum GlowType {
 }
 
 const keywordsDefs = new Map<string, string>();
+
+// Evasion
 keywordsDefs.set('Flying', 'Can only be blocked by units with flying or ranged.')
 keywordsDefs.set('Ranged', 'Can block units with flying.')
+keywordsDefs.set('Aquatic', 'Can only be blocked by units with aquatic or flying and can only block other aquatic units.')
+keywordsDefs.set('Unblockable', 'Can not be blocked.');
+
+keywordsDefs.set('Rush', 'Can attack the turn it is played.')
 keywordsDefs.set('Lifesteal', 'When this unit deals damage its owner gains that much life.')
 keywordsDefs.set('Final Blow', 'Triggers whenever this unit deals lethal damage to another unit.')
 keywordsDefs.set('Poisoned', 'This unit gets -1/-1 at the start of its owner\'s turn.')
