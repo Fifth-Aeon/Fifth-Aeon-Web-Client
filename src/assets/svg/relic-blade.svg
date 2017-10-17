@@ -13,7 +13,10 @@
    sodipodi:docname="relic-blade.svg"
    width="1000"
    height="560"
-   inkscape:version="0.92.1 r15371">
+   inkscape:version="0.92.1 r15371"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\relic-blade.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240">
   <metadata
      id="metadata14">
     <rdf:RDF>
@@ -44,9 +47,9 @@
      inkscape:zoom="0.4609375"
      inkscape:cx="256"
      inkscape:cy="256"
-     inkscape:window-x="-16"
-     inkscape:window-y="-16"
-     inkscape:window-maximized="1"
+     inkscape:window-x="-32000"
+     inkscape:window-y="-32000"
+     inkscape:window-maximized="0"
      inkscape:current-layer="svg8">
     <inkscape:grid
        type="xygrid"
