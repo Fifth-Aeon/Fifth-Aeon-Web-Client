@@ -159,6 +159,8 @@ export class GameComponent implements OnInit {
         return 'second play phase';
       case GamePhase.Block:
         return 'block phase';
+        case GamePhase.End:
+        return 'discard phase';
     }
   }
 
@@ -170,6 +172,8 @@ export class GameComponent implements OnInit {
         return 'play2';
       case GamePhase.Block:
         return 'block';
+      case GamePhase.End:
+        return 'discard';
     }
   }
 

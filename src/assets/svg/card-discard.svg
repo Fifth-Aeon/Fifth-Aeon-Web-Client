@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="card-discard.svg"
+   style="height: 512px; width: 512px;"
+   inkscape:version="0.92.1 r15371"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\discard.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2004"
+     id="namedview10"
+     showgrid="false"
+     inkscape:zoom="0.4609375"
+     inkscape:cx="191.72443"
+     inkscape:cy="233.68049"
+     inkscape:window-x="-16"
+     inkscape:window-y="-16"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg8" />
+  <g
+     class=""
+     transform="translate(-13.016949,4.1694915)"
+     id="g6">
+    <path
+       d="M 150.79,479.797 65.52,294.717 c -3.13,-6.79 -0.15,-14.862 6.634,-17.993 l 129.163,-59.51 c 6.783,-3.12 14.862,-0.15 17.987,6.646 l 85.283,185.067 c 3.13,6.802 0.15,14.863 -6.646,18 L 168.79,486.43 c -6.795,3.144 -14.868,0.15 -18,-6.633 z m 26.17,-69.31 15.318,-44.522 44.522,15.32 7.66,-22.253 -44.523,-15.318 15.325,-44.522 -22.252,-7.66 -15.325,44.516 -44.515,-15.324 -7.66,22.258 44.516,15.324 -15.324,44.522 z M 283.03,199.437 C 330.93,113.812 229.92,94.133 180.444,136.844 l -38.9,51.353 C 105.95,210 97.853,175.98 109.226,158.424 L 163.332,84.909 260.49,32.763 c 7.108,-5.2 17.838,-8.133 32.767,-8.445 l 194.467,1.463 0.866,112.044 -107.304,-7.725 c 1.818,43.394 -42.734,53.08 -66.683,106.905 l -13.813,46.38 c -30.217,-10.16 -41.29,-34.367 -17.76,-83.95 z m -129.828,-3.077 39.046,-51.33 c 12.434,-10.477 29.51,-17.675 46.92,-17.375 -15.264,16.008 -20.158,25.557 -23.475,39.046 -8,19.775 -17.74,29.69 -30.366,23.296 -10.712,10.322 -21.412,14.87 -32.125,6.364 z"
+       id="path4"
+       inkscape:connector-curvature="0"
+       style="fill:#000000" />
+  </g>
+  <!-- react-empty: 6 -->
+</svg>
