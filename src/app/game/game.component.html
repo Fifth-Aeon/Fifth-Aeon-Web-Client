@@ -66,6 +66,13 @@
       <text x="25" y="35" text-anchor="middle" class="number-text">{{player.getLife()}}</text>
     </svg>
 
+    <svg class="phase-display" mdTooltipPosition="above" mdTooltip="It is currently {{currPlayerName()}} {{phaseName()}}.">
+      <circle r="24" cy="25" cx="25" [attr.fill]="phaseColor()"/>        
+      <image width="45" height="40" x="2.5" y="5" stroke="black" stroke-width="1" attr.xlink:href="assets/png/{{phaseImage()}}.png" />
+      
+    </svg>
+
+
     <button [disabled]="passDisabled()" md-raised-button color="primary" class="pass-button" (click)="pass()">{{getPassText()}}</button>
 
     <ccg-resource-display [resource]="player.getPool()"></ccg-resource-display>

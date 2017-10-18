@@ -136,6 +136,43 @@ export class GameComponent implements OnInit {
     });
   }
 
+
+  private isMyTurn(): boolean {
+    let currentPlayer = this.game.getActivePlayer();
+    return (!currentPlayer || currentPlayer == this.playerNo)
+  }
+  public currPlayerName(): string {
+    return this.isMyTurn() ?
+      'your' : 'your opponent\'s';
+  }
+
+  public phaseColor() {
+    return this.isMyTurn() ?
+      'cornflowerblue' : 'crimson';
+
+  }
+  public phaseName(): string {
+    switch (this.game.getPhase()) {
+      case GamePhase.Play1:
+        return 'first play phase';
+      case GamePhase.Play2:
+        return 'second play phase';
+      case GamePhase.Block:
+        return 'block phase';
+    }
+  }
+
+  public phaseImage() {
+    switch (this.game.getPhase()) {
+      case GamePhase.Play1:
+        return 'play1';
+      case GamePhase.Play2:
+        return 'play2';
+      case GamePhase.Block:
+        return 'block';
+    }
+  }
+
   public viewCrypt(player: number) {
     this.openCardChooser(this.playerNo, this.game.getCrypt(player), 0);
   }
