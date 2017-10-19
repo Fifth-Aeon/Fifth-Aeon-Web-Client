@@ -77,7 +77,7 @@ export class GameComponent implements OnInit {
     // Workaround tooltip  not dissapering
     setInterval(() => {
       for (let tip of Array.from(document.getElementsByTagName('md-tooltip-component'))) {
-        tip.parentElement.remove()
+        tip.parentElement.remove();
       }
     }, 30 * 1000);
 
@@ -158,14 +158,14 @@ export class GameComponent implements OnInit {
         return 'second play phase';
       case GamePhase.Block:
         return 'block phase';
-        case GamePhase.End:
+      case GamePhase.End:
         return 'discard phase';
     }
   }
 
-  public overlayCardPos(index:number) {
+  public overlayCardPos(index: number) {
     return {
-      left: 15 + (index * 10)  + '%'
+      left: 15 + (index * 10) + '%'
     }
   }
 
@@ -306,9 +306,13 @@ export class GameComponent implements OnInit {
   public target(card: Card) {
     let target = card as Unit;
     let phase = this.game.getPhase();
-    if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.Block && this.blocker && this.blocker.canBlock(target)) {
-      this.client.declareBlocker(this.blocker, target);
-      this.blocker = null;
+    if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.Block && this.blocker) {
+      if (this.blocker.canBlockTarget(target)) {
+        this.client.declareBlocker(this.blocker, target);
+        this.blocker = null;
+      } else {
+        this.tips.cannotBlockTargetTip(this.blocker, target, this.game);
+      }
     } else if (this.canPlayTargeting(target)) {
       this.playTargeting(target);
     }
@@ -336,8 +340,10 @@ export class GameComponent implements OnInit {
     } else if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.Block) {
       if (this.blocker == unit) {
         this.client.declareBlocker(unit, null);
-      } else {
+      } else if (unit.canBlock()) {
         this.blocker = unit;
+      } else {
+        this.tips.cannotBlockTip(unit, this.game);
       }
     }
   }

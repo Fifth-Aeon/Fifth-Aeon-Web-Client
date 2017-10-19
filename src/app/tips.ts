@@ -92,6 +92,26 @@ export class TipService {
             this.playTip(TipType.CanBlock);
     }
 
+    public cannotBlockTargetTip(blocker: Unit, attacker: Unit, game: Game) {
+        if (!attacker.isAttacking())
+            this.announce(`You can only block units that are currently attacking you.`);
+        else if (attacker.hasMechanicWithId('unblockable'))
+            this.announce(`${attacker.getName()} is unblockable.`);
+        else if (attacker.hasMechanicWithId('flying'))
+            this.announce(`Units with flying may only be blocked by other flying units or by ranged units.`);
+        else if (attacker.hasMechanicWithId('aquatic'))
+            this.announce(`Aquatic units may only be blocked by other aquatic units or by flying units.`);
+        else
+            this.announce(`${blocker.getName()} cannot block ${attacker.getName()} due to a special effect.`);
+    }
+
+    public cannotBlockTip(blocker: Unit, game: Game) {
+        if (blocker.isExausted())
+            this.announce('Exausted units can not block.');
+        else
+            this.announce('That unit can not block due to a special effect.');
+    }
+
     public cannotAttackTip(unit: Unit, game: Game) {
         if (!unit.isReady())
             this.announce('Units cannot attack the turn they are played.');
@@ -122,7 +142,7 @@ export class TipService {
 
     public markUnread() {
         this.played = {};
-        localStorage.setItem(tipLocalStore, JSON.stringify(this.played));        
+        localStorage.setItem(tipLocalStore, JSON.stringify(this.played));
     }
 
     public markRead() {
