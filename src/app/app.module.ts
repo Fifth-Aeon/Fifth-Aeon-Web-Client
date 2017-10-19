@@ -17,7 +17,7 @@ import {
   MdCardModule, MdSliderModule, MdCheckboxModule, MdPaginatorModule,
   MdTabsModule
 } from '@angular/material';
-import { Angulartics2Module, Angulartics2GoogleAnalytics } from 'angulartics2';
+import { Angulartics2Module, Angulartics2GoogleTagManager } from 'angulartics2';
 
 // App Angular Services
 import { SoundManager } from './sound';
@@ -75,7 +75,7 @@ import { CardComponent } from './card/card.component';
     MdProgressSpinnerModule, MdTooltipModule, MdSnackBarModule,
     MdDialogModule, MdListModule, MdCardModule, MdSliderModule,
     MdCheckboxModule, MdPaginatorModule, MdTabsModule,
-    Angulartics2Module.forRoot([ Angulartics2GoogleAnalytics ]),    
+    Angulartics2Module.forRoot([ Angulartics2GoogleTagManager ]),    
     RouterModule.forRoot([
       { path: 'game', component: GameComponent, canActivate: [InPlayGuard] },
       { path: 'deck', component: DeckEditorComponent, canActivate: [LoggedInGuard] },

@@ -451,7 +451,7 @@ export class WebClient {
     }
 
     private startGame(msg: Message) {
-        this.analytics.eventTrack.next({ action: 'startMultiplayerGame', properties: { category: 'usage' } });
+        this.analytics.eventTrack.next({ action: 'startMultiplayerGame', properties: { category: 'usage' } });        
 
         this.ai = null;
         this.gameModel = null;
@@ -470,9 +470,7 @@ export class WebClient {
     }
 
     // AI stuff ------------------------------------
-
-
-    public startAIGame() {
+    public startAIGame() {        
         this.analytics.eventTrack.next({ action: 'startSingleplayerGame', properties: { category: 'usage' } });
 
         this.playerNumber = 0;
