@@ -4,8 +4,9 @@ import { SoundManager } from './sound';
 import { MdSnackBar } from '@angular/material';
 
 import { Game } from './game_model/game';
-import { Card } from './game_model/card';
+import { Card, CardType } from './game_model/card';
 import { Unit } from './game_model/unit';
+import { Item } from './game_model/item';
 
 
 export enum TipType {
@@ -133,6 +134,8 @@ export class TipService {
                 card.getName().replace(/\./g, '')}.`);
         } else if (card.isUnit() && !game.getBoard().canPlayUnit(card as Unit)) {
             this.announce(`Your board is too full to play a unit.`);
+        } else if (card.getCardType() == CardType.Item && !(card as Item).getHostTargeter().isTargetable(card, game)) {
+            this.announce(`You don't have any units to attach that item to.`);
         } else if (!card.getTargeter().isTargetable(card, game)) {
             this.announce(`There are no valid targets for ${card.getName()}.`);
         } else {
