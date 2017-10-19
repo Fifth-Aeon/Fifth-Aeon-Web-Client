@@ -353,6 +353,9 @@ export class WebClient {
                 this.soundManager.playSound('magic');
                 this.overlay.onPlay(this.game.getCardById(event.params.played.id), this.game, this.playerNumber);
                 break;
+            case SyncEventType.Draw:
+                this.tips.drawCardTrigger(this.game, this.playerNumber, event.params.discarded);
+                break;
             case SyncEventType.Ended:
                 this.openEndDialog(event.params.winner, event.params.quit);
                 if (event.params.winner == this.playerNumber)

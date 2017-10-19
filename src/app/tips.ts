@@ -10,10 +10,14 @@ import { Item } from './game_model/item';
 
 
 export enum TipType {
-    StartGame, FirstTurn, CanAttack, CanBlock, EndTurn, PlayedUnit, HasPlayable, OptionalTarget, NeedsTarget
+    StartGame, FirstTurn, CanAttack, CanBlock, EndTurn, PlayedUnit, HasPlayable, OptionalTarget, NeedsTarget,
+    SoftHandLimit, HardHandLimit
 }
 
 const tipText = new Map<TipType, string>();
+
+tipText.set(TipType.HardHandLimit, 'You have a hard hand size limit of twelve cards. If you would draw a card while you already have twelve cards in hand, it will be immediately discarded.');
+tipText.set(TipType.SoftHandLimit, 'Your maximum hand size is eight cards. If you have more than eight you will be forced to discard them at the end of your turn.');
 tipText.set(TipType.StartGame, 'Welcome newcomer. I will provide tips to help you learn to play.');
 tipText.set(TipType.FirstTurn, `It is your turn. You can play a resource by clicking one of the four icons on the left side of your information bar. Try to match the resource you play to the symbols on the cards in your hand.`);
 tipText.set(TipType.EndTurn, `After you play a resource you can end your turn by pressing the pass button on the right side of your information bar.`);
@@ -73,8 +77,19 @@ export class TipService {
     public playCardTrigger(card: Card, game: Game) {
         if (card.isUnit()) {
             this.playTip(TipType.PlayedUnit);
-        } else
+        } else {
             this.playTip(TipType.EndTurn);
+        }
+    }
+
+    public drawCardTrigger(game: Game, playerNo: number, discarded: boolean) {
+        let cardCount = game.getPlayer(playerNo).getHand().length;
+
+        if (discarded) {
+            this.playTip(TipType.HardHandLimit);
+        } else if(cardCount >= 8) {
+            this.playTip(TipType.SoftHandLimit);
+        }
     }
 
 
