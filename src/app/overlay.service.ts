@@ -74,9 +74,9 @@ export class OverlayService {
     var blockerRect = blocker.nativeElement.getElementsByClassName("card-image")[0].getBoundingClientRect();
     var blockedRect = blocked.nativeElement.getElementsByClassName("card-image")[0].getBoundingClientRect();
     return {
-      x1: this.getCenter(blockerRect.right, blockerRect.left, pageXOffset + 12.5),
+      x1: this.getCenter(blockerRect.right, blockerRect.left, pageXOffset),
       y1: this.getCenter(blockerRect.top, blockerRect.bottom, pageYOffset),
-      x2: this.getCenter(blockedRect.right, blockedRect.left, pageXOffset + 12.5),
+      x2: this.getCenter(blockedRect.right, blockedRect.left, pageXOffset),
       y2: this.getCenter(blockedRect.top, blockedRect.bottom, pageYOffset),
     }
   }

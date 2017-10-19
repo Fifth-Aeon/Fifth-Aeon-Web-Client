@@ -156,7 +156,7 @@ export class CardComponent implements OnInit {
   public getImage() {
     return 'assets/png/' + this.card.getImage();
   }
-
+ 
   public glowTypes = GlowType;
   public glowType() {
     if (this.selected)
@@ -172,11 +172,11 @@ export class CardComponent implements OnInit {
 
 
   public x() {
-    return (this.hovered ? 1.15 : 1) * 100 * this.scale;
+    return (this.hovered ? 1.9 : this.scale) * 100 ;
   }
 
   public y() {
-    return (this.hovered ? 1.15 : 1) * 140 * this.scale;
+    return (this.hovered ? 1.9 : this.scale) * 140 ;
   }
 
   ngOnInit() {
