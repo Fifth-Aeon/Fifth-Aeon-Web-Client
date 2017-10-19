@@ -301,6 +301,7 @@ export class GameComponent implements OnInit {
     this.selected = null;
     this.host = null;
     this.validTargets = new Set();
+    this.blocker = null;
   }
 
   public target(card: Card) {
@@ -309,7 +310,7 @@ export class GameComponent implements OnInit {
     if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.Block && this.blocker) {
       if (this.blocker.canBlockTarget(target)) {
         this.client.declareBlocker(this.blocker, target);
-        this.blocker = null;
+        this.clear();
       } else {
         this.tips.cannotBlockTargetTip(this.blocker, target, this.game);
       }
@@ -340,6 +341,7 @@ export class GameComponent implements OnInit {
     } else if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.Block) {
       if (this.blocker == unit) {
         this.client.declareBlocker(unit, null);
+        this.clear();
       } else if (unit.canBlock()) {
         this.blocker = unit;
       } else {
