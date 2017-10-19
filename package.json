@@ -25,6 +25,7 @@
     "@angular/router": "^4.3.5",
     "@types/lodash": "^4.14.72",
     "angular2-hotkeys": "^2.0.3",
+    "angulartics2": "^2.4.0",
     "core-js": "^2.5.0",
     "hammerjs": "^2.0.8",
     "howler": "^2.0.4",
