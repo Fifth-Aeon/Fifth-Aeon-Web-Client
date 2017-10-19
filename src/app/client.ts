@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MdSnackBar } from '@angular/material';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
+import { Angulartics2 } from 'angulartics2';
+
 
 // Game Model
 import { Game, GameAction, GameSyncEvent, GameActionType, SyncEventType, GamePhase } from './game_model/game';
@@ -66,13 +68,12 @@ export class WebClient {
     constructor(private soundManager: SoundManager, private tips: TipService,
         private router: Router, private zone: NgZone, private sanitizer: DomSanitizer,
         preloader: Preloader, public dialog: MdDialog, private overlay: OverlayService,
-        private hotkeys: HotkeysService) {
+        private hotkeys: HotkeysService, private analytics: Angulartics2) {
 
         this.initGame();
         this.playerNumber = 0;
         this.messenger = new Messenger();
         this.log = new Log(this.playerNumber)
-
 
         this.messenger.onlogin = (username) => this.onLogin(username);
         this.messenger.addHandeler(MessageType.StartGame, this.startGame, this);
@@ -358,6 +359,12 @@ export class WebClient {
                 break;
             case SyncEventType.Ended:
                 this.openEndDialog(event.params.winner, event.params.quit);
+                this.analytics.eventTrack.next({
+                    action: 'endGame', properties: {
+                        category: 'usage', label: !this.ai ? 'singleplayer' : 'multiplayer'
+                    }
+                });
+
                 if (event.params.winner == this.playerNumber)
                     this.soundManager.playImportantSound('fanfare');
                 else
@@ -444,6 +451,8 @@ export class WebClient {
     }
 
     private startGame(msg: Message) {
+        this.analytics.eventTrack.next({ action: 'startMultiplayerGame', properties: { category: 'usage' } });
+
         this.ai = null;
         this.gameModel = null;
         this.gameId = msg.data.gameId;
@@ -462,8 +471,10 @@ export class WebClient {
 
     // AI stuff ------------------------------------
 
-  
+
     public startAIGame() {
+        this.analytics.eventTrack.next({ action: 'startSingleplayerGame', properties: { category: 'usage' } });
+
         this.playerNumber = 0;
         this.opponentNumber = 1;
         this.log.clear();
