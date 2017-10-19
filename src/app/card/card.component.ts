@@ -104,7 +104,7 @@ export class CardComponent implements OnInit {
     return (this.x() - 27.5 - this.getSymbolSize() * 6) / (12);
   }
 
-  public isItem(card:Card) {
+  public isItem(card: Card) {
     return card.getCardType() == CardType.Item;
   }
 
@@ -124,9 +124,9 @@ export class CardComponent implements OnInit {
       }
     }
     let rotation = this.hovered ? 0 : 3 * this.distFromMid;
-    let dispY =  this.overlap ? Math.abs(this.distFromMid == 0 ? 0.5 : this.distFromMid) * 4 : 0;
+    let dispY = this.overlap ? Math.abs(this.distFromMid == 0 ? 0.5 : this.distFromMid) * 4 : 0;
     marginRight -= Math.abs(this.distFromMid) * 5;
-    marginLeft  -= Math.abs(this.distFromMid) * 5;
+    marginLeft -= Math.abs(this.distFromMid) * 5;
     if (this.hovered && this.overlap)
       dispY = -10;
     let css = {
@@ -156,7 +156,7 @@ export class CardComponent implements OnInit {
   public getImage() {
     return 'assets/png/' + this.card.getImage();
   }
- 
+
   public glowTypes = GlowType;
   public glowType() {
     if (this.selected)
@@ -172,11 +172,11 @@ export class CardComponent implements OnInit {
 
 
   public x() {
-    return (this.hovered ? 1.9 : this.scale) * 100 ;
+    return (this.hovered ? 1.9 : this.scale) * 100;
   }
 
   public y() {
-    return (this.hovered ? 1.9 : this.scale) * 140 ;
+    return (this.hovered ? 1.9 : this.scale) * 140;
   }
 
   ngOnInit() {

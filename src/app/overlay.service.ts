@@ -11,12 +11,12 @@ type Arrow = { x1: number, y1: number, x2: number, y2: number }
 
 @Injectable()
 export class OverlayService {
-  public card: Card = null;
+  public displayCards: Card[] = [];
   private cardsElements: Map<string, ElementRef> = new Map();
   private blocks: Array<[string, string]> = [];
   public targets: Array<Arrow> = [];
-  public static arrowTimer: number = 1500;
-  public static cardTimer: number = 2500;
+  public static arrowTimer: number = 2000;
+  public static cardTimer: number = 3500;
 
   constructor() { }
 
@@ -38,19 +38,21 @@ export class OverlayService {
 
   public addTargets(card: Card, targets: Array<Unit>) {
     if (!card.isUnit()) {
-      this.card = card;
+      this.displayCards.push(card);
       setTimeout(() => {
-        this.card = null;
+        remove(this.displayCards, card);
       }, OverlayService.cardTimer);
     }
     if (targets != null && targets.length > 0) {
       setTimeout(() => {
-        this.targets = targets
+        let newTargets = targets
           .map(target => [card.getId(), target.getId()] as [string, string])
           .map((target) => this.toArrow(target))
           .filter(arrow => arrow != null);
+          this.targets = this.targets.concat(newTargets);
         setTimeout(() => {
-          this.targets = [];
+          let toRemove = new Set(newTargets);
+          remove(this.targets, target => toRemove.has(target));
         }, OverlayService.arrowTimer);
       }, 0);
     }

@@ -149,7 +149,6 @@ export class GameComponent implements OnInit {
   public phaseColor() {
     return this.isMyTurn() ?
       'cornflowerblue' : 'crimson';
-
   }
   public phaseName(): string {
     switch (this.game.getPhase()) {
@@ -161,6 +160,12 @@ export class GameComponent implements OnInit {
         return 'block phase';
         case GamePhase.End:
         return 'discard phase';
+    }
+  }
+
+  public overlayCardPos(index:number) {
+    return {
+      left: 15 + (index * 10)  + '%'
     }
   }
 
@@ -308,7 +313,6 @@ export class GameComponent implements OnInit {
       this.playTargeting(target);
     }
   }
-
 
   public blocker: Unit;
   public activate(card: Card) {
