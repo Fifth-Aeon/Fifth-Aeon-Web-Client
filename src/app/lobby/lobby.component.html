@@ -20,6 +20,8 @@
     <!--<button md-raised-button color="primary" (click)="client.openDeckSelector()"><md-icon svgIcon="ccg:deck"></md-icon> Manage Decks</button>-->
     <button md-raised-button color="primary" (click)="client.selectDeckAndStartGame(0)"><md-icon>android</md-icon><span> Play vs A.I </span></button>
     <button md-raised-button color="primary" (click)="client.openSettings()"><md-icon>settings</md-icon><span> Settings</span></button>
+    <a href="{{feedbackUrl}}" target="_blank"><button md-raised-button color="primary" ><md-icon>bug_report</md-icon><span> Feedback</span></button></a>
+    
   </div>
   <div *ngIf="getState() === state.InLobby">
     <h2>Multiplayer</h2>
