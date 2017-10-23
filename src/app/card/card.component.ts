@@ -108,6 +108,11 @@ export class CardComponent implements OnInit {
     return card.getCardType() == CardType.Item;
   }
 
+  public isEnchantment(card: Card) {
+    return card.getCardType() == CardType.Enchantment;
+  }
+
+
   public getType(type: UnitType) {
     return UnitType[type];
   }

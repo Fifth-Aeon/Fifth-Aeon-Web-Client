@@ -162,19 +162,51 @@
         <text [attr.width]="x() - 50" height="25" text-anchor="middle" y="17.5" [attr.x]="(x() - 50) / 2">Item</text>
       </g>
 
-      <g mdTooltipShowDelay="400" mdTooltipPosition="above" mdTooltip="{{card.getName()}} deals {{card.damage}} damage.">
+      <g mdTooltipShowDelay="400" mdTooltipPosition="above" 
+        mdTooltip="{{card.getName()}} gives its host a {{card.damage}} damage bonus.">
         <rect width="35" height="35" x="-5" y="-5" fill="darkorange" stroke="black" stroke-width="1"/>          
         <!--<circle r="17.5" cy="12.5" cx="12.5" height="25" fill="darkorange" stroke="black" stroke-width="1" />-->
         <text class="bubble-text" width="25" height="25" text-anchor="middle" y="21.5" x="12.5">{{card.damageBonus}}</text>
       </g>
 
-      <g attr.transform="translate({{x() - 25}} 0)" mdTooltipShowDelay="400" mdTooltipPosition="above" mdTooltip="{{card.getName()}} has {{card.life}} out of {{card.maxLife}} life.">
+      <g attr.transform="translate({{x() - 25}} 0)" mdTooltipShowDelay="400" mdTooltipPosition="above" 
+        mdTooltip="{{card.getName()}} gives its host a {{card.lifeBonus}} life bonus..">
         <rect width="35" height="35" x="-5" y="-5" fill="firebrick" stroke="black" stroke-width="1"/>                    
         <!--<circle r="17.5" cy="12.5" cx="12.5" height="25" fill="firebrick" stroke="black" stroke-width="1" />-->
         <text class="bubble-text" width="25" height="25" text-anchor="middle" y="21.5" x="12.5">{{card.lifeBonus}}</text>
       </g>
     </g>
 
+     <!-- Enchantment info bar -->
+     <g attr.transform="translate(0 {{y() - 25}})" *ngIf="isEnchantment(card)">
+      <g>
+        <rect [attr.width]="x()" height="25" class="image-border" />
+        <text [attr.width]="x()" height="25" text-anchor="middle" y="17.5" [attr.x]="(x()) / 2">Enchantment</text>
+      </g>
+
+      <g mdTooltipShowDelay="400" mdTooltipPosition="above" 
+        mdTooltip="It costs {{card.changeCost}} energy to empower or diminish {{card.getName()}}.">
+        <!--
+        <polygon points="-10 12.5 12.5 -10 35 12.5 12.5 35" stroke="black" fill="royalblue" stroke-width="1"/>
+        -->
+        <polygon 
+          points="
+          -2.5 -2.5 
+          -2.5 27.5 
+          12.5 37.5 
+          27.5 27.5 
+          27.5 -2.5 
+          12.5 -12.5"
+          
+          stroke="black" fill="royalblue" stroke-width="1"/>
+        <text class="bubble-text" width="25" height="25" text-anchor="middle" y="21.5" x="12.5">{{card.changeCost}}</text>
+      </g>
+
+      <g attr.transform="translate({{x() - 25}} 0)" mdTooltipShowDelay="400" mdTooltipPosition="above" mdTooltip="{{card.getName()}} has {{card.power}} power.">
+        <circle r="17.5" cy="12.5" cx="12.5" height="25" fill="firebrick" stroke="black" stroke-width="1" />
+        <text class="bubble-text" width="25" height="25" text-anchor="middle" y="21.5" x="12.5">{{card.power}}</text>
+      </g>
+    </g>
 
     <!-- Select, Attack, Defense, Targeted -->
     <g [ngSwitch]="glowType()">

@@ -13,6 +13,8 @@ import { Game, GamePhase } from '../game_model/game';
 import { ClientGame } from '../game_model/clientGame';
 import { Player } from '../game_model/player';
 import { Card, CardType, Location } from '../game_model/card';
+import { Permanent } from '../game_model/permanent';
+import { Enchantment } from '../game_model/enchantment';
 import { Unit } from '../game_model/unit';
 import { Item } from '../game_model/item';
 import { Targeter } from '../game_model/targeter';
@@ -297,6 +299,10 @@ export class GameComponent implements OnInit {
       (this.game.getPhase() == GamePhase.Play1 || this.game.getPhase() == GamePhase.Play2);
   }
 
+  public isDarkened(perm: Permanent) {
+    return perm.isUnit() && (perm as Unit).isExausted();
+  }
+
   private clear() {
     this.selected = null;
     this.host = null;
@@ -304,7 +310,19 @@ export class GameComponent implements OnInit {
     this.blocker = null;
   }
 
+  private empowerDiminish(enchantment: Enchantment) {
+    if (enchantment.canChangePower(this.player, this.game))
+      this.game.modifyEnchantment(this.player, enchantment);
+    else
+      this.tips.cannotModifyEnchantment(this.player, this.game, enchantment);
+  }
+
+  // Click friendly enemy Permanant
   public target(card: Card) {
+    if (card.getCardType() == CardType.Enchantment) {
+      this.empowerDiminish(card as Enchantment);
+      return;
+    }
     let target = card as Unit;
     let phase = this.game.getPhase();
     if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.Block && this.blocker) {
@@ -320,7 +338,13 @@ export class GameComponent implements OnInit {
   }
 
   public blocker: Unit;
+  // Click friendly permanant
   public activate(card: Card) {
+    console.log('activate', card);
+    if (card.getCardType() == CardType.Enchantment) {
+      this.empowerDiminish(card as Enchantment);
+      return;
+    }
     let unit = card as Unit;
     let phase = this.game.getPhase();
     if (this.canPlayTargeting(unit)) {

@@ -39,13 +39,15 @@
 
   <!-- Enemy Board -->
   <div class="area">
-    <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerUnits(enemyNo)" [darkened]="card.isExausted()" [card]="card" [game]="game"
+    <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerPermanants(enemyNo)" 
+      [darkened]="isDarkened(card)" [card]="card" [game]="game"
       [@location]="locationState(card)" [target]="validTargets.has(card)" (click)="target(card)"></ccg-card>
   </div>
 
   <!-- Player Board -->
   <div class="area">
-    <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerUnits(playerNo)" [darkened]="card.isExausted()" [card]="card" [game]="game"
+    <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerPermanants(playerNo)" 
+      [darkened]="isDarkened(card)" [card]="card" [game]="game"
       [@location]="locationState(card)" [target]="validTargets.has(card)" [selected]="card == blocker" (click)="activate(card)">
     </ccg-card>
   </div>
@@ -70,14 +72,10 @@
     <svg class="phase-display" mdTooltipPosition="above" mdTooltip="It is currently {{currPlayerName()}} {{phaseName()}}.">
       <circle r="24" cy="25" cx="25" [attr.fill]="phaseColor()"/>        
       <image width="45" height="40" x="2.5" y="5" stroke="black" stroke-width="1" attr.xlink:href="assets/png/{{phaseImage()}}.png" />
-      
     </svg>
 
-
     <button [disabled]="passDisabled()" md-raised-button color="primary" class="pass-button" (click)="pass()">{{getPassText()}}</button>
-
     <ccg-resource-display [resource]="player.getPool()"></ccg-resource-display>
-
     <!--<ccg-player-avatar></ccg-player-avatar>-->
   </div>
 

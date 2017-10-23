@@ -5,8 +5,11 @@ import { MdSnackBar } from '@angular/material';
 
 import { Game } from './game_model/game';
 import { Card, CardType } from './game_model/card';
+import { Player } from './game_model/player';
 import { Unit } from './game_model/unit';
 import { Item } from './game_model/item';
+import { Enchantment } from './game_model/enchantment';
+
 
 
 export enum TipType {
@@ -87,7 +90,7 @@ export class TipService {
 
         if (discarded) {
             this.playTip(TipType.HardHandLimit);
-        } else if(cardCount >= 8) {
+        } else if (cardCount >= 8) {
             this.playTip(TipType.SoftHandLimit);
         }
     }
@@ -139,6 +142,15 @@ export class TipService {
             this.announce('That unit cannot attack due to a special effect');
     }
 
+    public cannotModifyEnchantment(player: Player, game: Game, enchantment: Enchantment) {
+        let verb = enchantment.getOwner() == player.getPlayerNumber() ? 'empower' : 'diminish';
+        if (player != game.getCurrentPlayer())
+            this.announce(`You can only ${verb} enchantments during your own turn.`)
+        else if (!player.getPool().meetsReq(enchantment.getModifyCost()))
+            this.announce(`You can not afford to ${verb} that enchantment. It would require ${enchantment.getModifyCost().getNumeric()} energy while you only have ${player.getPool().getNumeric()}.`);
+
+    }
+
     public cannotPlayTip(playerNo: number, game: Game, card: Card) {
         let player = game.getPlayer(playerNo);
         if (game.getCurrentPlayer().getPlayerNumber() != playerNo) {
@@ -147,8 +159,10 @@ export class TipService {
             let diff = card.getCost().difference(player.getPool());
             this.announce(`You need ${diff.map(diff => diff.diff + ' more ' + diff.name).join(' and ')} to play ${
                 card.getName().replace(/\./g, '')}.`);
-        } else if (card.isUnit() && !game.getBoard().canPlayUnit(card as Unit)) {
+        } else if (card.isUnit() && !game.getBoard().canPlayPermanant(card as Unit)) {
             this.announce(`Your board is too full to play a unit.`);
+        } else if (card.getCardType() == CardType.Enchantment && !game.getBoard().canPlayPermanant(card as Enchantment)) {
+            this.announce(`Your board is too full to play an enchantment.`);
         } else if (card.getCardType() == CardType.Item && !(card as Item).getHostTargeter().isTargetable(card, game)) {
             this.announce(`You don't have any units to attach that item to.`);
         } else if (!card.getTargeter().isTargetable(card, game)) {
