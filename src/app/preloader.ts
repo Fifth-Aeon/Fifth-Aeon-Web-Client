@@ -1,6 +1,7 @@
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { Inject, Injectable, SecurityContext } from '@angular/core';
 import { MdIconRegistry } from '@angular/material';
+import { sortBy } from 'lodash';
 
 import { Card } from './game_model/card';
 import { allCards } from './game_model/cards/allCards';
@@ -10,7 +11,7 @@ const userInterfaceIcons = [
     'growth-small', 'synthesis-small', 'decay-small', 'renewal-small',
     'growth', 'synthesis', 'decay-icon', 'renewal',
     'card', 'hearts',
-    'crossed-sabres','virtual-marker','shield', 'crosshair',
+    'crossed-sabres', 'virtual-marker', 'shield', 'crosshair',
     'play1', 'block', 'play2', 'discard',
 ]
 
@@ -24,11 +25,11 @@ export class Preloader {
 
         this.loadImages(userInterfaceIcons.map(img => 'assets/png/' + img + '.png'));
         setTimeout(() => this.loadImages(
-            cards.map(card => 'assets/png/' + card.getImage())
-        ), 1000);        
+            sortBy(cards, (card) => -card.getCardType()).map(card => 'assets/png/' + card.getImage())
+        ), 1000);
     }
 
-    private loadImages(imageURLs:string[]) {
+    private loadImages(imageURLs: string[]) {
         for (let image of imageURLs) {
             let img = new Image();
             img.src = image;
