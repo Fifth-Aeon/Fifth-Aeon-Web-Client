@@ -19,6 +19,10 @@ keywordsDefs.set('Ranged', 'Can block units with flying.')
 keywordsDefs.set('Aquatic', 'Can only be blocked by units with aquatic or flying and can only block other aquatic units.')
 keywordsDefs.set('Unblockable', 'Can not be blocked.');
 
+// Enchantments
+keywordsDefs.set('Discharge', 'Loses power at the start of its owner’s turn.');
+keywordsDefs.set('Recharge', 'Gains power at the start of its owner’s turn.');
+
 keywordsDefs.set('Rush', 'Can attack the turn it is played.')
 keywordsDefs.set('Lifesteal', 'When this unit deals damage its owner gains that much life.')
 keywordsDefs.set('Final Blow', 'Triggers whenever this unit deals lethal damage to another unit.')
@@ -133,7 +137,7 @@ export class CardComponent implements OnInit {
     marginRight -= Math.abs(this.distFromMid) * 5;
     marginLeft -= Math.abs(this.distFromMid) * 5;
     if (this.hovered && this.overlap)
-      dispY = -10;
+      dispY = -15;
     let css = {
       'margin-left': marginLeft + 'px',
       'margin-right': marginRight + 'px',
