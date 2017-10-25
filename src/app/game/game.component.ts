@@ -120,7 +120,7 @@ export class GameComponent implements OnInit {
   }
 
   public openCardChooser(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null, message: string = '') {
-    this.game.setDeferedChoice(player, callback);
+    this.game.deferChoice(player, cards, toPick, callback);
     if (player != this.playerNo)
       return;
 
@@ -131,11 +131,11 @@ export class GameComponent implements OnInit {
     dialogRef.componentInstance.numberToPick = toPick;
     dialogRef.componentInstance.message = message;
     dialogRef.componentInstance.setPage();
-    dialogRef.afterClosed().subscribe(result => {
-      if (callback) {
-        this.client.makeChoice(result);
-      }
-    });
+    if (callback) {
+      dialogRef.afterClosed().subscribe((result: Card[]) => {
+        this.game.makeChoice(result);
+      });
+    }
   }
 
 
