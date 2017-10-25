@@ -6,6 +6,7 @@ import { DeckList } from './game_model/deckList';
 import { standardFormat } from './game_model/gameFormat';
 import { ResourceTypeGroup, ResourceTypeNames } from './game_model/resource';
 
+import { deckLists } from './game_model/scenarios/decks';
 const deckStore = 'deck-store';
 
 @Injectable()
@@ -19,10 +20,8 @@ export class DecksService {
     if (this.load())
       return;
     this.decks = [];
-    for (let i = 0; i < 4; i++) {
-      let deck = new DeckList(standardFormat);
-      deck.randomDeckWithColors(new Set([ResourceTypeNames[i]]))
-      this.decks.push(deck);
+    for (let deck of deckLists) {
+      this.decks.push(deck.clone());
     }
     this.decks = shuffle(this.decks);
     this.currentDeck = this.decks[this.currentDeckNumber];
@@ -88,7 +87,7 @@ export class DecksService {
     this.client.returnToLobby();
   }
 
-  public getCurrentDeck() { 
+  public getCurrentDeck() {
     return this.currentDeck;
   }
 

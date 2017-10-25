@@ -55,3 +55,7 @@ md-progress-spinner {
   /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+
+div.mat-card-header-text {
+  margin: 0 auto;
+}

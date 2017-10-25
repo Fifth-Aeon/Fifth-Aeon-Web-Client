@@ -1,5 +1,5 @@
 // Vendor
-import { every } from 'lodash'
+import { sample, every } from 'lodash'
 import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { NgZone, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -20,6 +20,7 @@ import { Unit } from './game_model/unit';
 import { DeckList } from './game_model/deckList';
 import { Log } from './game_model/log';
 import { AI, BasicAI } from './game_model/ai';
+import { deckLists } from './game_model/scenarios/decks';
 
 // Client side
 import { Messenger, MessageType, Message } from './messenger';
@@ -478,7 +479,9 @@ export class WebClient {
         this.log.clear();
         this.log.setPlayer(0);
         this.initGame();
-        this.gameModel = new ServerGame(standardFormat, [this.deck, new DeckList(standardFormat)]);
+        let aiDeck = sample(deckLists);
+        console.log('A.I deck', aiDeck);
+        this.gameModel = new ServerGame(standardFormat, [this.deck, aiDeck]);
         let aiModel = new ClientGame((type, params) => this.sendGameAction(type, params, true));
 
         let aiAction = (type: GameActionType, params: any) => {
@@ -489,7 +492,7 @@ export class WebClient {
 
         this.router.navigate(['/game']);
         this.zone.run(() => {
-            this.opponentUsername = 'A.I';
+            this.opponentUsername = aiDeck.name;
             this.state = ClientState.InGame;
             this.sendEventsToAi(this.gameModel.startGame());
         });

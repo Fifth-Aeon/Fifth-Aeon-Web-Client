@@ -4,9 +4,10 @@
     height: 150px;
   }
   button {
-      margin-right: 10px;
-      margin-left: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
   }
+
   display: inline-block;
   width: 230px;
   height: 250px;
@@ -20,12 +21,12 @@
 
 .new-button {
   position: fixed;
-  bottom:40px;
+  bottom: 40px;
   right: 110px;
 }
+
 .back-button {
   position: fixed;
   bottom: 40px;
   right: 30px;
 }
-

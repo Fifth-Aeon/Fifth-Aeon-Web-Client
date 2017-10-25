@@ -12,3 +12,10 @@
   text-align: center;
   overflow: hidden;
 }
+
+
+div.mat-card-header-text {
+  margin: 0 auto;
+  background-color:teal;
+}
+
