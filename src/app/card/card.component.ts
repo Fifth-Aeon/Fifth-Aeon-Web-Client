@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ElementRef } from '@angular/core';
-import { Card, Location, CardType } from '../game_model/card';
+import { Card, GameZone, CardType } from '../game_model/card';
 import { Unit, UnitType } from '../game_model/unit';
 import { Game } from '../game_model/game';
 

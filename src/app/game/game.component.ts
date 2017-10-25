@@ -12,7 +12,7 @@ import { WebClient, ClientState } from '../client';
 import { Game, GamePhase } from '../game_model/game';
 import { ClientGame } from '../game_model/clientGame';
 import { Player } from '../game_model/player';
-import { Card, CardType, Location } from '../game_model/card';
+import { Card, CardType, GameZone } from '../game_model/card';
 import { Permanent } from '../game_model/permanent';
 import { Enchantment } from '../game_model/enchantment';
 import { Unit } from '../game_model/unit';
@@ -63,7 +63,7 @@ export class GameComponent implements OnInit {
   public playerNo: number;
   public enemy: Player;
   public enemyNo: number;
-  public locations = Location;
+  public locations = GameZone;
 
   constructor(public client: WebClient, public dialog: MdDialog,
     private hotkeys: HotkeysService, public overlay: OverlayService,
@@ -94,11 +94,11 @@ export class GameComponent implements OnInit {
   }
 
   public isInHand(card: Card) {
-    return card.getLocation() == Location.Hand ? 'in' : 'teal';
+    return card.getLocation() == GameZone.Hand ? 'in' : 'teal';
   }
 
   public locationState(card: Card) {
-    return Location[card.getLocation()];
+    return GameZone[card.getLocation()];
   }
 
   private addHotkeys() {
