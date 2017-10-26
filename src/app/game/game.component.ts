@@ -86,6 +86,10 @@ export class GameComponent implements OnInit {
     this.addHotkeys();
   }
 
+  public ngOnInit() {
+    this.overlay.registerUIElement('player', "player-name");
+    this.overlay.registerUIElement('enemy', "enemy-name");
+  }
 
   @HostListener('window:beforeunload')
   public exit() {
@@ -186,9 +190,6 @@ export class GameComponent implements OnInit {
 
   public viewCrypt(player: number) {
     this.openCardChooser(this.playerNo, this.game.getCrypt(player), 0);
-  }
-
-  public ngOnInit() {
   }
 
   public canPlayResource() {

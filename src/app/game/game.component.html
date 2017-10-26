@@ -1,7 +1,7 @@
 <ccg-record-bar [log]="game.getLog()"></ccg-record-bar>
 <div class="game-area">
   <div class="info-bar">
-    <p class="info-text">{{client.getOpponentUsername()}}</p>
+    <p class="info-text"  id="enemy-name">{{client.getOpponentUsername()}}</p>
     <button mdTooltipPosition="below" mdTooltip="View enemy crypt." color="primary" class="crypt-button" (click)="viewCrypt(enemyNo)"
       md-mini-fab><md-icon svgIcon="ccg:tombstone"></md-icon></button>
 
@@ -54,7 +54,7 @@
 
   <div class="info-bar">
     <ccg-resource-selector [canPlayResource]="canPlayResource()"></ccg-resource-selector>
-    <p class="info-text">{{client.getUsername()}} </p>
+    <p class="info-text" id="player-name">{{client.getUsername()}} </p>
 
     <button color="primary" mdTooltipPosition="above" mdTooltip="View your crypt." class="crypt-button" (click)="viewCrypt(playerNo)"
       md-mini-fab><md-icon svgIcon="ccg:tombstone"></md-icon></button>

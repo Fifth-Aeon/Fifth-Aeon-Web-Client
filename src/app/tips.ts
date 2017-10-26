@@ -13,11 +13,16 @@ import { Enchantment } from './game_model/enchantment';
 
 
 export enum TipType {
-    StartGame, FirstTurn, CanAttack, CanBlock, EndTurn, PlayedUnit, HasPlayable, OptionalTarget, NeedsTarget,
+    StartGame, FirstTurn, CanAttack, CanBlock, EndTurn, 
+    PlayedUnit,  PlayedEnchantment,
+    HasPlayable, OptionalTarget, NeedsTarget,
     SoftHandLimit, HardHandLimit
 }
 
-const tipText = new Map<TipType, string>();
+const tipText = new Map<TipType, string>(); 
+
+tipText.set(TipType.PlayedUnit, `Units can be used to attack your opponent, but not the turn they are played. Attacking allows you to damage your opponent. When they run out of life, you win.`);
+tipText.set(TipType.PlayedEnchantment, 'Enchantments are continuous effects that modify the game. All enchantments have a certain amount of power. When an enchantment runs of out of power, it is dispelled. You may pay an enchantment’s empower cost to give it an extra point of power. Your opponent may also pay this cost to reduce your enchantments power by one.')
 
 tipText.set(TipType.HardHandLimit, 'You have a hard hand size limit of twelve cards. If you would draw a card while you already have twelve cards in hand, it will be immediately discarded.');
 tipText.set(TipType.SoftHandLimit, 'Your maximum hand size is eight cards. If you have more than eight you will be forced to discard them at the end of your turn.');
@@ -25,7 +30,6 @@ tipText.set(TipType.StartGame, 'Welcome newcomer. I will provide tips to help yo
 tipText.set(TipType.FirstTurn, `It is your turn. You can play a resource by clicking one of the four icons on the left side of your information bar. Try to match the resource you play to the symbols on the cards in your hand.`);
 tipText.set(TipType.EndTurn, `After you play a resource you can end your turn by pressing the pass button on the right side of your information bar.`);
 tipText.set(TipType.HasPlayable, `You have a playable card in your hand. Playable card are brighter and can be played by clicking them.`);
-tipText.set(TipType.PlayedUnit, `Units can be used to attack your opponent, but not the turn they are played. Attacking allows you to damage your opponent. When they run out of life, you win.`);
 tipText.set(TipType.CanAttack, `You can declare units as attackers by selecting them. All your units attack at once. Attackers that are not blocked will damage your opponent.`);
 tipText.set(TipType.CanBlock, `You can block your opponent’s attackers by selecting one of your units then clicking the attacker you wish to block. The attacker will then fight your blocker, rather than damaging you. You can block a single attacker with multiple units.`);
 tipText.set(TipType.OptionalTarget, `This card has an optional targeted ability. Valid targets have a blue glow. Alternatively, you can click the card again to play it without a target.`);
@@ -78,8 +82,13 @@ export class TipService {
     }
 
     public playCardTrigger(card: Card, game: Game) {
+        switch (card.getCardType()) {
+            case CardType.Unit: this.playTip(TipType.PlayedUnit);
+                break;
+            case CardType.Enchantment: this.playTip(TipType.PlayedEnchantment);
+                break;
+        }
         if (card.isUnit()) {
-            this.playTip(TipType.PlayedUnit);
         } else {
             this.playTip(TipType.EndTurn);
         }

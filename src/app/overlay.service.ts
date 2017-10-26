@@ -13,6 +13,7 @@ type Arrow = { x1: number, y1: number, x2: number, y2: number }
 export class OverlayService {
   public displayCards: Card[] = [];
   private cardsElements: Map<string, ElementRef> = new Map();
+  private uiElements: Map<string, string> = new Map();
   private blocks: Array<[string, string]> = [];
   public targets: Array<Arrow> = [];
   public static arrowTimer: number = 2000;
@@ -22,6 +23,19 @@ export class OverlayService {
 
   public registerCard(id: string, element: ElementRef) {
     this.cardsElements.set(id, element);
+  }
+
+  public addInteractionArrow(from: string, to: string) {
+    let arrow = this.toArrow([from, to]);
+    if (!arrow) return;
+    this.targets.push(arrow);
+    setTimeout(() => {
+      remove(this.targets, arrow);
+    }, OverlayService.arrowTimer);
+  }
+
+  public registerUIElement(id: string, htmlId: string) {
+    this.uiElements.set(id, htmlId);
   }
 
   public addBlocker(id: string, target: string) {
@@ -49,7 +63,7 @@ export class OverlayService {
           .map(target => [card.getId(), target.getId()] as [string, string])
           .map((target) => this.toArrow(target))
           .filter(arrow => arrow != null);
-          this.targets = this.targets.concat(newTargets);
+        this.targets = this.targets.concat(newTargets);
         setTimeout(() => {
           let toRemove = new Set(newTargets);
           remove(this.targets, target => toRemove.has(target));
@@ -66,20 +80,29 @@ export class OverlayService {
     this.addTargets(card, targets);
   }
 
-  private toArrow(blockerIds: [string, string]): Arrow {
-    let blocker = this.cardsElements.get(blockerIds[0]);
-    let blocked = this.cardsElements.get(blockerIds[1]);
-    if (!blocker || !blocked) {
-      console.error(blockerIds, blocker, blocked);
+  private getBoundingRect(sourceId: string): ClientRect {
+    let isCard = this.cardsElements.has(sourceId);
+    let element = isCard ? this.cardsElements.get(sourceId) :
+      null;
+    if (isCard && !element) {
+      console.error('No overley element for', sourceId);
       return null;
     }
-    var blockerRect = blocker.nativeElement.getElementsByClassName("card-image")[0].getBoundingClientRect();
-    var blockedRect = blocked.nativeElement.getElementsByClassName("card-image")[0].getBoundingClientRect();
+    if (isCard) {
+      return element.nativeElement.getElementsByClassName("card-image")[0].getBoundingClientRect()
+    } else {
+      return document.getElementById(this.uiElements.get(sourceId)).getBoundingClientRect();
+    }
+  }
+
+  private toArrow(pair: [string, string]): Arrow {
+    let startRect = this.getBoundingRect(pair[0]);
+    let endRect = this.getBoundingRect(pair[1]);
     return {
-      x1: this.getCenter(blockerRect.right, blockerRect.left, pageXOffset),
-      y1: this.getCenter(blockerRect.top, blockerRect.bottom, pageYOffset),
-      x2: this.getCenter(blockedRect.right, blockedRect.left, pageXOffset),
-      y2: this.getCenter(blockedRect.top, blockedRect.bottom, pageYOffset),
+      x1: this.getCenter(startRect.right, startRect.left, pageXOffset),
+      y1: this.getCenter(startRect.top, startRect.bottom, pageYOffset),
+      x2: this.getCenter(endRect.right, endRect.left, pageXOffset),
+      y2: this.getCenter(endRect.top, endRect.bottom, pageYOffset),
     }
   }
 
