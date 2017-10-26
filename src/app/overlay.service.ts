@@ -12,7 +12,6 @@ type Arrow = { x1: number, y1: number, x2: number, y2: number }
 @Injectable()
 export class OverlayService {
   public displayCards: Card[] = [];
-  private cardsElements: Map<string, ElementRef> = new Map();
   private uiElements: Map<string, string> = new Map();
   private blocks: Array<[string, string]> = [];
   public targets: Array<Arrow> = [];
@@ -20,10 +19,6 @@ export class OverlayService {
   public static cardTimer: number = 3500;
 
   constructor() { }
-
-  public registerCard(id: string, element: ElementRef) {
-    this.cardsElements.set(id, element);
-  }
 
   public addInteractionArrow(from: string, to: string) {
     let arrow = this.toArrow([from, to]);
@@ -81,23 +76,25 @@ export class OverlayService {
   }
 
   private getBoundingRect(sourceId: string): ClientRect {
-    let isCard = this.cardsElements.has(sourceId);
-    let element = isCard ? this.cardsElements.get(sourceId) :
-      null;
-    if (isCard && !element) {
-      console.error('No overley element for', sourceId);
-      return null;
+    let id = this.uiElements.get(sourceId);
+    if (!id) {
+      id = 'card-' + sourceId;
     }
-    if (isCard) {
-      return element.nativeElement.getElementsByClassName("card-image")[0].getBoundingClientRect()
-    } else {
-      return document.getElementById(this.uiElements.get(sourceId)).getBoundingClientRect();
+    let element = document.getElementById(id);
+    if (!element) {
+      console.error('no element for', sourceId);
+      return;
     }
+    return element.getBoundingClientRect();
   }
 
-  private toArrow(pair: [string, string]): Arrow {
+  private toArrow(pair: [string, string]): Arrow | null {
     let startRect = this.getBoundingRect(pair[0]);
     let endRect = this.getBoundingRect(pair[1]);
+    if (!startRect || !endRect) {
+      console.error('Could not form arrow from', pair);
+      return null;
+    };
     return {
       x1: this.getCenter(startRect.right, startRect.left, pageXOffset),
       y1: this.getCenter(startRect.top, startRect.bottom, pageYOffset),

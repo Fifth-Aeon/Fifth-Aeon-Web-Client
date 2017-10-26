@@ -1,5 +1,8 @@
-<svg [ngStyle]="getMargins()" [class.overlapped]="overlap" [class.hovered]="hovered" [class.darkened]="darkened" xmlns="http://www.w3.org/2000/svg"
-  (mouseenter)="hovered=true" (mouseleave)="hovered=false" class="card " [attr.width]="x() + padding" [attr.height]="y() + padding">
+<svg id="card-{{card.getId()}}"
+[ngStyle]="getMargins()" [class.overlapped]="overlap" [class.hovered]="hovered"
+   [class.darkened]="darkened" xmlns="http://www.w3.org/2000/svg"
+  (mouseenter)="hovered=true" (mouseleave)="hovered=false" class="card "
+   [attr.width]="x() + padding" [attr.height]="y() + padding">
 
   <defs>
     <filter id="blank">

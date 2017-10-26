@@ -1,11 +1,8 @@
-import { Component, OnInit, Input, ElementRef } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Card, GameZone, CardType } from '../game_model/card';
 import { Unit, UnitType } from '../game_model/unit';
 import { Game } from '../game_model/game';
-
 import { allCards } from '../game_model/cards/allCards';
-
-import { OverlayService } from '../overlay.service';
 
 enum GlowType {
   None, Select, Attack, Defense, Targeted
@@ -83,7 +80,7 @@ export class CardComponent implements OnInit {
   @Input() target: boolean = false;
   @Input() overlap: boolean = false;
 
-  constructor(private overlay: OverlayService, private element: ElementRef) {
+  constructor() {
   }
 
   public getResUrl(type: string) {
@@ -191,9 +188,7 @@ export class CardComponent implements OnInit {
   ngOnInit() {
     if (!this.scale)
       this.scale = 1.25;
-    this.overlay.registerCard(this.card.getId(), this.element);
     this.distFromMid = this.distFromMid || 0;
-
   }
 
 }
