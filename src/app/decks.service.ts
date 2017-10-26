@@ -6,7 +6,7 @@ import { DeckList } from './game_model/deckList';
 import { standardFormat } from './game_model/gameFormat';
 import { ResourceTypeGroup, ResourceTypeNames } from './game_model/resource';
 
-import { deckLists } from './game_model/scenarios/decks';
+import { allDecks } from './game_model/scenarios/decks';
 const deckStore = 'deck-store';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class DecksService {
     if (this.load())
       return;
     this.decks = [];
-    for (let deck of deckLists) {
+    for (let deck of allDecks) {
       this.decks.push(deck.clone());
     }
     this.decks = shuffle(this.decks);

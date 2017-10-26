@@ -20,7 +20,7 @@ import { Unit } from './game_model/unit';
 import { DeckList } from './game_model/deckList';
 import { Log } from './game_model/log';
 import { AI, BasicAI } from './game_model/ai';
-import { deckLists } from './game_model/scenarios/decks';
+import { allDecks } from './game_model/scenarios/decks';
 
 // Client side
 import { Messenger, MessageType, Message } from './messenger';
@@ -485,7 +485,7 @@ export class WebClient {
         this.log.clear();
         this.log.setPlayer(0);
         this.initGame();
-        let aiDeck = sample(deckLists);
+        let aiDeck = sample(allDecks);
         console.log('A.I deck', aiDeck);
         this.gameModel = new ServerGame(standardFormat, [this.deck, aiDeck]);
         let aiModel = new ClientGame((type, params) => this.sendGameAction(type, params, true));
