@@ -307,8 +307,9 @@ export class GameComponent implements OnInit {
   private clear() {
     this.selected = null;
     this.host = null;
-    this.validTargets = new Set();
     this.blocker = null;
+    this.validTargets = new Set();
+    this.blockable = new Set();
   }
 
   private empowerDiminish(enchantment: Enchantment) {
@@ -336,6 +337,16 @@ export class GameComponent implements OnInit {
     } else if (this.canPlayTargeting(target)) {
       this.playTargeting(target);
     }
+  }
+
+  public blockable: Set<Unit>;
+  private setBlocker(blocker: Unit) {
+    this.blocker = blocker;
+    this.blockable = new Set(this.game.getAttackers().filter(attacker => blocker.canBlockTarget(attacker)));
+  }
+
+  public isTarget(unit: Unit) {
+    return this.validTargets.has(unit) || this.blockable.has(unit);
   }
 
   public blocker: Unit;
@@ -368,7 +379,8 @@ export class GameComponent implements OnInit {
         this.client.declareBlocker(unit, null);
         this.clear();
       } else if (unit.canBlock()) {
-        this.blocker = unit;
+
+        this.setBlocker(unit);
       } else {
         this.tips.cannotBlockTip(unit, this.game);
       }

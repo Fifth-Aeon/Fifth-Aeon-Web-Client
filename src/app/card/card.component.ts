@@ -167,12 +167,13 @@ export class CardComponent implements OnInit {
   public glowType() {
     if (this.selected)
       return GlowType.Select;
+    if (this.target)
+      return GlowType.Targeted;
     if (this.card.isAttacking())
       return GlowType.Attack;
     if (this.card.isBlocking())
       return GlowType.Defense;
-    if (this.target)
-      return GlowType.Targeted;
+
     return GlowType.None;
   }
 
