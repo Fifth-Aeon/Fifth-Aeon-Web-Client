@@ -17,6 +17,7 @@ export class SoundManager {
     private music: Howl;
     public muted: boolean = false;
     private onDone: Array<() => void> = [];
+    private voice: SpeechSynthesisVoice;
 
     //  Master, Music, Effects, Narrator
     private volume = [0.5, 0.5, 0.5, 0.5];
@@ -34,6 +35,17 @@ export class SoundManager {
         this.addSound('defeat', new Howl({ src: ['assets/mp3/sad-part.mp3'] }));
         this.muted = (localStorage.getItem(localStorageMuteKey) || 'false') == 'true';
         this.global.mute(this.muted);
+
+        speechSynthesis.onvoiceschanged = () => {
+            console.log('Avalible voices', window.speechSynthesis.getVoices());
+            let englishVoice = window.speechSynthesis.getVoices().find(voice => voice.lang.includes('en'));
+            if (englishVoice) {
+                console.log('Using voice', englishVoice.name);
+                this.voice = englishVoice;
+            } else {
+                console.warn('Warning no english voice detected.');
+            }
+        }
     }
 
     public getVolumes() {
@@ -49,7 +61,6 @@ export class SoundManager {
         this.volume[type] = newVal;
         if (type == VolumeType.Music || type == VolumeType.Master)
             this.music.volume(this.getAdjustedVolume(VolumeType.Music))
-
     }
 
     public speak(text: string) {
@@ -57,6 +68,8 @@ export class SoundManager {
             let msg = new SpeechSynthesisUtterance(text);
             this.music.volume(this.getAdjustedVolume(VolumeType.Music) / 4);
             msg.volume = this.getAdjustedVolume(VolumeType.Narrator);
+            if (this.voice)
+                msg.voice = this.voice;
             speechSynthesis.speak(msg);
             msg.onend = () => {
                 this.music.volume(this.getAdjustedVolume(VolumeType.Music));
