@@ -45,7 +45,7 @@ export class SoundManager {
             } else {
                 console.warn('Warning no english voice detected.');
             }
-        }
+        };
     }
 
     public getVolumes() {
@@ -60,7 +60,7 @@ export class SoundManager {
     public changeVolume(type: VolumeType, newVal: number) {
         this.volume[type] = newVal;
         if (type == VolumeType.Music || type == VolumeType.Master)
-            this.music.volume(this.getAdjustedVolume(VolumeType.Music))
+            this.music.volume(this.getAdjustedVolume(VolumeType.Music));
     }
 
     public speak(text: string) {
@@ -73,7 +73,7 @@ export class SoundManager {
             speechSynthesis.speak(msg);
             msg.onend = () => {
                 this.music.volume(this.getAdjustedVolume(VolumeType.Music));
-            }
+            };
         }
     }
 
@@ -102,7 +102,7 @@ export class SoundManager {
             this.music.loop(true);
             this.music.play();
             this.music.volume(this.getAdjustedVolume(VolumeType.Music));
-        })
+        });
     }
 
     public addSound(name: string, sound: Howl, multiplier: number = 1) {
@@ -128,7 +128,7 @@ export class SoundManager {
 
     public queueSound(name: string) {
         let sound = this.library.get(name);
-        this.playQueue.enqueue(sound)
+        this.playQueue.enqueue(sound);
 
         if (!this.isPlaying) {
             this.isPlaying = true;
