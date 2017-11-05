@@ -1,15 +1,15 @@
 <!--
-<md-toolbar color="primary">
+<mat-toolbar color="primary">
   <span>CCG</span>
   <span class="toolbar-spacer"></span>
 
-  <md-icon class="toolbar-icon" mdTooltip="Turn volume on" (click)="toggleMute()" *ngIf="soundManager.isMuted()">volume_mute</md-icon>
-  <md-icon class="toolbar-icon" mdTooltip="Turn volume off" (click)="toggleMute()" *ngIf="!soundManager.isMuted()">volume_up</md-icon>
+  <mat-icon class="toolbar-icon" matTooltip="Turn volume on" (click)="toggleMute()" *ngIf="soundManager.isMuted()">volume_mute</mat-icon>
+  <mat-icon class="toolbar-icon" matTooltip="Turn volume off" (click)="toggleMute()" *ngIf="!soundManager.isMuted()">volume_up</mat-icon>
 
-  <md-icon class="toolbar-icon" mdTooltip="Connected" *ngIf="client.isConnected()">cloud</md-icon>
-  <md-icon class="toolbar-icon" mdTooltip="Disconnected" *ngIf="!client.isConnected()">cloud_off</md-icon>
+  <mat-icon class="toolbar-icon" matTooltip="Connected" *ngIf="client.isConnected()">cloud</mat-icon>
+  <mat-icon class="toolbar-icon" matTooltip="Disconnected" *ngIf="!client.isConnected()">cloud_off</mat-icon>
 
-</md-toolbar>
+</mat-toolbar>
 -->
 <hotkeys-cheatsheet></hotkeys-cheatsheet>
 <div class="content">

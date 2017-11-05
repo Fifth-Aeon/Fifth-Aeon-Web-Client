@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { Card } from '../game_model/card';
 
@@ -17,7 +17,7 @@ export class CardChooserComponent {
   private pageSize: number = 5;
   public message: string;
 
-  constructor(public dialogRef: MdDialogRef<CardChooserComponent>) {
+  constructor(public dialogRef: MatDialogRef<CardChooserComponent>) {
     this.pageCards = [];
   }
 

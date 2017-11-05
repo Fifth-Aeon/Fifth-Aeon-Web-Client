@@ -1,6 +1,6 @@
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { Inject, Injectable, SecurityContext } from '@angular/core';
-import { MdIconRegistry } from '@angular/material';
+import { MatIconRegistry } from '@angular/material';
 import { sortBy } from 'lodash';
 
 import { Card } from './game_model/card';
@@ -17,7 +17,7 @@ const userInterfaceIcons = [
 
 @Injectable()
 export class Preloader {
-    constructor(registry: MdIconRegistry, sanitizer: DomSanitizer) {
+    constructor(registry: MatIconRegistry, sanitizer: DomSanitizer) {
         let url = sanitizer.bypassSecurityTrustResourceUrl('assets/svg/tombstone.svg');
         registry.addSvgIconInNamespace('ccg', 'tombstone', url);
         url = sanitizer.bypassSecurityTrustResourceUrl('assets/svg/deck.svg');

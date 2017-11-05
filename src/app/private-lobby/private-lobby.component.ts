@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { WebClient, ClientState } from '../client';
@@ -12,7 +12,7 @@ import { WebClient, ClientState } from '../client';
 export class PrivateLobbyComponent implements OnInit {
   public state = ClientState;
 
-  constructor(public snackbar: MdSnackBar, route: ActivatedRoute, private router: Router, public client: WebClient) {
+  constructor(public snackbar: MatSnackBar, route: ActivatedRoute, private router: Router, public client: WebClient) {
     let gameId = route.snapshot.paramMap.get('id');
     if (gameId) {
       this.client.joinPrivateGame(gameId);

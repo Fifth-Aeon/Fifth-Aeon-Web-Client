@@ -1,7 +1,7 @@
-<h1 *ngIf="winner" md-dialog-title>You Won</h1>
-<h1 *ngIf="!winner" md-dialog-title>You Lost</h1>
+<h1 *ngIf="winner" mat-dialog-title>You Won</h1>
+<h1 *ngIf="!winner" mat-dialog-title>You Lost</h1>
 
-<div md-dialog-content>
+<div mat-dialog-content>
   <div *ngIf="winner">
     <p *ngIf="quit">Your opponent left.</p>
     <p *ngIf="!quit">You reduced your oponents life to zero.</p>
@@ -13,6 +13,6 @@
   </div>
 </div>
 
-<div md-dialog-actions>
-  <button md-button md-dialog-close="">Back to lobby</button>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close="">Back to lobby</button>
 </div>

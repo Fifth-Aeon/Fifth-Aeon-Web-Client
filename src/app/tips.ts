@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { SoundManager } from './sound';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 import { Game } from './game_model/game';
 import { Card, CardType } from './game_model/card';
@@ -41,7 +41,7 @@ const tipLocalStore = 'tip-store';
 export class TipService {
     private played: any;
 
-    constructor(private soundManager: SoundManager, private snackbar: MdSnackBar) {
+    constructor(private soundManager: SoundManager, private snackbar: MatSnackBar) {
         let storedData = localStorage.getItem(tipLocalStore);
         if (storedData) {
             this.played = JSON.parse(storedData);

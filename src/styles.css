@@ -24,7 +24,7 @@ body {
   font-size: 2em;
 }
 
-md-progress-spinner {
+mat-progress-spinner {
   margin: 0 auto;
 }
 

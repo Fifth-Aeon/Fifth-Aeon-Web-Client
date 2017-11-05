@@ -9,15 +9,15 @@ import { RouterModule } from '@angular/router';
 // Vendor Angular Modules
 import { ClipboardModule } from 'ngx-clipboard';
 import { HotkeyModule } from 'angular2-hotkeys';
-import { Ng2FittextModule } from "ng2-fittext/ng2fittext";
 import {
-  MdButtonModule, MdRadioModule, MdIconModule,
-  MdTooltipModule, MdSnackBarModule, MdToolbarModule,
-  MdProgressSpinnerModule, MdDialogModule, MdListModule,
-  MdCardModule, MdSliderModule, MdCheckboxModule, MdPaginatorModule,
-  MdTabsModule
+  MatButtonModule, MatRadioModule, MatIconModule,
+  MatTooltipModule, MatSnackBarModule, MatToolbarModule,
+  MatProgressSpinnerModule, MatDialogModule, MatListModule,
+  MatCardModule, MatSliderModule, MatCheckboxModule, MatPaginatorModule,
+  MatTabsModule
 } from '@angular/material';
 import { Angulartics2Module, Angulartics2GoogleTagManager } from 'angulartics2';
+
 
 // App Angular Services
 import { SoundManager } from './sound';
@@ -70,12 +70,11 @@ import { CardComponent } from './card/card.component';
     BrowserAnimationsModule,
     ClipboardModule,
     HotkeyModule.forRoot(),
-    Ng2FittextModule,
-    MdButtonModule, MdIconModule, MdToolbarModule, MdRadioModule,
-    MdProgressSpinnerModule, MdTooltipModule, MdSnackBarModule,
-    MdDialogModule, MdListModule, MdCardModule, MdSliderModule,
-    MdCheckboxModule, MdPaginatorModule, MdTabsModule,
-    Angulartics2Module.forRoot([ Angulartics2GoogleTagManager ]),    
+    MatButtonModule, MatIconModule, MatToolbarModule, MatRadioModule,
+    MatProgressSpinnerModule, MatTooltipModule, MatSnackBarModule,
+    MatDialogModule, MatListModule, MatCardModule, MatSliderModule,
+    MatCheckboxModule, MatPaginatorModule, MatTabsModule,
+    Angulartics2Module.forRoot([Angulartics2GoogleTagManager]),
     RouterModule.forRoot([
       { path: 'game', component: GameComponent, canActivate: [InPlayGuard] },
       { path: 'deck', component: DeckEditorComponent, canActivate: [LoggedInGuard] },
@@ -91,3 +90,4 @@ import { CardComponent } from './card/card.component';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+ 

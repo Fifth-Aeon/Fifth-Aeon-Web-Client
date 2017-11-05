@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 
 
 @Component({
@@ -11,7 +11,7 @@ export class EndDialogComponent implements OnInit {
   public winner: boolean = false;
   public quit: boolean = false;
   
-  constructor(public dialogRef: MdDialogRef<EndDialogComponent>) { }
+  constructor(public dialogRef: MatDialogRef<EndDialogComponent>) { }
 
   ngOnInit() {
   }

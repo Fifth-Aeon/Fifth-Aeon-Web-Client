@@ -1,34 +1,34 @@
 <div class="left">
-  <md-card id="card-selection">
-    <md-card-content id="editor-cards" #content (window:resize)="onResize(content.getBoundingClientRect())">
+  <mat-card id="card-selection">
+    <mat-card-content id="editor-cards" #content (window:resize)="onResize(content.getBoundingClientRect())">
       <ccg-card scale="1.75" *ngFor="let card of cards" [card]="card" (click)="add(card)"></ccg-card>
-    </md-card-content>
-  </md-card>
+    </mat-card-content>
+  </mat-card>
 
-  <md-card id="card-selection-controls">
-      <md-card-content>
+  <mat-card id="card-selection-controls">
+      <mat-card-content>
         <!--
-        <button md-mini-fab mdTooltipPosition="above" mdTooltip="Previous Page." (click)="prev()" [disabled]="!canPrev()"><md-icon>arrow_back</md-icon></button>
-        <button md-mini-fab mdTooltipPosition="above" mdTooltip="Next Page." (click)="next()" [disabled]="!canNext()"><md-icon>arrow_forward</md-icon></button>
+        <button mat-mini-fab matTooltipPosition="above" matTooltip="Previous Page." (click)="prev()" [disabled]="!canPrev()"><mat-icon>arrow_back</mat-icon></button>
+        <button mat-mini-fab matTooltipPosition="above" matTooltip="Next Page." (click)="next()" [disabled]="!canNext()"><mat-icon>arrow_forward</mat-icon></button>
         -->
-        <button md-fab mdTooltipPosition="above" mdTooltip="Done editing deck." color="primary" (click)="done()" [disabled]="!deck.isValid()"><md-icon>check</md-icon></button>
-        <button md-fab mdTooltipPosition="above" mdTooltip="Fill deck with random cards." color="accent" (click)="randomize()"><md-icon>shuffle</md-icon></button>
-        <button md-fab mdTooltipPosition="above" mdTooltip="Clear all cards from deck." color="warn" (click)="deck.clear()"><md-icon>delete</md-icon></button>
+        <button mat-fab matTooltipPosition="above" matTooltip="Done editing deck." color="primary" (click)="done()" [disabled]="!deck.isValid()"><mat-icon>check</mat-icon></button>
+        <button mat-fab matTooltipPosition="above" matTooltip="Fill deck with random cards." color="accent" (click)="randomize()"><mat-icon>shuffle</mat-icon></button>
+        <button mat-fab matTooltipPosition="above" matTooltip="Clear all cards from deck." color="warn" (click)="deck.clear()"><mat-icon>delete</mat-icon></button>
         
-      </md-card-content>
-    </md-card>
+      </mat-card-content>
+    </mat-card>
 </div>
 
-<md-card id="deck-list">
-    <md-card-header>
-      <md-card-title>
+<mat-card id="deck-list">
+    <mat-card-header>
+      <mat-card-title>
         <h1>Deck - {{deck.size()}} / {{format.minDeckSize}}</h1>
-      </md-card-title>
-    </md-card-header>
-    <md-card-content>
-      <md-list>
-        <md-list-item *ngFor="let record of deck.getRecordList()" (click)="deck.removeCard(record.card)"> {{record.card.getCost().asCost()}} - {{record.card.getName()}} - ({{record.number}}) </md-list-item>
-      </md-list>
-    </md-card-content>
-  </md-card>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item *ngFor="let record of deck.getRecordList()" (click)="deck.removeCard(record.card)"> {{record.card.getCost().asCost()}} - {{record.card.getName()}} - ({{record.number}}) </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
 

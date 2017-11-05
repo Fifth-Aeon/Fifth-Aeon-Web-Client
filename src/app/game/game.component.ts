@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { MdDialogRef, MdDialog, MdDialogConfig, MdIconRegistry } from '@angular/material';
+import { MatDialogRef, MatDialog, MatDialogConfig, MatIconRegistry } from '@angular/material';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
@@ -65,7 +65,7 @@ export class GameComponent implements OnInit {
   public enemyNo: number;
   public locations = GameZone;
 
-  constructor(public client: WebClient, public dialog: MdDialog,
+  constructor(public client: WebClient, public dialog: MatDialog,
     private hotkeys: HotkeysService, public overlay: OverlayService,
     private tips: TipService) {
     this.game = client.getGame();
@@ -78,7 +78,7 @@ export class GameComponent implements OnInit {
 
     // Workaround tooltip  not dissapering
     setInterval(() => {
-      for (let tip of Array.from(document.getElementsByTagName('md-tooltip-component'))) {
+      for (let tip of Array.from(document.getElementsByTagName('mat-tooltip-component'))) {
         tip.parentElement.remove();
       }
     }, 30 * 1000);
@@ -128,7 +128,7 @@ export class GameComponent implements OnInit {
     if (player != this.playerNo)
       return;
 
-    let config = new MdDialogConfig();
+    let config = new MatDialogConfig();
     config.disableClose = true;
     let dialogRef = this.dialog.open(CardChooserComponent, config);
     dialogRef.componentInstance.cards = cards;

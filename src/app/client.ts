@@ -1,10 +1,10 @@
 // Vendor
 import { sample, every } from 'lodash'
-import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
+import { MatDialogRef, MatDialog, MatDialogConfig } from '@angular/material';
 import { NgZone, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { Angulartics2 } from 'angulartics2';
 
@@ -68,7 +68,7 @@ export class WebClient {
 
     constructor(private soundManager: SoundManager, private tips: TipService,
         private router: Router, private zone: NgZone, private sanitizer: DomSanitizer,
-        preloader: Preloader, public dialog: MdDialog, private overlay: OverlayService,
+        preloader: Preloader, public dialog: MatDialog, private overlay: OverlayService,
         private hotkeys: HotkeysService, private analytics: Angulartics2) {
 
         this.initGame();
@@ -385,7 +385,7 @@ export class WebClient {
 
     private openEndDialog(winner: number, quit: boolean) {
         let playerWon = this.playerNumber === winner;
-        let config = new MdDialogConfig();
+        let config = new MatDialogConfig();
         config.disableClose = true;
         let dialogRef = this.dialog.open(EndDialogComponent, config);
         dialogRef.componentInstance.winner = playerWon;

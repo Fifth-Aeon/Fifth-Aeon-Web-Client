@@ -4,6 +4,7 @@ import { Unit, UnitType } from '../game_model/unit';
 import { Game } from '../game_model/game';
 import { allCards } from '../game_model/cards/allCards';
 
+
 enum GlowType {
   None, Select, Attack, Defense, Targeted
 }

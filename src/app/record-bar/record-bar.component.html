@@ -2,7 +2,7 @@
   <div class="record" 
     *ngFor="let entry of log.getItems()" 
     [style.border-color]="entry.color"
-    mdTooltipPosition="right" [mdTooltip]="entry.desc">
+    matTooltipPosition="right" [matTooltip]="entry.desc">
     <img [src]="entry.image"/>
   </div>
 </div>

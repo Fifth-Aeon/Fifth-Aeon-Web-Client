@@ -2,15 +2,15 @@
 <div class="game-area">
   <div class="info-bar">
     <p class="info-text"  id="enemy-name">{{client.getOpponentUsername()}}</p>
-    <button mdTooltipPosition="below" mdTooltip="View enemy crypt." color="primary" class="crypt-button" (click)="viewCrypt(enemyNo)"
-      md-mini-fab><md-icon svgIcon="ccg:tombstone"></md-icon></button>
+    <button matTooltipPosition="below" matTooltip="View enemy crypt." color="primary" class="crypt-button" (click)="viewCrypt(enemyNo)"
+      mat-mini-fab><mat-icon svgIcon="ccg:tombstone"></mat-icon></button>
 
-    <svg class="card-display" mdTooltip="Your opponent has {{enemy.getHand().length}} cards in hand.">
+    <svg class="card-display" matTooltip="Your opponent has {{enemy.getHand().length}} cards in hand.">
       <image width="50" height="50" xlink:href="assets/png/card.png" />
       <text x="25" y="35" text-anchor="middle" class="number-text">{{enemy.getHand().length}}</text>
     </svg>
 
-    <svg class="life-display" mdTooltip="Your opponent has {{enemy.getLife()}} life.">
+    <svg class="life-display" matTooltip="Your opponent has {{enemy.getLife()}} life.">
       <image width="50" height="50" xlink:href="assets/png/hearts.png" />
       <text x="25" y="35" text-anchor="middle" class="number-text">{{enemy.getLife()}}</text>
     </svg>
@@ -56,25 +56,25 @@
     <ccg-resource-selector [canPlayResource]="canPlayResource()"></ccg-resource-selector>
     <p class="info-text" id="player-name">{{client.getUsername()}} </p>
 
-    <button color="primary" mdTooltipPosition="above" mdTooltip="View your crypt." class="crypt-button" (click)="viewCrypt(playerNo)"
-      md-mini-fab><md-icon svgIcon="ccg:tombstone"></md-icon></button>
+    <button color="primary" matTooltipPosition="above" matTooltip="View your crypt." class="crypt-button" (click)="viewCrypt(playerNo)"
+      mat-mini-fab><mat-icon svgIcon="ccg:tombstone"></mat-icon></button>
 
-    <svg class="card-display" mdTooltipPosition="above" mdTooltip="You have {{player.getHand().length}} cards in your hand.">
+    <svg class="card-display" matTooltipPosition="above" matTooltip="You have {{player.getHand().length}} cards in your hand.">
       <image width="50" height="50" xlink:href="assets/png/card.png" />
       <text x="25" y="35" text-anchor="middle" class="number-text">{{player.getHand().length}}</text>
     </svg>
 
-    <svg class="life-display" mdTooltipPosition="above" mdTooltip="You have {{player.getLife()}} life.">
+    <svg class="life-display" matTooltipPosition="above" matTooltip="You have {{player.getLife()}} life.">
       <image width="50" height="50" xlink:href="assets/png/hearts.png" />
       <text x="25" y="35" text-anchor="middle" class="number-text">{{player.getLife()}}</text>
     </svg>
 
-    <svg class="phase-display" mdTooltipPosition="above" mdTooltip="It is currently {{currPlayerName()}} {{phaseName()}}.">
+    <svg class="phase-display" matTooltipPosition="above" matTooltip="It is currently {{currPlayerName()}} {{phaseName()}}.">
       <circle r="24" cy="25" cx="25" [attr.fill]="phaseColor()"/>        
       <image width="45" height="40" x="2.5" y="5" stroke="black" stroke-width="1" attr.xlink:href="assets/png/{{phaseImage()}}.png" />
     </svg>
 
-    <button [disabled]="passDisabled()" md-raised-button color="primary" class="pass-button" (click)="pass()">{{getPassText()}}</button>
+    <button [disabled]="passDisabled()" mat-raised-button color="primary" class="pass-button" (click)="pass()">{{getPassText()}}</button>
     <ccg-resource-display [resource]="player.getPool()"></ccg-resource-display>
     <!--<ccg-player-avatar></ccg-player-avatar>-->
   </div>
