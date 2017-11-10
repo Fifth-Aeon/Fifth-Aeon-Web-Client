@@ -10,7 +10,7 @@ import { Card } from '../game_model/card';
 
 
 @Component({
-  selector: 'bsc-deck-editor',
+  selector: 'ccg-deck-editor',
   templateUrl: './deck-editor.component.html',
   styleUrls: ['./deck-editor.component.scss']
 })
@@ -58,7 +58,7 @@ export class DeckEditorComponent implements OnInit {
   }
 
   public canPrev() {
-    return this.pageNumber != 0;
+    return this.pageNumber !== 0;
   }
 
   public prev() {

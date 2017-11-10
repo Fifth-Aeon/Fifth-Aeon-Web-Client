@@ -13,13 +13,13 @@ import { Enchantment } from './game_model/enchantment';
 
 
 export enum TipType {
-    StartGame, FirstTurn, CanAttack, CanBlock, EndTurn, 
+    StartGame, FirstTurn, CanAttack, CanBlock, EndTurn,
     PlayedUnit,  PlayedEnchantment,
     HasPlayable, OptionalTarget, NeedsTarget,
     SoftHandLimit, HardHandLimit
 }
 
-const tipText = new Map<TipType, string>(); 
+const tipText = new Map<TipType, string>();
 
 tipText.set(TipType.PlayedUnit, `Units can be used to attack your opponent, but not the turn they are played. Attacking allows you to damage your opponent. When they run out of life, you win.`);
 tipText.set(TipType.PlayedEnchantment, 'Enchantments are continuous effects that modify the game. All enchantments have a certain amount of power. When an enchantment runs of out of power, it is dispelled. You may pay an enchantment’s empower cost to give it an extra point of power. Your opponent may also pay this cost to reduce your enchantments power by one.')
@@ -40,6 +40,7 @@ const tipLocalStore = 'tip-store';
 @Injectable()
 export class TipService {
     private played: any;
+    private lastMsg: string;
 
     constructor(private soundManager: SoundManager, private snackbar: MatSnackBar) {
         let storedData = localStorage.getItem(tipLocalStore);
@@ -50,7 +51,6 @@ export class TipService {
         }
     }
 
-    private lastMsg: string;
     public announce(text: string) {
         if (text === this.lastMsg)
             return
@@ -71,7 +71,7 @@ export class TipService {
     }
 
     public playResourceTrigger(game: Game, playerNo: number) {
-        if (game.getCurrentPlayer().getPlayerNumber() != playerNo)
+        if (game.getCurrentPlayer().getPlayerNumber() !== playerNo)
             return;
         let playable = game.getPlayer(playerNo).getHand().filter(card => card.isPlayable(game));
         if (playable.length > 0) {
@@ -106,7 +106,7 @@ export class TipService {
 
 
     public turnStartTrigger(game: Game, playerNo: number) {
-        if (game.getCurrentPlayer().getPlayerNumber() != playerNo)
+        if (game.getCurrentPlayer().getPlayerNumber() !== playerNo)
             return;
         let hasAttacker = game.getBoard().getPlayerUnits(playerNo).filter(unit => unit.canAttack()).length > 0;
         if (hasAttacker)
@@ -152,8 +152,8 @@ export class TipService {
     }
 
     public cannotModifyEnchantment(player: Player, game: Game, enchantment: Enchantment) {
-        let verb = enchantment.getOwner() == player.getPlayerNumber() ? 'empower' : 'diminish';
-        if (player != game.getCurrentPlayer())
+        let verb = enchantment.getOwner() === player.getPlayerNumber() ? 'empower' : 'diminish';
+        if (player !== game.getCurrentPlayer())
             this.announce(`You can only ${verb} enchantments during your own turn.`)
         else if (!player.getPool().meetsReq(enchantment.getModifyCost()))
             this.announce(`You can not afford to ${verb} that enchantment. It would require ${enchantment.getModifyCost().getNumeric()} energy while you only have ${player.getPool().getNumeric()}.`);
@@ -162,17 +162,17 @@ export class TipService {
 
     public cannotPlayTip(playerNo: number, game: Game, card: Card) {
         let player = game.getPlayer(playerNo);
-        if (game.getCurrentPlayer().getPlayerNumber() != playerNo) {
+        if (game.getCurrentPlayer().getPlayerNumber() !== playerNo) {
             this.announce(`You can only play cards on your own turn.`);
         } else if (!player.getPool().meetsReq(card.getCost())) {
             let diff = card.getCost().difference(player.getPool());
-            this.announce(`You need ${diff.map(diff => diff.diff + ' more ' + diff.name).join(' and ')} to play ${
+            this.announce(`You need ${diff.map(change => change.diff + ' more ' + change.name).join(' and ')} to play ${
                 card.getName().replace(/\./g, '')}.`);
         } else if (card.isUnit() && !game.getBoard().canPlayPermanant(card as Unit)) {
             this.announce(`Your board is too full to play a unit.`);
-        } else if (card.getCardType() == CardType.Enchantment && !game.getBoard().canPlayPermanant(card as Enchantment)) {
+        } else if (card.getCardType() === CardType.Enchantment && !game.getBoard().canPlayPermanant(card as Enchantment)) {
             this.announce(`Your board is too full to play an enchantment.`);
-        } else if (card.getCardType() == CardType.Item && !(card as Item).getHostTargeter().isTargetable(card, game)) {
+        } else if (card.getCardType() === CardType.Item && !(card as Item).getHostTargeter().isTargetable(card, game)) {
             this.announce(`You don't have any units to attach that item to.`);
         } else if (!card.getTargeter().isTargetable(card, game)) {
             this.announce(`There are no valid targets for ${card.getName()}.`);

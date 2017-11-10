@@ -7,16 +7,18 @@ import { Item } from 'app/game_model/item';
 import { Game } from 'app/game_model/game';
 
 
-type Arrow = { x1: number, y1: number, x2: number, y2: number }
+interface Arrow { x1: number, y1: number, x2: number, y2: number }
 
 @Injectable()
 export class OverlayService {
+  public static arrowTimer = 2000;
+  public static cardTimer = 3500;
+
   public displayCards: Card[] = [];
   private uiElements: Map<string, string> = new Map();
   private blocks: Array<[string, string]> = [];
   public targets: Array<Arrow> = [];
-  public static arrowTimer: number = 2000;
-  public static cardTimer: number = 3500;
+
 
   constructor() { }
 
@@ -38,7 +40,7 @@ export class OverlayService {
   }
 
   public removeBlocker(toRemove: string) {
-    remove(this.blocks, (block) => block[0] == toRemove);
+    remove(this.blocks, (block) => block[0] === toRemove);
   }
 
   public clearBlockers() {
@@ -52,12 +54,12 @@ export class OverlayService {
         remove(this.displayCards, card);
       }, OverlayService.cardTimer);
     }
-    if (targets != null && targets.length > 0) {
+    if (targets !== null && targets.length > 0) {
       setTimeout(() => {
         let newTargets = targets
           .map(target => [card.getId(), target.getId()] as [string, string])
           .map((target) => this.toArrow(target))
-          .filter(arrow => arrow != null);
+          .filter(arrow => arrow !== null);
         this.targets = this.targets.concat(newTargets);
         setTimeout(() => {
           let toRemove = new Set(newTargets);
@@ -69,7 +71,7 @@ export class OverlayService {
 
   public onPlay(card: Card, game: Game, player: number) {
     let targets = card.getTargeter().getLastTargets();
-    if (card.getCardType() == CardType.Item) {
+    if (card.getCardType() === CardType.Item) {
       targets.push((card as Item).getHostTargeter().getLastTargets()[0]);
     }
     this.addTargets(card, targets);
@@ -104,7 +106,7 @@ export class OverlayService {
   }
 
   public getBlockArrows(): Arrow[] {
-    return this.blocks.map((block) => this.toArrow(block)).filter(arrow => arrow != null);
+    return this.blocks.map((block) => this.toArrow(block)).filter(arrow => arrow !== null);
   }
 
 

@@ -3,7 +3,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from
 import { Observable } from 'rxjs/Observable';
 import { WebClient } from './client';
 
-@Injectable() 
+@Injectable()
 export class LoggedInGuard implements CanActivate {
   constructor(private client: WebClient, private router: Router) { }
   canActivate(

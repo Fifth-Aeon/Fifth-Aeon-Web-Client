@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg21"
+   version="1.1"
+   style="height: 560px; width: 1000px;"
+   viewBox="0 0 1000 560"
+   sodipodi:docname="dart.svg"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\dart.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   inkscape:version="0.92.1 r15371">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2104"
+     id="namedview14"
+     showgrid="false"
+     inkscape:zoom="1.19198"
+     inkscape:cx="317.03171"
+     inkscape:cy="199.42257"
+     inkscape:window-x="-16"
+     inkscape:window-y="-16"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg21" />
+  <metadata
+     id="metadata25">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs13">
+    <filter
+       y="-100%"
+       x="-100%"
+       width="300%"
+       height="300%"
+       id="shadow-1">
+      <feFlood
+         id="feFlood2"
+         result="flood"
+         flood-color="#00FF00" />
+      <feComposite
+         id="feComposite4"
+         result="composite"
+         operator="atop"
+         in2="SourceGraphic"
+         in="flood" />
+      <feGaussianBlur
+         id="feGaussianBlur6"
+         result="blur"
+         stdDeviation="15"
+         in="composite" />
+      <feOffset
+         id="feOffset8"
+         result="offset" />
+      <feComposite
+         id="feComposite10"
+         operator="over"
+         in2="offset"
+         in="SourceGraphic" />
+    </filter>
+  </defs>
+  <path
+     style="fill:#334033;stroke-width:1.46158493;fill-opacity:1"
+     id="path15"
+     d="M 0,0 H 1000 V 560 H 0 Z" />
+  <g
+     id="g19"
+     style="fill:#00ff00;fill-opacity:1"
+     transform="translate(242.348,36.421)"
+     class="">
+    <path
+       style="fill:#00ff00;filter:url(#shadow-1);fill-opacity:1"
+       id="path17"
+       d="m 134.745,22.098 c -4.538,-0.146 -9.08,1.43 -14.893,7.243 -5.586,5.586 -11.841,21.725 -15.248,35.992 -0.234,0.979 -0.444,1.907 -0.654,2.836 L 218.204,173.507 C 211.024,144.969 200.649,113.522 188.356,86.757 176.683,61.339 163.107,40.1 150.842,29.733 144.71,24.55 139.282,22.245 134.745,22.098 Z M 92.528,82.122 82.124,92.526 243.58,267.651 267.652,243.579 Z m -24.357,21.826 c -0.929,0.21 -1.857,0.42 -2.836,0.654 -14.267,3.407 -30.406,9.662 -35.993,15.248 -5.813,5.813 -7.39,10.355 -7.244,14.893 0.147,4.538 2.452,9.965 7.635,16.098 10.367,12.265 31.608,25.842 57.025,37.515 26.766,12.293 58.211,22.669 86.749,29.848 L 68.17,103.948 Z m 212.728,151.842 -25.107,25.107 73.265,79.469 31.31,-31.31 L 280.9,255.79 Z m 92.715,85.476 -32.346,32.344 2.07,2.246 c 0.061,0.058 4.419,4.224 10.585,6.28 6.208,2.069 12.71,2.88 21.902,-6.313 9.192,-9.192 8.38,-15.694 6.31,-21.902 -2.057,-6.174 -6.235,-10.54 -6.283,-10.59 z m 20.172,41.059 a 46.23,46.23 0 0 1 -5.233,6.226 46.241,46.241 0 0 1 -6.226,5.235 L 489.91,489.91 393.785,382.324 Z" />
+  </g>
+</svg>

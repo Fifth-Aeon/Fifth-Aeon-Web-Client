@@ -13,7 +13,7 @@
   </mat-toolbar>
   <p class="instructions">{{client.getInstruction()}}</p>
 
-  <mat-progress-spinner *ngIf="getState() != state.InLobby" attr.color="primary" mode="indeterminate"></mat-progress-spinner>
+  <mat-progress-spinner *ngIf="getState() !== state.InLobby" attr.color="primary" mode="indeterminate"></mat-progress-spinner>
 
   <div *ngIf="getState() === state.InLobby">
     <h2>Singleplayer</h2>

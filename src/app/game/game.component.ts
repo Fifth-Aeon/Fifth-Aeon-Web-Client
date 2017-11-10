@@ -98,7 +98,7 @@ export class GameComponent implements OnInit {
   }
 
   public isInHand(card: Card) {
-    return card.getLocation() == GameZone.Hand ? 'in' : 'teal';
+    return card.getLocation() === GameZone.Hand ? 'in' : 'teal';
   }
 
   public locationState(card: Card) {
@@ -125,7 +125,7 @@ export class GameComponent implements OnInit {
 
   public openCardChooser(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null, message: string = '') {
     this.game.deferChoice(player, cards, toPick, callback);
-    if (player != this.playerNo)
+    if (player !== this.playerNo)
       return;
 
     let config = new MatDialogConfig();
@@ -145,7 +145,7 @@ export class GameComponent implements OnInit {
 
   private isMyTurn(): boolean {
     let currentPlayer = this.game.getActivePlayer();
-    return (!currentPlayer || currentPlayer == this.playerNo)
+    return (!currentPlayer || currentPlayer === this.playerNo)
   }
   public currPlayerName(): string {
     return this.isMyTurn() ?
@@ -193,14 +193,14 @@ export class GameComponent implements OnInit {
   }
 
   public canPlayResource() {
-    return this.game.getCurrentPlayer() == this.player &&
+    return this.game.getCurrentPlayer() === this.player &&
       this.game.getCurrentPlayer().canPlayResource();
   }
 
   public wouldEndTurn() {
     return this.game.isPlayerTurn(this.playerNo) &&
-      (this.game.getPhase() == GamePhase.Play1 && !this.game.isAttacking()) ||
-      (this.game.getPhase() == GamePhase.Play2);
+      (this.game.getPhase() === GamePhase.Play1 && !this.game.isAttacking()) ||
+      (this.game.getPhase() === GamePhase.Play2);
   }
 
   public passDisabled(): boolean {
@@ -237,9 +237,9 @@ export class GameComponent implements OnInit {
 
   private doestNotNeedTarget(card: Card): boolean {
     let targeter = card.getTargeter();
-    if (card.getCardType() == CardType.Item && !this.host)
+    if (card.getCardType() === CardType.Item && !this.host)
       return false;
-    return !targeter.needsInput() || this.selected == card && targeter.isOptional()
+    return !targeter.needsInput() || this.selected === card && targeter.isOptional()
   }
 
 
@@ -266,7 +266,7 @@ export class GameComponent implements OnInit {
   private setSelected(card: Card) {
     let targeter = card.getTargeter();
     this.selected = card;
-    if (card.getCardType() == CardType.Item && this.host == null) {
+    if (card.getCardType() === CardType.Item && this.host === null) {
       let item = card as Item;
       this.validTargets = new Set(item.getHostTargeter().getValidTargets(card, this.game));
       return;
@@ -297,7 +297,7 @@ export class GameComponent implements OnInit {
   public canPlayTargeting(target: Unit) {
     return this.selected && this.validTargets.has(target) &&
       this.game.isPlayerTurn(this.playerNo) &&
-      (this.game.getPhase() == GamePhase.Play1 || this.game.getPhase() == GamePhase.Play2);
+      (this.game.getPhase() === GamePhase.Play1 || this.game.getPhase() === GamePhase.Play2);
   }
 
   public isDarkened(perm: Permanent) {
@@ -321,13 +321,13 @@ export class GameComponent implements OnInit {
 
   // Click friendly enemy Permanant
   public target(card: Card) {
-    if (card.getCardType() == CardType.Enchantment) {
+    if (card.getCardType() === CardType.Enchantment) {
       this.empowerDiminish(card as Enchantment);
       return;
     }
     let target = card as Unit;
     let phase = this.game.getPhase();
-    if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.Block && this.blocker) {
+    if (!this.game.isPlayerTurn(this.playerNo) && phase === GamePhase.Block && this.blocker) {
       if (this.blocker.canBlockTarget(target)) {
         this.client.declareBlocker(this.blocker, target);
         this.clear();
@@ -352,20 +352,19 @@ export class GameComponent implements OnInit {
   public blocker: Unit;
   // Click friendly permanant
   public activate(card: Card) {
-    console.log('activate', card);
-    if (card.getCardType() == CardType.Enchantment) {
+    if (card.getCardType() === CardType.Enchantment) {
       this.empowerDiminish(card as Enchantment);
       return;
     }
     let unit = card as Unit;
     let phase = this.game.getPhase();
     if (this.canPlayTargeting(unit)) {
-      if (this.selected.getCardType() == CardType.Item && this.host == null)
+      if (this.selected.getCardType() === CardType.Item && this.host === null)
         this.setHost(unit);
       else
         this.playTargeting(unit);
     } else if (this.game.isPlayerTurn(this.playerNo)) {
-      if (phase == GamePhase.Play1) {
+      if (phase === GamePhase.Play1) {
         if (!(this.game.playerCanAttack(this.playerNo) && unit.canAttack())) {
           this.tips.cannotAttackTip(unit, this.game);
           return;
@@ -374,8 +373,8 @@ export class GameComponent implements OnInit {
       } else {
         this.tips.announce('You may only attack once each turn. All units attack at the same time.');
       }
-    } else if (!this.game.isPlayerTurn(this.playerNo) && phase == GamePhase.Block) {
-      if (this.blocker == unit) {
+    } else if (!this.game.isPlayerTurn(this.playerNo) && phase === GamePhase.Block) {
+      if (this.blocker === unit) {
         this.client.declareBlocker(unit, null);
         this.clear();
       } else if (unit.canBlock()) {

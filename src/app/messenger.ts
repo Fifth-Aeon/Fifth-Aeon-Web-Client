@@ -31,8 +31,8 @@ let pingTime = 1000 * 15;
 
 
 /**
- * Used to communicate via websockets. 
- * 
+ * Used to communicate via websockets.
+ *
  * @class Messenger
  */
 export class Messenger {
@@ -43,7 +43,7 @@ export class Messenger {
     private messageQueue: Queue<string> = new Queue<string>();
     private lastConnectAttempt: number;
 
-    private loggedIn: boolean = false;
+    private loggedIn = false;
 
     public onlogin: (data: any) => void = () => null;
     public connectChange: (status: boolean) => void = () => null;

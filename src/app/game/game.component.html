@@ -48,7 +48,7 @@
   <div class="area">
     <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerPermanants(playerNo)" 
       [darkened]="isDarkened(card)" [card]="card" [game]="game"
-      [@location]="locationState(card)" [target]="validTargets.has(card)" [selected]="card == blocker" (click)="activate(card)">
+      [@location]="locationState(card)" [target]="validTargets.has(card)" [selected]="card === blocker" (click)="activate(card)">
     </ccg-card>
   </div>
 
@@ -82,7 +82,7 @@
   <!-- Player Hand -->
   <div class="area hand">
     <ccg-card scale="1.5" *ngFor="let card of player.getHand(); let i = index" 
-    [@inHand]="isInHand(card)" overlap="true" [card]="card" [game]="game" [selected]="card == selected" 
+    [@inHand]="isInHand(card)" overlap="true" [card]="card" [game]="game" [selected]="card === selected" 
     [distFromMid]="(i + 0.5) - player.getHand().length / 2"
       [darkened]="!card.isPlayable(game)" (click)="select(card)"></ccg-card>
   </div>

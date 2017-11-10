@@ -4,17 +4,17 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { Card } from '../game_model/card';
 
 @Component({
-  selector: 'bsc-card-chooser',
+  selector: 'ccg-card-chooser',
   templateUrl: './card-chooser.component.html'
 })
 export class CardChooserComponent {
   public cards: Array<Card>;
   public pageCards: Array<Card>;
-  public numberToPick: number = 1;
-  public skippable: boolean = false;
+  public numberToPick = 1;
+  public skippable = false;
   public selected: Set<Card> = new Set();
-  public pageNumber: number = 0;
-  private pageSize: number = 5;
+  public pageNumber = 0;
+  private pageSize = 5;
   public message: string;
 
   constructor(public dialogRef: MatDialogRef<CardChooserComponent>) {
@@ -45,7 +45,7 @@ export class CardChooserComponent {
   }
 
   public canPrev() {
-    return this.pageNumber != 0;
+    return this.pageNumber !== 0;
   }
 
   public prev() {

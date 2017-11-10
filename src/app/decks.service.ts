@@ -14,7 +14,7 @@ export class DecksService {
   private decks: Array<DeckList> = [];
   private currentDeck: DeckList;
   private editingDeck: DeckList;
-  private currentDeckNumber: number = 0;
+  private currentDeckNumber = 0;
 
   constructor(private client: WebClient) {
     if (this.load())

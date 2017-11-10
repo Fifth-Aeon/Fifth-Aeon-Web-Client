@@ -17,7 +17,7 @@ export class PrivateLobbyComponent implements OnInit {
     if (gameId) {
       this.client.joinPrivateGame(gameId);
     }
-    if (client.getState() != ClientState.PrivateLobby) {
+    if (client.getState() !== ClientState.PrivateLobby) {
       client.returnToLobby();
     }
     

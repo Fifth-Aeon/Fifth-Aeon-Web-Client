@@ -17,7 +17,7 @@ export class LobbyComponent implements OnInit {
   public feedbackUrl = `mailto:william.ritson@gmail.com?subject=Card Game Feedback&body=${feedbackBody}`;
 
   constructor(private router: Router, public client: WebClient, public soundManager: SoundManager) {
-    if (client.getState() != ClientState.UnAuth && client.getState() != ClientState.Waiting)
+    if (client.getState() !== ClientState.UnAuth && client.getState() !== ClientState.Waiting)
       client.returnToLobby();
   }
 
@@ -39,7 +39,7 @@ export class LobbyComponent implements OnInit {
 
   @HostListener('window:beforeunload')
   public exit() {
-    if (this.client.getState() == ClientState.InQueue)
+    if (this.client.getState() === ClientState.InQueue)
       this.client.leaveQueue();
     return null;
   }

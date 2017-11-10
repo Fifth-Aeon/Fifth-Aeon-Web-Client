@@ -90,4 +90,3 @@ import { CardComponent } from './card/card.component';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
- 

@@ -55,8 +55,8 @@ Array.from(allCards.values()).map(fact => fact())
 
 const keywords = Array.from(keywordsDefs.keys());
 const keywordRegex = new RegExp(keywords.join('|'), 'gi');
-//const unitNames = Array.from(unitsDescs.keys());
-//const unitsRegex = new RegExp(unitNames.join('|'), 'gi');
+// const unitNames = Array.from(unitsDescs.keys());
+// const unitsRegex = new RegExp(unitNames.join('|'), 'gi');
 
 function toProperCase(str: string) {
   return str.replace(/\b\w/g, l => l.toUpperCase())
@@ -75,11 +75,16 @@ export class CardComponent implements OnInit {
   sizeY: number;
   sizeX: number;
   padding = 30;
-  hovered: boolean = false;
-  @Input() darkened: boolean = false;
-  @Input() selected: boolean = false;
-  @Input() target: boolean = false;
-  @Input() overlap: boolean = false;
+  hovered = false;
+  @Input() darkened = false;
+  @Input() selected = false;
+  @Input() target = false;
+  @Input() overlap = false;
+
+  public tooltipClass = {
+    multiline: true
+  }
+  public glowTypes = GlowType;
 
   constructor() {
   }
@@ -107,13 +112,12 @@ export class CardComponent implements OnInit {
   }
 
   public isItem(card: Card) {
-    return card.getCardType() == CardType.Item;
+    return card.getCardType() === CardType.Item;
   }
 
   public isEnchantment(card: Card) {
-    return card.getCardType() == CardType.Enchantment;
+    return card.getCardType() === CardType.Enchantment;
   }
-
 
   public getType(type: UnitType) {
     return UnitType[type];
@@ -131,7 +135,7 @@ export class CardComponent implements OnInit {
       }
     }
     let rotation = this.hovered ? 0 : 3 * this.distFromMid;
-    let dispY = this.overlap ? Math.abs(this.distFromMid == 0 ? 0.5 : this.distFromMid) * 4 : 0;
+    let dispY = this.overlap ? Math.abs(this.distFromMid === 0 ? 0.5 : this.distFromMid) * 4 : 0;
     marginRight -= Math.abs(this.distFromMid) * 5;
     marginLeft -= Math.abs(this.distFromMid) * 5;
     if (this.hovered && this.overlap)
@@ -156,15 +160,10 @@ export class CardComponent implements OnInit {
     return this.getKeywords().map(key => toProperCase(key) + ' - ' + keywordsDefs.get(toProperCase(key))).join(' \n\n ');
   }
 
-  public tooltipClass = {
-    multiline: true
-  }
-
   public getImage() {
     return 'assets/png/' + this.card.getImage();
   }
 
-  public glowTypes = GlowType;
   public glowType() {
     if (this.selected)
       return GlowType.Select;
@@ -174,10 +173,8 @@ export class CardComponent implements OnInit {
       return GlowType.Attack;
     if (this.card.isBlocking())
       return GlowType.Defense;
-
     return GlowType.None;
   }
-
 
   public x() {
     return (this.hovered ? 1.9 : this.scale) * 100;

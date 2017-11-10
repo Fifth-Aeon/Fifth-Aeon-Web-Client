@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 
 
 @Component({
-  selector: 'bsc-end-dialog',
+  selector: 'ccg-end-dialog',
   templateUrl: './end-dialog.component.html',
   styleUrls: ['./end-dialog.component.scss']
 })

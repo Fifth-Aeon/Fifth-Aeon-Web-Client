@@ -54,8 +54,8 @@ export class WebClient {
     private state: ClientState = ClientState.UnAuth;
     private playerNumber: number;
     private opponentNumber: number
-    private finished: boolean = false;
-    private connected: boolean = false;
+    private finished = false;
+    private connected = false;
     private privateGameUrl: string;
     private privateGameId: string = null;
     public log: Log;
@@ -63,6 +63,9 @@ export class WebClient {
     private game: ClientGame;
     private gameModel: ServerGame;
     private ai: AI;
+
+    private toJoin: string;
+    public onDeckSelected: () => void;
 
     private onError: (error: string) => void = () => null;
 
@@ -148,21 +151,21 @@ export class WebClient {
     }
 
     public isLoggedIn() {
-        return !(this.state == ClientState.UnAuth);
+        return !(this.state === ClientState.UnAuth);
     }
 
     public addBlockOverlay(blocker: string, blocked: string) {
-        if (blocked == null) {
+        if (blocked === null) {
             this.overlay.removeBlocker(blocker);
             return;
         }
-        if (this.game.getUnitById(blocker).getBlockedUnitId() != null)
+        if (this.game.getUnitById(blocker).getBlockedUnitId() !== null)
             this.overlay.removeBlocker(blocker);
         this.overlay.addBlocker(blocker, blocked);
     }
 
     public attackWithAll() {
-        if (this.playerNumber != this.game.getCurrentPlayer().getPlayerNumber())
+        if (this.playerNumber !== this.game.getCurrentPlayer().getPlayerNumber())
             return;
         let potential = this.game.getCurrentPlayerUnits().filter(unit => unit.canAttack());
         let allAttacking = every(potential, unit => unit.isAttacking());
@@ -178,7 +181,6 @@ export class WebClient {
     }
 
     // Decks -----------------------------------------------------
-    public onDeckSelected: () => void;
 
     public setDeck(deck: DeckList) {
         if (!deck) {
@@ -224,7 +226,8 @@ export class WebClient {
     }
 
     public getPrivateGameEmailUrl() {
-        return this.sanitizer.bypassSecurityTrustUrl('mailto:?subject=Battleship Invite&body=' + encodeURIComponent(this.getInviteMessage()));
+        return this.sanitizer.bypassSecurityTrustUrl('mailto:?subject=Battleship Invite&body='
+            + encodeURIComponent(this.getInviteMessage()));
     }
 
     public getPrivateGameSMSUrl() {
@@ -238,7 +241,6 @@ export class WebClient {
         this.router.navigate(['/private']);
     }
 
-    private toJoin: string;
     public joinPrivateGame(gameId: string) {
         this.changeState(ClientState.PrivateLobby);
         if (!this.username) {
@@ -289,7 +291,7 @@ export class WebClient {
     }
 
     public isInGame() {
-        return this.state == ClientState.InGame;
+        return this.state === ClientState.InGame;
     }
 
     private sendEventsToAi(events: GameSyncEvent[]) {
@@ -308,8 +310,9 @@ export class WebClient {
                 player: isAi ? 1 : 0,
                 params: params
             });
-            if (res == null) {
-                console.error('An action sent to game model by', isAi ? 'the A.I' : 'the player', 'failed.', 'It was', GameActionType[type], 'with', params)
+            if (res === null) {
+                console.error('An action sent to game model by', isAi ?
+                    'the A.I' : 'the player', 'failed.', 'It was', GameActionType[type], 'with', params)
                 return;
             }
             this.sendEventsToAi(res);
@@ -322,32 +325,32 @@ export class WebClient {
     }
 
     private namePlayer(player: number, cap: boolean = false) {
-        if (player == this.playerNumber)
+        if (player === this.playerNumber)
             return 'you';
         return 'your opponent'
     }
 
     private handleGameEvent(event: GameSyncEvent) {
-        //console.log('event', GameEventType[event.type]);
+        // console.log('event', GameEventType[event.type]);
         this.zone.run(() => this.game.syncServerEvent(this.playerNumber, event));
         switch (event.type) {
             case SyncEventType.TurnStart:
-                if (event.params.turn != this.playerNumber)
+                if (event.params.turn !== this.playerNumber)
                     return;
                 this.tips.turnStartTrigger(this.game, this.playerNumber);
-                if (event.params.turnNum != 1)
+                if (event.params.turnNum !== 1)
                     this.soundManager.playSound('bell');
                 break;
             case SyncEventType.AttackToggled:
                 this.soundManager.playSound('attack');
                 break;
             case SyncEventType.EnchantmentModified:
-                let avatar = this.game.getCurrentPlayer().getPlayerNumber() == this.playerNumber ?
+                let avatar = this.game.getCurrentPlayer().getPlayerNumber() === this.playerNumber ?
                     'player' : 'enemy';
                 this.overlay.addInteractionArrow(avatar, event.params.enchantmentId);
                 this.soundManager.playSound('magic');
                 break;
-            case SyncEventType.Block: 
+            case SyncEventType.Block:
                 this.addBlockOverlay(event.params.blockerId, event.params.blockedId)
                 this.soundManager.playSound('attack');
                 break;
@@ -372,7 +375,7 @@ export class WebClient {
                     }
                 });
 
-                if (event.params.winner == this.playerNumber)
+                if (event.params.winner === this.playerNumber)
                     this.soundManager.playImportantSound('fanfare');
                 else
                     this.soundManager.playImportantSound('defeat');
@@ -404,17 +407,17 @@ export class WebClient {
     }
 
     public getInstruction() {
-        if (this.state == ClientState.UnAuth)
+        if (this.state === ClientState.UnAuth)
             return 'Attempting to login to server';
-        if (this.state == ClientState.InLobby)
+        if (this.state === ClientState.InLobby)
             return 'Logged in as ' + this.username + '.';
-        if (this.state == ClientState.Waiting)
+        if (this.state === ClientState.Waiting)
             return 'Waiting for server responce.';
-        if (this.state == ClientState.PrivateLobby)
+        if (this.state === ClientState.PrivateLobby)
             return 'Private game ready, please invite a friend.';
-        if (this.state == ClientState.PrivateLobbyFail)
+        if (this.state === ClientState.PrivateLobbyFail)
             return 'Failed to join game (it may have been canceled).';
-        if (this.state == ClientState.InQueue)
+        if (this.state === ClientState.InQueue)
             return 'In Queue. Waiting for an opponent.'
         return 'Error.'
     }
@@ -458,7 +461,7 @@ export class WebClient {
     }
 
     private startGame(msg: Message) {
-        this.analytics.eventTrack.next({ action: 'startMultiplayerGame', properties: { category: 'usage' } });        
+        this.analytics.eventTrack.next({ action: 'startMultiplayerGame', properties: { category: 'usage' } });
 
         this.ai = null;
         this.gameModel = null;
@@ -477,7 +480,7 @@ export class WebClient {
     }
 
     // AI stuff ------------------------------------
-    public startAIGame() {        
+    public startAIGame() {
         this.analytics.eventTrack.next({ action: 'startSingleplayerGame', properties: { category: 'usage' } });
 
         this.playerNumber = 0;

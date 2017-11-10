@@ -12,10 +12,10 @@ export class SoundManager {
     private global = Howler;
     private playQueue: Queue<Howl> = new Queue<Howl>();
     private library: Map<string, Howl> = new Map<string, Howl>();
-    private isPlaying: boolean = false;
-    private delay: number = 100;
+    private isPlaying = false;
+    private delay = 100;
     private music: Howl;
-    public muted: boolean = false;
+    public muted = false;
     private onDone: Array<() => void> = [];
     private voice: SpeechSynthesisVoice;
 
@@ -33,7 +33,7 @@ export class SoundManager {
         }));
         this.addSound('fanfare', new Howl({ src: ['assets/mp3/fanfare.mp3'] }));
         this.addSound('defeat', new Howl({ src: ['assets/mp3/sad-part.mp3'] }));
-        this.muted = (localStorage.getItem(localStorageMuteKey) || 'false') == 'true';
+        this.muted = (localStorage.getItem(localStorageMuteKey) || 'false') === 'true';
         this.global.mute(this.muted);
 
         speechSynthesis.onvoiceschanged = () => {
@@ -59,7 +59,7 @@ export class SoundManager {
 
     public changeVolume(type: VolumeType, newVal: number) {
         this.volume[type] = newVal;
-        if (type == VolumeType.Music || type == VolumeType.Master)
+        if (type === VolumeType.Music || type === VolumeType.Master)
             this.music.volume(this.getAdjustedVolume(VolumeType.Music));
     }
 
@@ -98,7 +98,7 @@ export class SoundManager {
     public setMusic(sound: Howl) {
         this.music = sound;
         this.music.load();
-        this.music.once("load", () => {
+        this.music.once('load', () => {
             this.music.loop(true);
             this.music.play();
             this.music.volume(this.getAdjustedVolume(VolumeType.Music));
