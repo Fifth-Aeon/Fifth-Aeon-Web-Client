@@ -8,7 +8,6 @@ import { Resource } from '../game_model/resource';
 })
 export class ResourceDisplayComponent implements OnInit {
   @Input() resource: Resource;
-  constructor() { }
 
   iconSize = 28;
   padding = 15;
@@ -18,6 +17,9 @@ export class ResourceDisplayComponent implements OnInit {
     { name: 'Decay', icon: 'assets/png/decay-icon.png', color: '#370661' },
     { name: 'Renewal', icon: 'assets/png/renewal.png', color: '#f8e71c' }
   ]
+
+  constructor() { }
+
 
   ngOnInit() {
   }

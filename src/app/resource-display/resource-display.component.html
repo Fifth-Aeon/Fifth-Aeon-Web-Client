@@ -1,11 +1,15 @@
 <svg class="resource-display">
-  <rect [attr.x]="0" [attr.y]="10" width="60" height="30" fill="royalblue"  rx="5" ry="5"  />
-  <text class="resource-text" [attr.x]="30" [attr.y]="(iconSize + 40) / 2" text-anchor="middle">
+  <rect [attr.x]="0" [attr.y]="10" width="60" height="30" fill="royalblue" rx="5" ry="5" />
+  <text class="resource-text" [attr.x]="30" [attr.y]="(iconSize + 40) / 2" text-anchor="middle" matTooltipPosition="above"
+    matTooltip="You have {{resource.getNumeric()}} avalible energy out of {{resource.getMaxNumeric()}} maxium energy. Play resources to increase your energy total.">
     {{resource.getNumeric()}}/{{resource.getMaxNumeric()}}</text>
-  <g *ngFor="let type of resourceTypes; let i = index" attr.transform="translate({{70 + (iconSize + padding) * i}} 0)">
-    <rect [attr.width]="iconSize + padding/2" [attr.x]="-padding/4" [attr.height]="50" rx="5" ry="5" [attr.fill]="type.color" />
+  <g *ngFor="let type of resourceTypes; let i = index" attr.transform="translate({{70 + (iconSize + padding) * i}} 0)" matTooltipPosition="above"
+    matTooltip="You have {{resource.getOfType(type.name)}} {{type.name}}. Play a {{type.name}} resource to increase your {{type.name}}.">
+    <rect [attr.width]="iconSize + padding/2" [attr.x]="-padding/4" [attr.height]="50" rx="5" ry="5" [attr.fill]="type.color"
+    />
     <image [attr.xlink:href]="type.icon" [attr.height]="iconSize" [attr.width]="iconSize" />
     <text class="resource-text" [attr.x]="iconSize / 2 + 2" [attr.y]="iconSize + 20" text-anchor="middle">
+
       {{resource.getOfType(type.name)}}</text>
   </g>
 </svg>
