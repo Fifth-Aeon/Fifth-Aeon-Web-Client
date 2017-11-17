@@ -4,7 +4,6 @@ import { Unit, UnitType } from '../game_model/unit';
 import { Game } from '../game_model/game';
 import { allCards } from '../game_model/cards/allCards';
 
-
 enum GlowType {
   None, Select, Attack, Defense, Targeted
 }
@@ -21,14 +20,19 @@ keywordsDefs.set('Unblockable', 'Can not be blocked.');
 keywordsDefs.set('Discharge', 'Loses power at the start of its owner’s turn.');
 keywordsDefs.set('Recharge', 'Gains power at the start of its owner’s turn.');
 
+// Triggers
+keywordsDefs.set('Play', 'Triggers when this is played.');
+keywordsDefs.set('Death:', 'Triggers when this is killed.');
+keywordsDefs.set('Affinity', 'Triggers the first time you summon a unit of the same type.')
+keywordsDefs.set('Serenity', 'Triggers at the end of your turn if you did not attack that turn.')
+keywordsDefs.set('Lethal Strike', 'Triggers whenever this unit deals lethal damage to another unit.')
+
+// Powers
 keywordsDefs.set('Rush', 'Can attack the turn it is played.')
 keywordsDefs.set('Lifesteal', 'When this unit deals damage its owner gains that much life.')
-keywordsDefs.set('Final Blow', 'Triggers whenever this unit deals lethal damage to another unit.')
 keywordsDefs.set('Poisoned', 'This unit gets -1/-1 at the start of its owner\'s turn.')
 keywordsDefs.set('Poison', 'Causes a unit to become poisoned. Poisoned units get -1/-1 at the start of their owner\'s turn.')
 keywordsDefs.set('Venomous', 'Poisons any unit it damages. Poisoned units get -1/-1 at the start of their owner\'s turn.')
-keywordsDefs.set('Affinity', 'Triggers the first time you play a unit of the same type.')
-keywordsDefs.set('Serenity', 'Triggers at the end of your turn if you did not attack that turn.')
 keywordsDefs.set('Mechanical', 'A unit of the Automaton, Structure or Vehicle types.')
 keywordsDefs.set('Biological', 'A unit of not of the Automaton, Structure or Vehicle types.')
 keywordsDefs.set('Lethal', 'Kill any unit damaged by this unit.')
@@ -40,6 +44,7 @@ keywordsDefs.set('Sleep', 'Exausts a unit and prevents it from readying.')
 keywordsDefs.set('Robotic', 'Immune to sleep and poison.')
 keywordsDefs.set('Immortal', 'Whenever this unit dies, play it from the crypt at the end of the turn (it keeps this ability).')
 
+// Tokens
 keywordsDefs.set('Statue', 'A 0/1 structure that cannot attack.')
 
 const unitsDescs = new Map<string, string>();

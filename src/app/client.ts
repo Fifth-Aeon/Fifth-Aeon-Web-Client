@@ -33,6 +33,7 @@ import { EndDialogComponent } from './end-dialog/end-dialog.component';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 import { OverlayService } from './overlay.service';
 import { TipService, TipType } from './tips';
+import { SpeedService } from 'app/speed.service';
 
 
 export enum ClientState {
@@ -63,16 +64,26 @@ export class WebClient {
     private game: ClientGame;
     private gameModel: ServerGame;
     private ai: AI;
+    private aiTick: NodeJS.Timer;
 
     private toJoin: string;
     public onDeckSelected: () => void;
 
     private onError: (error: string) => void = () => null;
 
-    constructor(private soundManager: SoundManager, private tips: TipService,
-        private router: Router, private zone: NgZone, private sanitizer: DomSanitizer,
-        preloader: Preloader, public dialog: MatDialog, private overlay: OverlayService,
-        private hotkeys: HotkeysService, private analytics: Angulartics2) {
+    constructor(
+        private soundManager: SoundManager,
+        private tips: TipService,
+        private router: Router,
+        private zone: NgZone,
+        private sanitizer: DomSanitizer,
+        preloader: Preloader,
+        public dialog: MatDialog,
+        private overlay: OverlayService,
+        private hotkeys: HotkeysService,
+        private analytics: Angulartics2,
+        private speed: SpeedService
+    ) {
 
         this.initGame();
         this.playerNumber = 0;
@@ -90,10 +101,16 @@ export class WebClient {
         this.tips.playTip(TipType.StartGame);
         this.addHotkeys();
 
-        setInterval(() => {
+        this.setAISpeed(1000);
+    }
+
+    public setAISpeed(ms: number) {
+        if (this.aiTick !== undefined)
+            clearInterval(this.aiTick);
+        this.aiTick = setInterval(() => {
             if (this.ai)
                 this.ai.pulse()
-        }, 750);
+        }, ms);
     }
 
     private initGame() {
@@ -498,6 +515,7 @@ export class WebClient {
             this.sendGameAction(type, params, true);
         };
         this.ai = new BasicAI(1, aiModel);
+        this.setAISpeed(this.speed.speeds.aiTick);
 
         this.router.navigate(['/game']);
         this.zone.run(() => {

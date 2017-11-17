@@ -44,6 +44,7 @@ import { ResourceDisplayComponent } from './resource-display/resource-display.co
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 import { DeckChooserComponent } from './deck-chooser/deck-chooser.component';
 import { CardComponent } from './card/card.component';
+import { SpeedService } from 'app/speed.service';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,7 @@ import { CardComponent } from './card/card.component';
       { path: '**', component: LobbyComponent }
     ])
   ],
-  providers: [SoundManager, WebClient, DecksService, OverlayService, TipService, Preloader, InPlayGuard, LoggedInGuard],
+  providers: [SoundManager, WebClient, DecksService, SpeedService, OverlayService, TipService, Preloader, InPlayGuard, LoggedInGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -21,7 +21,6 @@ import { Targeter } from '../game_model/targeter';
 
 const deathFadeTime = OverlayService.arrowTimer + 200;
 
-//Deck Hand Board Crypt
 @Component({
   selector: 'ccg-game',
   templateUrl: './game.component.html',
@@ -58,12 +57,18 @@ const deathFadeTime = OverlayService.arrowTimer + 200;
   ]
 })
 export class GameComponent implements OnInit {
+  private targeters: Targeter[];
+  private host: Unit;
   public game: ClientGame;
   public player: Player;
   public playerNo: number;
   public enemy: Player;
   public enemyNo: number;
   public locations = GameZone;
+  public selected: Card = null;
+  public validTargets: Set<Unit> = new Set();
+  public blockable: Set<Unit>;
+  public blocker: Unit;
 
   constructor(public client: WebClient, public dialog: MatDialog,
     private hotkeys: HotkeysService, public overlay: OverlayService,
@@ -87,8 +92,8 @@ export class GameComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this.overlay.registerUIElement('player', "player-name");
-    this.overlay.registerUIElement('enemy', "enemy-name");
+    this.overlay.registerUIElement('player', 'player-name');
+    this.overlay.registerUIElement('enemy', 'enemy-name');
   }
 
   @HostListener('window:beforeunload')
@@ -123,7 +128,8 @@ export class GameComponent implements OnInit {
     this.client.pass();
   }
 
-  public openCardChooser(player: number, cards: Array<Card>, toPick: number = 1, callback: (cards: Card[]) => void = null, message: string = '') {
+  public openCardChooser(player: number, cards: Array<Card>, toPick: number = 1,
+    callback: (cards: Card[]) => void = null, message: string = '') {
     this.game.deferChoice(player, cards, toPick, callback);
     if (player !== this.playerNo)
       return;
@@ -221,7 +227,7 @@ export class GameComponent implements OnInit {
         if (this.game.isActivePlayer(this.playerNo))
           return 'Attack';
         else
-          return 'Waiting for Blocks';;
+          return 'Waiting for Blocks';
       }
       if (this.game) {
         if (this.canPlayResource())
@@ -243,9 +249,7 @@ export class GameComponent implements OnInit {
   }
 
 
-  public selected: Card = null;
-  private targeters: Targeter[];
-  public validTargets: Set<Unit> = new Set();
+
 
   public select(card: Card) {
     if (!card.isPlayable(this.game)) {
@@ -262,7 +266,6 @@ export class GameComponent implements OnInit {
     }
   }
 
-  private host: Unit;
   private setSelected(card: Card) {
     let targeter = card.getTargeter();
     this.selected = card;
@@ -339,7 +342,6 @@ export class GameComponent implements OnInit {
     }
   }
 
-  public blockable: Set<Unit>;
   private setBlocker(blocker: Unit) {
     this.blocker = blocker;
     this.blockable = new Set(this.game.getAttackers().filter(attacker => blocker.canBlockTarget(attacker)));
@@ -349,7 +351,6 @@ export class GameComponent implements OnInit {
     return this.validTargets.has(unit) || this.blockable.has(unit);
   }
 
-  public blocker: Unit;
   // Click friendly permanant
   public activate(card: Card) {
     if (card.getCardType() === CardType.Enchantment) {
