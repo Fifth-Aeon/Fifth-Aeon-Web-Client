@@ -64,7 +64,7 @@ export class WebClient {
     private game: ClientGame;
     private gameModel: ServerGame;
     private ai: AI;
-    private aiTick: NodeJS.Timer;
+    private aiTick: any;
 
     private toJoin: string;
     public onDeckSelected: () => void;
