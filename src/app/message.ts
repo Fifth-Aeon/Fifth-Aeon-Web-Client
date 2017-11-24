@@ -24,4 +24,3 @@ export interface LoginResponceData {
     username: string;
     token: string;
 }
-

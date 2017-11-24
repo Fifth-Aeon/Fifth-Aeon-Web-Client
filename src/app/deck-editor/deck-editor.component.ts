@@ -18,8 +18,8 @@ export class DeckEditorComponent implements OnInit {
   public cards: Array<Card>;
   public allCards = allCards;
   public pageCards: Array<Card>;
-  public pageNumber: number = 0;
-  private pageSize: number = 10;
+  public pageNumber = 0;
+  private pageSize = 10;
   public deck: DeckList;
   public format = new GameFormat();
 
@@ -41,7 +41,7 @@ export class DeckEditorComponent implements OnInit {
   }
 
   public randomize() {
-    this.deck.generateRandomNColorDeck(random(1, 4)); 
+    this.deck.generateRandomNColorDeck(random(1, 4));
   }
 
   public add(card: Card) {

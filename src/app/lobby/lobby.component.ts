@@ -23,7 +23,6 @@ export class LobbyComponent implements OnInit {
 
   public join() {
     this.client.join();
-    //this.fullscreen();
   }
 
   public fullscreen() {
