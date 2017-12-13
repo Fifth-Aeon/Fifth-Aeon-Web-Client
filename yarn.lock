@@ -166,6 +166,12 @@
   dependencies:
     tslib "^1.7.1"
 
+"@angular/service-worker@^5.1.1":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/@angular/service-worker/-/service-worker-5.1.1.tgz#af63b815c1567a7b648268399359c23338440dc7"
+  dependencies:
+    tslib "^1.7.1"
+
 "@ngtools/json-schema@1.1.0", "@ngtools/json-schema@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.1.0.tgz#c3a0c544d62392acc2813a42c8a0dc6f58f86922"
@@ -1006,9 +1012,9 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
-codelyzer@~3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/codelyzer/-/codelyzer-3.1.2.tgz#9ff1f041fb9b5ee5dbeb45ba866dfaf04983af04"
+codelyzer@~4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/codelyzer/-/codelyzer-4.0.2.tgz#d5e2390b97d95e73a7b1e6f0cf03e16cbf35b06f"
   dependencies:
     app-root-path "^2.0.1"
     css-selector-tokenizer "^0.7.0"
