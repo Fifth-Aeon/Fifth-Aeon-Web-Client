@@ -7,10 +7,11 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
-
 // Vendor Angular Modules
 import { ClipboardModule } from 'ngx-clipboard';
 import { HotkeyModule } from 'angular2-hotkeys';
+import { Angulartics2Module } from 'angulartics2';
+import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
 import {
   MatButtonModule, MatRadioModule, MatIconModule,
   MatTooltipModule, MatSnackBarModule, MatToolbarModule,
@@ -18,10 +19,6 @@ import {
   MatCardModule, MatSliderModule, MatCheckboxModule, MatPaginatorModule,
   MatTabsModule
 } from '@angular/material';
-import { Angulartics2Module } from 'angulartics2';
-import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
-
-
 
 // App Angular Services
 import { SoundManager } from './sound';
