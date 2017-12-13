@@ -387,8 +387,10 @@ export class WebClient {
             case SyncEventType.Ended:
                 this.openEndDialog(event.params.winner, event.params.quit);
                 this.analytics.eventTrack.next({
-                    action: 'endGame', properties: {
-                        category: 'usage', label: !this.ai ? 'singleplayer' : 'multiplayer'
+                    action: 'endGame',
+                    properties: {
+                        category: 'usage',
+                        label: !this.ai ? 'singleplayer' : 'multiplayer'
                     }
                 });
 

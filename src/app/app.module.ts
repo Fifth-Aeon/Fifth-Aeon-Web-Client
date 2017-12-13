@@ -5,6 +5,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+
 
 // Vendor Angular Modules
 import { ClipboardModule } from 'ngx-clipboard';
@@ -16,7 +18,9 @@ import {
   MatCardModule, MatSliderModule, MatCheckboxModule, MatPaginatorModule,
   MatTabsModule
 } from '@angular/material';
-import { Angulartics2Module, Angulartics2GoogleTagManager } from 'angulartics2';
+import { Angulartics2Module } from 'angulartics2';
+import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
+
 
 
 // App Angular Services
@@ -68,6 +72,7 @@ import { SpeedService } from 'app/speed.service';
     BrowserModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     ClipboardModule,
     HotkeyModule.forRoot(),
@@ -75,7 +80,7 @@ import { SpeedService } from 'app/speed.service';
     MatProgressSpinnerModule, MatTooltipModule, MatSnackBarModule,
     MatDialogModule, MatListModule, MatCardModule, MatSliderModule,
     MatCheckboxModule, MatPaginatorModule, MatTabsModule,
-    Angulartics2Module.forRoot([Angulartics2GoogleTagManager]),
+    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
     RouterModule.forRoot([
       { path: 'game', component: GameComponent, canActivate: [InPlayGuard] },
       { path: 'deck', component: DeckEditorComponent, canActivate: [LoggedInGuard] },
