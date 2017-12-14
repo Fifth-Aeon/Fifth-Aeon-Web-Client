@@ -49,8 +49,16 @@ import { CardComponent } from './card/card.component';
 import { SpeedService } from 'app/speed.service';
 import { environment } from 'environments/environment';
 
-console.log('enviroment is', environment.production ? 'production' : 'dev');
-
+if ('serviceWorker' in navigator && environment.production) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('ngsw-worker.js')
+      .then(function (registration) {
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      }).catch(function (err) {
+        console.error('ServiceWorker registration failed: ', err);
+      });
+  });
+}
 
 @NgModule({
   declarations: [
@@ -72,7 +80,7 @@ console.log('enviroment is', environment.production ? 'production' : 'dev');
   entryComponents: [CardChooserComponent, EndDialogComponent, SettingsDialogComponent],
   imports: [
     BrowserModule,
-    ServiceWorkerModule.register('ngsw-worker.js'),
+    //ServiceWorkerModule.register('ngsw-worker.js'),
     FormsModule,
     HttpModule,
     HttpClientModule,
