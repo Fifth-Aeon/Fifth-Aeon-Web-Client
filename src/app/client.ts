@@ -44,6 +44,7 @@ export enum GameType {
     AiGame, PublicGame, PrivateGame
 }
 
+
 @Injectable()
 export class WebClient {
     private username: string;

@@ -8,9 +8,9 @@ import { MatDialog, MatDialogRef } from '@angular/material';
   styleUrls: ['./end-dialog.component.scss']
 })
 export class EndDialogComponent implements OnInit {
-  public winner: boolean = false;
-  public quit: boolean = false;
-  
+  public winner = false;
+  public quit = false;
+
   constructor(public dialogRef: MatDialogRef<EndDialogComponent>) { }
 
   ngOnInit() {

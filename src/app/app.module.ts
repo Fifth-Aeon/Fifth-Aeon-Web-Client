@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { ServiceWorkerModule} from '@angular/service-worker';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 // Vendor Angular Modules
 import { ClipboardModule } from 'ngx-clipboard';
@@ -49,6 +49,9 @@ import { CardComponent } from './card/card.component';
 import { SpeedService } from 'app/speed.service';
 import { environment } from 'environments/environment';
 
+console.log('enviroment is', environment.production ? 'production' : 'dev');
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -69,11 +72,10 @@ import { environment } from 'environments/environment';
   entryComponents: [CardChooserComponent, EndDialogComponent, SettingsDialogComponent],
   imports: [
     BrowserModule,
+    ServiceWorkerModule.register('ngsw-worker.js'),
     FormsModule,
     HttpModule,
     HttpClientModule,
-    ServiceWorkerModule.register('/ngsw-worker.js',
-      { enabled: environment.production }),
     BrowserAnimationsModule,
     ClipboardModule,
     HotkeyModule.forRoot(),

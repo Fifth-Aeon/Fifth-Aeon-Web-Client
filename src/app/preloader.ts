@@ -22,7 +22,9 @@ export class Preloader {
         registry.addSvgIconInNamespace('ccg', 'tombstone', url);
         url = sanitizer.bypassSecurityTrustResourceUrl('assets/svg/deck.svg');
         registry.addSvgIconInNamespace('ccg', 'deck', url);
+    }
 
+    public preload() {
         this.loadImages(userInterfaceIcons.map(img => 'assets/png/' + img + '.png'));
         setTimeout(() => this.loadImages(
             sortBy(cards, (card) => -card.getCardType()).map(card => 'assets/png/' + card.getImage())
