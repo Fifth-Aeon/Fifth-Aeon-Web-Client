@@ -3,6 +3,7 @@
   "assetGroups": [{
     "name": "app",
     "installMode": "prefetch",
+    "urls": ["https://fonts.googleapis.com/icon?family=Material+Icons"],
     "resources": {
       "files": [
         "/favicon.ico",
