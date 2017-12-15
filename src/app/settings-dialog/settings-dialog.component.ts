@@ -22,7 +22,7 @@ for (let speed in SpeedSetting) {
   styleUrls: ['./settings-dialog.component.scss']
 })
 export class SettingsDialogComponent implements OnInit {
-  public volumes: [string, number][] = [];
+  public volumes: [number, number][] = [];
   public volumeNames = VolumeType;
   public speedNames = speedNames;
   public speedSettings = SpeedSetting;
@@ -37,7 +37,7 @@ export class SettingsDialogComponent implements OnInit {
 
 
   ngOnInit() {
-    this.volumes = toPairs(this.sound.getVolumes());
+    this.volumes = toPairs(this.sound.getVolumes()).map(pair => [parseInt(pair[0], 10), pair[1]]) as [number, number][];
   }
 
 }
