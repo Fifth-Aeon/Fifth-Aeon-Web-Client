@@ -97,7 +97,7 @@ export class SoundManager {
 
     public setMusic(sound: Howl) {
         this.music = sound;
-        this.music.load();
+        //this.music.load();
         this.music.once('load', () => {
             this.music.loop(true);
             this.music.play();
