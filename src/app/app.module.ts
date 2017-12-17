@@ -80,7 +80,7 @@ if ('serviceWorker' in navigator && environment.production) {
   entryComponents: [CardChooserComponent, EndDialogComponent, SettingsDialogComponent],
   imports: [
     BrowserModule,
-    //ServiceWorkerModule.register('ngsw-worker.js'),
+    // ServiceWorkerModule.register('ngsw-worker.js'),
     FormsModule,
     HttpModule,
     HttpClientModule,
