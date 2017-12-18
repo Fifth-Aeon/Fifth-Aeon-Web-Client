@@ -6,13 +6,16 @@ import { GameFormat } from '../game_model/gameFormat';
 import { DeckList } from '../game_model/deckList';
 import { allCards } from '../game_model/cards/allCards';
 import { Card } from '../game_model/card';
+import { DeckMetadataDialogComponent } from 'app/deck-metadata-dialog/deck-metadata-dialog.component';
+import { MatDialog, MatSnackBar } from '@angular/material';
 
 
 
 @Component({
   selector: 'ccg-deck-editor',
   templateUrl: './deck-editor.component.html',
-  styleUrls: ['./deck-editor.component.scss']
+  styleUrls: ['./deck-editor.component.scss'],
+  entryComponents: [DeckMetadataDialogComponent]
 })
 export class DeckEditorComponent implements OnInit {
   public cards: Array<Card>;
@@ -23,17 +26,36 @@ export class DeckEditorComponent implements OnInit {
   public deck: DeckList;
   public format = new GameFormat();
 
-  constructor(private decks: DecksService) {
+  constructor(private decks: DecksService, private dialog: MatDialog, private snackbar: MatSnackBar) {
     this.cards = Array.from(allCards.values()).map(factory => factory())
     this.cards = sortBy(this.cards, (card: Card) => card.getCost().getColor() * 100 + card.getCost().getNumeric());
-    this.setPage();
     this.deck = this.decks.getEditDeck();
+  }
+
+  public import() {
+    let text = prompt('Copy paste the deck code here.');
+    try {
+      this.deck.fromJson(text);
+      this.snackbar.open('Import succeeded', '', { duration: 2000 });
+    } catch (e) {
+      this.snackbar.open('Import Failed', '', { duration: 2000 });
+    }
+  }
+
+  public export() {
+    this.snackbar.open('Deck copied to clipboard', '', { duration: 2000 });
   }
 
   public onResize(rect: ClientRect) {
     let width = rect.right - rect.left;
     this.pageSize = Math.floor(width / 180) * 2;
     this.setPage();
+  }
+
+  public openMetadata() {
+    let dialogRef = this.dialog.open(DeckMetadataDialogComponent);
+    dialogRef.componentInstance.deck = this.deck;
+    console.log(this.deck);
   }
 
   public done() {

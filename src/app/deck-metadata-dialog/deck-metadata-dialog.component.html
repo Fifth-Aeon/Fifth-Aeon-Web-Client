@@ -1,0 +1,12 @@
+<div mat-dialog-content>
+  <form >
+    <mat-form-field >
+      <input matInput #deckName name="deckname" placeholder="Deck Name" [(ngModel)]="deck.name" type="text" maxlength="20">
+      <mat-hint align="end">{{deckName.value.length}} / 20</mat-hint>
+    </mat-form-field>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="done()">Done</button>
+</div>

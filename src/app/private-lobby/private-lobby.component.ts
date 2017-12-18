@@ -20,7 +20,7 @@ export class PrivateLobbyComponent implements OnInit {
     if (client.getState() !== ClientState.PrivateLobby) {
       client.returnToLobby();
     }
-    
+
   }
   public getLink() {
     this.snackbar.open('Copied url to clipboard', '', { duration: 2000 });

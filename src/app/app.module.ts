@@ -18,7 +18,7 @@ import {
   MatTooltipModule, MatSnackBarModule, MatToolbarModule,
   MatProgressSpinnerModule, MatDialogModule, MatListModule,
   MatCardModule, MatSliderModule, MatCheckboxModule, MatPaginatorModule,
-  MatTabsModule
+  MatTabsModule, MatFormFieldModule, MatInputModule, MatMenuModule
 } from '@angular/material';
 
 // App Angular Services
@@ -48,6 +48,7 @@ import { DeckChooserComponent } from './deck-chooser/deck-chooser.component';
 import { CardComponent } from './card/card.component';
 import { SpeedService } from 'app/speed.service';
 import { environment } from 'environments/environment';
+import { DeckMetadataDialogComponent } from './deck-metadata-dialog/deck-metadata-dialog.component';
 
 if ('serviceWorker' in navigator && environment.production) {
   window.addEventListener('load', function () {
@@ -76,8 +77,9 @@ if ('serviceWorker' in navigator && environment.production) {
     ResourceDisplayComponent,
     SettingsDialogComponent,
     DeckChooserComponent,
+    DeckMetadataDialogComponent
   ],
-  entryComponents: [CardChooserComponent, EndDialogComponent, SettingsDialogComponent],
+  entryComponents: [CardChooserComponent, EndDialogComponent, SettingsDialogComponent, DeckMetadataDialogComponent],
   imports: [
     BrowserModule,
     // ServiceWorkerModule.register('ngsw-worker.js'),
@@ -90,7 +92,8 @@ if ('serviceWorker' in navigator && environment.production) {
     MatButtonModule, MatIconModule, MatToolbarModule, MatRadioModule,
     MatProgressSpinnerModule, MatTooltipModule, MatSnackBarModule,
     MatDialogModule, MatListModule, MatCardModule, MatSliderModule,
-    MatCheckboxModule, MatPaginatorModule, MatTabsModule,
+    MatCheckboxModule, MatPaginatorModule, MatTabsModule, MatFormFieldModule,
+    MatInputModule, MatMenuModule,
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
     RouterModule.forRoot([
       { path: 'game', component: GameComponent, canActivate: [InPlayGuard] },
