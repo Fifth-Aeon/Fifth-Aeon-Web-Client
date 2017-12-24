@@ -28,7 +28,8 @@ export class DeckEditorComponent implements OnInit {
 
   constructor(private decks: DecksService, private dialog: MatDialog, private snackbar: MatSnackBar) {
     this.cards = Array.from(allCards.values()).map(factory => factory())
-    this.cards = sortBy(this.cards, (card: Card) => card.getCost().getColor() * 100 + card.getCost().getNumeric());
+    this.cards = sortBy(sortBy(this.cards, (card: Card) => card.getName()), (card: Card) =>
+      card.getCost().getColor() * 10000 + card.getCost().getNumeric());
     this.deck = this.decks.getEditDeck();
   }
 
@@ -36,14 +37,14 @@ export class DeckEditorComponent implements OnInit {
     let text = prompt('Copy paste the deck code here.');
     try {
       this.deck.fromJson(text);
-      this.snackbar.open('Import succeeded', '', { duration: 2000 });
+      this.snackbar.open('Import succeeded.', '', { duration: 2000 });
     } catch (e) {
-      this.snackbar.open('Import Failed', '', { duration: 2000 });
+      this.snackbar.open('Import Failed.', '', { duration: 2000 });
     }
   }
 
   public export() {
-    this.snackbar.open('Deck copied to clipboard', '', { duration: 2000 });
+    this.snackbar.open('Deck copied to clipboard.', '', { duration: 2000 });
   }
 
   public onResize(rect: ClientRect) {
@@ -55,7 +56,6 @@ export class DeckEditorComponent implements OnInit {
   public openMetadata() {
     let dialogRef = this.dialog.open(DeckMetadataDialogComponent);
     dialogRef.componentInstance.deck = this.deck;
-    console.log(this.deck);
   }
 
   public done() {

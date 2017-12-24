@@ -17,7 +17,6 @@ export class DeckMetadataDialogComponent implements OnInit {
 
   public done() {
     this.deck.customMetadata = true;
-    console.log('done', this.deck);
     this.dialogRef.close([]);
   }
 
