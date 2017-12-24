@@ -37,10 +37,8 @@ export class SoundManager {
         this.global.mute(this.muted);
 
         speechSynthesis.onvoiceschanged = () => {
-            console.log('Avalible voices', window.speechSynthesis.getVoices());
             let englishVoice = window.speechSynthesis.getVoices().find(voice => voice.lang.includes('en'));
             if (englishVoice) {
-                console.log('Using voice', englishVoice.name);
                 this.voice = englishVoice;
             } else {
                 console.warn('Warning no english voice detected.');
