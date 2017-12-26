@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { shuffle } from 'lodash';
 
 import { WebClient } from './client';
-import { DeckList } from './game_model/deckList';
+import { DeckList, } from './game_model/deckList';
 import { standardFormat } from './game_model/gameFormat';
 import { ResourceTypeGroup, ResourceTypeNames } from './game_model/resource';
 
-import { allDecks } from './game_model/scenarios/decks';
+import { allDecks, getStarterDecks } from './game_model/scenarios/decks';
 const deckStore = 'deck-store';
 
 @Injectable()
@@ -20,7 +20,9 @@ export class DecksService {
     if (this.load())
       return;
     this.decks = [];
-    for (let deck of allDecks) {
+    let starters = getStarterDecks();
+    console.log(starters)
+    for (let deck of starters) {
       this.decks.push(deck.clone());
     }
     this.decks = shuffle(this.decks);
