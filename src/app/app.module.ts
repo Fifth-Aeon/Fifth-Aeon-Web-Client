@@ -18,7 +18,8 @@ import {
   MatTooltipModule, MatSnackBarModule, MatToolbarModule,
   MatProgressSpinnerModule, MatDialogModule, MatListModule,
   MatCardModule, MatSliderModule, MatCheckboxModule, MatPaginatorModule,
-  MatTabsModule, MatFormFieldModule, MatInputModule, MatMenuModule
+  MatTabsModule, MatFormFieldModule, MatInputModule, MatMenuModule,
+  MatSelectModule
 } from '@angular/material';
 
 // App Angular Services
@@ -93,7 +94,7 @@ if ('serviceWorker' in navigator && environment.production) {
     MatProgressSpinnerModule, MatTooltipModule, MatSnackBarModule,
     MatDialogModule, MatListModule, MatCardModule, MatSliderModule,
     MatCheckboxModule, MatPaginatorModule, MatTabsModule, MatFormFieldModule,
-    MatInputModule, MatMenuModule,
+    MatInputModule, MatMenuModule, MatSelectModule,
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
     RouterModule.forRoot([
       { path: 'game', component: GameComponent, canActivate: [InPlayGuard] },
