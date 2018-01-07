@@ -81,13 +81,6 @@ export class GameComponent implements OnInit {
 
     this.game.promptCardChoice = this.openCardChooser.bind(this);
 
-    // Workaround tooltip  not dissapering
-    setInterval(() => {
-      for (let tip of Array.from(document.getElementsByTagName('mat-tooltip-component'))) {
-        tip.parentElement.remove();
-      }
-    }, 30 * 1000);
-
     this.addHotkeys();
   }
 
