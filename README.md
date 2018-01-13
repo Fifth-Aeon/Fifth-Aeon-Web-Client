@@ -5,9 +5,14 @@ A client for a websockets based card game, written using Angular and Typescript.
 You can find the coresponding server at <https://github.com/WilliamRitson/CCG-Server>. The game's core logic is shared between the client and the server. To facilitate this sharing it uses a [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules) which is hosted at <https://github.com/WilliamRitson/CCG-Model>.
 
 ## Installation
-Requires [node](https://nodejs.org/en/), [yarn](https://www.npmjs.com/package/yarn) and [typescript](https://www.typescriptlang.org/) to be installed and avalible in your path.
+Run `git clone --recursive https://github.com/WilliamRitson/CCG-Client.git
+` to clone the project and its submodule (do this wherever you want the project stored on your computer).
 
-After installing the prereqs run `yarn` to install the dependencies.
+Install [node](https://nodejs.org/en/) using an installer. This should also install npm.
+
+Run `npm install -g yarn` to get [yarn](https://www.npmjs.com/package/yarn).
+
+Finally run `yarn` within the project directory (the place you cloned it) to install the project's dependencies.
 
 
 ## Images
