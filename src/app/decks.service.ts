@@ -21,7 +21,6 @@ export class DecksService {
       return;
     this.decks = [];
     let starters = getStarterDecks();
-    console.log(starters)
     for (let deck of starters) {
       this.decks.push(deck.clone());
     }
