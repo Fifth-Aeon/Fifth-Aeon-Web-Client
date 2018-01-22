@@ -12,6 +12,8 @@ Install [node](https://nodejs.org/en/) using an installer. This should also inst
 
 Run `npm install -g yarn` to get [yarn](https://www.npmjs.com/package/yarn).
 
+Run `npm install -g @angular/cli` to get [angular cli](https://github.com/angular/angular-cli).
+
 Finally run `yarn` within the project directory (the place you cloned it) to install the project's dependencies.
 
 
