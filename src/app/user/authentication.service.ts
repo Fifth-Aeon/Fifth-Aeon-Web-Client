@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { getWsUrl } from '../url';
+import { apiURL } from '../url';
 
 
 @Injectable()
@@ -30,6 +30,7 @@ export class AuthenticationService {
   private setLogin(username: string, token: string) {
     this.token = token;
     this.username = username;
+    console.log(this.token)
     localStorage.setItem('login', JSON.stringify({ token: token, username: username }));
     this.authChangeCallbacks.forEach(callback => callback(username));
   }
@@ -48,7 +49,7 @@ export class AuthenticationService {
   }
 
   public verifyEmail(emailToken) {
-    return this.http.post(`${getWsUrl}/api/auth/verifyEmail`, {}, {
+    return this.http.post(`${apiURL}/api/auth/verifyEmail`, {}, {
       headers: new HttpHeaders({
         token: emailToken
       })
@@ -56,13 +57,13 @@ export class AuthenticationService {
   }
 
   public requestPasswordReset(usernameOrEmail: string) {
-    return this.http.post(`${getWsUrl}/api/auth/requestReset`, {
+    return this.http.post(`${apiURL}/api/auth/requestReset`, {
       usernameOrEmail: usernameOrEmail
     }).toPromise();
   }
 
   public resetPassword(restToken, newPassword) {
-    return this.http.post(`${getWsUrl}/api/auth/verifyReset`, {
+    return this.http.post(`${apiURL}/api/auth/verifyReset`, {
       password: newPassword
     }, {
         headers: new HttpHeaders({
@@ -76,7 +77,7 @@ export class AuthenticationService {
   }
 
   public register(username: string, email: string, password: string) {
-    return this.http.post(`${getWsUrl}/api/auth/register`, {
+    return this.http.post(`${apiURL}/api/auth/register`, {
       username: username,
       email: email.toLowerCase(),
       password: password
@@ -87,7 +88,7 @@ export class AuthenticationService {
   }
 
   public login(usernameOrEmail: string, password: string) {
-    return this.http.post(`${getWsUrl}/api/auth/login`, {
+    return this.http.post(`${apiURL}/api/auth/login`, {
       usernameOrEmail: usernameOrEmail,
       password: password
     }).toPromise()

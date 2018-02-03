@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'wcm-login',
+  selector: 'ccg-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -34,6 +34,16 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  reset() {
+    this.auth.requestPasswordReset(this.username)
+      .then(() =>
+        alert('A password reset link has been sent to your email.')
+      ).catch(err => {
+        console.error(err);
+        alert('Account does not exist.');
+      });
+  }
+
   nameError() {
     return this.nameControl.hasError('required') ? 'You must enter a value' :
 
@@ -47,12 +57,14 @@ export class LoginComponent implements OnInit {
   }
 
   ok() {
-    return this.nameControl.valid  && this.passwordControl.valid;
+    return this.nameControl.valid && this.passwordControl.valid;
   }
 
+  canReset() {
+    return this.nameControl.valid;
+  }
 
   ngOnInit() {
   }
-
 
 }

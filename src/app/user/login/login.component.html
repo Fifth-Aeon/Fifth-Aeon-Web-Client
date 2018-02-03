@@ -6,7 +6,8 @@
     <mat-card-content>
         <form #registerForm="ngForm" class="form-container">
             <mat-form-field>
-                <input matInput #titleIn name="username"  [(ngModel)]="username" [formControl]="nameControl" maxlength="30" placeholder="Username" required>
+                <input matInput #titleIn name="username"  [(ngModel)]="username" [formControl]="nameControl" maxlength="30" 
+                placeholder="Username or Email" required>
                 <mat-error *ngIf="nameControl.invalid">{{nameError()}}</mat-error>
             </mat-form-field>
   
@@ -14,13 +15,13 @@
                 <input matInput #passIn placeholder="Password" name="password" [(ngModel)]="password" [formControl]="passwordControl"
                 [type]="hide ? 'password' : 'text'" required>
                     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-  
                 <mat-error *ngIf="passwordControl.invalid">{{passwordError()}}</mat-error>
             </mat-form-field>
         </form>
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="primary" [disabled]="!ok()" (click)="submit()">Sign In</button>
+      <button mat-raised-button color="warn" [disabled]="!canReset()" (click)="reset()">Reset Password</button>
     </mat-card-actions>
   
   </mat-card>

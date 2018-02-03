@@ -5,7 +5,7 @@ import { FormControl, Validators } from '@angular/forms';
 
 
 @Component({
-  selector: 'wcm-reset-password',
+  selector: 'ccg-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.scss']
 })

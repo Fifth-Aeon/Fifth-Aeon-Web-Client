@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 
 @Component({
-  selector: 'wcm-verify-email',
+  selector: 'ccg-verify-email',
   templateUrl: './verify-email.component.html',
   styleUrls: ['./verify-email.component.scss']
 })

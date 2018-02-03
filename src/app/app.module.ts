@@ -112,7 +112,8 @@ if ('serviceWorker' in navigator && environment.production) {
       { path: '', component: LobbyComponent },
       { path: 'login', component: LoginComponent},
       { path: 'register', component: RegisterComponent},
-      { path: 'reset-pass', component: ResetPasswordComponent}
+      { path: 'reset/:token', component: ResetPasswordComponent},
+      { path: 'verify/:token', component: VerifyEmailComponent},
       { path: '**', component: LobbyComponent }
     ])
   ],

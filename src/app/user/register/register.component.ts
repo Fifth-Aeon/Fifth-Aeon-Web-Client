@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'wcm-register',
+  selector: 'ccg-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
