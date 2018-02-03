@@ -50,7 +50,12 @@ import { CardComponent } from './card/card.component';
 import { SpeedService } from 'app/speed.service';
 import { environment } from 'environments/environment';
 import { DeckMetadataDialogComponent } from './deck-metadata-dialog/deck-metadata-dialog.component';
-
+import { LoginComponent } from 'app/user/login/login.component';
+import { RegisterComponent } from 'app/user/register/register.component';
+import { VerifyEmailComponent } from 'app/user/verify-email/verify-email.component';
+import { AuthenticationService } from 'app/user/authentication.service';
+import { UserModule } from 'app/user/user.module';
+import { ResetPasswordComponent } from 'app/user/reset-password/reset-password.component';
 if ('serviceWorker' in navigator && environment.production) {
   window.addEventListener('load', function () {
     navigator.serviceWorker.register('ngsw-worker.js')
@@ -78,12 +83,13 @@ if ('serviceWorker' in navigator && environment.production) {
     ResourceDisplayComponent,
     SettingsDialogComponent,
     DeckChooserComponent,
-    DeckMetadataDialogComponent
+    DeckMetadataDialogComponent,
   ],
   entryComponents: [CardChooserComponent, EndDialogComponent, SettingsDialogComponent, DeckMetadataDialogComponent],
   imports: [
     BrowserModule,
     // ServiceWorkerModule.register('ngsw-worker.js'),
+    UserModule,
     FormsModule,
     HttpModule,
     HttpClientModule,
@@ -104,6 +110,9 @@ if ('serviceWorker' in navigator && environment.production) {
       { path: 'private', component: PrivateLobbyComponent },
       { path: 'lobby', component: LobbyComponent },
       { path: '', component: LobbyComponent },
+      { path: 'login', component: LoginComponent},
+      { path: 'register', component: RegisterComponent},
+      { path: 'reset-pass', component: ResetPasswordComponent}
       { path: '**', component: LobbyComponent }
     ])
   ],
