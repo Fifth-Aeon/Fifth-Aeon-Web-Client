@@ -8,6 +8,7 @@ import { allCards } from '../game_model/cards/allCards';
 import { Card } from '../game_model/card';
 import { DeckMetadataDialogComponent } from 'app/deck-metadata-dialog/deck-metadata-dialog.component';
 import { MatDialog, MatSnackBar } from '@angular/material';
+import { Collection } from 'app/game_model/collection';
 
 
 
@@ -19,6 +20,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 })
 export class DeckEditorComponent implements OnInit {
   public cards: Array<Card>;
+  public collection: Collection;
   public allCards = allCards;
   public pageCards: Array<Card>;
   public pageNumber = 0;
@@ -26,9 +28,13 @@ export class DeckEditorComponent implements OnInit {
   public deck: DeckList;
   public format = new GameFormat();
 
-  constructor(private decks: DecksService, private dialog: MatDialog, private snackbar: MatSnackBar) {
-    this.cards = Array.from(allCards.values()).map(factory => factory())
-    this.cards = sortBy(sortBy(this.cards, (card: Card) => card.getName()), (card: Card) =>
+  constructor(
+    private decks: DecksService,
+    private dialog: MatDialog,
+    private snackbar: MatSnackBar
+  ) {
+    this.collection = decks.getCollection();
+    this.cards = sortBy(sortBy(this.collection.getCards(), (card: Card) => card.getName()), (card: Card) =>
       card.getCost().getColor() * 10000 + card.getCost().getNumeric());
     this.deck = this.decks.getEditDeck();
   }
@@ -66,7 +72,13 @@ export class DeckEditorComponent implements OnInit {
     this.deck.generateRandomNColorDeck(random(1, 4));
   }
 
+  public canAddCard(card: Card) {
+    return this.deck.getCardCount(card) < this.collection.getCardCount(card) &&
+      this.deck.canAddCard(card);
+  }
+
   public add(card: Card) {
+    if (!this.canAddCard(card)) return;
     this.deck.addCard(card);
   }
 

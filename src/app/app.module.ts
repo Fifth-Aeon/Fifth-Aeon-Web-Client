@@ -56,6 +56,7 @@ import { VerifyEmailComponent } from 'app/user/verify-email/verify-email.compone
 import { AuthenticationService } from 'app/user/authentication.service';
 import { UserModule } from 'app/user/user.module';
 import { ResetPasswordComponent } from 'app/user/reset-password/reset-password.component';
+import { OpenPackComponent } from './open-pack/open-pack.component';
 if ('serviceWorker' in navigator && environment.production) {
   window.addEventListener('load', function () {
     navigator.serviceWorker.register('ngsw-worker.js')
@@ -84,6 +85,7 @@ if ('serviceWorker' in navigator && environment.production) {
     SettingsDialogComponent,
     DeckChooserComponent,
     DeckMetadataDialogComponent,
+    OpenPackComponent,
   ],
   entryComponents: [CardChooserComponent, EndDialogComponent, SettingsDialogComponent, DeckMetadataDialogComponent],
   imports: [
@@ -109,6 +111,7 @@ if ('serviceWorker' in navigator && environment.production) {
       { path: 'private/:id', component: PrivateLobbyComponent },
       { path: 'private', component: PrivateLobbyComponent },
       { path: 'lobby', component: LobbyComponent },
+      { path: 'packs', component: OpenPackComponent },
       { path: '', component: LobbyComponent },
       { path: 'login', component: LoginComponent},
       { path: 'register', component: RegisterComponent},
