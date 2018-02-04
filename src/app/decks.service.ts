@@ -8,23 +8,26 @@ import { ResourceTypeGroup, ResourceTypeNames } from './game_model/resource';
 
 import { allDecks, getStarterDecks } from './game_model/scenarios/decks';
 import { Collection } from './game_model/collection';
+import { CollectionService } from 'app/collection.service';
 
 const deckStore = 'deck-store';
 
 @Injectable()
 export class DecksService {
   private decks: Array<DeckList> = [];
-  private collection: Collection = new Collection();
   private currentDeck: DeckList;
   private editingDeck: DeckList;
   private currentDeckNumber = 0;
 
-  constructor(private client: WebClient) {
+  constructor(
+    private client: WebClient,
+    private collection: CollectionService
+  ) {
     this.decks = [];
     let starters = getStarterDecks();
     for (let deck of starters) {
       this.decks.push(deck.clone());
-      this.collection.addDeck(deck);
+      this.collection.getCollection().addDeck(deck);
     }
     this.decks = shuffle(this.decks);
     this.currentDeck = this.decks[this.currentDeckNumber];
@@ -51,10 +54,6 @@ export class DecksService {
       decks: this.decks.map(deck => deck.toJson()),
       setCurrentDeck: this.currentDeckNumber
     }));
-  }
-
-  public getCollection() {
-    return this.collection;
   }
 
   public getDecks() {

@@ -3,6 +3,7 @@ import { DecksService } from 'app/decks.service';
 import { Collection } from 'app/game_model/collection';
 import { allCards } from 'app/game_model/cards/allCards';
 import { Card } from 'app/game_model/card';
+import { CollectionService } from 'app/collection.service';
 
 
 @Component({
@@ -15,13 +16,18 @@ export class OpenPackComponent implements OnInit {
   cards: Card[];
 
   constructor(
-    decks: DecksService
+    decks: DecksService,
+    collectionService: CollectionService
   ) {
-    this.collection = decks.getCollection();
+    this.collection = collectionService.getCollection();
   }
 
   open() {
     this.cards = this.collection.openBooster().map(id => allCards.get(id)());
+  }
+
+  buy() {
+    this.collection.buyPack();
   }
 
   ngOnInit() {

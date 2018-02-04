@@ -6,11 +6,11 @@
     <p *ngIf="quit">Your opponent left.</p>
     <p *ngIf="!quit">You reduced your oponents life to zero.</p>
   </div>
-
   <div *ngIf="!winner">
     <p *ngIf="quit">You left the game.</p>
     <p *ngIf="!quit">Your life was reduced to zero.</p>
   </div>
+  <p> {{this.rewards}}</p>
 </div>
 
 <div mat-dialog-actions>

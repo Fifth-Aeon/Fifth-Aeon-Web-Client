@@ -16,10 +16,13 @@
         <mat-icon>grade</mat-icon>
       </button>
       <a routerLink="/lobby">
-        <button mat-fab matTooltipPosition="above" matTooltip="Return to lobby" color="accent" (click)="done()">
+        <button mat-fab matTooltipPosition="above" matTooltip="Return to lobby" color="accent">
           <mat-icon>check</mat-icon>
         </button>
       </a>
+      <button mat-fab matTooltipPosition="above" matTooltip="Buy a pack for 100 gold." color="primary" (click)="buy()" [disabled]="!collection.canBuyPack()">
+        <mat-icon>shopping_card</mat-icon>
+      </button>
     </mat-card-content>
   </mat-card>
 </div>

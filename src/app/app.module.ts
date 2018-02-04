@@ -57,6 +57,7 @@ import { AuthenticationService } from 'app/user/authentication.service';
 import { UserModule } from 'app/user/user.module';
 import { ResetPasswordComponent } from 'app/user/reset-password/reset-password.component';
 import { OpenPackComponent } from './open-pack/open-pack.component';
+import { CollectionService } from './collection.service';
 if ('serviceWorker' in navigator && environment.production) {
   window.addEventListener('load', function () {
     navigator.serviceWorker.register('ngsw-worker.js')
@@ -120,7 +121,7 @@ if ('serviceWorker' in navigator && environment.production) {
       { path: '**', component: LobbyComponent }
     ])
   ],
-  providers: [SoundManager, WebClient, DecksService, SpeedService, OverlayService, TipService, Preloader, InPlayGuard, LoggedInGuard],
+  providers: [SoundManager, WebClient, DecksService, SpeedService, OverlayService, TipService, Preloader, InPlayGuard, LoggedInGuard, CollectionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -9,6 +9,7 @@ import { Card } from '../game_model/card';
 import { DeckMetadataDialogComponent } from 'app/deck-metadata-dialog/deck-metadata-dialog.component';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Collection } from 'app/game_model/collection';
+import { CollectionService } from 'app/collection.service';
 
 
 
@@ -31,9 +32,10 @@ export class DeckEditorComponent implements OnInit {
   constructor(
     private decks: DecksService,
     private dialog: MatDialog,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    collectionService: CollectionService
   ) {
-    this.collection = decks.getCollection();
+    this.collection = collectionService.getCollection();
     this.cards = sortBy(sortBy(this.collection.getCards(), (card: Card) => card.getName()), (card: Card) =>
       card.getCost().getColor() * 10000 + card.getCost().getNumeric());
     this.deck = this.decks.getEditDeck();

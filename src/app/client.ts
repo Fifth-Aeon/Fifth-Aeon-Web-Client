@@ -34,6 +34,7 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
 import { OverlayService } from './overlay.service';
 import { TipService, TipType } from './tips';
 import { SpeedService } from 'app/speed.service';
+import { CollectionService } from 'app/collection.service';
 
 
 export enum ClientState {
@@ -83,7 +84,8 @@ export class WebClient {
         private overlay: OverlayService,
         private hotkeys: HotkeysService,
         private analytics: Angulartics2,
-        private speed: SpeedService
+        private speed: SpeedService,
+        private collection: CollectionService
     ) {
 
         this.initGame();
@@ -410,8 +412,10 @@ export class WebClient {
         let config = new MatDialogConfig();
         config.disableClose = true;
         let dialogRef = this.dialog.open(EndDialogComponent, config);
+
         dialogRef.componentInstance.winner = playerWon;
         dialogRef.componentInstance.quit = quit;
+        dialogRef.componentInstance.rewards = this.collection.onGameEnd(winner, quit);
         dialogRef.afterClosed().subscribe(result => {
             this.returnToLobby();
         });
