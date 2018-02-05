@@ -1,11 +1,38 @@
 import { Injectable } from '@angular/core';
-import { Collection } from 'app/game_model/collection';
+import { Collection, SavedCollection } from 'app/game_model/collection';
+import { AuthenticationService } from 'app/user/authentication.service';
+import { HttpClient } from '@angular/common/http';
+import { apiURL } from './url';
+
+const saveURL = `${apiURL}/api/cards/storeCollection`;
+const loadUrl = `${apiURL}/api/cards/getCollection`;
 
 @Injectable()
 export class CollectionService {
   private collection = new Collection();
 
-  constructor() { }
+  constructor(
+    private auth: AuthenticationService,
+    private http: HttpClient
+  ) {
+    auth.onAuth(() => {
+      this.load();
+    });
+
+  }
+
+  public save() {
+    return this.http.post(saveURL, this.collection.getSavable(), { headers: this.auth.getAuthHeader() });
+  }
+
+  public load() {
+    return this.http.get(loadUrl, { headers: this.auth.getAuthHeader() })
+      .toPromise()
+      .then((res: SavedCollection) => {
+        this.collection.fromSavable(res);
+        console.log('loaded', this.collection, 'from', res);
+      })
+  }
 
   public getCollection() {
     return this.collection;

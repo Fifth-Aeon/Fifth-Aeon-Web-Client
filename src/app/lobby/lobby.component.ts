@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { WebClient, ClientState } from '../client';
 import { SoundManager } from '../sound';
+import { DecksService } from 'app/decks.service';
 
 
 const feedbackBody = 'Please write about any bugs, suggestions, etc that came to mind while playing the game.';
@@ -16,7 +17,11 @@ export class LobbyComponent implements OnInit {
   public state = ClientState;
   public feedbackUrl = `mailto:william.ritson@gmail.com?subject=Card Game Feedback&body=${feedbackBody}`;
 
-  constructor(private router: Router, public client: WebClient, public soundManager: SoundManager) {
+  constructor(
+    private router: Router,
+    public client: WebClient,
+    public decks: DecksService,
+    public soundManager: SoundManager) {
     if (client.getState() !== ClientState.UnAuth && client.getState() !== ClientState.Waiting)
       client.returnToLobby();
   }

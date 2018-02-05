@@ -2,13 +2,21 @@ import { Injectable } from '@angular/core';
 import { shuffle } from 'lodash';
 
 import { WebClient } from './client';
-import { DeckList, } from './game_model/deckList';
+import { DeckList, SavedDeck, } from './game_model/deckList';
 import { standardFormat } from './game_model/gameFormat';
 import { ResourceTypeGroup, ResourceTypeNames } from './game_model/resource';
+import { AuthenticationService } from 'app/user/authentication.service';
+import { HttpClient } from '@angular/common/http';
+import { apiURL } from './url';
 
 import { allDecks, getStarterDecks } from './game_model/scenarios/decks';
 import { Collection } from './game_model/collection';
 import { CollectionService } from 'app/collection.service';
+
+
+const saveURL = `${apiURL}/api/cards/storeDeck`;
+const loadUrl = `${apiURL}/api/cards/getDecks`;
+
 
 const deckStore = 'deck-store';
 
@@ -21,49 +29,45 @@ export class DecksService {
 
   constructor(
     private client: WebClient,
-    private collection: CollectionService
+    private collection: CollectionService,
+    private auth: AuthenticationService,
+    private http: HttpClient
   ) {
-    this.decks = [];
-    let starters = getStarterDecks();
-    for (let deck of starters) {
-      this.decks.push(deck.clone());
-      this.collection.getCollection().addDeck(deck);
-    }
-    this.decks = shuffle(this.decks);
-    this.currentDeck = this.decks[this.currentDeckNumber];
+    this.auth.onAuth(() => {
+      this.loadDecks();
+    });
   }
 
-  public load() {
-    try {
-      let data = JSON.parse(localStorage.getItem(deckStore));
-      this.decks = data.decks.map(deckData => {
-        let deck = new DeckList(standardFormat);
-        deck.fromJson(deckData);
-        return deck;
-      });
-      this.currentDeckNumber = data.currentDeckNumber;
-      this.currentDeck = this.decks[this.currentDeckNumber];
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  public save() {
-    localStorage.setItem(deckStore, JSON.stringify({
-      decks: this.decks.map(deck => deck.toJson()),
-      setCurrentDeck: this.currentDeckNumber
-    }));
+  public saveDeck(deck: DeckList) {
+    return this.http.post(saveURL,
+      { deck: deck.getSavable() },
+      { headers: this.auth.getAuthHeader() })
+      .toPromise()
+      .then((res: any) => deck.id = res.id)
+      .catch(console.error);
   }
 
   public getDecks() {
     return this.decks;
   }
 
+  public loadDecks() {
+    return this.http.get(loadUrl, { headers: this.auth.getAuthHeader() })
+      .toPromise()
+      .then((decks: SavedDeck[]) => {
+        this.decks.length = 0;
+        for (let deckData of decks) {
+          let loaded = new DeckList();
+          loaded.fromSavable(deckData);
+          this.decks.push(loaded);
+        }
+      })
+      .catch(console.error);
+  }
+
   public setCurrentDeck(index: number) {
     this.currentDeck = this.decks[index];
     this.client.setDeck(this.currentDeck);
-    this.save();
     this.client.onDeckSelected();
   }
 
@@ -74,19 +78,17 @@ export class DecksService {
 
   public finishEditing() {
     this.editingDeck.genMetadata();
-    this.save();
+    this.saveDeck(this.editingDeck);
     this.client.openDeckSelector();
   }
 
   public deleteDeck(index: number) {
     this.decks.splice(index, 1);
     this.currentDeckNumber = Math.min(this.currentDeckNumber, this.decks.length - 1);
-    this.save();
   }
 
   public newDeck() {
     this.decks.unshift(new DeckList(standardFormat));
-    this.save()
   }
 
   public cancelSelect() {

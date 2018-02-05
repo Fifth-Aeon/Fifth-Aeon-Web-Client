@@ -43,6 +43,7 @@ export class AuthenticationService {
   private setLogin(username: string, token: string) {
     this.token = token;
     this.username = username;
+    console.log('SLI', this.authChangeCallbacks);
     localStorage.setItem('login', JSON.stringify({ token: token, username: username }));
     this.authChangeCallbacks.forEach(callback => callback(username));
     this.router.navigateByUrl('/lobby');
