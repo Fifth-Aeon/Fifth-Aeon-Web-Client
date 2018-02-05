@@ -52,7 +52,7 @@ Array.from(allCards.values()).map(fact => fact())
   .filter(card => card.isUnit())
   .forEach(card => {
     let unit = card as Unit;
-    let base = `${unit.getDamage()}/${unit.getLife()} ${UnitType[unit.getCardType()]}`;
+    let base = `${unit.getDamage()}/${unit.getLife()} ${UnitType[unit.getUnitType()]}`;
     if (unit.getText(this.game).length > 0)
       base += ` with "${unit.getText(this.game)}"`
     keywordsDefs.set(unit.getName(), base);
