@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { apiURL } from '../url';
+import { Router } from '@angular/router';
 
 
 @Injectable()
@@ -9,11 +10,22 @@ export class AuthenticationService {
   private username: string;
   private authChangeCallbacks: Array<(username: string) => void> = [];
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {
     try {
       let data = JSON.parse(localStorage.getItem('login'));
       this.setLogin(data.username, data.token);
     } catch (e) { }
+  }
+
+  public gotoLogin() {
+    if (localStorage.getItem('madeAccount')) {
+      this.router.navigateByUrl('/login');
+    } else {
+      this.router.navigateByUrl('/register');
+    }
   }
 
   public loggedIn() {
@@ -25,14 +37,15 @@ export class AuthenticationService {
     this.username = undefined;
     localStorage.setItem('login', '');
     this.authChangeCallbacks.forEach(callback => callback(null));
+    this.router.navigateByUrl('/login');
   }
 
   private setLogin(username: string, token: string) {
     this.token = token;
     this.username = username;
-    console.log(this.token)
     localStorage.setItem('login', JSON.stringify({ token: token, username: username }));
     this.authChangeCallbacks.forEach(callback => callback(username));
+    this.router.navigateByUrl('/lobby');
   }
 
   public onAuth(callback: (username: string) => void) {
@@ -84,6 +97,7 @@ export class AuthenticationService {
     }).toPromise()
       .then((res: any) => {
         this.setLogin(username, res.token);
+        localStorage.setItem('madeAccount', 'true');
       });
   }
 

@@ -58,6 +58,7 @@ import { UserModule } from 'app/user/user.module';
 import { ResetPasswordComponent } from 'app/user/reset-password/reset-password.component';
 import { OpenPackComponent } from './open-pack/open-pack.component';
 import { CollectionService } from './collection.service';
+
 if ('serviceWorker' in navigator && environment.production) {
   window.addEventListener('load', function () {
     navigator.serviceWorker.register('ngsw-worker.js')
@@ -109,19 +110,20 @@ if ('serviceWorker' in navigator && environment.production) {
       { path: 'game', component: GameComponent, canActivate: [InPlayGuard] },
       { path: 'deck', component: DeckEditorComponent, canActivate: [LoggedInGuard] },
       { path: 'select', component: DeckChooserComponent, canActivate: [LoggedInGuard] },
-      { path: 'private/:id', component: PrivateLobbyComponent },
-      { path: 'private', component: PrivateLobbyComponent },
-      { path: 'lobby', component: LobbyComponent },
-      { path: 'packs', component: OpenPackComponent },
-      { path: '', component: LobbyComponent },
-      { path: 'login', component: LoginComponent},
-      { path: 'register', component: RegisterComponent},
-      { path: 'reset/:token', component: ResetPasswordComponent},
-      { path: 'verify/:token', component: VerifyEmailComponent},
-      { path: '**', component: LobbyComponent }
+      { path: 'private/:id', component: PrivateLobbyComponent, canActivate: [LoggedInGuard]  },
+      { path: 'private', component: PrivateLobbyComponent, canActivate: [LoggedInGuard]  },
+      { path: 'packs', component: OpenPackComponent, canActivate: [LoggedInGuard] },
+      { path: 'lobby', component: LobbyComponent, canActivate: [LoggedInGuard] },
+      { path: '', component: LobbyComponent, canActivate: [LoggedInGuard] },
+      { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },
+      { path: 'reset/:token', component: ResetPasswordComponent },
+      { path: 'verify/:token', component: VerifyEmailComponent },
+      { path: '**', component: LobbyComponent, canActivate: [LoggedInGuard] }
     ])
   ],
-  providers: [SoundManager, WebClient, DecksService, SpeedService, OverlayService, TipService, Preloader, InPlayGuard, LoggedInGuard, CollectionService],
+  providers: [SoundManager, WebClient, DecksService, SpeedService, OverlayService,
+    TipService, Preloader, InPlayGuard, LoggedInGuard, CollectionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

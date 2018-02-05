@@ -1,4 +1,4 @@
-<mat-card class="create-form">
+<mat-card class="auth-form">
     <mat-card-header>
         <mat-card-title>Login</mat-card-title>
     </mat-card-header>
@@ -21,7 +21,8 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="primary" [disabled]="!ok()" (click)="submit()">Sign In</button>
-      <button mat-raised-button color="warn" [disabled]="!canReset()" (click)="reset()">Reset Password</button>
+      <button mat-raised-button color="accent" [disabled]="!canReset()" (click)="reset()">Reset Password</button>
+      <button routerLink="/register" mat-button >Register Account</button>
     </mat-card-actions>
   
   </mat-card>

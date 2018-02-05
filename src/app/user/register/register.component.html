@@ -1,4 +1,4 @@
-<mat-card class="create-form">
+<mat-card class="auth-form">
   <mat-card-header>
       <mat-card-title>Register Account</mat-card-title>
   </mat-card-header>
@@ -26,6 +26,8 @@
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button color="primary" [disabled]="!ok()" (click)="create()">Create Account</button>
+    <button routerLink="/login" mat-button >Login To Existing Account</button>
+
   </mat-card-actions>
 
 </mat-card>

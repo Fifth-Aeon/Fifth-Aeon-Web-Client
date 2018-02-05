@@ -8,6 +8,7 @@ import { AuthenticationService } from './authentication.service';
 import { LoginComponent } from './login/login.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { ResetPasswordComponent } from 'app/user/reset-password/reset-password.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { ResetPasswordComponent } from 'app/user/reset-password/reset-password.c
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
+    RouterModule
   ],
   exports: [
     RegisterComponent, LoginComponent, VerifyEmailComponent, ResetPasswordComponent

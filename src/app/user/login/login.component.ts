@@ -29,9 +29,7 @@ export class LoginComponent implements OnInit {
   }
 
   submit() {
-    this.auth.login(this.username, this.password).then(() => {
-      this.router.navigate([`/comics/create`]);
-    });
+    this.auth.login(this.username, this.password);
   }
 
   reset() {

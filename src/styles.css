@@ -43,3 +43,17 @@ mat-progress-spinner {
 div.mat-card-header-text {
   margin: 0 auto;
 }
+
+
+.auth-form {
+  max-width: 500px;
+  margin: 0 auto;
+  margin-top: 20vh;
+  margin-bottom: 20px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
