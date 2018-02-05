@@ -17,7 +17,7 @@ export class OpenPackComponent implements OnInit {
 
   constructor(
     decks: DecksService,
-    collectionService: CollectionService
+    private collectionService: CollectionService
   ) {
     this.collection = collectionService.getCollection();
   }
@@ -28,6 +28,10 @@ export class OpenPackComponent implements OnInit {
 
   buy() {
     this.collection.buyPack();
+  }
+
+  done() {
+    this.collectionService.save();
   }
 
   ngOnInit() {

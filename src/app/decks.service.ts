@@ -16,6 +16,7 @@ import { CollectionService } from 'app/collection.service';
 
 const saveURL = `${apiURL}/api/cards/storeDeck`;
 const loadUrl = `${apiURL}/api/cards/getDecks`;
+const deleteUrl = `${apiURL}/api/cards/deleteDeck`;
 
 
 const deckStore = 'deck-store';
@@ -83,8 +84,13 @@ export class DecksService {
   }
 
   public deleteDeck(index: number) {
-    this.decks.splice(index, 1);
+    let removed = this.decks.splice(index, 1)[0];
     this.currentDeckNumber = Math.min(this.currentDeckNumber, this.decks.length - 1);
+    this.http.post(deleteUrl,
+      { id: removed.id },
+      { headers: this.auth.getAuthHeader() })
+      .toPromise()
+      .catch(console.error);
   }
 
   public newDeck() {

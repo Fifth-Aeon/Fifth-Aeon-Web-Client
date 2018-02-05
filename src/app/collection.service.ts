@@ -22,7 +22,10 @@ export class CollectionService {
   }
 
   public save() {
-    return this.http.post(saveURL, this.collection.getSavable(), { headers: this.auth.getAuthHeader() });
+    return this.http.post(saveURL,
+      { collection: this.collection.getSavable() },
+      { headers: this.auth.getAuthHeader() })
+      .toPromise();
   }
 
   public load() {
