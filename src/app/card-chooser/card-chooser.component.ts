@@ -10,7 +10,8 @@ import { Card } from '../game_model/card';
 export class CardChooserComponent {
   public cards: Array<Card>;
   public pageCards: Array<Card>;
-  public numberToPick = 1;
+  public min = 1;
+  public max = 1;
   public skippable = false;
   public selected: Set<Card> = new Set();
   public pageNumber = 0;
@@ -24,7 +25,7 @@ export class CardChooserComponent {
   public select(card) {
     if (this.selected.has(card)) {
       this.selected.delete(card);
-    } else if (this.selected.size < this.numberToPick) {
+    } else if (this.selected.size < this.max) {
       this.selected.add(card);
     }
   }
@@ -58,8 +59,8 @@ export class CardChooserComponent {
   }
 
   public canFinish(): boolean {
-    return this.selected.size >= this.numberToPick ||
-      this.selected.size >= this.cards.length;
+    return this.selected.size >= this.min ||
+      this.selected.size === this.cards.length;
   }
 
   public finish() {

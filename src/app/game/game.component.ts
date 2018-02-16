@@ -121,9 +121,9 @@ export class GameComponent implements OnInit {
     this.client.pass();
   }
 
-  public openCardChooser(player: number, cards: Array<Card>, toPick: number = 1,
+  public openCardChooser(player: number, cards: Array<Card>, min: number = 1, max: number = 1,
     callback: (cards: Card[]) => void = null, message: string = '') {
-    this.game.deferChoice(player, cards, toPick, callback);
+    this.game.deferChoice(player, cards, min, max, callback);
     if (player !== this.playerNo)
       return;
 
@@ -131,7 +131,8 @@ export class GameComponent implements OnInit {
     config.disableClose = true;
     let dialogRef = this.dialog.open(CardChooserComponent, config);
     dialogRef.componentInstance.cards = cards;
-    dialogRef.componentInstance.numberToPick = toPick;
+    dialogRef.componentInstance.min = min;
+    dialogRef.componentInstance.max = max;
     dialogRef.componentInstance.message = message;
     dialogRef.componentInstance.setPage();
     if (callback) {
