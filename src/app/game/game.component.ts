@@ -137,7 +137,7 @@ export class GameComponent implements OnInit {
     dialogRef.componentInstance.setPage();
     if (callback) {
       dialogRef.afterClosed().subscribe((result: Card[]) => {
-        this.game.makeChoice(result);
+        this.game.makeChoice(this.playerNo, result);
       });
     }
   }

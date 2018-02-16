@@ -117,7 +117,7 @@ export class WebClient {
     }
 
     private initGame() {
-        this.game = new ClientGame((type, params) => this.sendGameAction(type, params, false), this.log);
+        this.game = new ClientGame('player', (type, params) => this.sendGameAction(type, params, false), this.log);
     }
 
     private addHotkeys() {
@@ -139,7 +139,7 @@ export class WebClient {
     }
 
     public makeChoice(cards: Card[]) {
-        this.game.makeChoice(cards);
+        this.game.makeChoice(this.playerNumber, cards);
     }
 
     public pass() {
@@ -513,8 +513,8 @@ export class WebClient {
         this.initGame();
         let aiDeck = sample(allDecks);
         console.log('A.I deck', aiDeck);
-        this.gameModel = new ServerGame(standardFormat, [this.deck, aiDeck]);
-        let aiModel = new ClientGame((type, params) => this.sendGameAction(type, params, true));
+        this.gameModel = new ServerGame('server', standardFormat, [this.deck, aiDeck]);
+        let aiModel = new ClientGame('ai', (type, params) => this.sendGameAction(type, params, true));
 
         let aiAction = (type: GameActionType, params: any) => {
             console.log('A.I action', GameActionType[type], params);
