@@ -3,6 +3,7 @@ import { Collection, SavedCollection } from 'app/game_model/collection';
 import { AuthenticationService } from 'app/user/authentication.service';
 import { HttpClient } from '@angular/common/http';
 import { apiURL } from './url';
+import { cardList } from 'app/game_model/cards/allCards';
 
 const saveURL = `${apiURL}/api/cards/storeCollection`;
 const loadUrl = `${apiURL}/api/cards/getCollection`;
@@ -21,6 +22,13 @@ export class CollectionService {
 
   }
 
+  public unlockAll() {
+    for (let card of cardList) {
+      let diff = 4 - this.collection.getCardCount(card);
+      this.collection.addCard(card, Math.max(diff, 0));
+    }
+  }
+
   public save() {
     return this.http.post(saveURL,
       { collection: this.collection.getSavable() },
@@ -34,7 +42,7 @@ export class CollectionService {
       .then((res: SavedCollection) => {
         this.collection.fromSavable(res);
         console.log('loaded', this.collection, 'from', res);
-      })
+      });
   }
 
   public getCollection() {
@@ -49,9 +57,9 @@ export class CollectionService {
     let msg = `You earned ${reward.gold} gold`;
 
     if (reward.packs === 1)
-      msg += ` and a card pack`
+      msg += ` and a card pack`;
     else if (reward.packs > 1)
-      msg += ` and ${reward.packs} card packs`
+      msg += ` and ${reward.packs} card packs`;
 
     return msg + '.';
   }
