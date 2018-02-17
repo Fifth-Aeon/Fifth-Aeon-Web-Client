@@ -133,7 +133,7 @@ export class GameComponent implements OnInit {
     dialogRef.componentInstance.cards = cards;
     dialogRef.componentInstance.min = min;
     dialogRef.componentInstance.max = max;
-    dialogRef.componentInstance.message = message;
+    dialogRef.componentInstance.suffix = message;
     dialogRef.componentInstance.setPage();
     if (callback) {
       dialogRef.afterClosed().subscribe((result: Card[]) => {

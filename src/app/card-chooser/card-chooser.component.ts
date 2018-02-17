@@ -10,16 +10,27 @@ import { Card } from '../game_model/card';
 export class CardChooserComponent {
   public cards: Array<Card>;
   public pageCards: Array<Card>;
-  public min = 1;
+  public min = 0;
   public max = 1;
   public skippable = false;
   public selected: Set<Card> = new Set();
   public pageNumber = 0;
   private pageSize = 5;
-  public message: string;
+  public suffix: string;
 
   constructor(public dialogRef: MatDialogRef<CardChooserComponent>) {
     this.pageCards = [];
+  }
+
+  getMessage() {
+    if (this.max === 0)
+      return 'View cards';
+    let ending = `${this.max === 1 ? 'a card' : this.max + ' cards'} ${this.suffix}.`;
+    if (this.max === this.min)
+      return `Choose ${ending}`
+    if (this.min === 0)
+      return `Choose up to ${ending}`;
+    return `Choose between ${this.min === 1 ? 'a card' : this.min + ' cards'} and ${ending}`
   }
 
   public select(card) {
