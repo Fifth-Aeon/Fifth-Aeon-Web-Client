@@ -58,6 +58,7 @@ import { UserModule } from 'app/user/user.module';
 import { ResetPasswordComponent } from 'app/user/reset-password/reset-password.component';
 import { OpenPackComponent } from './open-pack/open-pack.component';
 import { CollectionService } from './collection.service';
+import { DamageDistributionDialogComponent } from './damage-distribution-dialog/damage-distribution-dialog.component';
 
 if ('serviceWorker' in navigator && environment.production) {
   window.addEventListener('load', function () {
@@ -88,8 +89,10 @@ if ('serviceWorker' in navigator && environment.production) {
     DeckChooserComponent,
     DeckMetadataDialogComponent,
     OpenPackComponent,
+    DamageDistributionDialogComponent,
   ],
-  entryComponents: [CardChooserComponent, EndDialogComponent, SettingsDialogComponent, DeckMetadataDialogComponent],
+  entryComponents: [CardChooserComponent, EndDialogComponent,
+    SettingsDialogComponent, DeckMetadataDialogComponent, DamageDistributionDialogComponent],
   imports: [
     BrowserModule,
     // ServiceWorkerModule.register('ngsw-worker.js'),
@@ -110,8 +113,8 @@ if ('serviceWorker' in navigator && environment.production) {
       { path: 'game', component: GameComponent, canActivate: [InPlayGuard] },
       { path: 'deck', component: DeckEditorComponent, canActivate: [LoggedInGuard] },
       { path: 'select', component: DeckChooserComponent, canActivate: [LoggedInGuard] },
-      { path: 'private/:id', component: PrivateLobbyComponent, canActivate: [LoggedInGuard]  },
-      { path: 'private', component: PrivateLobbyComponent, canActivate: [LoggedInGuard]  },
+      { path: 'private/:id', component: PrivateLobbyComponent, canActivate: [LoggedInGuard] },
+      { path: 'private', component: PrivateLobbyComponent, canActivate: [LoggedInGuard] },
       { path: 'packs', component: OpenPackComponent, canActivate: [LoggedInGuard] },
       { path: 'lobby', component: LobbyComponent, canActivate: [LoggedInGuard] },
       { path: '', component: LobbyComponent, canActivate: [LoggedInGuard] },

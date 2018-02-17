@@ -1,5 +1,5 @@
 // Vendor
-import { sample, every } from 'lodash'
+import { sample, every } from 'lodash';
 import { MatDialogRef, MatDialog, MatDialogConfig } from '@angular/material';
 import { NgZone, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -35,6 +35,7 @@ import { OverlayService } from './overlay.service';
 import { TipService, TipType } from './tips';
 import { SpeedService } from 'app/speed.service';
 import { CollectionService } from 'app/collection.service';
+import { DamageDistributionDialogComponent } from './damage-distribution-dialog/damage-distribution-dialog.component';
 
 
 export enum ClientState {
@@ -56,7 +57,7 @@ export class WebClient {
     private gameId: string = null;
     private state: ClientState = ClientState.UnAuth;
     private playerNumber: number;
-    private opponentNumber: number
+    private opponentNumber: number;
     private finished = false;
     private connected = false;
     private privateGameUrl: string;
@@ -91,14 +92,14 @@ export class WebClient {
         this.initGame();
         this.playerNumber = 0;
         this.messenger = new Messenger();
-        this.log = new Log(this.playerNumber)
+        this.log = new Log(this.playerNumber);
 
         this.messenger.onlogin = (username) => this.onLogin(username);
         this.messenger.addHandeler(MessageType.StartGame, this.startGame, this);
         this.messenger.addHandeler(MessageType.GameEvent, (msg) => this.handleGameEvent(msg.data), this);
         this.messenger.addHandeler(MessageType.ClientError, (msg) => this.clientError(msg), this);
-        this.messenger.addHandeler(MessageType.QueueJoined, (msg) => this.changeState(ClientState.InQueue), this)
-        this.messenger.addHandeler(MessageType.PrivateGameReady, (msg) => this.privateGameReady(msg), this)
+        this.messenger.addHandeler(MessageType.QueueJoined, (msg) => this.changeState(ClientState.InQueue), this);
+        this.messenger.addHandeler(MessageType.PrivateGameReady, (msg) => this.privateGameReady(msg), this);
         this.messenger.connectChange = (status) => zone.run(() => this.connected = status);
 
         this.tips.playTip(TipType.StartGame);
@@ -112,7 +113,7 @@ export class WebClient {
             clearInterval(this.aiTick);
         this.aiTick = setInterval(() => {
             if (this.ai)
-                this.ai.pulse()
+                this.ai.pulse();
         }, ms);
     }
 
@@ -190,8 +191,8 @@ export class WebClient {
         let allAttacking = every(potential, unit => unit.isAttacking());
         potential.forEach(unit => {
             if (allAttacking || !unit.isAttacking())
-                this.toggleAttacker(unit)
-        })
+                this.toggleAttacker(unit);
+        });
     }
 
     private clientError(msg: Message) {
@@ -203,7 +204,7 @@ export class WebClient {
 
     public setDeck(deck: DeckList) {
         if (!deck) {
-            console.error('setting undef deck', deck)
+            console.error('setting undef deck', deck);
             return;
         }
         this.deck = deck;
@@ -271,7 +272,7 @@ export class WebClient {
             if (err.includes('No game with that id.')) {
                 this.changeState(ClientState.PrivateLobbyFail);
             }
-        }
+        };
     }
 
     public isConnected(): boolean {
@@ -331,7 +332,7 @@ export class WebClient {
             });
             if (res === null) {
                 console.error('An action sent to game model by', isAi ?
-                    'the A.I' : 'the player', 'failed.', 'It was', GameActionType[type], 'with', params)
+                    'the A.I' : 'the player', 'failed.', 'It was', GameActionType[type], 'with', params);
                 return;
             }
             this.sendEventsToAi(res);
@@ -346,7 +347,38 @@ export class WebClient {
     private namePlayer(player: number, cap: boolean = false) {
         if (player === this.playerNumber)
             return 'you';
-        return 'your opponent'
+        return 'your opponent';
+    }
+
+    private openDamageSelector(attacker: Unit, defenders: Unit[]) {
+        let config = new MatDialogConfig();
+        config.disableClose = true;
+        let dialogRef = this.dialog.open(DamageDistributionDialogComponent, config);
+
+        dialogRef.componentInstance.attacker = attacker;
+        dialogRef.componentInstance.defenders = defenders;
+
+        return dialogRef.afterClosed().toPromise()
+            .then((order: Unit[]) => {
+                this.game.setAttackOrder(attacker, order);
+            });
+    }
+
+    private createDamageSelectors() {
+        let orderables = Array.from(this.game.getModableDamageDistributions().entries())
+            .map(entry => {
+                return { attacker: this.game.getUnitById(entry[0]), blockers: entry[1] };
+            });
+        let runNext =  () => {
+            if (orderables.length === 0) {
+                this.game.pass();
+                return;
+            }
+            let next = orderables.pop();
+            this.openDamageSelector(next.attacker, next.blockers)
+                .then(runNext);
+        }
+        runNext();
     }
 
     private handleGameEvent(event: GameSyncEvent) {
@@ -370,14 +402,17 @@ export class WebClient {
                 this.soundManager.playSound('magic');
                 break;
             case SyncEventType.Block:
-                this.addBlockOverlay(event.params.blockerId, event.params.blockedId)
+                this.addBlockOverlay(event.params.blockerId, event.params.blockedId);
                 this.soundManager.playSound('attack');
                 break;
             case SyncEventType.PhaseChange:
                 if (event.params.phase === GamePhase.Block)
                     this.tips.blockPhaseTrigger(this.game, this.playerNumber);
+                if (event.params.phase === GamePhase.DamageDistribution && this.game.isActivePlayer(this.playerNumber))
+                    this.createDamageSelectors();
                 if (event.params.phase === GamePhase.Play2)
                     this.overlay.clearBlockers();
+
                 break;
             case SyncEventType.PlayCard:
                 this.soundManager.playSound('magic');
@@ -400,7 +435,7 @@ export class WebClient {
                     this.soundManager.playImportantSound('fanfare');
                 else
                     this.soundManager.playImportantSound('defeat');
-                break
+                break;
             case SyncEventType.PlayResource:
                 this.tips.playResourceTrigger(this.game, this.playerNumber);
                 break;
@@ -441,8 +476,8 @@ export class WebClient {
         if (this.state === ClientState.PrivateLobbyFail)
             return 'Failed to join game (it may have been canceled).';
         if (this.state === ClientState.InQueue)
-            return 'In Queue. Waiting for an opponent.'
-        return 'Error.'
+            return 'In Queue. Waiting for an opponent.';
+        return 'Error.';
     }
 
     public getState() {
@@ -457,7 +492,7 @@ export class WebClient {
         return {
             me: this.playerNumber,
             op: this.opponentNumber
-        }
+        };
     }
 
     public getUsername() {
