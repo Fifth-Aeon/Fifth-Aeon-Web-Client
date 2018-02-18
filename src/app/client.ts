@@ -377,7 +377,7 @@ export class WebClient {
             let next = orderables.pop();
             this.openDamageSelector(next.attacker, next.blockers)
                 .then(runNext);
-        }
+        };
         runNext();
     }
 
