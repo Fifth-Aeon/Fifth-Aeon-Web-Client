@@ -59,6 +59,7 @@ import { ResetPasswordComponent } from 'app/user/reset-password/reset-password.c
 import { OpenPackComponent } from './open-pack/open-pack.component';
 import { CollectionService } from './collection.service';
 import { DamageDistributionDialogComponent } from './damage-distribution-dialog/damage-distribution-dialog.component';
+import { SortableDirective } from './sortable.directive';
 
 if ('serviceWorker' in navigator && environment.production) {
   window.addEventListener('load', function () {
@@ -90,6 +91,7 @@ if ('serviceWorker' in navigator && environment.production) {
     DeckMetadataDialogComponent,
     OpenPackComponent,
     DamageDistributionDialogComponent,
+    SortableDirective,
   ],
   entryComponents: [CardChooserComponent, EndDialogComponent,
     SettingsDialogComponent, DeckMetadataDialogComponent, DamageDistributionDialogComponent],

@@ -2,7 +2,9 @@
 
 <div mat-dialog-actions>
   <ccg-card scale="1.45" [card]="attacker"></ccg-card>
-  <ccg-card scale="1.45" *ngFor="let defender of defenders" [card]="defender"></ccg-card>
+  <div ccgSortable class="sortable" (orderChanged)="orderChanged($event)">
+    <ccg-card scale="1.45" *ngFor="let defender of defenders" [card]="defender"></ccg-card>
+  </div>
 </div>
 
 <div mat-dialog-actions>
