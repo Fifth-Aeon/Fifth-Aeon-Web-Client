@@ -12,15 +12,15 @@
         <button mat-mini-fab matTooltipPosition="above" matTooltip="Next Page." (click)="next()" [disabled]="!canNext()"><mat-icon>arrow_forward</mat-icon></button>
         -->
         <span>You have {{collection.getPackCount()}} pack(s).</span>
-      <button mat-fab matTooltipPosition="above" matTooltip="Open a pack." color="primary" (click)="open()" [disabled]="!collection.canOpenBooster()">
+      <button mat-fab matTooltipPosition="above" matTooltip="Open a pack." color="primary" (click)="open()" [disabled]="!collection.canOpenBooster() || working">
         <mat-icon>grade</mat-icon>
       </button>
       <a routerLink="/lobby">
-        <button mat-fab matTooltipPosition="above" matTooltip="Return to lobby" color="accent" (click)="done()">
+        <button mat-fab matTooltipPosition="above" matTooltip="Return to lobby" color="accent" (click)="done()" [disabled]="working">
           <mat-icon>check</mat-icon>
         </button>
       </a>
-      <button mat-fab matTooltipPosition="above" matTooltip="Buy a pack for 100 gold." color="primary" (click)="buy()" [disabled]="!collection.canBuyPack()">
+      <button mat-fab matTooltipPosition="above" matTooltip="Buy a pack for 100 gold." color="primary" (click)="buy()" [disabled]="!collection.canBuyPack() || working">
         <mat-icon>shopping_card</mat-icon>
       </button>
     </mat-card-content>

@@ -14,6 +14,7 @@ import { CollectionService } from 'app/collection.service';
 export class OpenPackComponent implements OnInit {
   collection: Collection;
   cards: Card[];
+  working: boolean;
 
   constructor(
     decks: DecksService,
@@ -22,16 +23,20 @@ export class OpenPackComponent implements OnInit {
     this.collection = collectionService.getCollection();
   }
 
-  open() {
-    this.cards = this.collection.openBooster().map(id => allCards.get(id)());
+  async open() {
+    this.working = true;
+    this.cards = await this.collectionService.openPack();
+    this.working = false;
+
   }
 
-  buy() {
-    this.collection.buyPack();
+  async buy() {
+    this.working = true;
+    await this.collectionService.buyPack();
+    this.working = false;
   }
 
   done() {
-    this.collectionService.save();
   }
 
   ngOnInit() {

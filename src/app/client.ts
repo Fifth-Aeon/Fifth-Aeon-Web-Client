@@ -450,7 +450,9 @@ export class WebClient {
 
         dialogRef.componentInstance.winner = playerWon;
         dialogRef.componentInstance.quit = quit;
-        dialogRef.componentInstance.rewards = this.collection.onGameEnd(winner, quit);
+
+        this.collection.onGameEnd(winner === this.playerNumber, quit).then(msg =>
+            dialogRef.componentInstance.rewards = msg);
         dialogRef.afterClosed().subscribe(result => {
             this.returnToLobby();
         });

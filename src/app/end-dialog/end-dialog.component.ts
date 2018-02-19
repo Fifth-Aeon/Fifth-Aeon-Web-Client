@@ -10,7 +10,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 export class EndDialogComponent implements OnInit {
   public winner = false;
   public quit = false;
-  public rewards: string;
+  public rewards = 'Loading rewards...';
 
   constructor(public dialogRef: MatDialogRef<EndDialogComponent>) { }
 
