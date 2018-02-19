@@ -17,7 +17,6 @@ export class DeckMetadataDialogComponent implements OnInit {
 
   ngOnInit() {
     this.cards = this.deck.getRecordList().map(rec => rec.card);
-    console.log(this.cards);
   }
 
   public done() {
