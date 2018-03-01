@@ -45,6 +45,7 @@ export class LobbyComponent implements OnInit {
   public exit() {
     if (this.client.getState() === ClientState.InQueue)
       this.client.leaveQueue();
+    this.client.exitGame(true);
     return null;
   }
 

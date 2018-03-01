@@ -91,7 +91,8 @@ export class GameComponent implements OnInit {
 
   @HostListener('window:beforeunload')
   public exit() {
-    this.client.exitGame();
+    console.log('exit game');
+    this.client.exitGame(true);
     return null;
   }
 
@@ -145,7 +146,7 @@ export class GameComponent implements OnInit {
 
   private isMyTurn(): boolean {
     let currentPlayer = this.game.getActivePlayer();
-    return (!currentPlayer || currentPlayer === this.playerNo)
+    return (!currentPlayer || currentPlayer === this.playerNo);
   }
   public currPlayerName(): string {
     return this.isMyTurn() ?
@@ -172,7 +173,7 @@ export class GameComponent implements OnInit {
   public overlayCardPos(index: number) {
     return {
       left: 15 + (index * 10) + '%'
-    }
+    };
   }
 
   public phaseImage() {
@@ -239,7 +240,7 @@ export class GameComponent implements OnInit {
     let targeter = card.getTargeter();
     if (card.getCardType() === CardType.Item && !this.host)
       return false;
-    return !targeter.needsInput() || this.selected === card && targeter.isOptional()
+    return !targeter.needsInput() || this.selected === card && targeter.isOptional();
   }
 
 

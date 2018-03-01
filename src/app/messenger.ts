@@ -62,6 +62,10 @@ export class Messenger {
         setInterval(() => this.sendMessageToServer(MessageType.Ping, {}), pingTime);
     }
 
+    public close() {
+        this.ws.close();
+    }
+
     private connect() {
         if (Date.now() - this.lastConnectAttempt < minConnectTime) {
             return;
@@ -92,7 +96,7 @@ export class Messenger {
     private onConnect() {
         this.connectChange(true);
         this.sendMessageToServer(MessageType.Connect, {});
-        console.log('Connected, requesting queued messages.')
+        console.log('Connected, requesting queued messages.');
         if (this.loggedIn) {
             this.emptyMessageQueue();
         } else {

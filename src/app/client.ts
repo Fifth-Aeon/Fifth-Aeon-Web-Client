@@ -279,12 +279,18 @@ export class WebClient {
         return this.connected;
     }
 
-    public exitGame() {
+
+    public exitGame(final = false) {
         this.sendGameAction(GameActionType.Quit, {});
-        this.initGame();
-        this.playerNumber = 0;
-        this.changeState(ClientState.InLobby);
-        this.router.navigate(['/lobby']);
+
+        if (final) {
+            this.messenger.close();
+        } else {
+            this.initGame();
+            this.playerNumber = 0;
+            this.changeState(ClientState.InLobby);
+            this.router.navigate(['/lobby']);
+        }
     }
 
     public join() {
@@ -369,7 +375,7 @@ export class WebClient {
             .map(entry => {
                 return { attacker: this.game.getUnitById(entry[0]), blockers: entry[1] };
             });
-        let runNext =  () => {
+        let runNext = () => {
             if (orderables.length === 0) {
                 this.game.pass();
                 return;
