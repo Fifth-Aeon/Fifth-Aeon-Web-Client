@@ -70,10 +70,15 @@ export class GameComponent implements OnInit {
   public blockable: Set<Unit>;
   public blocker: Unit;
 
-  constructor(public client: WebClient, public dialog: MatDialog,
-    private hotkeys: HotkeysService, public overlay: OverlayService,
-    private tips: TipService) {
+  constructor(
+    public client: WebClient,
+    public dialog: MatDialog,
+    private hotkeys: HotkeysService,
+    public overlay: OverlayService,
+    private tips: TipService
+  ) {
     this.game = client.getGame();
+    this.overlay.setGame(this.game);
     this.player = this.game.getPlayer(client.getPlayerdata().me);
     this.enemy = this.game.getPlayer(client.getPlayerdata().op);
     this.playerNo = client.getPlayerdata().me;
@@ -157,7 +162,7 @@ export class GameComponent implements OnInit {
     return this.isMyTurn() ?
       'cornflowerblue' : 'crimson';
   }
-  public phaseName(): string {
+  public phaseName() {
     switch (this.game.getPhase()) {
       case GamePhase.Play1:
         return 'first play phase';
@@ -165,15 +170,11 @@ export class GameComponent implements OnInit {
         return 'second play phase';
       case GamePhase.Block:
         return 'block phase';
+      case GamePhase.DamageDistribution:
+        return 'damage distribution phase';
       case GamePhase.End:
         return 'discard phase';
     }
-  }
-
-  public overlayCardPos(index: number) {
-    return {
-      left: 15 + (index * 10) + '%'
-    };
   }
 
   public phaseImage() {
@@ -183,6 +184,8 @@ export class GameComponent implements OnInit {
       case GamePhase.Play2:
         return 'play2';
       case GamePhase.Block:
+        return 'block';
+      case GamePhase.DamageDistribution:
         return 'block';
       case GamePhase.End:
         return 'discard';

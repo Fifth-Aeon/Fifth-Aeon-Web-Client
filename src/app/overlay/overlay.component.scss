@@ -1,0 +1,16 @@
+.overlay {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  z-index: 20;
+  background-color: transparent;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
+.overlayed-card {
+  position: absolute; //left: 15%;
+  top: 40%;
+  z-index: 1000;
+}

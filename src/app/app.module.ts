@@ -60,6 +60,7 @@ import { OpenPackComponent } from './open-pack/open-pack.component';
 import { CollectionService } from './collection.service';
 import { DamageDistributionDialogComponent } from './damage-distribution-dialog/damage-distribution-dialog.component';
 import { SortableDirective } from './sortable.directive';
+import { OverlayComponent } from './overlay/overlay.component';
 
 if ('serviceWorker' in navigator && environment.production) {
   window.addEventListener('load', function () {
@@ -92,6 +93,7 @@ if ('serviceWorker' in navigator && environment.production) {
     OpenPackComponent,
     DamageDistributionDialogComponent,
     SortableDirective,
+    OverlayComponent,
   ],
   entryComponents: [CardChooserComponent, EndDialogComponent,
     SettingsDialogComponent, DeckMetadataDialogComponent, DamageDistributionDialogComponent],

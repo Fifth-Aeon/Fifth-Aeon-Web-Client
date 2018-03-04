@@ -5,9 +5,10 @@ import { Unit } from 'app/game_model/unit';
 import { Card, CardType } from 'app/game_model/card';
 import { Item } from 'app/game_model/item';
 import { Game } from 'app/game_model/game';
+import { ClientGame } from './game_model/clientGame';
 
 
-interface Arrow { x1: number, y1: number, x2: number, y2: number }
+interface Arrow { x1: number; y1: number; x2: number; y2: number; }
 
 @Injectable()
 export class OverlayService {
@@ -18,9 +19,14 @@ export class OverlayService {
   private uiElements: Map<string, string> = new Map();
   private blocks: Array<[string, string]> = [];
   public targets: Array<Arrow> = [];
+  public game: ClientGame;
 
 
   constructor() { }
+
+  public setGame(game: ClientGame) {
+    this.game = game;
+  }
 
   public addInteractionArrow(from: string, to: string) {
     let arrow = this.toArrow([from, to]);
@@ -96,13 +102,13 @@ export class OverlayService {
     if (!startRect || !endRect) {
       console.error('Could not form arrow from', pair);
       return null;
-    };
+    }
     return {
       x1: this.getCenter(startRect.right, startRect.left, pageXOffset),
       y1: this.getCenter(startRect.top, startRect.bottom, pageYOffset),
       x2: this.getCenter(endRect.right, endRect.left, pageXOffset),
       y2: this.getCenter(endRect.top, endRect.bottom, pageYOffset),
-    }
+    };
   }
 
   public getBlockArrows(): Arrow[] {

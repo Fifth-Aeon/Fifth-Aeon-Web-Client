@@ -1,5 +1,7 @@
 <ccg-record-bar [log]="game.getLog()"></ccg-record-bar>
 <div class="game-area">
+
+  <!-- Enemy Information Bar -->
   <div class="info-bar">
     <p class="info-text"  id="enemy-name">{{client.getOpponentUsername()}}</p>
     <button matTooltipPosition="below" matTooltip="View enemy crypt." color="primary" class="crypt-button" (click)="viewCrypt(enemyNo)"
@@ -19,22 +21,7 @@
 
   </div>
 
-  <svg class="overlay">
-    <defs>
-      <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
-        <path d="M0,0 L0,6 L9,3 z" fill="royalblue" />
-      </marker>
-    </defs>
-
-    <line *ngFor="let arrow of overlay.getBlockArrows()" [attr.x1]="arrow.x1" [attr.y1]="arrow.y1" [attr.x2]="arrow.x2" [attr.y2]="arrow.y2"
-      marker-end="url(#arrow)" stroke="royalblue" stroke-width="5" />
-
-    <line *ngFor="let arrow of overlay.targets" [attr.x1]="arrow.x1" [attr.y1]="arrow.y1" [attr.x2]="arrow.x2" [attr.y2]="arrow.y2"
-      marker-end="url(#arrow)" stroke="royalblue" stroke-width="5" />
-  </svg>
-
-  <ccg-card *ngFor="let card of overlay.displayCards; let i = index;"  [ngStyle]="overlayCardPos(i)"
-  [@inHand]="isInHand(card)" class="overlayed-card"  scale="1.6" [card]="card" [game]="game"></ccg-card>
+  <ccg-overlay></ccg-overlay>
 
 
   <!-- Enemy Board -->
@@ -52,6 +39,7 @@
     </ccg-card>
   </div>
 
+  <!-- Player Information Bar -->
   <div class="info-bar">
     <ccg-resource-selector [canPlayResource]="canPlayResource()"></ccg-resource-selector>
     <p class="info-text" id="player-name">{{client.getUsername()}} </p>
@@ -76,7 +64,6 @@
 
     <button [disabled]="passDisabled()" mat-raised-button color="primary" class="pass-button" (click)="pass()">{{getPassText()}}</button>
     <ccg-resource-display [resource]="player.getPool()"></ccg-resource-display>
-    <!--<ccg-player-avatar></ccg-player-avatar>-->
   </div>
 
   <!-- Player Hand -->
