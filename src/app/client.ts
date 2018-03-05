@@ -118,7 +118,10 @@ export class WebClient {
     }
 
     private initGame() {
-        this.game = new ClientGame('player', (type, params) => this.sendGameAction(type, params, false), this.log);
+        this.game = new ClientGame('player',
+            (type, params) => this.sendGameAction(type, params, false),
+            this.overlay.getAnimator(),
+            this.log);
     }
 
     private addHotkeys() {
@@ -555,15 +558,16 @@ export class WebClient {
         this.log.setPlayer(0);
         this.initGame();
         let aiDeck = sample(allDecks);
-        console.log('A.I deck', aiDeck);
         this.gameModel = new ServerGame('server', standardFormat, [this.deck, aiDeck]);
-        let aiModel = new ClientGame('ai', (type, params) => this.sendGameAction(type, params, true));
+        let aiModel = new ClientGame('ai',
+            (type, params) => this.sendGameAction(type, params, true),
+            this.overlay.getAnimator());
 
         let aiAction = (type: GameActionType, params: any) => {
             console.log('A.I action', GameActionType[type], params);
             this.sendGameAction(type, params, true);
         };
-        this.ai = new BasicAI(1, aiModel);
+        this.ai = new BasicAI(1, aiModel, this.overlay.getAnimator());
         this.setAISpeed(this.speed.speeds.aiTick);
 
         this.router.navigate(['/game']);

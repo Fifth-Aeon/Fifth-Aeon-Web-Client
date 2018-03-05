@@ -6,6 +6,7 @@ import { Card, CardType } from 'app/game_model/card';
 import { Item } from 'app/game_model/item';
 import { Game } from 'app/game_model/game';
 import { ClientGame } from './game_model/clientGame';
+import { Animator, BattleAnimationEvent } from './game_model/animator';
 
 
 interface Arrow { x1: number; y1: number; x2: number; y2: number; }
@@ -15,14 +16,39 @@ export class OverlayService {
   public static arrowTimer = 2000;
   public static cardTimer = 3500;
 
-  public displayCards: Card[] = [];
   private uiElements: Map<string, string> = new Map();
   private blocks: Array<[string, string]> = [];
+  public displayCards: Card[] = [];
+  public attacker: Unit = null;
+  public defenders: Unit[] = [];
   public targets: Array<Arrow> = [];
   public game: ClientGame;
+  private animator: Animator = new Animator();
+  public darkened = false;
 
+  constructor() {
+    this.animator.addBattleAnimiatonHandler(event => this.animateBattle(event));
+  }
 
-  constructor() { }
+  private async animateBattle(event: BattleAnimationEvent) {
+    this.defenders = event.defenders;
+    if (event.defenders.length === 0) {
+      let defendingPlayer = this.game.getPlayer(this.game.getOtherPlayerNumber(this.game.getActivePlayer()));
+      this.defenders = [defendingPlayer];
+    }
+    this.darkened = true;
+    this.attacker = event.attacker;
+
+    await this.animator.getAnimationDelay();
+
+    this.defenders = [];
+    this.attacker = null;
+    this.darkened = false;
+  }
+
+  public getAnimator() {
+    return this.animator;
+  }
 
   public setGame(game: ClientGame) {
     this.game = game;

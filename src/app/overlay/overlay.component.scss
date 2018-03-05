@@ -3,14 +3,36 @@
   top: 0px;
   right: 0px;
   z-index: 20;
-  background-color: transparent;
   width: 100vw;
   height: 100vh;
   pointer-events: none;
 }
 
 .overlayed-card {
-  position: absolute; //left: 15%;
-  top: 40%;
+  position: absolute;
   z-index: 1000;
+}
+
+.played-card {
+  top: 40%;
+}
+
+
+@mixin overlay-area {
+  pointer-events: none;
+  position: absolute;
+  z-index: 1000;
+  height: calc((80vh)/2);
+  width: 100vw;
+  left: 0px;
+}
+
+.defender-area {
+  @include overlay-area();
+  top: 10%;
+}
+
+.attacker-area {
+  @include overlay-area();
+  bottom: 10%;
 }
