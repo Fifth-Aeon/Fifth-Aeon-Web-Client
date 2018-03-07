@@ -14,6 +14,15 @@ const openPackURL = `${apiURL}/api/cards/openPack`;
 export class CollectionService {
   private collection = new Collection();
 
+  static describeReward(reward: Rewards): string {
+    let msg = `You earned ${reward.gold} gold`;
+    if (reward.packs === 1)
+      msg += ` and a card pack`;
+    else if (reward.packs > 1)
+      msg += ` and ${reward.packs} card packs`;
+    return msg + '.';
+  }
+
   constructor(
     private auth: AuthenticationService,
     private http: HttpClient
@@ -87,14 +96,7 @@ export class CollectionService {
     }
 
     this.collection.addReward(reward);
-    let msg = `You earned ${reward.gold} gold`;
-
-    if (reward.packs === 1)
-      msg += ` and a card pack`;
-    else if (reward.packs > 1)
-      msg += ` and ${reward.packs} card packs`;
-
-    return msg + '.';
+    return CollectionService.describeReward(reward);
   }
 
 

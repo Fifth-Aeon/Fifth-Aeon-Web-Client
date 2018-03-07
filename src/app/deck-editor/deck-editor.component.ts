@@ -107,7 +107,7 @@ export class DeckEditorComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.onResize(document.getElementById('editor-cards').getBoundingClientRect())
+    this.onResize(document.getElementById('editor-cards').getBoundingClientRect());
   }
 
 }

@@ -61,6 +61,8 @@ import { CollectionService } from './collection.service';
 import { DamageDistributionDialogComponent } from './damage-distribution-dialog/damage-distribution-dialog.component';
 import { SortableDirective } from './sortable.directive';
 import { OverlayComponent } from './overlay/overlay.component';
+import { DraftComponent } from './draft/draft.component';
+import { DraftService } from './draft.service';
 
 if ('serviceWorker' in navigator && environment.production) {
   window.addEventListener('load', function () {
@@ -94,6 +96,7 @@ if ('serviceWorker' in navigator && environment.production) {
     DamageDistributionDialogComponent,
     SortableDirective,
     OverlayComponent,
+    DraftComponent,
   ],
   entryComponents: [CardChooserComponent, EndDialogComponent,
     SettingsDialogComponent, DeckMetadataDialogComponent, DamageDistributionDialogComponent],
@@ -121,6 +124,7 @@ if ('serviceWorker' in navigator && environment.production) {
       { path: 'private', component: PrivateLobbyComponent, canActivate: [LoggedInGuard] },
       { path: 'packs', component: OpenPackComponent, canActivate: [LoggedInGuard] },
       { path: 'lobby', component: LobbyComponent, canActivate: [LoggedInGuard] },
+      { path: 'draft', component: DraftComponent, canActivate: [LoggedInGuard] },
       { path: '', component: LobbyComponent, canActivate: [LoggedInGuard] },
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
@@ -130,7 +134,7 @@ if ('serviceWorker' in navigator && environment.production) {
     ])
   ],
   providers: [SoundManager, WebClient, DecksService, SpeedService, OverlayService,
-    TipService, Preloader, InPlayGuard, LoggedInGuard, CollectionService],
+    TipService, Preloader, InPlayGuard, LoggedInGuard, CollectionService, DraftService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

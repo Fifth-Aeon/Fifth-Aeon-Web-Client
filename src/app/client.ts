@@ -71,6 +71,7 @@ export class WebClient {
 
     private toJoin: string;
     public onDeckSelected: () => void;
+    public onGameEnd: (won: boolean) => string = null;
 
     private onError: (error: string) => void = () => null;
 
@@ -431,19 +432,7 @@ export class WebClient {
                 this.tips.drawCardTrigger(this.game, this.playerNumber, event.params.discarded);
                 break;
             case SyncEventType.Ended:
-                this.openEndDialog(event.params.winner, event.params.quit);
-                this.analytics.eventTrack.next({
-                    action: 'endGame',
-                    properties: {
-                        category: 'usage',
-                        label: !this.ai ? 'singleplayer' : 'multiplayer'
-                    }
-                });
-
-                if (event.params.winner === this.playerNumber)
-                    this.soundManager.playImportantSound('fanfare');
-                else
-                    this.soundManager.playImportantSound('defeat');
+                this.endGame(event.params.winner, event.params.quit);
                 break;
             case SyncEventType.PlayResource:
                 this.tips.playResourceTrigger(this.game, this.playerNumber);
@@ -451,8 +440,20 @@ export class WebClient {
         }
     }
 
-    private openEndDialog(winner: number, quit: boolean) {
-        let playerWon = this.playerNumber === winner;
+    private endGame(winner: number, quit: boolean) {
+        const playerWon = winner === this.playerNumber;
+        this.openEndDialog(playerWon, quit);
+        this.analytics.eventTrack.next({
+            action: 'endGame',
+            properties: {
+                category: 'usage',
+                label: !this.ai ? 'singleplayer' : 'multiplayer'
+            }
+        });
+        this.soundManager.playImportantSound(playerWon ? 'fanfare' : 'defeat');
+    }
+
+    private openEndDialog(playerWon: boolean, quit: boolean) {
         let config = new MatDialogConfig();
         config.disableClose = true;
         let dialogRef = this.dialog.open(EndDialogComponent, config);
@@ -460,8 +461,11 @@ export class WebClient {
         dialogRef.componentInstance.winner = playerWon;
         dialogRef.componentInstance.quit = quit;
 
-        this.collection.onGameEnd(winner === this.playerNumber, quit).then(msg =>
-            dialogRef.componentInstance.rewards = msg);
+        if (!this.onGameEnd)
+            this.collection.onGameEnd(playerWon, quit).then(msg =>
+                dialogRef.componentInstance.rewards = msg);
+        else
+            dialogRef.componentInstance.rewards = this.onGameEnd(playerWon);
         dialogRef.afterClosed().subscribe(result => {
             this.returnToLobby();
         });
