@@ -67,7 +67,7 @@ export class GameComponent implements OnInit {
   public locations = GameZone;
   public selected: Card = null;
   public validTargets: Set<Unit> = new Set();
-  public blockable: Set<Unit>;
+  public blockable: Set<Unit> = new Set();
   public blocker: Unit;
 
   constructor(
