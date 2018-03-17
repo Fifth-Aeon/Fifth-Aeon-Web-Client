@@ -14,7 +14,6 @@ const feedbackBody = 'Please write about any bugs, suggestions, etc that came to
   styleUrls: ['./lobby.component.scss']
 })
 export class LobbyComponent implements OnInit {
-  public state = ClientState;
   public feedbackUrl = `mailto:william.ritson@gmail.com?subject=Card Game Feedback&body=${feedbackBody}`;
 
   constructor(
@@ -39,6 +38,10 @@ export class LobbyComponent implements OnInit {
     } else if (fsRequester.requestFullscreen) {
       fsRequester.requestFullscreen();
     }
+  }
+
+  public inLobby() {
+    return this.client.getState() === ClientState.InLobby;
   }
 
   @HostListener('window:beforeunload')

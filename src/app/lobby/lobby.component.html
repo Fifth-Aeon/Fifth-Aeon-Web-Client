@@ -11,39 +11,55 @@
     <mat-icon class="toolbar-icon" matTooltip="Disconnected" *ngIf="!client.isConnected()">cloud_off</mat-icon>
 
   </mat-toolbar>
-  <p class="instructions">{{client.getInstruction()}}</p>
 
-  <mat-progress-spinner *ngIf="getState() !== state.InLobby" attr.color="primary" mode="indeterminate"></mat-progress-spinner>
-
-  <div *ngIf="getState() === state.InLobby">
-    <h2>Singleplayer</h2>
-    <!--<button mat-raised-button color="primary" (click)="client.openDeckSelector()"><mat-icon svgIcon="ccg:deck"></mat-icon> Manage Decks</button>-->
-    <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(0)"><mat-icon>android</mat-icon><span> Play vs A.I </span></button>
-    <button mat-raised-button color="primary" routerLink="/draft"><mat-icon>android</mat-icon><span> Singleplayer Draft </span></button>
-    <button routerLink="/packs" mat-raised-button color="primary"><mat-icon>grade</mat-icon><span> Open Packs </span></button>
-   
-  </div>
-
-  <div *ngIf="getState() === state.InLobby">
-    <h2>Multiplayer</h2>
-    <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(1)"><mat-icon>public</mat-icon> Public Game</button>
-    <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(2)"><mat-icon>vpn_key</mat-icon> Private Game</button>
-  </div>
-
-  <div *ngIf="getState() === state.InLobby">
-    <h2>Settings</h2>
-    <button mat-raised-button color="primary" (click)="client.openSettings()"><mat-icon>settings</mat-icon><span> Settings</span></button>
-    <a href="{{feedbackUrl}}" target="_blank"><button mat-raised-button color="primary" ><mat-icon>bug_report</mat-icon><span> Feedback</span></button></a>
-  </div>
-
-
-  <!--
+  <ng-template [ngIf]="inLobby()">
     <div>
-      <mat-radio-group [(ngModel)]="difficulty">
-        <mat-radio-button *ngFor="let d of [diffs.Easy, diffs.Medium, diffs.Hard]" [value]="d">
-          {{diffs[d]}}
-        </mat-radio-button>
-      </mat-radio-group>
+      <h2>Singleplayer</h2>
+      <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(0)">
+        <mat-icon>android</mat-icon>
+        <span> Play vs A.I </span>
+      </button>
+      <button mat-raised-button color="primary" routerLink="/draft">
+        <mat-icon>android</mat-icon>
+        <span> Singleplayer Draft </span>
+      </button>
+      <button routerLink="/packs" mat-raised-button color="primary">
+        <mat-icon>grade</mat-icon>
+        <span> Open Packs </span>
+      </button>
     </div>
-  -->
+
+    <div>
+      <h2>Multiplayer</h2>
+      <ng-template [ngIf]="client.isConnected()">
+        <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(1)">
+          <mat-icon>public</mat-icon> Public Game</button>
+        <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(2)">
+          <mat-icon>vpn_key</mat-icon> Private Game</button>
+      </ng-template>
+      <mat-progress-spinner *ngIf="!client.isConnected()" attr.color="primary" mode="indeterminate"></mat-progress-spinner>
+    </div>
+    
+    <div>
+      <h2>Settings</h2>
+      <button mat-raised-button color="primary" (click)="client.openSettings()">
+        <mat-icon>settings</mat-icon>
+        <span> Settings</span>
+      </button>
+      <a href="{{feedbackUrl}}" target="_blank">
+        <button mat-raised-button color="primary">
+          <mat-icon>bug_report</mat-icon>
+          <span> Feedback</span>
+        </button>
+      </a>
+    </div>
+  </ng-template>
+
+  <ng-template [ngIf]="!inLobby()">
+    <p class="instructions">{{client.getInstruction()}}</p>
+    <mat-progress-spinner attr.color="primary" mode="indeterminate"></mat-progress-spinner>
+  </ng-template>
+
+
+
 </div>

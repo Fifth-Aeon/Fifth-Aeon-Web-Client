@@ -36,6 +36,8 @@ import { TipService, TipType } from './tips';
 import { SpeedService } from 'app/speed.service';
 import { CollectionService } from 'app/collection.service';
 import { DamageDistributionDialogComponent } from './damage-distribution-dialog/damage-distribution-dialog.component';
+import { MessengerService } from './messenger.service';
+import { UserData, AuthenticationService } from './user/authentication.service';
 
 
 export enum ClientState {
@@ -81,21 +83,22 @@ export class WebClient {
         private router: Router,
         private zone: NgZone,
         private sanitizer: DomSanitizer,
-        preloader: Preloader,
         public dialog: MatDialog,
         private overlay: OverlayService,
         private hotkeys: HotkeysService,
         private analytics: Angulartics2,
         private speed: SpeedService,
-        private collection: CollectionService
+        private collection: CollectionService,
+        preloader: Preloader,
+        messengerService: MessengerService,
+        auth: AuthenticationService
     ) {
-
+        auth.onAuth((user) => this.onLogin(user));
         this.initGame();
         this.playerNumber = 0;
-        this.messenger = new Messenger();
+        this.messenger = messengerService.getMessenger();
         this.log = new Log(this.playerNumber);
 
-        this.messenger.onlogin = (username) => this.onLogin(username);
         this.messenger.addHandeler(MessageType.StartGame, this.startGame, this);
         this.messenger.addHandeler(MessageType.GameEvent, (msg) => this.handleGameEvent(msg.data), this);
         this.messenger.addHandeler(MessageType.ClientError, (msg) => this.clientError(msg), this);
@@ -164,7 +167,7 @@ export class WebClient {
     }
 
     // Misc --------------------
-    private onLogin(loginData: { username: string, token: string, deckList: string }) {
+    private onLogin(loginData: UserData) {
         this.changeState(ClientState.InLobby);
         this.username = loginData.username;
         this.deck = new DeckList(standardFormat);

@@ -37,29 +37,29 @@ let pingTime = 1000 * 15;
  */
 export class Messenger {
     private handlers: Map<string, (msg: Message) => void>;
-    private username: string;
-    private id: string;
     private ws: WebSocket;
     private messageQueue: Queue<string> = new Queue<string>();
     private lastConnectAttempt: number;
+    private id: string;
 
     private loggedIn = false;
 
-    public onlogin: (data: any) => void = () => null;
     public connectChange: (status: boolean) => void = () => null;
 
     constructor() {
         this.handlers = new Map();
-        this.id = Math.random().toString(16);
-        this.addHandeler(MessageType.LoginResponce, (msg) => this.login(msg));
-        this.connect();
         setInterval(() => {
-            if (!this.ws || this.ws.readyState === this.ws.OPEN)
+            if (!this.id || !this.ws || this.ws.readyState === this.ws.OPEN)
                 return;
             console.log('Attempting automatic reconnect');
             this.connect();
         }, autoReconenctTime);
         setInterval(() => this.sendMessageToServer(MessageType.Ping, {}), pingTime);
+    }
+
+    public setID(id: string) {
+        this.id = id;
+        this.connect();
     }
 
     public close() {
@@ -83,15 +83,6 @@ export class Messenger {
             this.ws.send(this.messageQueue.dequeue());
         }
     }
-
-    private login(msg: Message) {
-        this.username = msg.data.username;
-        this.id = msg.data.token;
-        this.loggedIn = true;
-        this.onlogin(msg.data);
-        this.emptyMessageQueue();
-    }
-
 
     private onConnect() {
         this.connectChange(true);

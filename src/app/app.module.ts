@@ -13,14 +13,6 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { HotkeyModule } from 'angular2-hotkeys';
 import { Angulartics2Module } from 'angulartics2';
 import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
-import {
-  MatButtonModule, MatRadioModule, MatIconModule,
-  MatTooltipModule, MatSnackBarModule, MatToolbarModule,
-  MatProgressSpinnerModule, MatDialogModule, MatListModule,
-  MatCardModule, MatSliderModule, MatCheckboxModule, MatPaginatorModule,
-  MatTabsModule, MatFormFieldModule, MatInputModule, MatMenuModule,
-  MatSelectModule
-} from '@angular/material';
 
 // App Angular Services
 import { SoundManager } from './sound';
@@ -63,17 +55,8 @@ import { SortableDirective } from './sortable.directive';
 import { OverlayComponent } from './overlay/overlay.component';
 import { DraftComponent } from './draft/draft.component';
 import { DraftService } from './draft.service';
-
-if ('serviceWorker' in navigator && environment.production) {
-  window.addEventListener('load', function () {
-    navigator.serviceWorker.register('ngsw-worker.js')
-      .then(function (registration) {
-        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-      }).catch(function (err) {
-        console.error('ServiceWorker registration failed: ', err);
-      });
-  });
-}
+import { MessengerService } from './messenger.service';
+import { MaterialModule } from './material.module';
 
 @NgModule({
   declarations: [
@@ -102,7 +85,7 @@ if ('serviceWorker' in navigator && environment.production) {
     SettingsDialogComponent, DeckMetadataDialogComponent, DamageDistributionDialogComponent],
   imports: [
     BrowserModule,
-    // ServiceWorkerModule.register('ngsw-worker.js'),
+    ServiceWorkerModule.register('ngsw-worker.js'),
     UserModule,
     FormsModule,
     HttpModule,
@@ -110,11 +93,7 @@ if ('serviceWorker' in navigator && environment.production) {
     BrowserAnimationsModule,
     ClipboardModule,
     HotkeyModule.forRoot(),
-    MatButtonModule, MatIconModule, MatToolbarModule, MatRadioModule,
-    MatProgressSpinnerModule, MatTooltipModule, MatSnackBarModule,
-    MatDialogModule, MatListModule, MatCardModule, MatSliderModule,
-    MatCheckboxModule, MatPaginatorModule, MatTabsModule, MatFormFieldModule,
-    MatInputModule, MatMenuModule, MatSelectModule,
+    MaterialModule,
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
     RouterModule.forRoot([
       { path: 'game', component: GameComponent, canActivate: [InPlayGuard] },
@@ -134,7 +113,7 @@ if ('serviceWorker' in navigator && environment.production) {
     ])
   ],
   providers: [SoundManager, WebClient, DecksService, SpeedService, OverlayService,
-    TipService, Preloader, InPlayGuard, LoggedInGuard, CollectionService, DraftService],
+    TipService, Preloader, InPlayGuard, LoggedInGuard, CollectionService, DraftService, MessengerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

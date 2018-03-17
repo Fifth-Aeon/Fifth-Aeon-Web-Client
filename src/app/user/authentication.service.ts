@@ -3,12 +3,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { apiURL } from '../url';
 import { Router } from '@angular/router';
 
+export interface UserData {
+  token: string;
+  username: string;
+  mpToken: string;
+}
 
 @Injectable()
 export class AuthenticationService {
-  private token: string;
-  private username: string;
-  private authChangeCallbacks: Array<(username: string) => void> = [];
+  private user: UserData;
+  private authChangeCallbacks: Array<(user: UserData) => void> = [];
 
   constructor(
     private http: HttpClient,
@@ -16,8 +20,15 @@ export class AuthenticationService {
   ) {
     try {
       let data = JSON.parse(localStorage.getItem('login'));
-      this.setLogin(data.username, data.token);
+      this.confirmLogin(data.token).then((res) => {
+        if (res)
+          this.setLogin(data);
+      });
     } catch (e) { }
+  }
+
+  public getUser(): UserData {
+    return { ...this.user };
   }
 
   public gotoLogin() {
@@ -29,35 +40,27 @@ export class AuthenticationService {
   }
 
   public loggedIn() {
-    return this.token !== undefined;
+    return this.user !== undefined;
   }
 
   public logout() {
-    this.token = undefined;
-    this.username = undefined;
+    this.user = undefined;
     localStorage.setItem('login', '');
     this.authChangeCallbacks.forEach(callback => callback(null));
     this.router.navigateByUrl('/login');
   }
 
-  private setLogin(username: string, token: string) {
-    this.token = token;
-    this.username = username;
-    localStorage.setItem('login', JSON.stringify({ token: token, username: username }));
-    this.authChangeCallbacks.forEach(callback => callback(username));
-    this.router.navigateByUrl('/lobby');
-  }
 
-  public onAuth(callback: (username: string) => void) {
+  public onAuth(callback: (user: UserData) => void) {
     this.authChangeCallbacks.push(callback);
     if (this.loggedIn()) {
-      callback(this.username);
+      callback(this.user);
     }
   }
 
   public getAuthHeader() {
     return new HttpHeaders({
-      token: this.token
+      token: this.user.token
     });
   }
 
@@ -84,8 +87,8 @@ export class AuthenticationService {
         })
       })
       .toPromise()
-      .then((res: any) => {
-        this.setLogin(res.username, res.token);
+      .then((res: UserData) => {
+        this.setLogin(res);
       });
   }
 
@@ -95,8 +98,8 @@ export class AuthenticationService {
       email: email.toLowerCase(),
       password: password
     }).toPromise()
-      .then((res: any) => {
-        this.setLogin(username, res.token);
+      .then((res: UserData) => {
+        this.setLogin(res);
         localStorage.setItem('madeAccount', 'true');
       });
   }
@@ -106,9 +109,26 @@ export class AuthenticationService {
       usernameOrEmail: usernameOrEmail,
       password: password
     }).toPromise()
-      .then((res: any) => {
-        this.setLogin(res.username, res.token);
+      .then((res: UserData) => {
+        this.setLogin(res);
       });
+  }
+
+  private confirmLogin(token: string): Promise<UserData> {
+    return this.http.get(`${apiURL}/api/auth/userdata`, {
+      headers: new HttpHeaders({
+        token: token
+      })
+    }).toPromise()
+      .then((res: UserData) => res)
+      .catch(err => null);
+  }
+
+  private setLogin(user: UserData) {
+    this.user = user;
+    localStorage.setItem('login', JSON.stringify(user));
+    this.authChangeCallbacks.forEach(callback => callback(this.getUser()));
+    this.router.navigateByUrl('/lobby');
   }
 
 }
