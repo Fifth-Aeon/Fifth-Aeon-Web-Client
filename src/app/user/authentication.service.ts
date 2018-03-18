@@ -47,7 +47,7 @@ export class AuthenticationService {
     this.user = undefined;
     localStorage.setItem('login', '');
     this.authChangeCallbacks.forEach(callback => callback(null));
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/');
   }
 
 

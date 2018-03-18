@@ -93,7 +93,9 @@ export class WebClient {
         messengerService: MessengerService,
         auth: AuthenticationService
     ) {
-        auth.onAuth((user) => this.onLogin(user));
+        auth.onAuth((user) => {
+            if (user) this.onLogin(user);
+        });
         this.initGame();
         this.playerNumber = 0;
         this.messenger = messengerService.getMessenger();

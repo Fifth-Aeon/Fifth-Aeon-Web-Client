@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { WebClient, ClientState } from '../client';
 import { SoundManager } from '../sound';
 import { DecksService } from 'app/decks.service';
+import { AuthenticationService } from '../user/authentication.service';
 
 
 const feedbackBody = 'Please write about any bugs, suggestions, etc that came to mind while playing the game.';
@@ -20,7 +21,9 @@ export class LobbyComponent implements OnInit {
     private router: Router,
     public client: WebClient,
     public decks: DecksService,
-    public soundManager: SoundManager) {
+    public soundManager: SoundManager,
+    public auth: AuthenticationService
+  ) {
     if (client.getState() !== ClientState.UnAuth && client.getState() !== ClientState.Waiting)
       client.returnToLobby();
   }

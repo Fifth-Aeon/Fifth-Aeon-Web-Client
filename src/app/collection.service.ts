@@ -27,8 +27,9 @@ export class CollectionService {
     private auth: AuthenticationService,
     private http: HttpClient
   ) {
-    auth.onAuth(() => {
-      this.load();
+    auth.onAuth((data) => {
+      if (data)
+        this.load();
     });
 
   }
@@ -66,7 +67,7 @@ export class CollectionService {
           this.collection.addCard(card);
           return card;
         });
-    });
+      });
   }
 
   public buyPack() {

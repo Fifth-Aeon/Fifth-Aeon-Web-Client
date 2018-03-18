@@ -34,8 +34,9 @@ export class DecksService {
     private auth: AuthenticationService,
     private http: HttpClient
   ) {
-    this.auth.onAuth(() => {
-      this.loadDecks();
+    this.auth.onAuth((data) => {
+      if (data)
+        this.loadDecks();
     });
   }
 
