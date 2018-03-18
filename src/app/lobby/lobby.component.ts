@@ -40,6 +40,10 @@ export class LobbyComponent implements OnInit {
     }
   }
 
+  public showMultiplayer() {
+    return this.client.isConnected();
+  }
+
   public inLobby() {
     return this.client.getState() === ClientState.InLobby;
   }

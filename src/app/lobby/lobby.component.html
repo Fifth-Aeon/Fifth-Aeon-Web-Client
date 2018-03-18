@@ -13,8 +13,8 @@
   </mat-toolbar>
 
   <ng-template [ngIf]="inLobby()">
-    <div>
-      <h2>Singleplayer</h2>
+    <mat-card class="lobby-card">
+      <mat-card-title>Singleplayer</mat-card-title>
       <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(0)">
         <mat-icon>android</mat-icon>
         <span> Play vs A.I </span>
@@ -27,21 +27,24 @@
         <mat-icon>grade</mat-icon>
         <span> Open Packs </span>
       </button>
-    </div>
+    </mat-card>
 
-    <div>
-      <h2>Multiplayer</h2>
-      <ng-template [ngIf]="client.isConnected()">
+    <mat-card class="lobby-card">
+      <mat-card-title>Multiplayer</mat-card-title>
+      <ng-template [ngIf]="showMultiplayer()">
         <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(1)">
           <mat-icon>public</mat-icon> Public Game</button>
         <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(2)">
           <mat-icon>vpn_key</mat-icon> Private Game</button>
       </ng-template>
-      <mat-progress-spinner *ngIf="!client.isConnected()" attr.color="primary" mode="indeterminate"></mat-progress-spinner>
-    </div>
-    
-    <div>
-      <h2>Settings</h2>
+      <ng-template [ngIf]="!showMultiplayer()">
+        <span>Connecting...</span>
+        <mat-progress-bar class="mp-bar" attr.color="primary" mode="indeterminate"></mat-progress-bar>
+      </ng-template>
+    </mat-card>
+
+    <mat-card class="lobby-card">
+      <mat-card-title>Settings</mat-card-title>
       <button mat-raised-button color="primary" (click)="client.openSettings()">
         <mat-icon>settings</mat-icon>
         <span> Settings</span>
@@ -52,14 +55,11 @@
           <span> Feedback</span>
         </button>
       </a>
-    </div>
+    </mat-card>
   </ng-template>
 
   <ng-template [ngIf]="!inLobby()">
     <p class="instructions">{{client.getInstruction()}}</p>
     <mat-progress-spinner attr.color="primary" mode="indeterminate"></mat-progress-spinner>
   </ng-template>
-
-
-
 </div>
