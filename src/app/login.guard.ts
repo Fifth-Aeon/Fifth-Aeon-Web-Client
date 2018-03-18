@@ -12,7 +12,7 @@ export class LoggedInGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     let ok = this.auth.loggedIn();
     if (!ok)
-      this.auth.gotoLogin();
+      this.router.navigateByUrl('/');
     return ok;
   }
 }

@@ -6,9 +6,9 @@
   <title>CCG</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#673ab7">  
+  <meta name="theme-color" content="#673ab7">
   <link rel="manifest" href="manifest.json">
-  
+
   <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
   <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -23,44 +23,97 @@
     }
     gtag('js', new Date());
     gtag('config', 'UA-56271257-3');
+
   </script>
 </head>
 
 <body>
-  <ccg-root></ccg-root>
+  <ccg-root>
+    <div class="loading">
+      <h1>Loading Game</h1>
+      <div class="boxLoading">
+      </div>
+    </div>
+  </ccg-root>
 
-  <div class="loading">
-    <h1>Loading Game... </h1>
-  </div>
+  
   <style>
-    /* default .loading styles, .loading should be invisible, opacity: 0, z-index: -1 */
+    .boxLoading {
+      width: 50px;
+      height: 50px;
+      margin: auto;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
 
-    .loading {
-      opacity: 0;
-      transition: opacity .8s ease-in-out;
-      position: fixed;
-      height: 100%;
-      width: 100%;
+    .boxLoading:before {
+      content: '';
+      width: 50px;
+      height: 5px;
+      background: #000;
+      opacity: 0.1;
+      position: absolute;
+      top: 59px;
+      left: 0;
+      border-radius: 50%;
+      animation: shadow .5s linear infinite;
+    }
+
+    .boxLoading:after {
+      content: '';
+      width: 50px;
+      height: 50px;
+      background: #673ab7;
+      animation: animate .5s linear infinite;
+      position: absolute;
       top: 0;
       left: 0;
-      background: #222;
-      color: #ddd;
-      z-index: -1;
+      border-radius: 3px;
+    }
+
+    @keyframes animate {
+      17% {
+        border-bottom-right-radius: 3px;
+      }
+      25% {
+        transform: translateY(9px) rotate(22.5deg);
+      }
+      50% {
+        transform: translateY(18px) scale(1, 0.9) rotate(45deg);
+        border-bottom-right-radius: 40px;
+      }
+      75% {
+        transform: translateY(9px) rotate(67.5deg);
+      }
+      100% {
+        transform: translateY(0) rotate(90deg);
+      }
     }
 
     .loading h1 {
-      position: relative;
-      top: 50%;
-      bottom: 50%;
-      margin: 0px;
-      transform: translateY(-55%);
       text-align: center;
-      font-size: 5em;
+      color: grey;
+      size: 5em;
+      margin-top: 10vh;
     }
 
-    ccg-root:empty+.loading {
-      opacity: 1;
-      z-index: 100;
+    @keyframes shadow {
+      0%,
+      100% {
+        transform: scale(1, 1);
+      }
+      50% {
+        transform: scale(1.2, 1);
+      }
+    }
+
+    body,
+    html {
+      overflow: hidden;
+      height: 100%;
     }
 
   </style>

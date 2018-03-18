@@ -57,6 +57,7 @@ import { DraftComponent } from './draft/draft.component';
 import { DraftService } from './draft.service';
 import { MessengerService } from './messenger.service';
 import { MaterialModule } from './material.module';
+import { LandingComponent } from './landing/landing.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { MaterialModule } from './material.module';
     SortableDirective,
     OverlayComponent,
     DraftComponent,
+    LandingComponent,
   ],
   entryComponents: [CardChooserComponent, EndDialogComponent,
     SettingsDialogComponent, DeckMetadataDialogComponent, DamageDistributionDialogComponent],
@@ -96,6 +98,7 @@ import { MaterialModule } from './material.module';
     MaterialModule,
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
     RouterModule.forRoot([
+      { path: '', component: LandingComponent},
       { path: 'game', component: GameComponent, canActivate: [InPlayGuard] },
       { path: 'deck', component: DeckEditorComponent, canActivate: [LoggedInGuard] },
       { path: 'select', component: DeckChooserComponent, canActivate: [LoggedInGuard] },
@@ -104,7 +107,6 @@ import { MaterialModule } from './material.module';
       { path: 'packs', component: OpenPackComponent, canActivate: [LoggedInGuard] },
       { path: 'lobby', component: LobbyComponent, canActivate: [LoggedInGuard] },
       { path: 'draft', component: DraftComponent, canActivate: [LoggedInGuard] },
-      { path: '', component: LobbyComponent, canActivate: [LoggedInGuard] },
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
       { path: 'reset/:token', component: ResetPasswordComponent },
