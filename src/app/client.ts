@@ -106,7 +106,6 @@ export class WebClient {
         this.messenger.addHandeler(MessageType.PrivateGameReady, (msg) => this.privateGameReady(msg), this);
         this.messenger.connectChange = (status) => zone.run(() => this.connected = status);
 
-        this.tips.playTip(TipType.StartGame);
         this.addHotkeys();
 
         this.setAISpeed(1000);
@@ -171,6 +170,8 @@ export class WebClient {
         this.changeState(ClientState.InLobby);
         this.username = loginData.username;
         this.deck = new DeckList(standardFormat);
+        this.tips.setUsername(this.username);
+        this.tips.playTip(TipType.StartGame);
 
         if (this.toJoin) {
             this.joinPrivateGame(this.toJoin);
@@ -311,6 +312,7 @@ export class WebClient {
     }
 
     public openDeckEditor() {
+        this.tips.playTip(TipType.EditDeck);
         this.router.navigate(['/deck']);
     }
 
@@ -397,11 +399,11 @@ export class WebClient {
     private handleGameEvent(event: GameSyncEvent) {
         // console.log('event', GameEventType[event.type]);
         this.zone.run(() => this.game.syncServerEvent(this.playerNumber, event));
+        this.tips.handleGameEvent(this.game, this.playerNumber, event);
         switch (event.type) {
             case SyncEventType.TurnStart:
                 if (event.params.turn !== this.playerNumber)
                     return;
-                this.tips.turnStartTrigger(this.game, this.playerNumber);
                 if (event.params.turnNum !== 1)
                     this.soundManager.playSound('bell');
                 break;
@@ -419,8 +421,6 @@ export class WebClient {
                 this.soundManager.playSound('attack');
                 break;
             case SyncEventType.PhaseChange:
-                if (event.params.phase === GamePhase.Block)
-                    this.tips.blockPhaseTrigger(this.game, this.playerNumber);
                 if (event.params.phase === GamePhase.DamageDistribution && this.game.isActivePlayer(this.playerNumber))
                     this.createDamageSelectors();
                 if (event.params.phase === GamePhase.Play2)
@@ -431,14 +431,8 @@ export class WebClient {
                 this.soundManager.playSound('magic');
                 this.overlay.onPlay(this.game.getCardById(event.params.played.id), this.game, this.playerNumber);
                 break;
-            case SyncEventType.Draw:
-                this.tips.drawCardTrigger(this.game, this.playerNumber, event.params.discarded);
-                break;
             case SyncEventType.Ended:
                 this.endGame(event.params.winner, event.params.quit);
-                break;
-            case SyncEventType.PlayResource:
-                this.tips.playResourceTrigger(this.game, this.playerNumber);
                 break;
         }
     }
@@ -522,6 +516,7 @@ export class WebClient {
     }
 
     public selectDeckAndStartGame(type: GameType) {
+        this.tips.playTip(TipType.SelectDeck);
         switch (type) {
             case GameType.AiGame:
                 this.onDeckSelected = this.startAIGame;

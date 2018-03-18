@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { SoundManager } from './sound';
 import { MatSnackBar } from '@angular/material';
 
-import { Game } from './game_model/game';
+import { Game, GameSyncEvent, SyncEventType, GamePhase } from './game_model/game';
 import { Card, CardType } from './game_model/card';
 import { Player } from './game_model/player';
 import { Unit } from './game_model/unit';
@@ -13,27 +13,71 @@ import { Enchantment } from './game_model/enchantment';
 
 
 export enum TipType {
-    StartGame, FirstTurn, CanAttack, CanBlock, EndTurn,
-    PlayedUnit,  PlayedEnchantment,
+    StartGame, SelectDeck, EditDeck, Draft,
+    FirstTurn, Mulligan,
+    CanAttack, CanBlock, EndTurn,
+    PlayedUnit, PlayedEnchantment,
     HasPlayable, OptionalTarget, NeedsTarget,
-    SoftHandLimit, HardHandLimit
+    SoftHandLimit, HardHandLimit,
+    Hotkeys
 }
 
 const tipText = new Map<TipType, string>();
 
-tipText.set(TipType.PlayedUnit, `Units can be used to attack your opponent, but not the turn they are played. Attacking allows you to damage your opponent. When they run out of life, you win.`);
-tipText.set(TipType.PlayedEnchantment, 'Enchantments are continuous effects that modify the game. All enchantments have a certain amount of power. When an enchantment runs of out of power, it is dispelled. You may pay an enchantment’s empower cost to give it an extra point of power. Your opponent may also pay this cost to reduce your enchantments power by one.')
+// Out of game
+tipText.set(TipType.StartGame,
+    `Welcome newcomer. I will provide tips to help you learn to play.`);
+tipText.set(TipType.SelectDeck,
+    `You must select a deck before you can play a game. From this menu you can pick a starter deck, edit a deck, or make a new deck.`);
+tipText.set(TipType.EditDeck,
+    `From here you can edit your deck. Select a card to add it to your deck.
+The cards currently in your deck are listed in the deck-list to the right.
+You can also remove cards from your deck by selecting them from your deck-list.
+A legal deck must have at least 40 cards and no more than 4 of a single type of card.
+You can earn new cards by opening packs to expand your options.`);
+tipText.set(TipType.Draft,
+    `In draft mode you build a deck by selecting one of four cards repeatedly.
+Try to pick cards that work well with each other, it is especially important to beware of resource costs.`);
+tipText.set(TipType.Hotkeys,
+    `Many game functions may be controlled through hotkeys. Press ? to list out the avalible commands.`);
 
-tipText.set(TipType.HardHandLimit, 'You have a hard hand size limit of twelve cards. If you would draw a card while you already have twelve cards in hand, it will be immediately discarded.');
-tipText.set(TipType.SoftHandLimit, 'Your maximum hand size is eight cards. If you have more than eight you will be forced to discard them at the end of your turn.');
-tipText.set(TipType.StartGame, 'Welcome newcomer. I will provide tips to help you learn to play.');
-tipText.set(TipType.FirstTurn, `It is your turn. You can play a resource by clicking one of the four icons on the left side of your information bar. Try to match the resource you play to the symbols on the cards in your hand.`);
-tipText.set(TipType.EndTurn, `After you play a resource you can end your turn by pressing the pass button on the right side of your information bar.`);
-tipText.set(TipType.HasPlayable, `You have a playable card in your hand. Playable card are brighter and can be played by clicking them.`);
-tipText.set(TipType.CanAttack, `You can declare units as attackers by selecting them. All your units attack at once. Attackers that are not blocked will damage your opponent.`);
-tipText.set(TipType.CanBlock, `You can block your opponent’s attackers by selecting one of your units then clicking the attacker you wish to block. The attacker will then fight your blocker, rather than damaging you. You can block a single attacker with multiple units.`);
-tipText.set(TipType.OptionalTarget, `This card has an optional targeted ability. Valid targets have a blue glow. Alternatively, you can click the card again to play it without a target.`);
-tipText.set(TipType.NeedsTarget, `This card requires a target. Valid targets have a blue glow.`);
+
+// In Game
+tipText.set(TipType.Mulligan,
+    `At the start of the game you may replace any of the cards in your hand once.
+I recommend you replace cards with high energy costs (the number at the top left of the card).`);
+tipText.set(TipType.PlayedUnit,
+    `Units can be used to attack your opponent, but not the turn they are played.
+Attacking allows you to damage your opponent. When they run out of life, you win.`);
+tipText.set(TipType.PlayedEnchantment,
+    `Enchantments are continuous effects that modify the game. All enchantments have a certain amount of power.
+When an enchantment runs of out of power, it is dispelled.
+You may pay an enchantment’s empower cost to give it an extra point of power.
+ Your opponent may also pay this cost to reduce your enchantments power by one.`);
+tipText.set(TipType.HardHandLimit,
+    `You have a hard hand size limit of twelve cards.
+ If you would draw a card while you already have twelve cards in hand, it will be immediately discarded.`);
+tipText.set(TipType.SoftHandLimit,
+    `Your maximum hand size is eight cards. If you have more than eight you will be forced to discard them at the end of your turn.`);
+tipText.set(TipType.FirstTurn,
+    `It is your turn. You can play a resource by clicking one of the four icons on the left side of your information bar.
+Try to match the resource you play to the symbols on the cards in your hand.`);
+tipText.set(TipType.EndTurn,
+    `After you play a resource you can end your turn by pressing the pass button on the right side of your information bar.`);
+tipText.set(TipType.HasPlayable,
+    `You have a playable card in your hand. Playable card are brighter and can be played by clicking them.`);
+tipText.set(TipType.CanAttack,
+    `You can declare units as attackers by selecting them. All your units attack at once.
+Attackers that are not blocked will damage your opponent.`);
+tipText.set(TipType.CanBlock,
+    `You can block your opponent’s attackers by selecting one of your units then clicking the attacker you wish to block.
+The attacker will then fight your blocker, rather than damaging you. You can block a single attacker with multiple units.`);
+tipText.set(TipType.OptionalTarget,
+    `This card has an optional targeted ability. Valid targets have a blue glow.
+ Alternatively, you can click the card again to play it without a target.`);
+tipText.set(TipType.NeedsTarget,
+    `This card requires a target. Valid targets have a blue glow.`);
+
 
 const tipLocalStore = 'tip-store';
 
@@ -41,6 +85,7 @@ const tipLocalStore = 'tip-store';
 export class TipService {
     private played: any;
     private lastMsg: string;
+    private username: string;
 
     constructor(private soundManager: SoundManager, private snackbar: MatSnackBar) {
         let storedData = localStorage.getItem(tipLocalStore);
@@ -51,9 +96,40 @@ export class TipService {
         }
     }
 
+    public handleGameEvent(game: Game, localPlayerNumber: number, event: GameSyncEvent) {
+        switch (event.type) {
+            case SyncEventType.TurnStart:
+                if (event.params.turn !== localPlayerNumber)
+                    return;
+                this.turnStartTrigger(game, localPlayerNumber);
+                break;
+            case SyncEventType.PhaseChange:
+                if (event.params.phase === GamePhase.Block)
+                    this.blockPhaseTrigger(game, localPlayerNumber);
+                break;
+            case SyncEventType.Draw:
+                this.drawCardTrigger(game, localPlayerNumber, event.params.discarded);
+                break;
+            case SyncEventType.PlayResource:
+                this.playResourceTrigger(game, localPlayerNumber);
+                break;
+            case SyncEventType.ChoiceMade:
+                if (event.params.player === localPlayerNumber)
+                    this.afterMulligan(game, localPlayerNumber);
+                break;
+        }
+
+    }
+
+    public setUsername(username: string) {
+        this.username = username;
+        tipText.set(TipType.StartGame, `Welcome ${username}. I will provide tips to help you learn to play.
+        I suggest you start by playing a game against the computer.`);
+    }
+
     public announce(text: string) {
         if (text === this.lastMsg)
-            return
+            return;
         this.lastMsg = text;
         this.snackbar.open(text, '', {
             duration: text.length * 75
@@ -70,7 +146,7 @@ export class TipService {
         return true;
     }
 
-    public playResourceTrigger(game: Game, playerNo: number) {
+    private playResourceTrigger(game: Game, playerNo: number) {
         if (game.getCurrentPlayer().getPlayerNumber() !== playerNo)
             return;
         let playable = game.getPlayer(playerNo).getHand().filter(card => card.isPlayable(game));
@@ -94,7 +170,7 @@ export class TipService {
         }
     }
 
-    public drawCardTrigger(game: Game, playerNo: number, discarded: boolean) {
+    private drawCardTrigger(game: Game, playerNo: number, discarded: boolean) {
         let cardCount = game.getPlayer(playerNo).getHand().length;
 
         if (discarded) {
@@ -105,17 +181,26 @@ export class TipService {
     }
 
 
-    public turnStartTrigger(game: Game, playerNo: number) {
+    private turnStartTrigger(game: Game, playerNo: number) {
         if (game.getCurrentPlayer().getPlayerNumber() !== playerNo)
             return;
-        let hasAttacker = game.getBoard().getPlayerUnits(playerNo).filter(unit => unit.canAttack()).length > 0;
+
+        this.playTip(TipType.Mulligan);
+
+    }
+
+    private afterMulligan(game: Game, localPlayerNumber: number) {
+        let hasAttacker = game.getBoard()
+            .getPlayerUnits(localPlayerNumber)
+            .filter(unit => unit.canAttack()).length > 0;
+
         if (hasAttacker)
             this.playTip(TipType.CanAttack);
         else
             this.playTip(TipType.FirstTurn);
     }
 
-    public blockPhaseTrigger(game: Game, playerNo: number) {
+    private blockPhaseTrigger(game: Game, playerNo: number) {
         if (game.isActivePlayer(playerNo))
             this.playTip(TipType.CanBlock);
     }
@@ -154,9 +239,10 @@ export class TipService {
     public cannotModifyEnchantment(player: Player, game: Game, enchantment: Enchantment) {
         let verb = enchantment.getOwner() === player.getPlayerNumber() ? 'empower' : 'diminish';
         if (player !== game.getCurrentPlayer())
-            this.announce(`You can only ${verb} enchantments during your own turn.`)
+            this.announce(`You can only ${verb} enchantments during your own turn.`);
         else if (!player.getPool().meetsReq(enchantment.getModifyCost()))
-            this.announce(`You can not afford to ${verb} that enchantment. It would require ${enchantment.getModifyCost().getNumeric()} energy while you only have ${player.getPool().getNumeric()}.`);
+            this.announce(`You can not afford to ${verb} that enchantment.
+                It would require ${enchantment.getModifyCost().getNumeric()} energy while you only have ${player.getPool().getNumeric()}.`);
 
     }
 
