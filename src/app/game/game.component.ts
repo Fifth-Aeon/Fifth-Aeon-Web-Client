@@ -96,7 +96,6 @@ export class GameComponent implements OnInit {
 
   @HostListener('window:beforeunload')
   public exit() {
-    console.log('exit game');
     this.client.exitGame(true);
     return null;
   }

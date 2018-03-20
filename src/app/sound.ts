@@ -4,11 +4,16 @@ import { Injectable } from '@angular/core';
 
 
 export enum VolumeType { Master, Music, Effects, Narrator }
-const localStorageMuteKey = 'sound-is-muted';
 
+interface SoundSettings {
+    volume: [number, number, number, number];
+    muted: boolean;
+}
 
 @Injectable()
 export class SoundManager {
+    private static localStorageKey = 'sound-settings';
+
     private global = Howler;
     private playQueue: Queue<Howl> = new Queue<Howl>();
     private library: Map<string, Howl> = new Map<string, Howl>();
@@ -33,8 +38,8 @@ export class SoundManager {
         }));
         this.addSound('fanfare', new Howl({ src: ['assets/mp3/fanfare.mp3'] }));
         this.addSound('defeat', new Howl({ src: ['assets/mp3/sad-part.mp3'] }));
-        this.muted = (localStorage.getItem(localStorageMuteKey) || 'false') === 'true';
-        this.global.mute(this.muted);
+
+        this.loadSettings();
 
         speechSynthesis.onvoiceschanged = () => {
             let englishVoice = window.speechSynthesis.getVoices().find(voice => voice.lang.includes('en'));
@@ -44,6 +49,24 @@ export class SoundManager {
                 console.warn('Warning no english voice detected.');
             }
         };
+    }
+
+    public saveSettings() {
+        localStorage.setItem(SoundManager.localStorageKey, JSON.stringify({
+            volume: this.volume,
+            muted: this.muted
+        } as SoundSettings));
+    }
+
+    public loadSettings() {
+        let settingData = localStorage.getItem(SoundManager.localStorageKey);
+        if (settingData) {
+            let savedSettings: SoundSettings = JSON.parse(settingData);
+            console.log('ss', savedSettings);
+            this.muted = savedSettings.muted;
+            this.volume = savedSettings.volume;
+        }
+        this.global.mute(this.muted);
     }
 
     public getVolumes() {
@@ -57,6 +80,7 @@ export class SoundManager {
 
     public changeVolume(type: VolumeType, newVal: number) {
         this.volume[type] = newVal;
+        this.saveSettings();
         if (type === VolumeType.Music || type === VolumeType.Master)
             this.music.volume(this.getAdjustedVolume(VolumeType.Music));
     }
@@ -86,7 +110,7 @@ export class SoundManager {
     public toggleMute() {
         this.muted = !this.muted;
         this.global.mute(this.muted);
-        localStorage.setItem(localStorageMuteKey, this.muted.toString());
+        this.saveSettings();
     }
 
     public isMuted(): boolean {

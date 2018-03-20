@@ -17,7 +17,6 @@ export class MessengerService {
   }
 
   private setMessengerID(id: string) {
-    console.log('sid', id);
     this.messenger.setID(id);
   }
 
