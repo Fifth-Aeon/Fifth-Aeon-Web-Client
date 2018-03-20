@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { MatDialogRef, MatDialog, MatDialogConfig, MatIconRegistry } from '@angular/material';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { trigger, state, style, animate, transition } from '@angular/animations';
@@ -56,7 +56,7 @@ const deathFadeTime = OverlayService.arrowTimer + 200;
     ])
   ]
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy {
   private targeters: Targeter[];
   private host: Unit;
   public game: ClientGame;
@@ -92,6 +92,10 @@ export class GameComponent implements OnInit {
   public ngOnInit() {
     this.overlay.registerUIElement('player', 'player-name');
     this.overlay.registerUIElement('enemy', 'enemy-name');
+  }
+
+  public ngOnDestroy() {
+    this.client.exitGame(false);
   }
 
   @HostListener('window:beforeunload')
