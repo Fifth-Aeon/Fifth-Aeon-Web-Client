@@ -20,7 +20,7 @@ export class VerifyEmailComponent implements OnInit {
       this.message = 'Your email has been verifed';
     }).catch((err) => {
       this.message = 'Their was a problem verifying your email address.';
-      console.log(err);
+      console.error(err);
     });
   }
 

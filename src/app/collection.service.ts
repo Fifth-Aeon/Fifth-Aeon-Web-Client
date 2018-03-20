@@ -53,7 +53,6 @@ export class CollectionService {
       .toPromise()
       .then((res: SavedCollection) => {
         this.collection.fromSavable(res);
-        console.log('loaded', this.collection, 'from', res);
       });
   }
 

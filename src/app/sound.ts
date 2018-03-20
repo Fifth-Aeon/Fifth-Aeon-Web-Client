@@ -62,7 +62,6 @@ export class SoundManager {
         let settingData = localStorage.getItem(SoundManager.localStorageKey);
         if (settingData) {
             let savedSettings: SoundSettings = JSON.parse(settingData);
-            console.log('ss', savedSettings);
             this.muted = savedSettings.muted;
             this.volume = savedSettings.volume;
         }

@@ -24,7 +24,6 @@ export class SpeedService {
   public setMultiplier(multiplier: number) {
     this.multiplier = multiplier;
     this.saveSettings();
-    console.log('sm', this.multiplier);
     for (let prop in this.speeds) {
       this.speeds[prop] = this.baseSpeed[prop] / multiplier;
     }
@@ -41,7 +40,6 @@ export class SpeedService {
     if (settingData) {
       let savedSettings = JSON.parse(settingData);
       this.multiplier = savedSettings.multiplier;
-      console.log(savedSettings, this.multiplier);
     }
   }
 
