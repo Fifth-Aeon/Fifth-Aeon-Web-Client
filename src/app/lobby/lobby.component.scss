@@ -11,9 +11,15 @@ h2 {
   display: inline;
 }
 
+// header hight = 64px
+// Card heigh = 168px
+// calc((100vh - 64px - (168px * 3))/5)
+$vertical-marign: 2vh;
 .lobby-card {
   margin: 0 auto;
-  margin: 2vh;
+  max-width: 600px;
+  margin-top: $vertical-marign;
+  margin-bottom: $vertical-marign;
 }
 
 button {
