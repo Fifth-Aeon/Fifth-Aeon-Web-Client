@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Card, GameZone, CardType } from '../game_model/card';
 import { Unit, UnitType } from '../game_model/unit';
 import { Game } from '../game_model/game';
-import { allCards } from '../game_model/cards/allCards';
+import { cardList } from '../game_model/cards/cardList';
 
 enum GlowType {
   None, Select, Attack, Defense, Targeted
@@ -12,7 +12,7 @@ const keywordsDefs = new Map<string, string>();
 
 // Game mechanics
 keywordsDefs.set('Refresh',
-  'Refreshing restores a unit’s health and removes exaustion. Units normally refresh at the start of their owners turn.')
+  'Refreshing restores a unit’s health and removes exaustion. Units normally refresh at the start of their owners turn.');
 
 // Evasion
 keywordsDefs.set('Flying', 'Can only be blocked by units with flying or ranged.');
@@ -55,7 +55,7 @@ keywordsDefs.set('Immortal', 'Whenever this unit dies, play it from the crypt at
 keywordsDefs.set('Statue', 'A 0/1 structure that cannot attack.');
 
 const unitsDescs = new Map<string, string>();
-Array.from(allCards.values()).map(fact => fact())
+cardList.getCards()
   .filter(card => card.isUnit())
   .forEach(card => {
     let unit = card as Unit;

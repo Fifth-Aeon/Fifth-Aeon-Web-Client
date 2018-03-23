@@ -13,7 +13,6 @@ import { Angulartics2 } from 'angulartics2';
 import { Game, GameAction, GameSyncEvent, GameActionType, SyncEventType, GamePhase } from './game_model/game';
 import { ServerGame } from './game_model/serverGame';
 import { ClientGame } from './game_model/clientGame';
-import { data } from './game_model/gameData';
 import { GameFormat, standardFormat } from './game_model/gameFormat';
 import { Card } from './game_model/card';
 import { Unit } from './game_model/unit';

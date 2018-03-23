@@ -3,7 +3,7 @@ import { Collection, SavedCollection, Rewards } from 'app/game_model/collection'
 import { AuthenticationService } from 'app/user/authentication.service';
 import { HttpClient } from '@angular/common/http';
 import { apiURL } from './url';
-import { cardList, allCards } from 'app/game_model/cards/allCards';
+import { cardList } from 'app/game_model/cards/cardList';
 
 const saveURL = `${apiURL}/api/cards/storeCollection`;
 const loadUrl = `${apiURL}/api/cards/getCollection`;
@@ -35,7 +35,7 @@ export class CollectionService {
   }
 
   public unlockAll() {
-    for (let card of cardList) {
+    for (let card of cardList.getCards()) {
       let diff = 4 - this.collection.getCardCount(card);
       this.collection.addCard(card, Math.max(diff, 0));
     }
@@ -62,7 +62,7 @@ export class CollectionService {
       .then(ids => {
         this.collection.removePack();
         return ids.map(id => {
-          let card = allCards.get(id)();
+          let card = cardList.getCard(id);
           this.collection.addCard(card);
           return card;
         });

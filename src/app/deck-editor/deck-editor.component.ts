@@ -4,7 +4,7 @@ import { sortBy, random } from 'lodash';
 import { DecksService } from '../decks.service';
 import { GameFormat } from '../game_model/gameFormat';
 import { DeckList } from '../game_model/deckList';
-import { allCards } from '../game_model/cards/allCards';
+import { cardList } from '../game_model/cards/cardList';
 import { Card } from '../game_model/card';
 import { DeckMetadataDialogComponent } from 'app/deck-metadata-dialog/deck-metadata-dialog.component';
 import { MatDialog, MatSnackBar } from '@angular/material';
@@ -22,7 +22,6 @@ import { CollectionService } from 'app/collection.service';
 export class DeckEditorComponent implements OnInit {
   public cards: Array<Card>;
   public collection: Collection;
-  public allCards = allCards;
   public pageCards: Array<Card>;
   public pageNumber = 0;
   private pageSize = 10;
