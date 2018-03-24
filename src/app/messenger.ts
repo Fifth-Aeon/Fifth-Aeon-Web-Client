@@ -143,7 +143,7 @@ export class Messenger {
 
     public sendMessageToServer(messageType: MessageType, data: string | object) {
         let message = this.makeMessage(messageType, data);
-        if (this.ws.readyState === this.ws.OPEN) {
+        if (this.ws && this.ws.readyState === this.ws.OPEN) {
             this.ws.send(message);
         } else {
             this.messageQueue.add(message);
