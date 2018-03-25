@@ -1,7 +1,69 @@
 <mat-card>
-Card Editor
+  <mat-card-title>Basic Information</mat-card-title>
+  <mat-card-content class="editor-container">
+    <mat-form-field>
+      <input matInput placeholder="Card Name">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Image URL">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Card Type" [(ngModel)]="data.cardType">
+        <mat-option *ngFor="let cardType of cardTypeKeys" [value]="cardType">{{cardTypes[cardType]}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Targeter -->
+  </mat-card-content>
 </mat-card>
 
 <mat-card>
-  Card Preview
+  <mat-card-title>Resource Cost</mat-card-title>
+  <mat-card-content class="editor-container">
+    <mat-form-field>
+      <input matInput min="0" max="99" [(ngModel)]="data.cost.energy" placeholder="Energy Cost" type="number">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput min="0" [max]="getReqMax('synthesis')" [(ngModel)]="data.cost.synthesis" placeholder="Synthesis Requirement"
+        type="number">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput min="0" [max]="getReqMax('growth')" [(ngModel)]="data.cost.growth" placeholder="Growth Requirement" type="number">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput min="0" [max]="getReqMax('decay')" [(ngModel)]="data.cost.decay" placeholder="Decay Requirement" type="number">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput min="0" [max]="getReqMax('renewal')" [(ngModel)]="data.cost.renewal" placeholder="Renewal Requirement" type="number">
+    </mat-form-field>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-title>Mechanics</mat-card-title>
+  <mat-card-content class="editor-container">
+  </mat-card-content>
+</mat-card>
+
+<mat-card *ngIf="data.cardType === cardTypes.Unit">
+  <mat-card-title>Unit Information</mat-card-title>
+  <mat-card-content class="editor-container">
+    <mat-form-field>
+      <input matInput min="0" max="99" [(ngModel)]="data.life" placeholder="Maximum Life" type="number">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput min="0" max="99" [(ngModel)]="data.damage" placeholder="Damage" type="number">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Unit Type" [(ngModel)]="data.type">
+        <mat-option *ngFor="let unitType of unitTypeKeys" [value]="unitType">{{unitTypes[unitType]}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-title>Card Preview</mat-card-title>
+  <mat-card-content>
+  </mat-card-content>
 </mat-card>

@@ -30,7 +30,7 @@ const routes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'reset/:token', component: ResetPasswordComponent },
     { path: 'verify/:token', component: VerifyEmailComponent },
-    { path: '**', component: LobbyComponent, canActivate: [LoggedInGuard] }
+    // { path: '**', component: LobbyComponent, canActivate: [LoggedInGuard] }
 ];
 
 @NgModule({

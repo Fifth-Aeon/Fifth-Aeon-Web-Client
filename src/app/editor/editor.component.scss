@@ -1,0 +1,21 @@
+.nav-list a {
+  color: white;
+  vertical-align: middle;
+}
+
+.app-content {
+  padding: 20px;
+}
+
+.editor-sidenav {
+  min-width: 300px;
+}
+
+mat-sidenav-container {
+  min-height: 100vh;
+}
+
+.searchbar-width {
+  margin-left: 25px;
+  flex: 0.15 1 auto;
+}

@@ -1,5 +1,19 @@
-<p>
-  editor works!
-</p>
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="nav.toggle()"><mat-icon>menu</mat-icon></button>
+  <span>Fifth Aeon - Editor</span>
+  <span class="fill-remaining-space"></span>
+</mat-toolbar>
 
-<router-outlet></router-outlet>
+<mat-sidenav-container>
+  <mat-sidenav #nav mode="side" class="editor-sidenav">
+    Navigation
+    <br>
+    <mat-list>
+      <mat-list-item>
+        <button mat-button (click)="nav.close()" routerLink="/" routerLinkActive="active">Home</button>
+      </mat-list-item>
+    </mat-list>
+  </mat-sidenav>
+  <router-outlet></router-outlet>
+</mat-sidenav-container>
+
