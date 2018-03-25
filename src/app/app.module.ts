@@ -58,6 +58,8 @@ import { DraftService } from './draft.service';
 import { MessengerService } from './messenger.service';
 import { MaterialModule } from './material.module';
 import { LandingComponent } from './landing/landing.component';
+import { EditorModule } from './editor/editor.module';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -86,8 +88,8 @@ import { LandingComponent } from './landing/landing.component';
   entryComponents: [CardChooserComponent, EndDialogComponent,
     SettingsDialogComponent, DeckMetadataDialogComponent, DamageDistributionDialogComponent],
   imports: [
+    AppRoutingModule,
     BrowserModule,
-    ServiceWorkerModule.register('ngsw-worker.js'),
     UserModule,
     FormsModule,
     HttpModule,
@@ -97,22 +99,7 @@ import { LandingComponent } from './landing/landing.component';
     HotkeyModule.forRoot(),
     MaterialModule,
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
-    RouterModule.forRoot([
-      { path: '', component: LandingComponent},
-      { path: 'game', component: GameComponent, canActivate: [InPlayGuard] },
-      { path: 'deck', component: DeckEditorComponent, canActivate: [LoggedInGuard] },
-      { path: 'select', component: DeckChooserComponent, canActivate: [LoggedInGuard] },
-      { path: 'private/:id', component: PrivateLobbyComponent, canActivate: [LoggedInGuard] },
-      { path: 'private', component: PrivateLobbyComponent, canActivate: [LoggedInGuard] },
-      { path: 'packs', component: OpenPackComponent, canActivate: [LoggedInGuard] },
-      { path: 'lobby', component: LobbyComponent, canActivate: [LoggedInGuard] },
-      { path: 'draft', component: DraftComponent, canActivate: [LoggedInGuard] },
-      { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent },
-      { path: 'reset/:token', component: ResetPasswordComponent },
-      { path: 'verify/:token', component: VerifyEmailComponent },
-      { path: '**', component: LobbyComponent, canActivate: [LoggedInGuard] }
-    ])
+    EditorModule
   ],
   providers: [SoundManager, WebClient, DecksService, SpeedService, OverlayService,
     TipService, Preloader, InPlayGuard, LoggedInGuard, CollectionService, DraftService, MessengerService],
