@@ -220,7 +220,7 @@ export class TipService {
 
     public cannotBlockTip(blocker: Unit, game: Game) {
         if (blocker.isExausted())
-            this.announce('Exausted units can not block.');
+            this.announce('Exhausted units can not block.');
         else
             this.announce('That unit can not block due to a special effect.');
     }
@@ -229,7 +229,7 @@ export class TipService {
         if (!unit.isReady())
             this.announce('Units cannot attack the turn they are played.');
         else if (unit.isExausted())
-            this.announce('Exausted units cannot attack.');
+            this.announce('Exhausted units cannot attack.');
         else if (!game.canTakeAction())
             this.announce('You must wait for a choice to be made.');
         else
