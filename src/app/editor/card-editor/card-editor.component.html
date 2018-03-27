@@ -62,6 +62,18 @@
   </mat-card-content>
 </mat-card>
 
+<mat-card *ngIf="data.cardType === cardTypes.Item">
+  <mat-card-title>Item Information</mat-card-title>
+  <mat-card-content class="editor-container">
+  </mat-card-content>
+</mat-card>
+
+<mat-card *ngIf="data.cardType === cardTypes.Enchantment">
+  <mat-card-title>Enchantment Information</mat-card-title>
+  <mat-card-content class="editor-container">
+  </mat-card-content>
+</mat-card>
+
 <mat-card>
   <mat-card-title>Card Preview</mat-card-title>
   <mat-card-content>

@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { EditorRoutingModule } from './editor-routing.module';
 import { EditorComponent } from './editor.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { TargeterEditorComponent } from './targeter-editor/targeter-editor.component';
+import { MechanicEditorComponent } from './mechanic-editor/mechanic-editor.component';
 
 @NgModule({
   imports: [
@@ -15,7 +17,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     MaterialModule,
     EditorRoutingModule
   ],
-  declarations: [CardEditorComponent, EditorComponent],
+  declarations: [CardEditorComponent, EditorComponent, TargeterEditorComponent, MechanicEditorComponent],
   exports: []
 })
 export class EditorModule { }
