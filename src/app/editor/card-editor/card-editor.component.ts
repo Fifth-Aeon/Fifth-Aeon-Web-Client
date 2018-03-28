@@ -36,11 +36,11 @@ export class CardEditorComponent implements OnInit {
     damage: 1,
     type: UnitType.Human
   };
-  public previewCard: Card;
+  public previewCard  = cardList.buildUnitInstance(this.data);
 
 
 
-  constructor() {
+  public refreshPreview() {
     this.previewCard = cardList.buildUnitInstance(this.data);
   }
 

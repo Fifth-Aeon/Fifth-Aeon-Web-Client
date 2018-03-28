@@ -2,10 +2,10 @@
   <mat-card-title>Basic Information</mat-card-title>
   <mat-card-content class="editor-container">
     <mat-form-field>
-      <input matInput placeholder="Card Name">
+      <input matInput placeholder="Card Name" [(ngModel)]="data.name">
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Image URL">
+      <input matInput placeholder="Image URL" [(ngModel)]="data.imageUrl">
     </mat-form-field>
     <mat-form-field>
       <mat-select placeholder="Card Type" [(ngModel)]="data.cardType">
@@ -39,9 +39,6 @@
   </mat-card-content>
 </mat-card>
 
-<ccg-mechanic-editor [card]="data"></ccg-mechanic-editor>
-
-
 <mat-card *ngIf="data.cardType === cardTypes.Unit">
   <mat-card-title>Unit Information</mat-card-title>
   <mat-card-content class="editor-container">
@@ -71,8 +68,15 @@
   </mat-card-content>
 </mat-card>
 
-<mat-card>
+<mat-card id="card-preview">
   <mat-card-title>Card Preview</mat-card-title>
   <mat-card-content>
+    <ccg-card scale="1.9" [card]="previewCard"></ccg-card>
   </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button (click)="refreshPreview()">Refresh</button>
+  </mat-card-actions>
 </mat-card>
+
+<ccg-mechanic-editor [card]="data"></ccg-mechanic-editor>
+
