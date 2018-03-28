@@ -39,11 +39,8 @@
   </mat-card-content>
 </mat-card>
 
-<mat-card>
-  <mat-card-title>Mechanics</mat-card-title>
-  <mat-card-content class="editor-container">
-  </mat-card-content>
-</mat-card>
+<ccg-mechanic-editor [card]="data"></ccg-mechanic-editor>
+
 
 <mat-card *ngIf="data.cardType === cardTypes.Unit">
   <mat-card-title>Unit Information</mat-card-title>

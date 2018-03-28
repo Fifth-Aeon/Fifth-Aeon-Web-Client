@@ -1,3 +1,41 @@
-<p>
-  mechanic-editor works!
-</p>
+<mat-card>
+  <mat-card-title>Mechanics</mat-card-title>
+  <mat-card-content>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+         <!-- <th>Parameters</th>-->
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of card.mechanics; let i = index;">
+          <td>
+            <mat-form-field>
+              <mat-select placeholder="ID" [(ngModel)]="data.id">
+                <mat-option *ngFor="let constructor of mechanicList.getConstructors(card.cardType)" [value]="constructor.id">{{constructor.id}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+          <!--
+          <td>
+            Params...
+          </td>
+        -->
+          <td>
+            <button mat-icon-button color="warn" (click)="delete(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-icon-button color="primary" (click)="add()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </mat-card-actions>
+
+</mat-card>
