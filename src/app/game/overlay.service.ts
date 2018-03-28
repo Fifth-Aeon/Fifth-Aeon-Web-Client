@@ -1,12 +1,12 @@
 import { Injectable, ElementRef } from '@angular/core';
 import { remove } from 'lodash';
 
-import { Unit } from 'app/game_model/unit';
-import { Card, CardType } from 'app/game_model/card';
-import { Item } from 'app/game_model/item';
-import { Game } from 'app/game_model/game';
-import { ClientGame } from './game_model/clientGame';
-import { Animator, BattleAnimationEvent } from './game_model/animator';
+import { Unit } from 'fifthaeon/unit';
+import { Card, CardType } from 'fifthaeon/card';
+import { Item } from 'fifthaeon/item';
+import { Game } from 'fifthaeon/game';
+import { ClientGame } from 'fifthaeon/clientGame';
+import { Animator, BattleAnimationEvent } from 'fifthaeon/animator';
 
 
 interface Arrow { x1: number; y1: number; x2: number; y2: number; }

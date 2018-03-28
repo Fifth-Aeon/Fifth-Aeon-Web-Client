@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Resource } from '../game_model/resource';
+import { Resource } from 'fifthaeon/resource';
 
 @Component({
   selector: 'ccg-resource-display',
@@ -16,7 +16,7 @@ export class ResourceDisplayComponent implements OnInit {
     { name: 'Synthesis', icon: 'assets/png/synthesis.png', color: '#c9c9c9' },
     { name: 'Decay', icon: 'assets/png/decay-icon.png', color: '#370661' },
     { name: 'Renewal', icon: 'assets/png/renewal.png', color: '#f8e71c' }
-  ]
+  ];
 
   constructor() { }
 

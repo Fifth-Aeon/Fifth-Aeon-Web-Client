@@ -9,6 +9,9 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
+    "paths": {
+      "fifthaeon/*": [ "./app/game_model/*" ]
+    },
     "typeRoots": [
       "node_modules/@types"
     ],

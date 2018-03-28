@@ -30,11 +30,11 @@ import { getHttpUrl } from './url';
 
 import { EndDialogComponent } from './end-dialog/end-dialog.component';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
-import { OverlayService } from './overlay.service';
+import { OverlayService } from './game/overlay.service';
 import { TipService, TipType } from './tips';
 import { SpeedService } from 'app/speed.service';
 import { CollectionService } from 'app/collection.service';
-import { DamageDistributionDialogComponent } from './damage-distribution-dialog/damage-distribution-dialog.component';
+import { DamageDistributionDialogComponent } from './game/damage-distribution-dialog/damage-distribution-dialog.component';
 import { MessengerService } from './messenger.service';
 import { UserData, AuthenticationService } from './user/authentication.service';
 

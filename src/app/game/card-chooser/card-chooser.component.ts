@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
-import { Card } from '../game_model/card';
+import { Card } from 'fifthaeon/card';
 
 @Component({
   selector: 'ccg-card-chooser',
@@ -27,10 +27,10 @@ export class CardChooserComponent {
       return 'View cards';
     let ending = `${this.max === 1 ? 'a card' : this.max + ' cards'} ${this.suffix}.`;
     if (this.max === this.min)
-      return `Choose ${ending}`
+      return `Choose ${ending}`;
     if (this.min === 0)
       return `Choose up to ${ending}`;
-    return `Choose between ${this.min === 1 ? 'a card' : this.min + ' cards'} and ${ending}`
+    return `Choose between ${this.min === 1 ? 'a card' : this.min + ' cards'} and ${ending}`;
   }
 
   public select(card) {

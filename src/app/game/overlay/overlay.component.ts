@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OverlayService } from '../overlay.service';
-import { Animator, BattleAnimationEvent } from '../game_model/animator';
+import { Animator, BattleAnimationEvent } from 'fifthaeon/animator';
 
 @Component({
   selector: 'ccg-overlay',

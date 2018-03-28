@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Card, GameZone, CardType } from '../game_model/card';
-import { Unit, UnitType } from '../game_model/unit';
-import { Game } from '../game_model/game';
-import { cardList } from '../game_model/cards/cardList';
+import { Card, GameZone, CardType } from 'fifthaeon/card';
+import { Unit, UnitType } from 'fifthaeon/unit';
+import { Game } from 'fifthaeon/game';
+import { cardList } from 'fifthaeon/cards/cardList';
 
 enum GlowType {
   None, Select, Attack, Defense, Targeted

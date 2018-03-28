@@ -8,6 +8,7 @@ import { EditorComponent } from './editor.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TargeterEditorComponent } from './targeter-editor/targeter-editor.component';
 import { MechanicEditorComponent } from './mechanic-editor/mechanic-editor.component';
+import { GameModule } from '../game/game.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { MechanicEditorComponent } from './mechanic-editor/mechanic-editor.compo
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    EditorRoutingModule
+    EditorRoutingModule,
+    GameModule
   ],
   declarations: [CardEditorComponent, EditorComponent, TargeterEditorComponent, MechanicEditorComponent],
   exports: []

@@ -18,27 +18,21 @@ import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
 import { SoundManager } from './sound';
 import { WebClient } from './client';
 import { Preloader } from './preloader';
-import { OverlayService } from './overlay.service';
 import { DecksService } from './decks.service';
 import { TipService } from './tips';
 
 // App Angular Components
 import { AppComponent } from './app.component';
-import { GameComponent } from './game/game.component';
 import { InPlayGuard } from './in-play.guard';
 import { LoggedInGuard } from './login.guard';
 import { LobbyComponent } from './lobby/lobby.component';
 import { PrivateLobbyComponent } from './private-lobby/private-lobby.component';
-import { ResourceSelectorComponent } from './resource-selector/resource-selector.component';
-import { PlayerAvatarComponent } from './player-avatar/player-avatar.component';
-import { CardChooserComponent } from './card-chooser/card-chooser.component';
-import { RecordBarComponent } from './record-bar/record-bar.component';
+
+
 import { EndDialogComponent } from './end-dialog/end-dialog.component';
 import { DeckEditorComponent } from './deck-editor/deck-editor.component';
-import { ResourceDisplayComponent } from './resource-display/resource-display.component';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 import { DeckChooserComponent } from './deck-chooser/deck-chooser.component';
-import { CardComponent } from './card/card.component';
 import { SpeedService } from 'app/speed.service';
 import { environment } from 'environments/environment';
 import { DeckMetadataDialogComponent } from './deck-metadata-dialog/deck-metadata-dialog.component';
@@ -50,9 +44,7 @@ import { UserModule } from 'app/user/user.module';
 import { ResetPasswordComponent } from 'app/user/reset-password/reset-password.component';
 import { OpenPackComponent } from './open-pack/open-pack.component';
 import { CollectionService } from './collection.service';
-import { DamageDistributionDialogComponent } from './damage-distribution-dialog/damage-distribution-dialog.component';
 import { SortableDirective } from './sortable.directive';
-import { OverlayComponent } from './overlay/overlay.component';
 import { DraftComponent } from './draft/draft.component';
 import { DraftService } from './draft.service';
 import { MessengerService } from './messenger.service';
@@ -60,36 +52,28 @@ import { MaterialModule } from './material.module';
 import { LandingComponent } from './landing/landing.component';
 import { EditorModule } from './editor/editor.module';
 import { AppRoutingModule } from './app-routing.module';
+import { GameModule } from './game/game.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GameComponent,
     LobbyComponent,
     PrivateLobbyComponent,
-    CardComponent,
-    ResourceSelectorComponent,
-    PlayerAvatarComponent,
-    CardChooserComponent,
-    RecordBarComponent,
     EndDialogComponent,
     DeckEditorComponent,
-    ResourceDisplayComponent,
     SettingsDialogComponent,
     DeckChooserComponent,
     DeckMetadataDialogComponent,
     OpenPackComponent,
-    DamageDistributionDialogComponent,
     SortableDirective,
-    OverlayComponent,
     DraftComponent,
     LandingComponent,
   ],
-  entryComponents: [CardChooserComponent, EndDialogComponent,
-    SettingsDialogComponent, DeckMetadataDialogComponent, DamageDistributionDialogComponent],
+  entryComponents: [EndDialogComponent, SettingsDialogComponent, DeckMetadataDialogComponent],
   imports: [
     AppRoutingModule,
     BrowserModule,
+    GameModule,
     UserModule,
     FormsModule,
     HttpModule,
@@ -101,7 +85,7 @@ import { AppRoutingModule } from './app-routing.module';
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
     EditorModule
   ],
-  providers: [SoundManager, WebClient, DecksService, SpeedService, OverlayService,
+  providers: [SoundManager, WebClient, DecksService, SpeedService,
     TipService, Preloader, InPlayGuard, LoggedInGuard, CollectionService, DraftService, MessengerService],
   bootstrap: [AppComponent]
 })
