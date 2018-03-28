@@ -18,10 +18,9 @@ export class CardEditorComponent implements OnInit {
   public cardTypeKeys = this.getKeys(CardType);
 
   public data: UnitData = {
-
     name: '',
     id: '',
-    imageUrl: '',
+    imageUrl: 'person.png',
     cost: {
       energy: 0,
       synthesis: 0,
