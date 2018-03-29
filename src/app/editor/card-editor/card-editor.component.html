@@ -43,10 +43,10 @@
   <mat-card-title>Unit Information</mat-card-title>
   <mat-card-content class="editor-container">
     <mat-form-field>
-      <input matInput min="0" max="99" [(ngModel)]="data.life" placeholder="Maximum Life" type="number">
+      <input matInput min="0" max="99" [(ngModel)]="data.damage" placeholder="Damage" type="number">
     </mat-form-field>
     <mat-form-field>
-      <input matInput min="0" max="99" [(ngModel)]="data.damage" placeholder="Damage" type="number">
+      <input matInput min="0" max="99" [(ngModel)]="data.life" placeholder="Maximum Life" type="number">
     </mat-form-field>
     <mat-form-field>
       <mat-select placeholder="Unit Type" [(ngModel)]="data.type">
@@ -59,12 +59,25 @@
 <mat-card *ngIf="data.cardType === cardTypes.Item">
   <mat-card-title>Item Information</mat-card-title>
   <mat-card-content class="editor-container">
+    <mat-form-field>
+      <input matInput min="0" max="99" [(ngModel)]="data.damage" placeholder="Damage Bonus" type="number">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput min="0" max="99" [(ngModel)]="data.life" placeholder="Life Bonus" type="number">
+    </mat-form-field>
+    <!-- host targeter -->
   </mat-card-content>
 </mat-card>
 
 <mat-card *ngIf="data.cardType === cardTypes.Enchantment">
   <mat-card-title>Enchantment Information</mat-card-title>
   <mat-card-content class="editor-container">
+    <mat-form-field>
+      <input matInput min="0" max="99" [(ngModel)]="data.empowerCost" placeholder="Empower/Disempower Cost" type="number">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput min="0" max="99" [(ngModel)]="data.power" placeholder="Base Power" type="number">
+    </mat-form-field>
   </mat-card-content>
 </mat-card>
 
@@ -79,4 +92,3 @@
 </mat-card>
 
 <ccg-mechanic-editor [card]="data"></ccg-mechanic-editor>
-

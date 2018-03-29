@@ -17,7 +17,7 @@ export class CardEditorComponent implements OnInit {
   public cardTypes = CardType;
   public cardTypeKeys = this.getKeys(CardType);
 
-  public data: UnitData = {
+  public data = {
     name: '',
     id: '',
     imageUrl: 'person.png',
@@ -30,17 +30,18 @@ export class CardEditorComponent implements OnInit {
     },
     mechanics: [],
     targeter: { id: 'Untargeted' },
+    hostTargeter: { id: 'FriendlyUnit' },
     cardType: CardType.Unit,
     life: 1,
     damage: 1,
     type: UnitType.Human
   };
-  public previewCard  = cardList.buildUnitInstance(this.data);
+  public previewCard = cardList.buildInstance(this.data);
 
 
 
   public refreshPreview() {
-    this.previewCard = cardList.buildUnitInstance(this.data);
+    this.previewCard = cardList.buildInstance(this.data);
   }
 
   // Enforce resource requirments summing up to 6 (so it fits in UI)
