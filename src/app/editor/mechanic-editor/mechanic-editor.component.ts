@@ -21,7 +21,7 @@ export class MechanicEditorComponent {
     let validMechanics = mechanicList.getConstructors(this.card.cardType);
     if (validMechanics.length === 0)
       return;
-    this.card.mechanics.push({ id: validMechanics[0].id });
+    this.card.mechanics.push({ id: validMechanics[0].getId(), parameters: [] });
   }
 
   public delete(index: number) {

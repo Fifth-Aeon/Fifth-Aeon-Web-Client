@@ -2,19 +2,12 @@
   <mat-card-title>Mechanics</mat-card-title>
   <mat-card-content>
     <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-         <!-- <th>Parameters</th>-->
-          <th></th>
-        </tr>
-      </thead>
       <tbody>
         <tr *ngFor="let data of card.mechanics; let i = index;">
           <td>
             <mat-form-field>
               <mat-select placeholder="ID" [(ngModel)]="data.id">
-                <mat-option *ngFor="let constructor of mechanicList.getConstructors(card.cardType)" [value]="constructor.id">{{constructor.id}}</mat-option>
+                <mat-option *ngFor="let constructor of mechanicList.getConstructors(card.cardType)" [value]="constructor.getId()">{{constructor.getId()}}</mat-option>
               </mat-select>
             </mat-form-field>
           </td>
