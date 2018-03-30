@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EditorDataService } from '../editor-data.service';
-import { CardData } from 'fifthaeon/cards/cardList';
+import { CardData, cardList } from 'fifthaeon/cards/cardList';
 
 @Component({
   selector: 'ccg-editor-list',
@@ -8,6 +8,7 @@ import { CardData } from 'fifthaeon/cards/cardList';
   styleUrls: ['./editor-list.component.scss']
 })
 export class EditorListComponent implements OnInit {
+  public cardList = cardList;
 
   constructor(public editorData: EditorDataService) { }
 
