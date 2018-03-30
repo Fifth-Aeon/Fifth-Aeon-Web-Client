@@ -18,7 +18,10 @@ export class MechanicEditorComponent {
   }
 
   public add() {
-    this.card.mechanics.push({ id: 'flying' });
+    let validMechanics = mechanicList.getConstructors(this.card.cardType);
+    if (validMechanics.length === 0)
+      return;
+    this.card.mechanics.push({ id: validMechanics[0].id });
   }
 
   public delete(index: number) {

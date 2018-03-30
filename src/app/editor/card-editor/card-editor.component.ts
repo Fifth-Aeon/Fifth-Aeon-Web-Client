@@ -4,6 +4,8 @@ import { UnitType } from '../../game_model/unit';
 import { Card, CardType } from '../../game_model/card';
 import { Route, ActivatedRoute, Router } from '@angular/router';
 import { EditorDataService } from '../editor-data.service';
+import { MatSelectChange } from '@angular/material';
+import { mechanicList } from 'fifthaeon/cards/mechanicList';
 
 
 @Component({
@@ -21,7 +23,9 @@ export class CardEditorComponent implements OnInit {
   public previewCard: Card;
   public data: CardData;
 
-  constructor (
+  private lastCardType: CardType;
+
+  constructor(
     route: ActivatedRoute,
     router: Router,
     editorData: EditorDataService
@@ -30,8 +34,14 @@ export class CardEditorComponent implements OnInit {
     route.paramMap.subscribe(params => {
       const id = params.get('id');
       this.data = editorData.getCard(id);
+      this.lastCardType = this.data.cardType;
       this.refreshPreview();
     });
+  }
+
+  public changeType(event: MatSelectChange) {
+    console.log(CardType[this.lastCardType], '->', CardType[event.value]);
+    this.data.mechanics = this.data.mechanics.filter(mechanic => mechanicList.isValid(this.data, mechanic));
   }
 
   public fileChange(event): void {

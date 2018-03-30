@@ -5,7 +5,7 @@
       <input matInput placeholder="Card Name" [(ngModel)]="data.name">
     </mat-form-field>
     <mat-form-field>
-      <mat-select placeholder="Card Type" [(ngModel)]="data.cardType">
+      <mat-select placeholder="Card Type" [(ngModel)]="data.cardType" (selectionChange)="changeType($event)">
         <mat-option *ngFor="let cardType of cardTypeKeys" [value]="cardType">{{cardTypes[cardType]}}</mat-option>
       </mat-select>
     </mat-form-field>
