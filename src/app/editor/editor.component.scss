@@ -1,21 +1,42 @@
-.nav-list a {
-  color: white;
-  vertical-align: middle;
-}
-
-.app-content {
-  padding: 20px;
-}
-
 .editor-sidenav {
   min-width: 300px;
-}
-
-mat-sidenav-container {
-  min-height: 100vh;
-}
-
-.searchbar-width {
-  margin-left: 25px;
-  flex: 0.15 1 auto;
+  h3 {
+    border: none;
+    font-size: 10px;
+    letter-spacing: 1px;
+    line-height: 24px;
+    text-transform: uppercase;
+    font-weight: 400;
+    margin: 0;
+    padding: 0 16p;
+    background-color: black;
+    text-align: center;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    margin: 0;
+    padding: 4px;
+    text-align: left;
+  }
+  li:nth-child(odd) {
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: black;
+  }
+  li a {
+    box-sizing: border-box;
+    display: block;
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 47px;
+    text-decoration: none;
+    transition: all .3s;
+    padding: 0 16px;
+    position: relative;
+    color: black;
+  }
 }

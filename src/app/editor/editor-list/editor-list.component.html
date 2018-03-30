@@ -1,0 +1,9 @@
+<p>
+  editor-list works!
+</p>
+<ul>
+  <li *ngFor="let card of editorData.getCards()">
+    <a [routerLink]="getEditLink(card)">{{card.name}}</a>
+  </li>
+</ul>
+<button (click)="newCard()"></button>

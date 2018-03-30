@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UnitData, cardList } from '../../game_model/cards/cardList';
+import { UnitData, cardList, CardData } from '../../game_model/cards/cardList';
 import { UnitType } from '../../game_model/unit';
 import { Card, CardType } from '../../game_model/card';
+import { Route, ActivatedRoute, Router } from '@angular/router';
+import { EditorDataService } from '../editor-data.service';
 
 
 @Component({
@@ -17,29 +19,19 @@ export class CardEditorComponent implements OnInit {
   public cardTypes = CardType;
   public cardTypeKeys = this.getKeys(CardType);
   public previewCard: Card;
-  public data = {
-    name: '',
-    id: '',
-    imageUrl: 'person.png',
-    cost: {
-      energy: 0,
-      synthesis: 0,
-      growth: 0,
-      decay: 0,
-      renewal: 0
-    },
-    mechanics: [],
-    targeter: { id: 'Untargeted' },
-    hostTargeter: { id: 'FriendlyUnit' },
-    cardType: CardType.Unit,
-    life: 1,
-    damage: 1,
-    type: UnitType.Human
-  };
+  public data: CardData;
 
-  constructor () {
-    this.refreshPreview();
+  constructor (
+    route: ActivatedRoute,
+    router: Router,
+    editorData: EditorDataService
+  ) {
     setInterval(() => this.refreshPreview(), 3000);
+    route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      this.data = editorData.getCard(id);
+      this.refreshPreview();
+    });
   }
 
   public fileChange(event): void {

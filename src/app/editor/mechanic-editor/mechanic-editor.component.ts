@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { mechanicList, MechanicData } from '../../game_model/cards/mechanicList';
-import { CardData } from '../../game_model/cards/cardList';
+import { SpellData } from '../../game_model/cards/cardList';
 
 @Component({
   selector: 'ccg-mechanic-editor',
@@ -11,7 +11,7 @@ export class MechanicEditorComponent {
 
   public mechanicList = mechanicList;
   public mechanics;
-  @Input() public card: CardData;
+  @Input() public card: SpellData;
 
   constructor() {
     // this.mechanics = this.mechanicList.getConstructors(this.card.cardType);
