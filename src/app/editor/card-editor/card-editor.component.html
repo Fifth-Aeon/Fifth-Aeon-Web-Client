@@ -11,7 +11,7 @@
     </mat-form-field>
 
     <input #fileInput hidden type="file" (change)="fileChange($event)" placeHolder="Upload Image" accept="image/*" single>
-    <button type="button" mat-raised-button (click)="fileInput.click()"><mat-icon>image</mat-icon> Upload Image</button>
+    <button type="button" mat-raised-button (click)="fileInput.click()"><mat-icon>file_upload</mat-icon> Upload Image</button>
 
     <!-- Targeter -->
   </mat-card-content>
@@ -87,7 +87,7 @@
     <ccg-card scale="1.9" [card]="previewCard"></ccg-card>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button (click)="refreshPreview()">Refresh</button>
+    <button mat-raised-button (click)="refreshPreview()"><mat-icon>refresh</mat-icon> Refresh</button>
   </mat-card-actions>
 </mat-card>
 
