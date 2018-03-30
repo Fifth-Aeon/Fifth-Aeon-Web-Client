@@ -5,13 +5,13 @@
       <input matInput placeholder="Card Name" [(ngModel)]="data.name">
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Image URL" [(ngModel)]="data.imageUrl">
-    </mat-form-field>
-    <mat-form-field>
       <mat-select placeholder="Card Type" [(ngModel)]="data.cardType">
         <mat-option *ngFor="let cardType of cardTypeKeys" [value]="cardType">{{cardTypes[cardType]}}</mat-option>
       </mat-select>
     </mat-form-field>
+
+    <input #fileInput hidden type="file" (change)="fileChange($event)" placeHolder="Upload Image" accept="image/*" single>
+    <button type="button" mat-raised-button (click)="fileInput.click()"><mat-icon>image</mat-icon> Upload Image</button>
 
     <!-- Targeter -->
   </mat-card-content>

@@ -180,7 +180,9 @@ export class CardComponent implements OnInit {
   }
 
   public getImage() {
-    return 'assets/png/' + this.card.getImage();
+    const url = this.card.getImage();
+    const prefix = url.includes('data:image/png;base64') ? '' : 'assets/png/';
+    return prefix + this.card.getImage();
   }
 
   public glowType() {

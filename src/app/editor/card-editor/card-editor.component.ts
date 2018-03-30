@@ -16,7 +16,7 @@ export class CardEditorComponent implements OnInit {
   public unitTypeKeys = this.getKeys(UnitType).filter(key => key !== 0);
   public cardTypes = CardType;
   public cardTypeKeys = this.getKeys(CardType);
-
+  public previewCard: Card;
   public data = {
     name: '',
     id: '',
@@ -36,9 +36,23 @@ export class CardEditorComponent implements OnInit {
     damage: 1,
     type: UnitType.Human
   };
-  public previewCard = cardList.buildInstance(this.data);
 
+  constructor () {
+    this.refreshPreview();
+    setInterval(() => this.refreshPreview(), 3000);
+  }
 
+  public fileChange(event): void {
+    let files: FileList = event.target.files;
+    if (files.length === 0)
+      return;
+    const image = files.item(0);
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.data.imageUrl = e.target.result;
+    };
+    reader.readAsDataURL(image);
+  }
 
   public refreshPreview() {
     this.previewCard = cardList.buildInstance(this.data);
