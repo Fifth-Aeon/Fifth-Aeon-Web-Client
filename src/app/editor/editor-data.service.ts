@@ -12,6 +12,7 @@ export class EditorDataService {
 
   constructor() {
     this.loadData();
+    setInterval(() => this.saveData(), 10000);
   }
 
   public createCard(name: string) {
@@ -50,6 +51,9 @@ export class EditorDataService {
 
   public saveData() {
     localStorage.setItem(EditorDataService.localStorageKey, JSON.stringify({ cards: this.cards }));
+    for (let card of this.cards) {
+      cardList.addFactory(cardList.buildCardFactory(card));
+    }
   }
 
   private loadData() {

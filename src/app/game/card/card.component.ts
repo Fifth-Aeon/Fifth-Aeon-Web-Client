@@ -30,6 +30,7 @@ keywordsDefs.set('Death:', 'Triggers when this is killed.');
 keywordsDefs.set('Affinity', 'Triggers the first time you summon a unit of the same type.');
 keywordsDefs.set('Serenity', 'Triggers at the end of your turn if you did not attack that turn.');
 keywordsDefs.set('Lethal Strike', 'Triggers whenever this unit deals lethal damage to another unit.');
+keywordsDefs.set('Soul Reap', 'Triggers whenever another unit dies.');
 keywordsDefs.set('Dawn', 'Triggers at the start of it’s owners turn.');
 keywordsDefs.set('Dusk', 'Triggers at the end of it’s owners turn.');
 keywordsDefs.set('Cycle', 'Triggers at the end of every turn.');
