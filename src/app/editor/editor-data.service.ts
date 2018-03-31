@@ -33,6 +33,8 @@ export class EditorDataService {
       cardType: CardType.Unit,
       life: 1,
       damage: 1,
+      power: 1,
+      empowerCost: 1,
       type: UnitType.Human
     } as CardData;
     this.cards.push(data);

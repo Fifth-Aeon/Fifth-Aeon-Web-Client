@@ -1,5 +1,5 @@
 <mat-card id="card-selection">
-  <mat-card-content id="editor-cards" #content (window:resize)="onResize(content.getBoundingClientRect())">
+  <mat-card-content id="editor-cards">
     <ccg-card scale="1.9" *ngFor="let card of editorData.getCards()" [routerLink]="getEditLink(card)" [card]="cardList.buildInstance(card)"></ccg-card>
   </mat-card-content>
   <p class="big-instruction" *ngIf="editorData.getCards().length === 0">
