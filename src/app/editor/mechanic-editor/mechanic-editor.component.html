@@ -18,6 +18,14 @@
               </mat-select>
             </mat-form-field>
           </td>
+          <td *ngIf="isTargeted(data)">
+            <mat-form-field>
+              <mat-select placeholder="Targeter ID" [(ngModel)]="data.targeter.id">
+                <mat-option value="Host">Use Host Targeter</mat-option>
+                <mat-option *ngFor="let id of getTargeterIds()" [value]="id">{{id}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
           <!--
           <td>
             Params...

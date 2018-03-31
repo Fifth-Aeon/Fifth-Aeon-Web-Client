@@ -3,6 +3,7 @@ import { mechanicList, MechanicData } from '../../game_model/cards/mechanicList'
 import { SpellData } from '../../game_model/cards/cardList';
 import { Mechanic } from 'fifthaeon/mechanic';
 import { triggerList } from 'fifthaeon/cards/triggerList';
+import { targeterList } from 'fifthaeon/cards/targeterList';
 
 @Component({
   selector: 'ccg-mechanic-editor',
@@ -26,7 +27,8 @@ export class MechanicEditorComponent {
     this.card.mechanics.push({
       id: validMechanics[0].getId(),
       parameters: [],
-      trigger: { id: 'PlayTrigger'}
+      trigger: { id: 'PlayTrigger'},
+      targeter: { id: 'Host', optional: false}
     });
   }
 
@@ -38,8 +40,16 @@ export class MechanicEditorComponent {
     return mechanicList.isTriggered(mechanic);
   }
 
+  public isTargeted(mechanic: MechanicData) {
+    return mechanicList.isTargeted(mechanic);
+  }
+
   public getTriggerIds() {
     return triggerList.getIds();
+  }
+
+  public getTargeterIds() {
+    return targeterList.getIds(true);
   }
 
 }
