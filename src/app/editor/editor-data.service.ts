@@ -28,8 +28,8 @@ export class EditorDataService {
         renewal: 0
       },
       mechanics: [],
-      targeter: { id: 'Untargeted' },
-      hostTargeter: { id: 'FriendlyUnit' },
+      targeter: { id: 'Untargeted', optional: false },
+      hostTargeter: { id: 'FriendlyUnit', optional: false  },
       cardType: CardType.Unit,
       life: 1,
       damage: 1,

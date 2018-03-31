@@ -9,11 +9,12 @@
         <mat-option *ngFor="let cardType of cardTypeKeys" [value]="cardType">{{cardTypes[cardType]}}</mat-option>
       </mat-select>
     </mat-form-field>
+    <ccg-targeter-editor [data]="data.targeter"></ccg-targeter-editor>
 
     <input #fileInput hidden type="file" (change)="fileChange($event)" placeHolder="Upload Image" accept="image/*" single>
-    <button type="button" mat-raised-button (click)="fileInput.click()"><mat-icon>file_upload</mat-icon> Upload Image</button>
+    <button type="button" mat-raised-button (click)="fileInput.click()">
+      <mat-icon>file_upload</mat-icon> Upload Image</button>
 
-    <!-- Targeter -->
   </mat-card-content>
 </mat-card>
 
@@ -87,7 +88,8 @@
     <ccg-card scale="1.9" [card]="previewCard"></ccg-card>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button (click)="refreshPreview()"><mat-icon>refresh</mat-icon> Refresh</button>
+    <button mat-raised-button (click)="refreshPreview()">
+      <mat-icon>refresh</mat-icon> Refresh</button>
   </mat-card-actions>
 </mat-card>
 

@@ -1,3 +1,7 @@
-<p>
-  targeter-editor works!
-</p>
+<mat-form-field>
+  <mat-select placeholder="Targeter ID" [(ngModel)]="data.id">
+    <mat-option *ngFor="let id of targeterList.getIds()" [value]="id">{{id}}</mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-checkbox [(ngModel)]="data.optional">Optional</mat-checkbox>
+
