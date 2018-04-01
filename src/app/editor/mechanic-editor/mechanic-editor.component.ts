@@ -13,7 +13,6 @@ import { targeterList } from 'fifthaeon/cards/targeterList';
 export class MechanicEditorComponent {
 
   public mechanicList = mechanicList;
-  public mechanics;
   @Input() public card: SpellData;
 
   constructor() {
@@ -27,8 +26,8 @@ export class MechanicEditorComponent {
     this.card.mechanics.push({
       id: validMechanics[0].getId(),
       parameters: [],
-      trigger: { id: 'PlayTrigger'},
-      targeter: { id: 'Host', optional: false}
+      trigger: { id: 'PlayTrigger' },
+      targeter: { id: 'Host', optional: false }
     });
   }
 
@@ -52,4 +51,17 @@ export class MechanicEditorComponent {
     return targeterList.getIds(true);
   }
 
+  public moveUp(index: number) {
+    this.swap(index, index - 1);
+  }
+
+  public moveDown(index: number) {
+    this.swap(index, index + 1);
+  }
+
+  private swap(i: number, j: number) {
+    const temp = this.card.mechanics[i];
+    this.card.mechanics[i] = this.card.mechanics[j];
+    this.card.mechanics[j] = temp;
+  }
 }

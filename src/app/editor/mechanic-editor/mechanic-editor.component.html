@@ -32,16 +32,23 @@
           </td>
         -->
           <td>
-            <button mat-icon-button color="warn" (click)="delete(i)">
-              <mat-icon>delete</mat-icon>
+            
+            <button mat-icon-button  [disabled]="i === 0" (click)="moveUp(i)" matTooltip="Move Up">
+              <mat-icon>arrow_upward</mat-icon>
             </button>
+            <button mat-icon-button  [disabled]="i === card.mechanics.length - 1" (click)="moveDown(i)" matTooltip="Move Down">
+              <mat-icon>arrow_downward</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="delete(i)" matTooltip="Delete Mechanic">
+                <mat-icon>delete</mat-icon>
+              </button>
           </td>
         </tr>
       </tbody>
     </table>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-icon-button color="primary" (click)="add()">
+    <button mat-mini-fab color="primary" (click)="add()" matTooltip="Add Mechanic">
       <mat-icon>add</mat-icon>
     </button>
   </mat-card-actions>
