@@ -44,8 +44,12 @@ export class MechanicEditorComponent {
   }
 
   public setParam(mechanic: MechanicData, i: number, event) {
-    if (event && event.target)
+    console.log('sp', event, typeof event, event.target);
+    if (typeof event === 'object' && event.target)
       mechanic.parameters[i] = event.target.value;
+    else
+      mechanic.parameters[i] = event;
+
   }
 
   public isTriggered(mechanic: MechanicData) {

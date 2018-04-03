@@ -1,5 +1,18 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ParameterType, ParamaterData} from 'fifthaeon/cards/parameters';
+import { ParameterType, ParamaterData } from 'fifthaeon/cards/parameters';
+import { CardType } from 'fifthaeon/card';
+import { cardList } from 'fifthaeon/cards/cardList';
+import { ResourceType } from 'fifthaeon/resource';
+import { MatSelectChange } from '@angular/material';
+
+enum EditorType {
+  Numeric, Enumerable, Resource
+}
+
+interface EnumValue {
+  id: string;
+  name: string;
+}
 
 @Component({
   selector: 'ccg-parameter-editor',
@@ -11,14 +24,69 @@ export class ParameterEditorComponent implements OnInit {
   @Input() type: ParameterType;
   @Input() data: ParamaterData;
   @Output() change: EventEmitter<ParamaterData> = new EventEmitter<ParamaterData>();
+  public EditorType = EditorType;
 
-  constructor() { }
+  private cardTypeValues = new Map<CardType, EnumValue[]>();
+
+  public getEditorType() {
+    if (this.type === ParameterType.Integer || this.type === ParameterType.NaturalNumber)
+      return EditorType.Numeric;
+    else if (this.type === ParameterType.Resource)
+      return EditorType.Resource;
+    else
+      return EditorType.Enumerable;
+  }
+
+  public getMin() {
+    return this.type === ParameterType.Integer ? -99 : 1;
+  }
+
+  public getValues(): EnumValue[] {
+    switch (this.type) {
+      case ParameterType.ResourceType:
+        return this.getEnumValues(ResourceType);
+      case ParameterType.CardType:
+        return this.getEnumValues(CardType);
+      case ParameterType.Card:
+        return this.getCardTypeValues(null);
+      case ParameterType.Spell:
+        return this.getCardTypeValues(CardType.Spell);
+      case ParameterType.Unit:
+        return this.getCardTypeValues(CardType.Unit);
+      case ParameterType.Item:
+        return this.getCardTypeValues(CardType.Item);
+      case ParameterType.Enchantment:
+        return this.getCardTypeValues(CardType.Enchantment);
+    }
+  }
 
   onChange(event) {
     this.change.emit(this.data);
   }
 
+
   ngOnInit() {
+  }
+
+  private getEnumValues(enumeration): EnumValue[] {
+    return [];
+  }
+
+  private getCardTypeValues(type: CardType): EnumValue[] {
+    if (!this.cardTypeValues.has(type))
+      this.cardTypeValues.set(type, this.generateCardTypeValues(type));
+    return this.cardTypeValues.get(type);
+  }
+
+  private generateCardTypeValues(type: CardType): EnumValue[] {
+    return cardList.getCards()
+      .filter(card => !type || card.getCardType() === type)
+      .map(card => {
+        return {
+          id: card.getDataId(),
+          name: card.getName()
+        };
+      });
   }
 
 }
