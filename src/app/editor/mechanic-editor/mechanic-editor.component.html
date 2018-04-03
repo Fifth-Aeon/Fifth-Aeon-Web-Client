@@ -6,8 +6,11 @@
         <tr *ngFor="let data of card.mechanics; let i = index;">
           <td>
             <mat-form-field>
-              <mat-select placeholder="Mechanic ID" [(ngModel)]="data.id">
-                <mat-option *ngFor="let constructor of mechanicList.getConstructors(card.cardType)" [value]="constructor.getId()">{{constructor.getId()}}</mat-option>
+              <mat-select placeholder="Mechanic ID" [(ngModel)]="data.id"
+                (selectionChange)="changeMechanic(data, $event)">
+                <mat-option *ngFor="let constructor of mechanicList.getConstructors(card.cardType)" 
+                [value]="constructor.getId()"
+                >{{constructor.getId()}}</mat-option>
               </mat-select>
             </mat-form-field>
           </td>
@@ -26,11 +29,14 @@
               </mat-select>
             </mat-form-field>
           </td>
-          <!--
-          <td>
-            Params...
-          </td>
-        -->
+          <td *ngFor="let parameter of mechanicList.getParameters(data); let i = index;">
+            <ccg-parameter-editor 
+              [name]="parameter.name" 
+              [type]="parameter.type" 
+              [data]="data.parameters[i]"
+              (change)="setParam(data, i, $event)">
+            </ccg-parameter-editor>
+          </td>    
           <td>
             
             <button mat-icon-button  [disabled]="i === 0" (click)="moveUp(i)" matTooltip="Move Up">

@@ -11,6 +11,7 @@ import { MechanicEditorComponent } from './mechanic-editor/mechanic-editor.compo
 import { GameModule } from '../game/game.module';
 import { EditorListComponent } from './editor-list/editor-list.component';
 import { EditorDataService } from './editor-data.service';
+import { ParameterEditorComponent } from './parameter-editor/parameter-editor.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { EditorDataService } from './editor-data.service';
     EditorRoutingModule,
     GameModule
   ],
-  declarations: [CardEditorComponent, EditorComponent, TargeterEditorComponent, MechanicEditorComponent, EditorListComponent],
+  declarations: [CardEditorComponent, EditorComponent, TargeterEditorComponent, MechanicEditorComponent,
+     EditorListComponent, ParameterEditorComponent],
   exports: [],
   providers: [EditorDataService]
 })

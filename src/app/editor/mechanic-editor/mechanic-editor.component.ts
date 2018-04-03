@@ -1,9 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { mechanicList, MechanicData } from '../../game_model/cards/mechanicList';
-import { SpellData } from '../../game_model/cards/cardList';
+import { SpellData, cardList } from '../../game_model/cards/cardList';
 import { Mechanic } from 'fifthaeon/mechanic';
 import { triggerList } from 'fifthaeon/cards/triggerList';
 import { targeterList } from 'fifthaeon/cards/targeterList';
+import { MatSelectChange } from '@angular/material';
+import { buildParameters } from 'fifthaeon/cards/parameters';
 
 @Component({
   selector: 'ccg-mechanic-editor',
@@ -17,6 +19,12 @@ export class MechanicEditorComponent {
 
   constructor() {
     // this.mechanics = this.mechanicList.getConstructors(this.card.cardType);
+  }
+
+  public changeMechanic(data: MechanicData, event: MatSelectChange) {
+    let paramTypes = mechanicList.getParameters(event.value)
+      .map(param => param.type);
+    data.parameters = buildParameters(paramTypes, [], cardList);
   }
 
   public add() {
@@ -33,6 +41,11 @@ export class MechanicEditorComponent {
 
   public delete(index: number) {
     this.card.mechanics.splice(index, 1);
+  }
+
+  public setParam(mechanic: MechanicData, i: number, event) {
+    if (event && event.target)
+      mechanic.parameters[i] = event.target.value;
   }
 
   public isTriggered(mechanic: MechanicData) {
