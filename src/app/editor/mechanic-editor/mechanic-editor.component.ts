@@ -6,6 +6,7 @@ import { triggerList } from 'fifthaeon/cards/triggerList';
 import { targeterList } from 'fifthaeon/cards/targeterList';
 import { MatSelectChange } from '@angular/material';
 import { buildParameters } from 'fifthaeon/cards/parameters';
+import { Card } from 'fifthaeon/card';
 
 @Component({
   selector: 'ccg-mechanic-editor',
@@ -22,9 +23,14 @@ export class MechanicEditorComponent {
   }
 
   public changeMechanic(data: MechanicData, event: MatSelectChange) {
-    let paramTypes = mechanicList.getParameters(event.value)
+    let paramTypes = mechanicList.getParameters(data)
       .map(param => param.type);
-    data.parameters = buildParameters(paramTypes, [], cardList);
+    data.parameters = buildParameters(paramTypes, [], cardList).map(param => {
+        if (typeof param !== 'function')
+          return param;
+        const card = param() as Card;
+        return card.getDataId();
+    });
   }
 
   public add() {
@@ -44,7 +50,6 @@ export class MechanicEditorComponent {
   }
 
   public setParam(mechanic: MechanicData, i: number, event) {
-    console.log('sp', event, typeof event, event.target);
     if (typeof event === 'object' && event.target)
       mechanic.parameters[i] = event.target.value;
     else

@@ -27,6 +27,8 @@ export class ParameterEditorComponent implements OnInit {
   public EditorType = EditorType;
 
   private cardTypeValues = new Map<CardType, EnumValue[]>();
+  private resourceEnumValues = this.getEnumValues(ResourceType);
+  private cardEnumValues = this.getEnumValues(CardType);
 
   public getEditorType() {
     if (this.type === ParameterType.Integer || this.type === ParameterType.NaturalNumber)
@@ -44,9 +46,9 @@ export class ParameterEditorComponent implements OnInit {
   public getValues(): EnumValue[] {
     switch (this.type) {
       case ParameterType.ResourceType:
-        return this.getEnumValues(ResourceType);
+        return this.resourceEnumValues;
       case ParameterType.CardType:
-        return this.getEnumValues(CardType);
+        return this.cardEnumValues;
       case ParameterType.Card:
         return this.getCardTypeValues(null);
       case ParameterType.Spell:
@@ -60,16 +62,25 @@ export class ParameterEditorComponent implements OnInit {
     }
   }
 
-  onChange(event) {
+  private getEnumValues(enumeration): EnumValue[] {
+    const results = [];
+    for (let key in enumeration) {
+      if (typeof enumeration[key] !== 'number') {
+        results.push({
+          id: key,
+          name: enumeration[key]
+        });
+      }
+    }
+    return results;
+  }
+
+  public onChange(event) {
     this.change.emit(this.data);
   }
 
 
-  ngOnInit() {
-  }
-
-  private getEnumValues(enumeration): EnumValue[] {
-    return [];
+  public ngOnInit() {
   }
 
   private getCardTypeValues(type: CardType): EnumValue[] {
