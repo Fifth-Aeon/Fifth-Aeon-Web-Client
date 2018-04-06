@@ -90,14 +90,9 @@ export class Messenger {
         console.log('Connected, requesting queued messages.');
         if (this.loggedIn) {
             this.emptyMessageQueue();
-        } else {
-            this.annonLogin();
         }
     }
 
-    private annonLogin() {
-        this.sendMessageToServer(MessageType.AnonymousLogin, {});
-    }
 
 
     private handleMessage(ev: MessageEvent) {

@@ -25,12 +25,13 @@ const routes: Routes = [
     { path: 'private', component: PrivateLobbyComponent, canActivate: [LoggedInGuard] },
     { path: 'packs', component: OpenPackComponent, canActivate: [LoggedInGuard] },
     { path: 'lobby', component: LobbyComponent, canActivate: [LoggedInGuard] },
+    { path: 'queue', component: LobbyComponent, canActivate: [LoggedInGuard] },
     { path: 'draft', component: DraftComponent, canActivate: [LoggedInGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'reset/:token', component: ResetPasswordComponent },
     { path: 'verify/:token', component: VerifyEmailComponent },
-    // { path: '**', component: LobbyComponent, canActivate: [LoggedInGuard] }
+    { path: '**', component: LobbyComponent, canActivate: [LoggedInGuard] }
 ];
 
 @NgModule({

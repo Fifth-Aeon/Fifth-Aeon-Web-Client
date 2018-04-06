@@ -483,7 +483,7 @@ export class WebClient {
         if (this.state === ClientState.InLobby)
             return 'Logged in as ' + this.username + '.';
         if (this.state === ClientState.Waiting)
-            return 'Waiting for server responce.';
+            return 'Waiting for server response.';
         if (this.state === ClientState.PrivateLobby)
             return 'Private game ready, please invite a friend.';
         if (this.state === ClientState.PrivateLobbyFail)

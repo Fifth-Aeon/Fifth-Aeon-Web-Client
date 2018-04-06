@@ -58,7 +58,7 @@ export class RegisterComponent implements OnInit {
   create() {
     this.startRequest();
     this.auth.register(this.username, this.email, this.password).then(() => {
-      this.router.navigate([`/comics/create`]);
+      this.router.navigate([`/lobby`]);
     }).catch(this.handleError.bind(this));
   }
 

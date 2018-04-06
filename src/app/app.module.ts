@@ -71,7 +71,6 @@ import { GameModule } from './game/game.module';
   ],
   entryComponents: [EndDialogComponent, SettingsDialogComponent, DeckMetadataDialogComponent],
   imports: [
-    AppRoutingModule,
     BrowserModule,
     GameModule,
     UserModule,
@@ -83,7 +82,9 @@ import { GameModule } from './game/game.module';
     HotkeyModule.forRoot(),
     MaterialModule,
     Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
-    EditorModule
+    EditorModule,
+    AppRoutingModule
+
   ],
   providers: [SoundManager, WebClient, DecksService, SpeedService,
     TipService, Preloader, InPlayGuard, LoggedInGuard, CollectionService, DraftService, MessengerService],
