@@ -5,7 +5,7 @@ import { Card, CardType } from '../../game_model/card';
 import { Route, ActivatedRoute, Router } from '@angular/router';
 import { EditorDataService } from '../editor-data.service';
 import { MatSelectChange } from '@angular/material';
-import { mechanicList } from 'fifthaeon/cards/mechanicList';
+import { mechanicList } from '../../game_model/cards/mechanicList';
 
 
 @Component({

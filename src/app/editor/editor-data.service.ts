@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { cardList, CardData } from 'fifthaeon/cards/cardList';
+import { cardList, CardData } from '../game_model/cards/cardList';
 import * as uuid from 'uuid';
-import { CardType } from 'fifthaeon/card';
-import { UnitType } from 'fifthaeon/unit';
+import { CardType } from '../game_model/card';
+import { UnitType } from '../game_model/unit';
 
 @Injectable()
 export class EditorDataService {

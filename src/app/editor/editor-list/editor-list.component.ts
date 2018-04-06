@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EditorDataService } from '../editor-data.service';
-import { CardData, cardList } from 'fifthaeon/cards/cardList';
+import { CardData, cardList } from '../../game_model/cards/cardList';
 
 @Component({
   selector: 'ccg-editor-list',

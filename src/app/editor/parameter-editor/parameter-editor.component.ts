@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ParameterType, ParamaterData } from 'fifthaeon/cards/parameters';
-import { CardType } from 'fifthaeon/card';
-import { cardList } from 'fifthaeon/cards/cardList';
-import { ResourceType } from 'fifthaeon/resource';
+import { ParameterType, ParamaterData } from '../../game_model/cards/parameters';
+import { CardType } from '../../game_model/card';
+import { cardList } from '../../game_model/cards/cardList';
+import { ResourceType } from '../../game_model/resource';
 import { MatSelectChange } from '@angular/material';
 
 enum EditorType {

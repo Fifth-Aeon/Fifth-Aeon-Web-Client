@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { targeterList, TargeterData } from 'fifthaeon/cards/targeterList';
+import { targeterList, TargeterData } from '../../game_model/cards/targeterList';
 
 @Component({
   selector: 'ccg-targeter-editor',

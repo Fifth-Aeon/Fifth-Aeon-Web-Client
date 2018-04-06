@@ -1,12 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { mechanicList, MechanicData } from '../../game_model/cards/mechanicList';
 import { SpellData, cardList } from '../../game_model/cards/cardList';
-import { Mechanic } from 'fifthaeon/mechanic';
-import { triggerList } from 'fifthaeon/cards/triggerList';
-import { targeterList } from 'fifthaeon/cards/targeterList';
+import { Mechanic } from '../../game_model/mechanic';
+import { triggerList } from '../../game_model/cards/triggerList';
+import { targeterList } from '../../game_model/cards/targeterList';
 import { MatSelectChange } from '@angular/material';
-import { buildParameters } from 'fifthaeon/cards/parameters';
-import { Card } from 'fifthaeon/card';
+import { buildParameters } from '../../game_model/cards/parameters';
+import { Card } from '../../game_model/card';
 
 @Component({
   selector: 'ccg-mechanic-editor',

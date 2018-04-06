@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
-import { Card } from 'fifthaeon/card';
+import { Card } from '../../game_model/card';
 
 @Component({
   selector: 'ccg-card-chooser',

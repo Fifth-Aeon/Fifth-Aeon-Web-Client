@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Resource } from 'fifthaeon/resource';
+import { Resource } from '../../game_model/resource';
 
 @Component({
   selector: 'ccg-resource-display',
