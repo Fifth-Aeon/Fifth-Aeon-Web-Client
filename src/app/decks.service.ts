@@ -12,14 +12,11 @@ import { apiURL } from './url';
 import { allDecks, getStarterDecks } from './game_model/scenarios/decks';
 import { Collection } from './game_model/collection';
 import { CollectionService } from 'app/collection.service';
-
+import { EditorDataService } from './editor/editor-data.service';
 
 const saveURL = `${apiURL}/api/cards/storeDeck`;
 const loadUrl = `${apiURL}/api/cards/getDecks`;
 const deleteUrl = `${apiURL}/api/cards/deleteDeck`;
-
-
-const deckStore = 'deck-store';
 
 @Injectable()
 export class DecksService {
@@ -32,7 +29,8 @@ export class DecksService {
     private client: WebClient,
     private collection: CollectionService,
     private auth: AuthenticationService,
-    private http: HttpClient
+    private http: HttpClient,
+    private editorData: EditorDataService
   ) {
     this.auth.onAuth((data) => {
       if (data)

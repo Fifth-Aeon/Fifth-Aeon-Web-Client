@@ -3,6 +3,7 @@ import { cardList, CardData } from '../game_model/cards/cardList';
 import * as uuid from 'uuid';
 import { CardType } from '../game_model/card';
 import { UnitType } from '../game_model/unit';
+import { CollectionService } from '../collection.service';
 
 @Injectable()
 export class EditorDataService {
@@ -10,7 +11,9 @@ export class EditorDataService {
 
   private cards: Array<CardData> = [];
 
-  constructor() {
+  constructor(
+    private collectionService: CollectionService
+  ) {
     this.loadData();
     setInterval(() => this.saveData(), 10000);
   }
@@ -51,9 +54,7 @@ export class EditorDataService {
 
   public saveData() {
     localStorage.setItem(EditorDataService.localStorageKey, JSON.stringify({ cards: this.cards }));
-    for (let card of this.cards) {
-      cardList.addFactory(cardList.buildCardFactory(card));
-    }
+    this.addToCollection();
   }
 
   private loadData() {
@@ -61,6 +62,14 @@ export class EditorDataService {
     if (!jsonStr) return;
     const data = JSON.parse(jsonStr);
     this.cards = data.cards;
+    this.addToCollection();
+  }
+
+  private addToCollection() {
+    for (let card of this.cards) {
+      cardList.addFactory(cardList.buildCardFactory(card));
+      this.collectionService.getCollection().addCardPlayset(card.id);
+    }
   }
 
 }
