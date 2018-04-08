@@ -11,7 +11,7 @@ export class MessengerService {
     auth: AuthenticationService
   ) {
     auth.onAuth(user => {
-      if (user)
+      if (!user) return;
       this.setMessengerID(user.mpToken);
     });
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { WebClient } from '../client';
+import { WebClient } from '../../client';
 
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 
@@ -10,6 +10,7 @@ import { HotkeysService, Hotkey } from 'angular2-hotkeys';
   styleUrls: ['./resource-selector.component.css']
 })
 export class ResourceSelectorComponent implements OnInit {
+  @Input() canPlayResource: boolean;
 
   private makeHotkey(key: string, resource: string) {
     this.hotkeys.add(new Hotkey(key, (event: KeyboardEvent): boolean => {
@@ -26,16 +27,15 @@ export class ResourceSelectorComponent implements OnInit {
     }
   }
 
-  @Input() canPlayResource: boolean;
 
   public disableTip() {
     if (!this.canPlayResource)
-      return 'You can\'t play a resource right now.'
+      return 'You can\'t play a resource right now.';
   }
 
   public tip(msg: string) {
     if (!this.canPlayResource)
-      return ''
+      return '';
     return msg;
   }
 

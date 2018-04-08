@@ -1,0 +1,21 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="nav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>Fifth Aeon - Editor</span>
+  <span class="fill-remaining-space"></span>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #nav mode="side" class="editor-sidenav">
+    <ul>
+      <li>
+        <a (click)="nav.close()" routerLink="/lobby">Lobby</a>
+      </li>
+      <li>
+        <a (click)="nav.close()" routerLink="/editor">Editor Home</a>
+      </li>
+    </ul>
+  </mat-sidenav>
+  <router-outlet></router-outlet>
+</mat-sidenav-container>

@@ -22,7 +22,7 @@ export class AuthenticationService {
       let data = JSON.parse(localStorage.getItem('login'));
       this.confirmLogin(data.token).then((res) => {
         if (res)
-          this.setLogin(data);
+          this.setLogin(res);
       });
     } catch (e) { }
   }

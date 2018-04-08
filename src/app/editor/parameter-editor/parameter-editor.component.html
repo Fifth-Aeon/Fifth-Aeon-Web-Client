@@ -1,0 +1,16 @@
+<ng-container [ngSwitch]="getEditorType()">
+
+  <mat-form-field *ngSwitchCase="EditorType.Numeric">
+    <input (change)="onChange($event)" [(ngModel)]="data" [placeholder]="name" matInput [min]="getMin()" max="99" type="number">
+  </mat-form-field>
+
+  <mat-form-field *ngSwitchCase="EditorType.Enumerable">
+    <mat-select (selectionChange)="onChange($event)" [(ngModel)]="data" [placeholder]="name">
+      <mat-option *ngFor="let item of getValues()" [value]="item.id">{{item.name}}</mat-option>
+    </mat-select> 
+  </mat-form-field>
+
+  <p *ngSwitchCase="EditorType.Resource">
+    Resource PLaceholder
+  </p>
+</ng-container>

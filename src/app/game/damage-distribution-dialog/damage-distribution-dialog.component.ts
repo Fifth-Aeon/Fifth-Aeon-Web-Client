@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { Unit } from '../game_model/unit';
+import { Unit } from '../../game_model/unit';
 
 @Component({
   selector: 'ccg-damage-distribution-dialog',

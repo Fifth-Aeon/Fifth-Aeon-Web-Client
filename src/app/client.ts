@@ -13,7 +13,6 @@ import { Angulartics2 } from 'angulartics2';
 import { Game, GameAction, GameSyncEvent, GameActionType, SyncEventType, GamePhase } from './game_model/game';
 import { ServerGame } from './game_model/serverGame';
 import { ClientGame } from './game_model/clientGame';
-import { data } from './game_model/gameData';
 import { GameFormat, standardFormat } from './game_model/gameFormat';
 import { Card } from './game_model/card';
 import { Unit } from './game_model/unit';
@@ -31,11 +30,11 @@ import { getHttpUrl } from './url';
 
 import { EndDialogComponent } from './end-dialog/end-dialog.component';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
-import { OverlayService } from './overlay.service';
+import { OverlayService } from './game/overlay.service';
 import { TipService, TipType } from './tips';
 import { SpeedService } from 'app/speed.service';
 import { CollectionService } from 'app/collection.service';
-import { DamageDistributionDialogComponent } from './damage-distribution-dialog/damage-distribution-dialog.component';
+import { DamageDistributionDialogComponent } from './game/damage-distribution-dialog/damage-distribution-dialog.component';
 import { MessengerService } from './messenger.service';
 import { UserData, AuthenticationService } from './user/authentication.service';
 
@@ -484,7 +483,7 @@ export class WebClient {
         if (this.state === ClientState.InLobby)
             return 'Logged in as ' + this.username + '.';
         if (this.state === ClientState.Waiting)
-            return 'Waiting for server responce.';
+            return 'Waiting for server response.';
         if (this.state === ClientState.PrivateLobby)
             return 'Private game ready, please invite a friend.';
         if (this.state === ClientState.PrivateLobbyFail)

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DecksService } from 'app/decks.service';
 import { Collection } from 'app/game_model/collection';
-import { allCards } from 'app/game_model/cards/allCards';
 import { Card } from 'app/game_model/card';
 import { CollectionService } from 'app/collection.service';
 

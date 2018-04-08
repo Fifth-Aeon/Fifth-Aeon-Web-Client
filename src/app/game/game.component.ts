@@ -5,9 +5,9 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { remove } from 'lodash';
 
-import { OverlayService } from '../overlay.service';
+import { OverlayService } from './overlay.service';
 import { TipService, TipType } from '../tips';
-import { CardChooserComponent } from '../card-chooser/card-chooser.component';
+import { CardChooserComponent } from './card-chooser/card-chooser.component';
 import { WebClient, ClientState } from '../client';
 import { Game, GamePhase } from '../game_model/game';
 import { ClientGame } from '../game_model/clientGame';

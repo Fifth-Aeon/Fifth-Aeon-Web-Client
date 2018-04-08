@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Card, GameZone, CardType } from '../game_model/card';
-import { Unit, UnitType } from '../game_model/unit';
-import { Game } from '../game_model/game';
-import { allCards } from '../game_model/cards/allCards';
+import { Card, GameZone, CardType } from '../../game_model/card';
+import { Unit, UnitType } from '../../game_model/unit';
+import { Game } from '../../game_model/game';
+import { cardList } from '../../game_model/cards/cardList';
 
 enum GlowType {
   None, Select, Attack, Defense, Targeted
@@ -12,7 +12,7 @@ const keywordsDefs = new Map<string, string>();
 
 // Game mechanics
 keywordsDefs.set('Refresh',
-  'Refreshing restores a unit’s health and removes exaustion. Units normally refresh at the start of their owners turn.')
+  'Refreshing restores a unit’s health and removes exaustion. Units normally refresh at the start of their owners turn.');
 
 // Evasion
 keywordsDefs.set('Flying', 'Can only be blocked by units with flying or ranged.');
@@ -30,6 +30,7 @@ keywordsDefs.set('Death:', 'Triggers when this is killed.');
 keywordsDefs.set('Affinity', 'Triggers the first time you summon a unit of the same type.');
 keywordsDefs.set('Serenity', 'Triggers at the end of your turn if you did not attack that turn.');
 keywordsDefs.set('Lethal Strike', 'Triggers whenever this unit deals lethal damage to another unit.');
+keywordsDefs.set('Soul Reap', 'Triggers whenever another unit dies.');
 keywordsDefs.set('Dawn', 'Triggers at the start of it’s owners turn.');
 keywordsDefs.set('Dusk', 'Triggers at the end of it’s owners turn.');
 keywordsDefs.set('Cycle', 'Triggers at the end of every turn.');
@@ -55,7 +56,7 @@ keywordsDefs.set('Immortal', 'Whenever this unit dies, play it from the crypt at
 keywordsDefs.set('Statue', 'A 0/1 structure that cannot attack.');
 
 const unitsDescs = new Map<string, string>();
-Array.from(allCards.values()).map(fact => fact())
+cardList.getCards()
   .filter(card => card.isUnit())
   .forEach(card => {
     let unit = card as Unit;
@@ -180,7 +181,9 @@ export class CardComponent implements OnInit {
   }
 
   public getImage() {
-    return 'assets/png/' + this.card.getImage();
+    const url = this.card.getImage();
+    const prefix = url.includes('data:image/png;base64') ? '' : 'assets/png/';
+    return prefix + this.card.getImage();
   }
 
   public glowType() {
