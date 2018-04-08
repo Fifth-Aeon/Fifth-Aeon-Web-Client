@@ -70,10 +70,21 @@ export class GameComponent implements OnInit, OnDestroy {
   public blockable: Set<Unit> = new Set();
   public blocker: Unit;
 
+  private hotkeys = [
+    new Hotkey('space', (event: KeyboardEvent): boolean => {
+      this.pass();
+      return false;
+    }, [], 'Pass'),
+    new Hotkey('a', (event: KeyboardEvent): boolean => {
+      this.client.attackWithAll();
+      return false;
+    }, [], 'Attack with all')
+  ];
+
   constructor(
     public client: WebClient,
     public dialog: MatDialog,
-    private hotkeys: HotkeysService,
+    private hotkeyService: HotkeysService,
     public overlay: OverlayService,
     private tips: TipService
   ) {
@@ -95,6 +106,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy() {
+    this.removeHotkeys();
     this.client.exitGame(false);
   }
 
@@ -113,14 +125,13 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   private addHotkeys() {
-    this.hotkeys.add(new Hotkey('space', (event: KeyboardEvent): boolean => {
-      this.pass();
-      return false;
-    }, [], 'Pass'));
-    this.hotkeys.add(new Hotkey('a', (event: KeyboardEvent): boolean => {
-      this.client.attackWithAll();
-      return false;
-    }, [], 'Attack with all'));
+    for (let hotkey of this.hotkeys)
+      this.hotkeyService.add(hotkey);
+  }
+
+  private removeHotkeys() {
+    for (let hotkey of this.hotkeys)
+      this.hotkeyService.remove(hotkey);
   }
 
   public pass() {

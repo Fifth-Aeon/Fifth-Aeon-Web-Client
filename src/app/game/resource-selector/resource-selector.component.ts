@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { WebClient } from '../../client';
 
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
@@ -9,23 +9,21 @@ import { HotkeysService, Hotkey } from 'angular2-hotkeys';
   templateUrl: './resource-selector.component.html',
   styleUrls: ['./resource-selector.component.css']
 })
-export class ResourceSelectorComponent implements OnInit {
+export class ResourceSelectorComponent implements OnInit, OnDestroy {
   @Input() canPlayResource: boolean;
 
+  private hotkeys: Array<Hotkey> = [];
+
   private makeHotkey(key: string, resource: string) {
-    this.hotkeys.add(new Hotkey(key, (event: KeyboardEvent): boolean => {
+    return new Hotkey(key, (event: KeyboardEvent): boolean => {
       this.playResource(resource);
       return false;
-    }, [], 'Play ' + resource + ' resource.'));
+    }, [], 'Play ' + resource + ' resource.');
   }
 
-  constructor(private client: WebClient, private hotkeys: HotkeysService) {
-    let resources = ['Growth', 'Synthesis', 'Decay', 'Renewal'];
-    let keys = ['g', 's', 'd', 'r'];
-    for (let i = 0; i < 4; i++) {
-      this.makeHotkey(keys[i], resources[i]);
-    }
-  }
+  constructor(
+    private client: WebClient,
+    private hotkeyService: HotkeysService) { }
 
 
   public disableTip() {
@@ -46,6 +44,18 @@ export class ResourceSelectorComponent implements OnInit {
   }
 
   ngOnInit() {
+    let resources = ['Growth', 'Synthesis', 'Decay', 'Renewal'];
+    let keys = ['g', 's', 'd', 'r'];
+    for (let i = 0; i < 4; i++) {
+      let hotkey = this.makeHotkey(keys[i], resources[i]);
+      this.hotkeys.push(hotkey);
+      this.hotkeyService.add(hotkey);
+    }
+  }
+
+  ngOnDestroy() {
+    for (let hotkey of this.hotkeys)
+      this.hotkeyService.remove(hotkey);
   }
 
 }
