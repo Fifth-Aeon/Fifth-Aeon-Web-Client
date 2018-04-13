@@ -40,7 +40,7 @@ export class MechanicEditorComponent {
     this.card.mechanics.push({
       id: validMechanics[0].getId(),
       parameters: [],
-      trigger: { id: 'PlayTrigger' },
+      trigger: { id: 'Play' },
       targeter: { id: 'Host', optional: false }
     });
   }
