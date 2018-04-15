@@ -27,10 +27,7 @@
         <mat-icon>grade</mat-icon>
         <span> Open Packs </span>
       </button>
-      <button routerLink="/editor" mat-raised-button color="primary">
-        <mat-icon>grade</mat-icon>
-        <span> test Edit </span>
-      </button>
+      
     </mat-card>
 
     <mat-card class="lobby-card">
@@ -38,8 +35,11 @@
       <ng-template [ngIf]="showMultiplayer()">
         <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(1)">
           <mat-icon>public</mat-icon> Public Game</button>
+
+          <!--
         <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(2)">
           <mat-icon>vpn_key</mat-icon> Private Game</button>
+          -->
       </ng-template>
       <ng-template [ngIf]="!showMultiplayer()">
         <span>Connecting...</span>
@@ -48,17 +48,24 @@
     </mat-card>
 
     <mat-card class="lobby-card">
-      <mat-card-title>Settings</mat-card-title>
+      <mat-card-title>Other</mat-card-title>
       <button mat-raised-button color="primary" (click)="client.openSettings()">
         <mat-icon>settings</mat-icon>
         <span> Settings</span>
       </button>
+
+      <button routerLink="/editor" mat-raised-button color="primary">
+        <mat-icon>mode_edit</mat-icon>
+        <span> Card Editor (alpha) </span>
+      </button>
+      <!-- 
       <a href="{{feedbackUrl}}" target="_blank">
         <button mat-raised-button color="primary">
           <mat-icon>bug_report</mat-icon>
           <span> Feedback</span>
         </button>
       </a>
+      -->
 
       <button mat-raised-button  (click)="auth.logout()" color="primary">
         <mat-icon>cancel</mat-icon>
