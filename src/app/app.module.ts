@@ -53,6 +53,7 @@ import { LandingComponent } from './landing/landing.component';
 import { EditorModule } from './editor/editor.module';
 import { AppRoutingModule } from './app-routing.module';
 import { GameModule } from './game/game.module';
+import { PlayerAvatarComponent } from './player-avatar/player-avatar.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { GameModule } from './game/game.module';
     SortableDirective,
     DraftComponent,
     LandingComponent,
+    PlayerAvatarComponent
   ],
   entryComponents: [EndDialogComponent, SettingsDialogComponent, DeckMetadataDialogComponent],
   imports: [
