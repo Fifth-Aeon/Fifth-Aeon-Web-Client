@@ -9,6 +9,10 @@ export interface UserData {
   mpToken: string;
 }
 
+interface GuestData extends UserData {
+  password: string;
+}
+
 @Injectable()
 export class AuthenticationService {
   private user: UserData;
@@ -18,13 +22,20 @@ export class AuthenticationService {
     private http: HttpClient,
     private router: Router
   ) {
+
+  }
+
+  public attemptLogin() {
     try {
       let data = JSON.parse(localStorage.getItem('login'));
       this.confirmLogin(data.token).then((res) => {
         if (res)
           this.setLogin(res);
       });
-    } catch (e) { }
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   public getUser(): UserData {
@@ -101,6 +112,15 @@ export class AuthenticationService {
       .then((res: UserData) => {
         this.setLogin(res);
         localStorage.setItem('madeAccount', 'true');
+      });
+  }
+
+  public registerGuest() {
+    return this.http.post(`${apiURL}/api/auth/registerGuest`, {}).toPromise()
+      .then((res: GuestData) => {
+        this.setLogin(res);
+        localStorage.setItem('madeAccount', 'true');
+        localStorage.setItem('guest', res.password);
       });
   }
 
