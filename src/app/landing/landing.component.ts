@@ -13,26 +13,28 @@ enum LandingState {
   styleUrls: ['./landing.component.scss']
 })
 export class LandingComponent implements OnInit {
-  states = LandingState;
-  state: LandingState;
+  public states = LandingState;
+  public state = LandingState.Working;
 
   constructor(
     private auth: AuthenticationService
   ) {
-    const loginInProgress = auth.attemptLogin();
-    this.state = loginInProgress ? LandingState.Working : LandingState.WaitingForAction;
+    auth.attemptLogin().then(loginOk => {
+      if (!loginOk)
+        this.state = LandingState.WaitingForAction;
+    });
   }
 
-  newPlayer() {
+  public newPlayer() {
     this.state = LandingState.NewPlayer;
   }
 
-  createGuestAccount() {
+  public createGuestAccount() {
     this.state = LandingState.Working;
     this.auth.registerGuest();
   }
 
-  ngOnInit() {
+  public ngOnInit() {
   }
 
 }

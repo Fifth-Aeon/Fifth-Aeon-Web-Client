@@ -28,13 +28,13 @@ export class AuthenticationService {
   public attemptLogin() {
     try {
       let data = JSON.parse(localStorage.getItem('login'));
-      this.confirmLogin(data.token).then((res) => {
+      return this.confirmLogin(data.token).then((res) => {
         if (res)
           this.setLogin(res);
+        return res !== null;
       });
-      return true;
     } catch (e) {
-      return false;
+      return Promise.resolve(false);
     }
   }
 
