@@ -66,13 +66,25 @@ export class CollectionService {
           this.collection.addCard(card);
           return card;
         });
+      })
+      .catch(errData => {
+        if (errData.error)
+          this.collection.removePack();
+        return errData.error ? errData.error.message : errData.message;
       });
   }
 
   public buyPack() {
     return this.http.post<string>(buyPackURL, { item: 'pack' },
       { headers: this.auth.getAuthHeader() }).toPromise()
-      .then(() => this.collection.buyPack());
+      .then(() => {
+        this.collection.buyPack();
+        return true;
+      })
+      .catch((err) => {
+console.log(err); 
+        return false;
+      });
   }
 
 

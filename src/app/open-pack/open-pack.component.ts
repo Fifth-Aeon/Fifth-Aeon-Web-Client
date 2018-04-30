@@ -31,16 +31,25 @@ export class OpenPackComponent implements OnInit {
   async open() {
     this.working = true;
     this.message = 'Communicating with server.';
-    this.cards = await this.collectionService.openPack();
-    this.defaultMessage();
+    let result = await this.collectionService.openPack();
+    if (typeof result === 'string')
+      this.message = result;
+    else {
+      this.cards = result;
+      this.defaultMessage();
+    }
     this.working = false;
   }
 
   async buy() {
     this.working = true;
     this.message = 'Communicating with server.';
-    await this.collectionService.buyPack();
-    this.defaultMessage();
+    let result = await this.collectionService.buyPack();
+    if (result) {
+      this.defaultMessage();
+    } else {
+      this.message = 'You can\'t afford a pack';
+    }
     this.working = false;
   }
 
