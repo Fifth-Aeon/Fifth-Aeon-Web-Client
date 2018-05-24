@@ -9,6 +9,7 @@ import { Player } from './game_model/player';
 import { Unit } from './game_model/unit';
 import { Item } from './game_model/item';
 import { Enchantment } from './game_model/enchantment';
+import { Unblockable, Flying, Aquatic } from './game_model/cards/mechanics/skills';
 
 
 
@@ -208,11 +209,11 @@ export class TipService {
     public cannotBlockTargetTip(blocker: Unit, attacker: Unit, game: Game) {
         if (!attacker.isAttacking())
             this.announce(`You can only block units that are currently attacking you.`);
-        else if (attacker.hasMechanicWithId('unblockable'))
+        else if (attacker.hasMechanicWithId(Unblockable.getId()))
             this.announce(`${attacker.getName()} is unblockable.`);
-        else if (attacker.hasMechanicWithId('flying'))
+        else if (attacker.hasMechanicWithId(Flying.getId()))
             this.announce(`Units with flying may only be blocked by other flying units or by ranged units.`);
-        else if (attacker.hasMechanicWithId('aquatic'))
+        else if (attacker.hasMechanicWithId(Aquatic.getId()))
             this.announce(`Aquatic units may only be blocked by other aquatic units or by flying units.`);
         else
             this.announce(`${blocker.getName()} cannot block ${attacker.getName()} due to a special effect.`);
