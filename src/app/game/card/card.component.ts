@@ -1,8 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Card, GameZone, CardType } from '../../game_model/card';
-import { Unit, UnitType } from '../../game_model/unit';
-import { Game } from '../../game_model/game';
+import { Component, Input, OnInit } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Card, CardType } from '../../game_model/card';
 import { cardList } from '../../game_model/cards/cardList';
+import { Game } from '../../game_model/game';
+import { Unit, UnitType } from '../../game_model/unit';
+import { cardArt } from '../art';
 
 enum GlowType {
   None, Select, Attack, Defense, Targeted
@@ -55,7 +57,6 @@ keywordsDefs.set('Immortal', 'Whenever this unit dies, play it from the crypt at
 // Tokens
 keywordsDefs.set('Statue', 'A 0/1 structure that cannot attack.');
 
-const unitsDescs = new Map<string, string>();
 cardList.getCards()
   .filter(card => card.isUnit())
   .forEach(card => {
@@ -99,12 +100,14 @@ export class CardComponent implements OnInit {
   @Input() target = false;
   @Input() overlap = false;
 
+  private art: SafeHtml;
+
   public tooltipClass = {
     multiline: true
   };
   public glowTypes = GlowType;
 
-  constructor() {
+  constructor(private sanitizer: DomSanitizer) {
   }
 
   public getResUrl(type: string) {
@@ -210,6 +213,11 @@ export class CardComponent implements OnInit {
     if (!this.scale)
       this.scale = 1.25;
     this.distFromMid = this.distFromMid || 0;
+
+    const name = this.card.getImage().replace('.png', '');
+    let str = cardArt.get(name) || '';
+    // this.art = str;
+    this.art = this.sanitizer.bypassSecurityTrustHtml(str);
   }
 
 }

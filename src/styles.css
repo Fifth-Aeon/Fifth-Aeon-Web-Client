@@ -1,6 +1,32 @@
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 
+
+.card-image-background {
+  fill: white;
+
+  
+}
+
+.synthesis .card-image-background {
+  fill: silver;
+}
+
+.growth .card-image-background {
+  fill: green;
+}
+
+
+.card-image-foreground {
+  fill: black;
+}
+
+.decay .card-image-foreground {
+  fill: white;
+}
+
+
+
 /* You can add global styles to this file, and also import other style files */
 
 body {
