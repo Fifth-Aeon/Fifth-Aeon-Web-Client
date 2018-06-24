@@ -109,7 +109,7 @@
     <g attr.transform="translate(0 {{y() * 0.10}})">
       <rect [attr.width]="x()" [attr.height]="y() * 0.4" class="image-border" />
 
-      <g [innerHTML]="this.art" attr.transform="translate(0 {{-y() * 0.3}})" ></g>
+      <g [ngClass]="getFactionClassses()" [innerHTML]="this.art" attr.transform="translate(0 {{-y() * 0.4}}), scale(0.8)" ></g>
       <!--
       <image [attr.xlink:href]="this.art" [attr.width]="x()" [attr.height]="y() * 0.4" />  
       -->

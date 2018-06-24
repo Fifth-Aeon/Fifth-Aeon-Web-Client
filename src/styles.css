@@ -3,25 +3,30 @@
 
 
 .card-image-background {
-  fill: white;
-
-  
+  fill: white;  
 }
 
 .synthesis .card-image-background {
-  fill: silver;
+  fill: #c9c9c9;
 }
 
 .growth .card-image-background {
-  fill: green;
+  fill: #417505;
 }
 
+.renewal .card-image-background {
+  fill: #f8e71c;
+}
 
-.card-image-foreground {
+.decay .card-image-background {
+  fill: #370661;
+}
+
+.card-image-forground {
   fill: black;
 }
 
-.decay .card-image-foreground {
+.decay .card-image-forground {
   fill: white;
 }
 

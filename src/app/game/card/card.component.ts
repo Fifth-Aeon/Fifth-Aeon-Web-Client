@@ -209,6 +209,16 @@ export class CardComponent implements OnInit {
     return (this.hovered ? 1.9 : this.scale) * 140;
   }
 
+  public getFactionClassses() {
+    let colors = this.card.getCost().getColors();
+    return {
+      synthesis: colors.has('Synthesis'),
+      growth: colors.has('Growth'),
+      renewal: colors.has('Renewal'),
+      decay: colors.has('Decay'),
+    };
+  }
+
   ngOnInit() {
     if (!this.scale)
       this.scale = 1.25;
