@@ -9,6 +9,11 @@
   text-decoration: line-through;
 }
 
+.dynamic {
+  color: rebeccapurple;
+  font-weight: bold;
+}
+
 body {
   margin: 0px;
   background-color: #f7f9fc;
