@@ -73,6 +73,8 @@ const isKeywordRegex = new RegExp(
 );
 const keywordRegex = new RegExp(keywords.join('|'), 'gi');
 
+const depletedRegex = /\[depleted\](.*?)\[\/depleted\]/gi;
+
 // const unitNames = Array.from(unitsDescs.keys());
 // const unitsRegex = new RegExp(unitNames.join('|'), 'gi');
 
@@ -169,7 +171,8 @@ export class CardComponent implements OnInit {
   public htmlText(text: string) {
     return text.replace(isKeywordRegex, (sub) => {
       return sub.replace(keywordRegex, '<b>$&</b>');
-    });
+    }).replace(depletedRegex, (_, content) =>
+      `<span class="depleted">${content}</span>`);
   }
 
   private getKeywords() {
