@@ -57,9 +57,10 @@ export class DecksService {
       .then((decks: SavedDeck[]) => {
         this.decks.length = 0;
         for (let deckData of decks) {
-          let loaded = new DeckList();
-          loaded.fromSavable(deckData);
-          this.decks.push(loaded);
+          try {
+            let loaded = new DeckList(standardFormat, deckData);
+            this.decks.push(loaded);
+          } catch (e) { }
         }
       })
       .catch(console.error);
@@ -93,7 +94,9 @@ export class DecksService {
   }
 
   public newDeck() {
-    this.decks.unshift(new DeckList(standardFormat));
+    let newDeck = new DeckList(standardFormat);
+    newDeck.generateRandomNColorDeck(1, this.collection.getCollection());
+    this.decks.unshift(newDeck);
   }
 
   public cancelSelect() {

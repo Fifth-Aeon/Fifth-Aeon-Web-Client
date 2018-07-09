@@ -70,7 +70,7 @@ export class DeckEditorComponent implements OnInit {
   }
 
   public randomize() {
-    this.deck.generateRandomNColorDeck(random(1, 4));
+    this.deck.generateRandomNColorDeck(random(1, 4), this.collection);
   }
 
   public canAddCard(card: Card) {
