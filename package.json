@@ -1,5 +1,6 @@
 {
   "name": "ccg",
+  "productName": "Fifth Aeon",
   "author": "William Ritson",
   "version": "0.0.0",
   "license": "All Rights Reserved",
@@ -9,7 +10,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "package": "node package-app.js"
   },
   "private": true,
   "dependencies": {
@@ -48,6 +50,7 @@
     "@types/node": "~6.0.60",
     "@types/uuid": "^3.4.3",
     "codelyzer": "~4.0.2",
+    "electron-packager": "^12.1.0",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~1.7.0",
@@ -57,6 +60,8 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.2.2",
-    "tslint": "~5.8.0"
+    "tslint": "~5.8.0",
+    "electron": "^2.0.4"
+
   }
 }
