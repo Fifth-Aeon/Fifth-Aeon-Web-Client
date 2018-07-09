@@ -75,7 +75,7 @@ export class CollectionService {
   }
 
   public buyPack() {
-    return this.http.post<string>(buyPackURL, { item: 'pack' },
+    return this.http.post(buyPackURL, { item: 'pack' },
       { headers: this.auth.getAuthHeader() }).toPromise()
       .then(() => {
         this.collection.buyPack();
