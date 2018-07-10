@@ -12,7 +12,8 @@ packager({
     executableName: 'Fifth Aeon',
     dir: 'dist',
     out: 'standalone',
-    all: 'true'
+    arch: 'x64',
+    platform: 'all'
 }).then(appPaths => {
     console.log('Done, created:', appPaths.join(', '));
 });
