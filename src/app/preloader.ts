@@ -19,8 +19,8 @@ export class Preloader {
     constructor(registry: MatIconRegistry, sanitizer: DomSanitizer) {
         let url = sanitizer.bypassSecurityTrustResourceUrl('assets/svg/tombstone.svg');
         registry.addSvgIconInNamespace('ccg', 'tombstone', url);
-        url = sanitizer.bypassSecurityTrustResourceUrl('assets/svg/deck.svg');
-        registry.addSvgIconInNamespace('ccg', 'deck', url);
+        let url2 = sanitizer.bypassSecurityTrustResourceUrl('assets/svg/deck.svg');
+        registry.addSvgIconInNamespace('ccg', 'deck', url2);
     }
 
     public preload() {
