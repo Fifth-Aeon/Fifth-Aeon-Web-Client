@@ -1,26 +1,5 @@
-App by William Ritson 
+Programmed by William Ritson
 
-Art
-Ships by Lowder2 
-Battleship Icon by Luke Anthony Firth
-Splash by Blaise Sewell
-Explosion By Hopkins
+Card Art created by gameicons.net (andymeneely, aussiesim, carl-olsen, cathelineau, darkzaitzev, delapouite, faithtoken, felbrigg, generalace135, guard13007, heavenly-dog, irongamer, john-colburn, john-redman, kier-heyl, lorc, lord-berandas, lucasms, priorblue, quoting, rihlsul, sbed, skoll, sparker, spencerdub, viscious-speed, willdabeast, zajkonur, and zeromancer)
 
-Sound Effects
-Blast by Mike Koenig
-Splash by Ploor
-Howizer Shot by qubodup
-
-Music
-Armies Advance by Muray Atkinson
-
-Libraries
-Angular 2
-Angular Material
-Cordova
-Howler 
-Express
-Lodash
-Typescript-collections
-ws
-random-js
+Music created by by Kevin Macleod 
