@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 1000 560"
+   version="1.1"
+   id="svg6"
+   sodipodi:docname="skull-staff.svg"
+   inkscape:version="0.92.1 r15371"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\skull-staff.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <metadata
+     id="metadata12">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs10" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3840"
+     inkscape:window-height="2104"
+     id="namedview8"
+     showgrid="false"
+     inkscape:zoom="1.19198"
+     inkscape:cx="542.34715"
+     inkscape:cy="151.21529"
+     inkscape:window-x="-16"
+     inkscape:window-y="-16"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg6" />
+  <rect
+     width="1000"
+     height="560"
+     fill="white"
+     class="card-image-background"
+     id="rect2"
+     style="fill:#370661;fill-opacity:1" />
+  <path
+     d="M 294.516,25.71 C 180.128,26.863 -4.977,170.06 93.084,346.96 l 37.771,-37.77 3.333,-3.333 C 83.773,134.282 237.561,38.977 324.773,29.287 c -8.483,-2.313 -17.749,-3.481 -27.568,-3.576 -0.89664,-0.0089 -1.79336,-0.0089 -2.69,0 z m 9.365,68.081 c -26.796,-0.226 -53.08,9.468 -72.885,29.273 -22.421,22.478 -24.678,64.162 -4.935,83.905 l -69.098,49.357 98.71,98.711 49.358,-69.098 c 19.743,19.743 61.425,17.532 83.905,-4.935 C 429.823,240.116 427.614,171.614 384,128 361.512,105.512 332.406,94.031 303.88,93.791 Z m -42.744,39.766 c 12.123,0.02 26.301,10.85 31.554,21.59 7.372,15.071 3.104,38.718 -9.87,49.355 -10.18,8.344 -30.862,9.943 -39.485,0 -15.244,-17.577 -10.738,-58.3 9.871,-69.098 2.444,-1.28 5.132,-1.852 7.93,-1.847 z m 221.576,53.67 c -9.69,87.21 -104.995,241 -276.57,190.585 l -41.104,41.104 C 358.67,526.251 511.921,294.325 482.713,187.226 Z m -143.565,28.486 c 6.331,-0.098 12.525,1.062 17.706,3.596 13.218,6.465 26.571,26.45 19.742,39.484 -10.798,20.61 -51.521,25.115 -69.098,9.871 -9.943,-8.623 -8.344,-29.306 0,-39.484 6.98,-8.515 19.564,-13.28 31.65,-13.467 z m -43.988,1.127 -19.744,39.486 -19.742,-19.742 z m -85.334,13.379 12.727,12.728 -3.506,3.506 16.885,16.887 3.507,-3.508 12.729,12.729 -3.508,3.507 16.887,16.885 3.506,-3.506 12.728,12.727 -29.613,29.613 -12.729,-12.726 13.38,-13.38 -16.887,-16.886 -13.38,13.379 -12.726,-12.727 13.38,-13.379 -16.888,-16.886 -13.379,13.379 -12.726,-12.729 z m -42.994,68.449 -16.885,16.885 46.5,46.5 16.885,-16.887 z M 137.221,328.281 -62,537.502 v 33.771 L 154.105,345.168 Z M 166.832,357.895 -3.273,536 H 30.5 L 183.719,374.781 Z"
+     class="card-image-forground"
+     transform="translate(244,24)"
+     id="path4"
+     inkscape:connector-curvature="0"
+     style="fill:#ffffff;fill-opacity:1"
+     sodipodi:nodetypes="cccccccccccccccsccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc" />
+</svg>
