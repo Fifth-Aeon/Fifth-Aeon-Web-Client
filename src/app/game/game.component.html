@@ -19,6 +19,9 @@
 
     <ccg-resource-display [resource]="enemy.getPool()"></ccg-resource-display>
 
+    <button matTooltipPosition="below" matTooltip="Open Menu." color="primary" class="menu-button" 
+        (click)="openMenu()" mat-mini-fab><mat-icon>menu</mat-icon></button>
+
   </div>
 
   <ccg-overlay></ccg-overlay>

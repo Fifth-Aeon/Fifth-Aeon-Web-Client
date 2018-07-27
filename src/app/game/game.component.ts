@@ -116,6 +116,10 @@ export class GameComponent implements OnInit, OnDestroy {
     return null;
   }
 
+  public openMenu() {
+    this.client.openSettings();
+  }
+
   public isInHand(card: Card) {
     return card.getLocation() === GameZone.Hand ? 'in' : 'teal';
   }

@@ -46,6 +46,15 @@
     vertical-align: top;
   }
 
+  .menu-button {
+    display: inline-block;
+    position: absolute;
+    margin-top: 25px;
+    right: 20px;
+    transform: translateY(-50%);
+    vertical-align: top;
+  }
+
   .info-bar {
     border-left: 1px solid grey;
     height: 50px;
