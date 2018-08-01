@@ -72,7 +72,7 @@ export class WebClient {
 
     private toJoin: string;
     public onDeckSelected: () => void;
-    public onGameEnd: (won: boolean) => string = null;
+    public onGameEnd: (won: boolean) => Promise<string> = null;
 
     private onError: (error: string) => void = () => null;
 
@@ -459,11 +459,8 @@ export class WebClient {
         dialogRef.componentInstance.winner = playerWon;
         dialogRef.componentInstance.quit = quit;
 
-        if (!this.onGameEnd)
-            this.collection.onGameEnd(playerWon, quit).then(msg =>
-                dialogRef.componentInstance.rewards = msg);
-        else
-            dialogRef.componentInstance.rewards = this.onGameEnd(playerWon);
+        let messagePromise = this.onGameEnd ? this.onGameEnd(playerWon) : this.collection.onGameEnd(playerWon, quit);
+        messagePromise.then(msg => dialogRef.componentInstance.rewards = msg);
         dialogRef.afterClosed().subscribe(result => {
             this.returnToLobby();
         });

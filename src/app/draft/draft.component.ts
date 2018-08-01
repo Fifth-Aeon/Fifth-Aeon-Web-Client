@@ -21,6 +21,7 @@ import { DraftService } from '../draft.service';
 export class DraftComponent {
 
   public draft: Draft;
+  public loaded = false;
   public selectable: Array<Card>;
   public deck: DeckList;
   public format = standardFormat;
@@ -29,17 +30,44 @@ export class DraftComponent {
   constructor(
     private decks: DecksService,
     private dialog: MatDialog,
-    public draftService: DraftService
+    public draftService: DraftService,
+    private collection: CollectionService
   ) {
-    this.draft = draftService.getCurrentDraft();
-    this.deck = this.draft.getDeck();
-    if (this.draft.canPickCard())
-      this.nextRound();
+    draftService.getCurrentDraft().then(draft => {
+      this.draft = draft;
+      if (draft) {
+        this.deck = this.draft.getDeck();
+        if (this.draft.canPickCard())
+          this.nextRound();
+      }
+      this.loaded = true;
+    });
+  }
+
+  public canBuy() {
+    return this.collection.getCollection().getGold() >= Draft.cost;
+  }
+
+  public start() {
+    this.draftService.startDraft().then(result => {
+      if (typeof result === 'string')
+        alert(result);
+      else {
+        this.draftService.getCurrentDraft().then(draft => {
+          this.collection.getCollection().removeGold(Draft.cost);
+          this.draft = draft;
+          this.deck = this.draft.getDeck();
+          if (this.draft.canPickCard())
+            this.nextRound();
+        });
+      }
+    });
   }
 
   public retire() {
-    let msg = this.draftService.retire();
-    alert(msg);
+    this.draftService.retire().then(msg => {
+      alert(msg);
+    });
     this.retired = true;
     this.selectable = [];
   }
@@ -59,6 +87,7 @@ export class DraftComponent {
       this.nextRound();
     else
       this.selectable = [];
+    this.draftService.saveDraftData();
   }
 
 

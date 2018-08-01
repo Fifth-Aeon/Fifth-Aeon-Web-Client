@@ -1,35 +1,32 @@
 <div class="left">
   <mat-card id="card-selection">
-    <mat-card-content id="editor-cards"  #content >
+    <mat-card-content id="editor-cards" #content>
       <ccg-card scale="1.75" *ngFor="let card of selectable" [card]="card" (click)="add(card)"></ccg-card>
-
-      <p class="record" *ngIf="draft.canPlayGame()">You have won {{draft.getWins()}} and lost {{draft.getLosses()}} games.</p>
-
+      <p class="record" *ngIf="draft && draft.canPlayGame()">You have won {{draft.getWins()}} and lost {{draft.getLosses()}} games.</p>
+      <div *ngIf="!draft">
+        <p class="record">You can start a limited game for 200 gold.</p>
+        <p [hidden]="canBuy()">But you don't currently have enough gold. You can earn more by playing regular matches.</p>
+        <button mat-raised-button color="primary" [disabled]="!canBuy()" (click)="start()">Start Draft</button>
+      </div>
     </mat-card-content>
   </mat-card>
 
   <mat-card id="card-selection-controls">
     <mat-card-content>
-      <button mat-fab matTooltipPosition="above" matTooltip="Play a Game" color="primary" 
-        (click)="draftService.playGame()" [disabled]="!draft.canPlayGame()">
+      <button mat-fab matTooltipPosition="above" matTooltip="Play a Game" color="primary" (click)="draftService.playGame()" [disabled]="!draft || !draft.canPlayGame()">
         <mat-icon>check</mat-icon>
       </button>
       <button mat-fab matTooltipPosition="above" matTooltip="Return to lobby." color="accent" routerLink="/lobby">
         <mat-icon>undo</mat-icon>
       </button>
-      <button mat-fab matTooltipPosition="above" matTooltip="Retire from draft." color="warn" 
-        [disabled]="retired"
-        (click)="retire()">
+      <button mat-fab matTooltipPosition="above" matTooltip="Retire from draft." color="warn" [disabled]="!draft || retired" (click)="retire()">
         <mat-icon>cancel</mat-icon>
       </button>
-
-     
-
     </mat-card-content>
   </mat-card>
 </div>
 
-<mat-card id="deck-list">
+<mat-card id="deck-list" *ngIf="deck">
   <mat-card-header>
     <mat-card-title>
       <h1>Draft Deck - {{deck.size()}} / {{format.minDeckSize}}</h1>
@@ -37,7 +34,7 @@
   </mat-card-header>
   <mat-card-content>
     <mat-list>
-      <mat-list-item *ngFor="let record of deck.getRecordList()" (click)="deck.removeCard(record.card)"> {{record.card.getCost().asCost()}} - {{record.card.getName()}} - ({{record.number}}) </mat-list-item>
+      <mat-list-item *ngFor="let record of deck.getRecordList()"> {{record.card.getCost().asCost()}} - {{record.card.getName()}} - ({{record.number}}) </mat-list-item>
     </mat-list>
   </mat-card-content>
 </mat-card>
