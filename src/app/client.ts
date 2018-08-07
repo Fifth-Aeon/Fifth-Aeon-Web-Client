@@ -37,6 +37,7 @@ import { CollectionService } from 'app/collection.service';
 import { DamageDistributionDialogComponent } from './game/damage-distribution-dialog/damage-distribution-dialog.component';
 import { MessengerService } from './messenger.service';
 import { UserData, AuthenticationService } from './user/authentication.service';
+import { Scenario } from './game_model/scenario';
 
 
 export enum ClientState {
@@ -330,7 +331,7 @@ export class WebClient {
         return this.state === ClientState.InGame;
     }
 
-    private sendEventsToAi(events: GameSyncEvent[]) {
+    private sendEventsToLocalPlayers(events: GameSyncEvent[]) {
         setTimeout(() => {
             for (let event of events) {
                 this.handleGameEvent(event);
@@ -351,7 +352,7 @@ export class WebClient {
                     'the A.I' : 'the player', 'failed.', 'It was', GameActionType[type], 'with', params);
                 return;
             }
-            this.sendEventsToAi(res);
+            this.sendEventsToLocalPlayers(res);
             return;
         }
         this.messenger.sendMessageToServer(MessageType.GameAction, {
@@ -398,7 +399,6 @@ export class WebClient {
     }
 
     private handleGameEvent(event: GameSyncEvent) {
-        // console.log('event', GameEventType[event.type]);
         this.zone.run(() => this.game.syncServerEvent(this.playerNumber, event));
         this.tips.handleGameEvent(this.game, this.playerNumber, event);
         switch (event.type) {
@@ -549,7 +549,7 @@ export class WebClient {
     }
 
     // AI stuff ------------------------------------
-    public startAIGame() {
+    public startAIGame(scenario?: Scenario) {
         this.analytics.eventTrack.next({ action: 'startSingleplayerGame', properties: { category: 'usage' } });
 
         this.playerNumber = 0;
@@ -562,19 +562,21 @@ export class WebClient {
         let aiModel = new ClientGame('ai',
             (type, params) => this.sendGameAction(type, params, true),
             this.overlay.getAnimator());
-
-        let aiAction = (type: GameActionType, params: any) => {
-            console.log('A.I action', GameActionType[type], params);
-            this.sendGameAction(type, params, true);
-        };
-        this.ai = new BasicAI(1, aiModel, this.overlay.getAnimator());
+        this.ai = new BasicAI(1, aiModel, aiDeck, this.overlay.getAnimator());
         this.setAISpeed(this.speed.speeds.aiTick);
 
         this.router.navigate(['/game']);
+
+        if (scenario) {
+            scenario.apply(this.gameModel);
+            scenario.apply(this.game);
+            scenario.apply(aiModel);
+        }
+
         this.zone.run(() => {
             this.opponentUsername = aiDeck.name;
             this.state = ClientState.InGame;
-            this.sendEventsToAi(this.gameModel.startGame());
+            this.sendEventsToLocalPlayers(this.gameModel.startGame());
         });
     }
 }
