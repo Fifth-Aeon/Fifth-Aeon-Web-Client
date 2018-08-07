@@ -40,7 +40,6 @@ export class CardEditorComponent implements OnInit {
   }
 
   public changeType(event: MatSelectChange) {
-    console.log(CardType[this.lastCardType], '->', CardType[event.value]);
     this.data.mechanics = this.data.mechanics.filter(mechanic => mechanicList.isValid(this.data, mechanic));
   }
 
