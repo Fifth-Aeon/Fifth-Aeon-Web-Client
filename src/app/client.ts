@@ -38,6 +38,7 @@ import { DamageDistributionDialogComponent } from './game/damage-distribution-di
 import { MessengerService } from './messenger.service';
 import { UserData, AuthenticationService } from './user/authentication.service';
 import { Scenario } from './game_model/scenario';
+import { tutorialCampaign } from './game_model/scenarios/tutorial';
 
 
 export enum ClientState {
@@ -556,17 +557,24 @@ export class WebClient {
         this.opponentNumber = 1;
         this.log.clear();
         this.log.setPlayer(0);
-        this.initGame();
         let aiDeck = sample(allDecks);
+
+        // Initilize games
         this.gameModel = new ServerGame('server', standardFormat, [this.deck, aiDeck]);
         let aiModel = new ClientGame('ai',
             (type, params) => this.sendGameAction(type, params, true),
             this.overlay.getAnimator());
+        this.game = new ClientGame('player',
+            (type, params) => this.sendGameAction(type, params, false),
+            this.overlay.getAnimator(),
+            this.log);
+
         this.ai = new BasicAI(1, aiModel, aiDeck, this.overlay.getAnimator());
         this.setAISpeed(this.speed.speeds.aiTick);
 
         this.router.navigate(['/game']);
 
+        // scenario = tutorialCampaign[0];
         if (scenario) {
             scenario.apply(this.gameModel);
             scenario.apply(this.game);
