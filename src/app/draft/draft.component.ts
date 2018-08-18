@@ -1,16 +1,13 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
-import { sortBy, random } from 'lodash';
-
-import { DecksService } from '../decks.service';
-import { GameFormat, standardFormat } from '../game_model/gameFormat';
-import { DeckList } from '../game_model/deckList';
-import { Card } from '../game_model/card';
-import { DeckMetadataDialogComponent } from 'app/deck-metadata-dialog/deck-metadata-dialog.component';
-import { MatDialog, MatSnackBar } from '@angular/material';
-import { Collection } from 'app/game_model/collection';
+import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { CollectionService } from 'app/collection.service';
-import { Draft } from '../game_model/draft';
+import { DecksService } from '../decks.service';
 import { DraftService } from '../draft.service';
+import { Card } from '../game_model/card';
+import { DeckList } from '../game_model/deckList';
+import { Draft } from '../game_model/draft';
+import { standardFormat } from '../game_model/gameFormat';
+import { TipService, TipType } from '../tips';
 
 
 @Component({
@@ -31,8 +28,10 @@ export class DraftComponent {
     private decks: DecksService,
     private dialog: MatDialog,
     public draftService: DraftService,
-    private collection: CollectionService
+    private collection: CollectionService,
+    tips: TipService
   ) {
+    tips.playTip(TipType.Draft);
     draftService.getCurrentDraft().then(draft => {
       this.draft = draft;
       if (draft) {

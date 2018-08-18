@@ -79,7 +79,6 @@ tipText.set(TipType.OptionalTarget,
 tipText.set(TipType.NeedsTarget,
     `This card requires a target. Valid targets have a blue glow.`);
 
-
 const tipLocalStore = 'tip-store';
 
 @Injectable()
@@ -102,6 +101,8 @@ export class TipService {
             case SyncEventType.TurnStart:
                 if (event.params.turn !== localPlayerNumber)
                     return;
+                if (event.params.turnNum > 10)
+                    this.playTip(TipType.Hotkeys);
                 this.turnStartTrigger(game, localPlayerNumber);
                 break;
             case SyncEventType.PhaseChange:
@@ -215,6 +216,8 @@ export class TipService {
             this.announce(`Units with flying may only be blocked by other flying units or by ranged units.`);
         else if (attacker.hasMechanicWithId(Aquatic.getId()))
             this.announce(`Aquatic units may only be blocked by other aquatic units or by flying units.`);
+        else if (blocker.hasMechanicWithId(Aquatic.getId()) && !attacker.hasMechanicWithId(Aquatic.getId()))
+            this.announce(`Aquatic units may only block other aquatic units.`);
         else
             this.announce(`${blocker.getName()} cannot block ${attacker.getName()} due to a special effect.`);
     }
