@@ -9,6 +9,7 @@ const saveURL = `${apiURL}/api/cards/storeCollection`;
 const loadUrl = `${apiURL}/api/cards/getCollection`;
 const buyPackURL = `${apiURL}/api/cards/buy`;
 const openPackURL = `${apiURL}/api/cards/openPack`;
+const dailyURL = `${apiURL}/api/cards/checkDaily`;
 
 @Injectable()
 export class CollectionService {
@@ -34,6 +35,25 @@ export class CollectionService {
 
   }
 
+  private checkDaily() {
+    this.http.get(dailyURL, { headers: this.auth.getAuthHeader() })
+      .toPromise()
+      .then((res: { daily: boolean, cards: string[], nextRewardTime: number }) => {
+        if (!res.daily) {
+          let wait = (res.nextRewardTime / 1000 / 60 / 60).toFixed(0);
+          alert(`You can get another daily reward in ${wait} hours.`);
+          return;
+        }
+
+        for (let cardId of res.cards) {
+          let name = cardList.getCard(cardId).getName();
+          this.collection.addCard(cardId);
+          alert(`You got ${name} as a daily login reward`);
+        }
+
+      });
+  }
+
   public unlockAll() {
     for (let card of cardList.getCards()) {
       let diff = 4 - this.collection.getCardCount(card);
@@ -53,6 +73,7 @@ export class CollectionService {
       .toPromise()
       .then((res: SavedCollection) => {
         this.collection.fromSavable(res);
+        this.checkDaily();
       });
   }
 
