@@ -101,6 +101,7 @@ export class CardComponent implements OnInit {
   @Input() selected = false;
   @Input() target = false;
   @Input() overlap = false;
+  @Input() noTranslate = false;
 
   public tooltipClass = {
     multiline: true
@@ -164,7 +165,7 @@ export class CardComponent implements OnInit {
     let css = {
       'margin-left': marginLeft + 'px',
       'margin-right': marginRight + 'px',
-      'transform': `translateY(-${50 - dispY}%) rotate(${rotation}deg)`
+      'transform': !this.noTranslate ? `translateY(-${50 - dispY}%) rotate(${rotation}deg)` : 'none'
     };
     return css;
   }

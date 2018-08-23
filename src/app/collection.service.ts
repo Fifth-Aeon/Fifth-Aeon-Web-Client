@@ -4,6 +4,8 @@ import { AuthenticationService } from 'app/user/authentication.service';
 import { HttpClient } from '@angular/common/http';
 import { apiURL } from './url';
 import { cardList } from 'app/game_model/cards/cardList';
+import { MatDialog } from '@angular/material';
+import { DailyDialogComponent } from './daily-dialog/daily-dialog.component';
 
 const saveURL = `${apiURL}/api/cards/storeCollection`;
 const loadUrl = `${apiURL}/api/cards/getCollection`;
@@ -26,7 +28,8 @@ export class CollectionService {
 
   constructor(
     private auth: AuthenticationService,
-    private http: HttpClient
+    private http: HttpClient,
+    private dialog: MatDialog
   ) {
     auth.onAuth((data) => {
       if (data)
@@ -39,18 +42,15 @@ export class CollectionService {
     this.http.get(dailyURL, { headers: this.auth.getAuthHeader() })
       .toPromise()
       .then((res: { daily: boolean, cards: string[], nextRewardTime: number }) => {
+        let dialogRef = this.dialog.open(DailyDialogComponent);
+
         if (!res.daily) {
-          let wait = (res.nextRewardTime / 1000 / 60 / 60).toFixed(0);
-          alert(`You can get another daily reward in ${wait} hours.`);
+          let wait = (res.nextRewardTime / 1000 / 60 / 60);
+          dialogRef.componentInstance.nextRewardTime = wait;
           return;
         }
 
-        for (let cardId of res.cards) {
-          let name = cardList.getCard(cardId).getName();
-          this.collection.addCard(cardId);
-          alert(`You got ${name} as a daily login reward`);
-        }
-
+        dialogRef.componentInstance.rewards = res.cards.map(id => cardList.getCard(id));
       });
   }
 

@@ -53,6 +53,7 @@ import { EditorModule } from './editor/editor.module';
 import { AppRoutingModule } from './app-routing.module';
 import { GameModule } from './game/game.module';
 import { PlayerAvatarComponent } from './player-avatar/player-avatar.component';
+import { DailyDialogComponent } from './daily-dialog/daily-dialog.component';
 
 @NgModule({
   declarations: [
@@ -68,9 +69,10 @@ import { PlayerAvatarComponent } from './player-avatar/player-avatar.component';
     SortableDirective,
     DraftComponent,
     LandingComponent,
-    PlayerAvatarComponent
+    PlayerAvatarComponent,
+    DailyDialogComponent
   ],
-  entryComponents: [EndDialogComponent, SettingsDialogComponent, DeckMetadataDialogComponent],
+  entryComponents: [EndDialogComponent, SettingsDialogComponent, DeckMetadataDialogComponent, DailyDialogComponent],
   imports: [
     BrowserModule,
     GameModule,
