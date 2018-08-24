@@ -2,6 +2,6 @@
 
 <div mat-dialog-content>
   <p *ngIf= "rewards.length > 0">Enjoy this free daily card. You can get another one after 24 hours.</p>
-  <ccg-card scale="1.9" *ngFor="let reward of rewards" [noTranslate]="true" [card]="reward" ></ccg-card>
+  <ccg-card scale="1.9" *ngFor="let reward of rewards" noTranslate="true" [card]="reward" ></ccg-card>
   <p *ngIf= "rewards.length == 0">Check back in {{nextRewardTime | number : '1.0-1'}} hours for a new daily reward.</p>
 </div>

@@ -1,7 +1,8 @@
 <div class="left">
   <mat-card id="card-selection">
     <mat-card-content id="editor-cards"  #content (window:resize)="onResize(content.getBoundingClientRect())">
-      <ccg-card scale="1.75" *ngFor="let card of cards" [darkened]="!canAddCard(card)"[card]="card" (click)="add(card)"></ccg-card>
+      <ccg-card scale="1.75" *ngFor="let card of cards" [darkened]="!canAddCard(card)" noTranslate="true"
+      [card]="card" (click)="add(card)"></ccg-card>
     </mat-card-content>
   </mat-card>
 

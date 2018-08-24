@@ -10,9 +10,6 @@ $left-width: calc(90vw - #{$double-margin});
   float: left;
   overflow-y:scroll ;
   padding: 12px;
-  mat-card-content {
-    padding-top: 120px;
-  }
   mat-card-actions {
     position: relative;
     bottom: 10px;

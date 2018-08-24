@@ -1,7 +1,7 @@
 <div class="left">
   <mat-card id="card-selection">
     <mat-card-content id="editor-cards" #content>
-      <ccg-card scale="1.75" *ngFor="let card of selectable" [card]="card" (click)="add(card)"></ccg-card>
+      <ccg-card scale="1.75" *ngFor="let card of selectable" [card]="card" (click)="add(card)" noTranslate="true"></ccg-card>
       <p class="record" *ngIf="draft && draft.canPlayGame()">You have won {{draft.getWins()}} and lost {{draft.getLosses()}} games.</p>
       <div *ngIf="!draft">
         <p class="record">You can start a limited game for 200 gold.</p>
