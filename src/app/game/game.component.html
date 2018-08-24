@@ -1,79 +1,78 @@
-<ccg-record-bar [log]="game.getLog()"></ccg-record-bar>
-<div class="game-area">
+<div class="game-container">
+  <ccg-record-bar [log]="game.getLog()"></ccg-record-bar>
+  <div class="game-area">
 
-  <!-- Enemy Information Bar -->
-  <div class="info-bar">
-    <p class="info-text"  id="enemy-name">{{client.getOpponentUsername()}}</p>
-    <button matTooltipPosition="below" matTooltip="View enemy crypt." color="primary" class="crypt-button" (click)="viewCrypt(enemyNo)"
-      mat-mini-fab><mat-icon svgIcon="ccg:tombstone"></mat-icon></button>
+    <!-- Enemy Information Bar -->
+    <div class="info-bar">
+      <p class="info-text" id="enemy-name">{{client.getOpponentUsername()}}</p>
+      <button matTooltipPosition="below" matTooltip="View enemy crypt." color="primary" class="crypt-button" (click)="viewCrypt(enemyNo)"
+        mat-mini-fab><mat-icon svgIcon="ccg:tombstone"></mat-icon></button>
 
-    <svg class="card-display" matTooltip="Your opponent has {{enemy.getHand().length}} cards in hand.">
-      <image width="50" height="50" xlink:href="assets/png/card.png" />
-      <text x="25" y="35" text-anchor="middle" class="number-text">{{enemy.getHand().length}}</text>
-    </svg>
+      <svg class="card-display" matTooltip="Your opponent has {{enemy.getHand().length}} cards in hand.">
+        <image width="50" height="50" xlink:href="assets/png/card.png" />
+        <text x="25" y="35" text-anchor="middle" class="number-text">{{enemy.getHand().length}}</text>
+      </svg>
 
-    <svg class="life-display" matTooltip="Your opponent has {{enemy.getLife()}} life.">
-      <image width="50" height="50" xlink:href="assets/png/hearts.png" />
-      <text x="25" y="35" text-anchor="middle" class="number-text">{{enemy.getLife()}}</text>
-    </svg>
+      <svg class="life-display" matTooltip="Your opponent has {{enemy.getLife()}} life.">
+        <image width="50" height="50" xlink:href="assets/png/hearts.png" />
+        <text x="25" y="35" text-anchor="middle" class="number-text">{{enemy.getLife()}}</text>
+      </svg>
 
-    <ccg-resource-display [resource]="enemy.getPool()"></ccg-resource-display>
+      <ccg-resource-display [resource]="enemy.getPool()"></ccg-resource-display>
 
-    <button matTooltipPosition="below" matTooltip="Open Menu." color="primary" class="menu-button" 
-        (click)="openMenu()" mat-mini-fab><mat-icon>menu</mat-icon></button>
+      <button matTooltipPosition="below" matTooltip="Open Menu." color="primary" class="menu-button" (click)="openMenu()" mat-mini-fab><mat-icon>menu</mat-icon></button>
 
-  </div>
+    </div>
 
-  <ccg-overlay></ccg-overlay>
+    <ccg-overlay></ccg-overlay>
 
 
-  <!-- Enemy Board -->
-  <div class="area">
-    <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerPermanants(enemyNo)" 
-      [darkened]="isDarkened(card)" [card]="card" [game]="game"
-      [@location]="locationState(card)" [target]="isTarget(card)" (click)="target(card)"></ccg-card>
-  </div>
+    <!-- Enemy Board -->
+    <div class="area">
+      <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerPermanants(enemyNo)" [darkened]="isDarkened(card)" [card]="card"
+        [game]="game" [@location]="locationState(card)" [target]="isTarget(card)" (click)="target(card)"></ccg-card>
+    </div>
 
-  <!-- Player Board -->
-  <div class="area">
-    <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerPermanants(playerNo)" 
-      [darkened]="isDarkened(card)" [card]="card" [game]="game"
-      [@location]="locationState(card)" [target]="validTargets.has(card)" [selected]="card === blocker" (click)="activate(card)">
-    </ccg-card>
-  </div>
+    <!-- Player Board -->
+    <div class="area">
+      <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerPermanants(playerNo)" [darkened]="isDarkened(card)" [card]="card"
+        [game]="game" [@location]="locationState(card)" [target]="validTargets.has(card)" [selected]="card === blocker" (click)="activate(card)">
+      </ccg-card>
+    </div>
 
-  <!-- Player Information Bar -->
-  <div class="info-bar">
-    <ccg-resource-selector [canPlayResource]="canPlayResource()"></ccg-resource-selector>
-    <p class="info-text" id="player-name">{{client.getUsername()}} </p>
+    <!-- Player Information Bar -->
+    <div class="info-bar">
+      <ccg-resource-selector [canPlayResource]="canPlayResource()"></ccg-resource-selector>
+      <p class="info-text" id="player-name">{{client.getUsername()}} </p>
 
-    <button color="primary" matTooltipPosition="above" matTooltip="View your crypt." class="crypt-button" (click)="viewCrypt(playerNo)"
-      mat-mini-fab><mat-icon svgIcon="ccg:tombstone"></mat-icon></button>
+      <button color="primary" matTooltipPosition="above" matTooltip="View your crypt." class="crypt-button" (click)="viewCrypt(playerNo)"
+        mat-mini-fab><mat-icon svgIcon="ccg:tombstone"></mat-icon></button>
 
-    <svg class="card-display" matTooltipPosition="above" matTooltip="You have {{player.getHand().length}} cards in your hand.">
-      <image width="50" height="50" xlink:href="assets/png/card.png" />
-      <text x="25" y="35" text-anchor="middle" class="number-text">{{player.getHand().length}}</text>
-    </svg>
+      <svg class="card-display" matTooltipPosition="above" matTooltip="You have {{player.getHand().length}} cards in your hand.">
+        <image width="50" height="50" xlink:href="assets/png/card.png" />
+        <text x="25" y="35" text-anchor="middle" class="number-text">{{player.getHand().length}}</text>
+      </svg>
 
-    <svg class="life-display" matTooltipPosition="above" matTooltip="You have {{player.getLife()}} life.">
-      <image width="50" height="50" xlink:href="assets/png/hearts.png" />
-      <text x="25" y="35" text-anchor="middle" class="number-text">{{player.getLife()}}</text>
-    </svg>
+      <svg class="life-display" matTooltipPosition="above" matTooltip="You have {{player.getLife()}} life.">
+        <image width="50" height="50" xlink:href="assets/png/hearts.png" />
+        <text x="25" y="35" text-anchor="middle" class="number-text">{{player.getLife()}}</text>
+      </svg>
 
-    <svg class="phase-display" matTooltipPosition="above" matTooltip="It is currently {{currPlayerName()}} {{phaseName()}}.">
-      <circle r="24" cy="25" cx="25" [attr.fill]="phaseColor()"/>        
-      <image width="45" height="40" x="2.5" y="5" stroke="black" stroke-width="1" attr.xlink:href="assets/png/{{phaseImage()}}.png" />
-    </svg>
+      <svg class="phase-display" matTooltipPosition="above" matTooltip="It is currently {{currPlayerName()}} {{phaseName()}}.">
+        <circle r="24" cy="25" cx="25" [attr.fill]="phaseColor()" />
+        <image width="45" height="40" x="2.5" y="5" stroke="black" stroke-width="1" attr.xlink:href="assets/png/{{phaseImage()}}.png"
+        />
+      </svg>
 
-    <button [disabled]="passDisabled()" mat-raised-button color="primary" class="pass-button" (click)="pass()">{{getPassText()}}</button>
-    <ccg-resource-display [resource]="player.getPool()"></ccg-resource-display>
-  </div>
+      <button [disabled]="passDisabled()" mat-raised-button color="primary" class="pass-button" (click)="pass()">{{getPassText()}}</button>
+      <ccg-resource-display [resource]="player.getPool()"></ccg-resource-display>
+    </div>
 
-  <!-- Player Hand -->
-  <div class="area hand">
-    <ccg-card scale="1.5" *ngFor="let card of player.getHand(); let i = index" 
-    [@inHand]="isInHand(card)" overlap="true" [card]="card" [game]="game" [selected]="card === selected" 
-    [distFromMid]="(i + 0.5) - player.getHand().length / 2"
-      [darkened]="!card.isPlayable(game)" (click)="select(card)"></ccg-card>
+    <!-- Player Hand -->
+    <div class="area hand">
+      <ccg-card scale="1.5" *ngFor="let card of player.getHand(); let i = index" [@inHand]="isInHand(card)" overlap="true" [card]="card"
+        [game]="game" [selected]="card === selected" [distFromMid]="(i + 0.5) - player.getHand().length / 2" [darkened]="!card.isPlayable(game)"
+        (click)="select(card)"></ccg-card>
+    </div>
   </div>
 </div>
