@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
+import { SpeedService } from 'app/speed.service';
 import { toPairs } from 'lodash';
+import { CollectionService } from '../collection.service';
 import { SoundManager, VolumeType } from '../sound';
 import { TipService } from '../tips';
-import { WebClient } from 'app/client';
-import { SpeedService } from 'app/speed.service';
-import { CollectionService } from '../collection.service';
 
 export enum SpeedSetting {
   Turtle = 0.5, Slow = 0.66, Normal = 1.0, Fast = 1.5, Ninja = 2
@@ -40,6 +39,16 @@ export class SettingsDialogComponent implements OnInit {
 
   ngOnInit() {
     this.volumes = toPairs(this.sound.getVolumes()).map(pair => [parseInt(pair[0], 10), pair[1]]) as [number, number][];
+  }
+
+  public toggleTips() {
+    this.tips.toggleDisable();
+  }
+
+  public tipMessage() {
+    if (this.tips.isDisabled())
+      return 'Tips are disabled.';
+    return 'Tips are enabled.';
   }
 
 }

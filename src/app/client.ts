@@ -140,6 +140,11 @@ export class WebClient {
             this.soundManager.toggleMute();
             return false;
         }, [], 'Mute/Unmute'));
+
+        this.hotkeys.add(new Hotkey('shift+t', (event: KeyboardEvent): boolean => {
+            this.tips.toggleDisable();
+            return false;
+        }, [], 'Disable/Enable Tips'));
     }
 
     // Game Actions -------------------------------------------------------------------------
@@ -468,7 +473,9 @@ export class WebClient {
     }
 
     public openSettings() {
-        let dialogRef = this.dialog.open(SettingsDialogComponent);
+        this.dialog.open(SettingsDialogComponent, {
+            height: '350px'
+        });
     }
 
     private changeState(newState: ClientState) {

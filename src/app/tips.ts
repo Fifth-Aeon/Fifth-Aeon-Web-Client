@@ -20,14 +20,14 @@ export enum TipType {
     PlayedUnit, PlayedEnchantment,
     HasPlayable, OptionalTarget, NeedsTarget,
     SoftHandLimit, HardHandLimit,
-    Hotkeys
+    Hotkeys,
+    TTLength
 }
 
 const tipText = new Map<TipType, string>();
 
 // Out of game
-tipText.set(TipType.StartGame,
-    `Welcome newcomer. I will provide tips to help you learn to play.`);
+
 tipText.set(TipType.SelectDeck,
     `You must select a deck before you can play a game. From this menu you can pick a starter deck, edit a deck, or make a new deck.`);
 tipText.set(TipType.EditDeck,
@@ -125,8 +125,10 @@ export class TipService {
 
     public setUsername(username: string) {
         this.username = username;
-        tipText.set(TipType.StartGame, `Welcome ${username}. I will provide tips to help you learn to play.
-        I suggest you start by playing a game against the computer.`);
+        tipText.set(TipType.StartGame,
+            `Welcome ${username}. I will provide tips to help you learn to play.
+            I suggest you start by playing a game against the computer.
+            If you don't want tips you can disable them in the settings menu or with the hotkey shift t.`);
     }
 
     public announce(text: string) {
@@ -140,7 +142,7 @@ export class TipService {
     }
 
     public playTip(tip: TipType): boolean {
-        if (this.played[tip])
+        if (this.played[tip] || this.played.disabled)
             return false;
         this.announce(tipText.get(tip));
         this.played[tip] = true;
@@ -277,10 +279,19 @@ export class TipService {
     }
 
     public markRead() {
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < TipType.TTLength; i++) {
             this.played[i] = true;
         }
         localStorage.setItem(tipLocalStore, JSON.stringify(this.played));
+    }
+
+    public toggleDisable() {
+        this.played.disabled = !this.played.disabled;
+        localStorage.setItem(tipLocalStore, JSON.stringify(this.played));
+    }
+
+    public isDisabled(): boolean {
+        return this.played.disabled || false;
     }
 
 }

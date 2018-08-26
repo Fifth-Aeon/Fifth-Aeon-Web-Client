@@ -1,41 +1,49 @@
-<div mat-dialog-content>
+<div class="settings">
+  <div mat-dialog-content>
 
-  <mat-tab-group>
-    <mat-tab label="Volume">
-      <table>
-        <tbody *ngFor="let volume of volumes; let i = index;">
-          <tr>
-            <td>{{volumeNames[volume[0]]}}:</td>
-            <td>
-              <mat-slider (change)="sound.changeVolume(volume[0], $event.value)" min="0" max="1" step="0.01" [value]="volume[1]"></mat-slider>
-            </td>
-            <td *ngIf="i === 0">
-              <mat-checkbox (change)="sound.toggleMute()" [ngModel]="sound.isMuted()">Mute all</mat-checkbox>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </mat-tab>
-    <mat-tab label="A.I Speed">
-      <mat-radio-group class="radio-group" [ngModel]="speed.multiplier" (change)="speed.setMultiplier($event.value)">
-        <mat-radio-button class="radio-button" *ngFor="let speedName of speedNames" [value]="speedSettings[speedName]">
-          {{speedName}}
-        </mat-radio-button>
-      </mat-radio-group>
+    <mat-tab-group>
+      <mat-tab label="Volume">
+        <table>
+          <tbody *ngFor="let volume of volumes; let i = index;">
+            <tr>
+              <td>{{volumeNames[volume[0]]}}:</td>
+              <td>
+                <mat-slider (change)="sound.changeVolume(volume[0], $event.value)" min="0" max="1" step="0.01" [value]="volume[1]"></mat-slider>
+              </td>
+              <td *ngIf="i === 0">
+                <mat-checkbox (change)="sound.toggleMute()" [ngModel]="sound.isMuted()">Mute all</mat-checkbox>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-tab>
+      <mat-tab label="A.I Speed">
+        <mat-radio-group class="radio-group" [ngModel]="speed.multiplier" (change)="speed.setMultiplier($event.value)">
+          <mat-radio-button class="radio-button" *ngFor="let speedName of speedNames" [value]="speedSettings[speedName]">
+            {{speedName}}
+          </mat-radio-button>
+        </mat-radio-group>
 
-    </mat-tab>
-    <mat-tab label="Tips">
-      <button mat-raised-button color="primary" mat-button (click)="tips.markUnread()">Reset Tips</button>
-      <button mat-raised-button color="warn" mat-button (click)="tips.markRead()"> Disable Tips</button>
-    </mat-tab>
-    <mat-tab label="Dev">
-      <button mat-raised-button color="primary" mat-button (click)="collection.unlockAll()">Unlock Cards</button>
-    </mat-tab>
+      </mat-tab>
+      <mat-tab label="Tips">
+        <mat-slide-toggle class="settings-element " (change)="toggleTips()" [checked]="!tips.isDisabled()">{{tipMessage()}}</mat-slide-toggle>
+        <button class="settings-element" mat-raised-button color="primary" mat-button (click)="tips.markUnread()">Mark All
+          Tips as Unread</button>
+        <button class="settings-element " mat-raised-button color="warn" mat-button (click)="tips.markRead()">Mark All Tips
+          as Read</button>
+      </mat-tab>
+      <mat-tab label="Dev">
+        <button class="settings-element" mat-raised-button color="primary" mat-button (click)="collection.unlockAll()">Unlock
+          Cards</button>
+      </mat-tab>
 
-  </mat-tab-group>
+    </mat-tab-group>
 
-</div>
+  </div>
 
-<div mat-dialog-actions>
-  <button mat-raised-button mat-button mat-dialog-close="done">Done</button>
+  <div class="spacer"> </div>
+
+  <div mat-dialog-actions>
+    <button mat-raised-button mat-button mat-dialog-close="done">Done</button>
+  </div>
 </div>
