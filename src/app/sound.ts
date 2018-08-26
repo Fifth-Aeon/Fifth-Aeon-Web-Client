@@ -109,6 +109,9 @@ export class SoundManager {
     public toggleMute() {
         this.muted = !this.muted;
         this.global.mute(this.muted);
+        if (this.muted)
+            speechSynthesis.cancel();
+
         this.saveSettings();
     }
 
