@@ -111,7 +111,6 @@ export class SoundManager {
         this.global.mute(this.muted);
         if (this.muted)
             speechSynthesis.cancel();
-
         this.saveSettings();
     }
 
