@@ -348,17 +348,18 @@ export class WebClient {
 
     private sendGameAction(type: GameActionType, params: any, isAi: boolean = false) {
         if (this.ai) {
-            let res = this.gameModel.handleAction({
+            this.gameModel.handleAction({
                 type: type,
                 player: isAi ? 1 : 0,
                 params: params
+            }).then(res => {
+                if (res === null) {
+                    console.error('An action sent to game model by', isAi ?
+                        'the A.I' : 'the player', 'failed.', 'It was', GameActionType[type], 'with', params);
+                    return;
+                }
+                this.sendEventsToLocalPlayers(res);
             });
-            if (res === null) {
-                console.error('An action sent to game model by', isAi ?
-                    'the A.I' : 'the player', 'failed.', 'It was', GameActionType[type], 'with', params);
-                return;
-            }
-            this.sendEventsToLocalPlayers(res);
             return;
         }
         this.messenger.sendMessageToServer(MessageType.GameAction, {
