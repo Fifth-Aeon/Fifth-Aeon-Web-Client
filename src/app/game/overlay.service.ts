@@ -6,7 +6,7 @@ import { Card, CardType } from '../game_model/card';
 import { Item } from '../game_model/item';
 import { Game } from '../game_model/game';
 import { ClientGame } from '../game_model/clientGame';
-import { Animator, BattleAnimationEvent } from '../game_model/animator';
+import { Animator, BattleAnimationEvent, TargetedAnimationEvent } from '../game_model/animator';
 
 
 interface Arrow { x1: number; y1: number; x2: number; y2: number; }
@@ -28,6 +28,7 @@ export class OverlayService {
 
   constructor() {
     this.animator.addBattleAnimiatonHandler(event => this.animateBattle(event));
+    this.animator.addTrargetedAnimiatonHandler(event => this.animatetarget(event));
   }
 
   private async animateBattle(event: BattleAnimationEvent) {
@@ -44,6 +45,11 @@ export class OverlayService {
     this.defenders = [];
     this.attacker = null;
     this.darkened = false;
+  }
+
+  private async animatetarget(event: TargetedAnimationEvent) {
+    this.addInteractionArrow(event.source.getId(), event.sink.getId());
+    await this.animator.getAnimationDelay();
   }
 
   public getAnimator() {
@@ -116,7 +122,7 @@ export class OverlayService {
     }
     let element = document.getElementById(id);
     if (!element) {
-      console.error('no element for', sourceId);
+      console.error(`no element for "${sourceId}" aka "${id}".` );
       return;
     }
     return element.getBoundingClientRect();

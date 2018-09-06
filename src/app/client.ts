@@ -338,10 +338,10 @@ export class WebClient {
     }
 
     private sendEventsToLocalPlayers(events: GameSyncEvent[]) {
-        setTimeout(() => {
+        setTimeout(async () => {
             for (let event of events) {
-                this.handleGameEvent(event);
-                this.ai.handleGameEvent(event);
+                await this.handleGameEvent(event);
+                await this.ai.handleGameEvent(event);
             }
         }, 50);
     }
@@ -405,44 +405,47 @@ export class WebClient {
         runNext();
     }
 
-    private handleGameEvent(event: GameSyncEvent) {
-        this.zone.run(() => this.game.syncServerEvent(this.playerNumber, event));
-        this.tips.handleGameEvent(this.game, this.playerNumber, event);
-        switch (event.type) {
-            case SyncEventType.TurnStart:
-                if (event.params.turn !== this.playerNumber)
-                    return;
-                if (event.params.turnNum !== 1)
-                    this.soundManager.playSound('bell');
-                break;
-            case SyncEventType.AttackToggled:
-                this.soundManager.playSound('attack');
-                break;
-            case SyncEventType.EnchantmentModified:
-                let avatar = this.game.getCurrentPlayer().getPlayerNumber() === this.playerNumber ?
-                    'player' : 'enemy';
-                this.overlay.addInteractionArrow(avatar, event.params.enchantmentId);
-                this.soundManager.playSound('magic');
-                break;
-            case SyncEventType.Block:
-                this.addBlockOverlay(event.params.blockerId, event.params.blockedId);
-                this.soundManager.playSound('attack');
-                break;
-            case SyncEventType.PhaseChange:
-                if (event.params.phase === GamePhase.DamageDistribution && this.game.isActivePlayer(this.playerNumber))
-                    this.createDamageSelectors();
-                if (event.params.phase === GamePhase.Play2)
-                    this.overlay.clearBlockers();
+    private async handleGameEvent(event: GameSyncEvent) {
+        this.zone.run(async () => {
+            await this.game.syncServerEvent(this.playerNumber, event);
+            this.tips.handleGameEvent(this.game, this.playerNumber, event);
+            switch (event.type) {
+                case SyncEventType.TurnStart:
+                    if (event.params.turn !== this.playerNumber)
+                        return;
+                    if (event.params.turnNum !== 1)
+                        this.soundManager.playSound('bell');
+                    break;
+                case SyncEventType.AttackToggled:
+                    this.soundManager.playSound('attack');
+                    break;
+                case SyncEventType.EnchantmentModified:
+                    let avatar = this.game.getCurrentPlayer().getPlayerNumber() === this.playerNumber ?
+                        'player' : 'enemy';
+                    this.overlay.addInteractionArrow(avatar, event.params.enchantmentId);
+                    this.soundManager.playSound('magic');
+                    break;
+                case SyncEventType.Block:
+                    this.addBlockOverlay(event.params.blockerId, event.params.blockedId);
+                    this.soundManager.playSound('attack');
+                    break;
+                case SyncEventType.PhaseChange:
+                    if (event.params.phase === GamePhase.DamageDistribution && this.game.isActivePlayer(this.playerNumber))
+                        this.createDamageSelectors();
+                    if (event.params.phase === GamePhase.Play2)
+                        this.overlay.clearBlockers();
 
-                break;
-            case SyncEventType.PlayCard:
-                this.soundManager.playSound('magic');
-                this.overlay.onPlay(this.game.getCardById(event.params.played.id), this.game, this.playerNumber);
-                break;
-            case SyncEventType.Ended:
-                this.endGame(event.params.winner, event.params.quit);
-                break;
-        }
+                    break;
+                case SyncEventType.PlayCard:
+                    this.soundManager.playSound('magic');
+                    this.overlay.onPlay(this.game.getCardById(event.params.played.id), this.game, this.playerNumber);
+                    break;
+                case SyncEventType.Ended:
+                    this.endGame(event.params.winner, event.params.quit);
+                    break;
+            }
+        });
+
     }
 
     private endGame(winner: number, quit: boolean) {
@@ -468,7 +471,7 @@ export class WebClient {
 
         let messagePromise = this.onGameEnd ? this.onGameEnd(playerWon) : this.collection.onGameEnd(playerWon, quit);
         messagePromise.then(msg => dialogRef.componentInstance.rewards = msg);
-        dialogRef.afterClosed().subscribe(result => {
+        dialogRef.afterClosed().subscribe(_ => {
             this.returnToLobby();
         });
     }
