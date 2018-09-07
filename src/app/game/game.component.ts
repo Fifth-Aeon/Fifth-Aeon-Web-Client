@@ -1,23 +1,20 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { MatDialogRef, MatDialog, MatDialogConfig, MatIconRegistry } from '@angular/material';
-import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
-import { trigger, state, style, animate, transition } from '@angular/animations';
-import { HotkeysService, Hotkey } from 'angular2-hotkeys';
-import { remove } from 'lodash';
-
-import { OverlayService } from './overlay.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material';
+import { Hotkey, HotkeysService } from 'angular2-hotkeys';
+import { WebClient } from '../client';
+import { Card, CardType, GameZone } from '../game_model/card';
+import { ClientGame } from '../game_model/clientGame';
+import { Enchantment } from '../game_model/enchantment';
+import { GamePhase } from '../game_model/game';
+import { Item } from '../game_model/item';
+import { Permanent } from '../game_model/permanent';
+import { Player } from '../game_model/player';
+import { Unit } from '../game_model/unit';
 import { TipService, TipType } from '../tips';
 import { CardChooserComponent } from './card-chooser/card-chooser.component';
-import { WebClient, ClientState } from '../client';
-import { Game, GamePhase } from '../game_model/game';
-import { ClientGame } from '../game_model/clientGame';
-import { Player } from '../game_model/player';
-import { Card, CardType, GameZone } from '../game_model/card';
-import { Permanent } from '../game_model/permanent';
-import { Enchantment } from '../game_model/enchantment';
-import { Unit } from '../game_model/unit';
-import { Item } from '../game_model/item';
-import { Targeter } from '../game_model/targeter';
+import { OverlayService } from './overlay.service';
+
 
 const deathFadeTime = OverlayService.arrowTimer + 200;
 
@@ -57,7 +54,6 @@ const deathFadeTime = OverlayService.arrowTimer + 200;
   ]
 })
 export class GameComponent implements OnInit, OnDestroy {
-  private targeters: Targeter[];
   private host: Unit;
   public game: ClientGame;
   public player: Player;
@@ -78,7 +74,7 @@ export class GameComponent implements OnInit, OnDestroy {
     new Hotkey('a', (event: KeyboardEvent): boolean => {
       this.client.attackWithAll();
       return false;
-    }, [], 'Attack with all')
+    }, [], 'Attack with all units')
   ];
 
   constructor(
@@ -264,16 +260,12 @@ export class GameComponent implements OnInit, OnDestroy {
     return !targeter.needsInput() || this.selected === card && targeter.isOptional();
   }
 
-
-
-
   public select(card: Card) {
     if (!card.isPlayable(this.game)) {
       this.tips.cannotPlayTip(this.playerNo, this.game, card);
       return;
     }
 
-    let targeter = card.getTargeter();
     if (this.doestNotNeedTarget(card)) {
       this.client.playCard(card, []);
       this.clear();
@@ -332,13 +324,15 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   private empowerDiminish(enchantment: Enchantment) {
-    if (enchantment.canChangePower(this.player, this.game))
+    if (enchantment.canChangePower(this.player, this.game)) {
       this.game.modifyEnchantment(this.player, enchantment);
-    else
+      this.clear();
+    } else {
       this.tips.cannotModifyEnchantment(this.player, this.game, enchantment);
+    }
   }
 
-  // Click friendly enemy Permanant
+  // Click enemy Permanant
   public target(card: Card) {
     if (card.getCardType() === CardType.Enchantment) {
       this.empowerDiminish(card as Enchantment);
