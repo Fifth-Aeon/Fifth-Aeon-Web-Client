@@ -28,7 +28,7 @@ export class OverlayService {
 
   constructor() {
     this.animator.addBattleAnimiatonHandler(event => this.animateBattle(event));
-    this.animator.addTrargetedAnimiatonHandler(event => this.animatetarget(event));
+    this.animator.addTrargetedAnimiatonHandler(async event => this.animateTarget(event));
   }
 
   private async animateBattle(event: BattleAnimationEvent) {
@@ -47,7 +47,8 @@ export class OverlayService {
     this.darkened = false;
   }
 
-  private async animatetarget(event: TargetedAnimationEvent) {
+  private async animateTarget(event: TargetedAnimationEvent) {
+    await this.animator.makeDelay(200);
     this.addInteractionArrow(event.source.getId(), event.sink.getId());
     await this.animator.getAnimationDelay();
   }
