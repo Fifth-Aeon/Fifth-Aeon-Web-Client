@@ -141,25 +141,34 @@ export class GameComponent implements OnInit, OnDestroy {
     this.client.pass();
   }
 
-  public openCardChooser(player: number, cards: Array<Card>, min: number = 1, max: number = 1,
-    callback: (cards: Card[]) => void = null, message: string = '') {
+  public openCardChooser(
+    player: number,
+    cards: Array<Card>,
+    min: number = 1,
+    max: number = 1,
+    callback: (cards: Card[]) => void = null, message: string = ''
+  ): Promise<void | Card[]> {
     this.game.deferChoice(player, cards, min, max, callback);
     if (player !== this.playerNo)
-      return;
+      return Promise.resolve();
 
     let config = new MatDialogConfig();
     config.disableClose = true;
+
     let dialogRef = this.dialog.open(CardChooserComponent, config);
     dialogRef.componentInstance.cards = cards;
     dialogRef.componentInstance.min = min;
     dialogRef.componentInstance.max = max;
     dialogRef.componentInstance.suffix = message;
     dialogRef.componentInstance.setPage();
-    if (callback) {
+
+    return new Promise(resolve => {
       dialogRef.afterClosed().subscribe((result: Card[]) => {
-        this.game.makeChoice(this.playerNo, result);
+        if (callback)
+          this.game.makeChoice(this.playerNo, result);
+        resolve();
       });
-    }
+    });
   }
 
 

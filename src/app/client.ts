@@ -337,12 +337,10 @@ export class WebClient {
         return this.state === ClientState.InGame;
     }
 
-    private sendEventsToLocalPlayers(events: GameSyncEvent[]) {
+    private sendEventToLocalPlayers(event: GameSyncEvent) {
         setTimeout(async () => {
-            for (let event of events) {
-                await this.handleGameEvent(event);
-                await this.ai.handleGameEvent(event);
-            }
+            await this.handleGameEvent(event);
+            await this.ai.handleGameEvent(event);
         }, 50);
     }
 
@@ -358,7 +356,6 @@ export class WebClient {
                         'the A.I' : 'the player', 'failed.', 'It was', GameActionType[type], 'with', params);
                     return;
                 }
-                this.sendEventsToLocalPlayers(res);
             });
             return;
         }
@@ -585,7 +582,7 @@ export class WebClient {
 
         this.router.navigate(['/game']);
 
-        // scenario = tutorialCampaign[0];
+        scenario = tutorialCampaign[0];
         if (scenario) {
             scenario.apply(this.gameModel);
             scenario.apply(this.game);
@@ -595,7 +592,10 @@ export class WebClient {
         this.zone.run(() => {
             this.opponentUsername = aiDeck.name;
             this.state = ClientState.InGame;
-            this.sendEventsToLocalPlayers(this.gameModel.startGame());
+            this.gameModel.addGameSyncEventListner(event => {
+                this.sendEventToLocalPlayers(event);
+            });
+            this.gameModel.startGame();
         });
     }
 }
