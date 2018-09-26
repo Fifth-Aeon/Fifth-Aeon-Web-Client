@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ParameterType, ParamaterData } from '../../game_model/cards/parameters';
+import { ParameterType, ParameterData } from '../../game_model/cards/parameters';
 import { CardType } from '../../game_model/card';
 import { cardList } from '../../game_model/cards/cardList';
 import { ResourceType } from '../../game_model/resource';
@@ -22,8 +22,8 @@ interface EnumValue {
 export class ParameterEditorComponent implements OnInit {
   @Input() name: string;
   @Input() type: ParameterType;
-  @Input() data: ParamaterData;
-  @Output() change: EventEmitter<ParamaterData> = new EventEmitter<ParamaterData>();
+  @Input() data: ParameterData;
+  @Output() change: EventEmitter<ParameterData> = new EventEmitter<ParameterData>();
   public EditorType = EditorType;
 
   private cardTypeValues = new Map<CardType, EnumValue[]>();

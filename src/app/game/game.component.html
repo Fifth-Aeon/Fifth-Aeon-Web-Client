@@ -29,13 +29,13 @@
 
     <!-- Enemy Board -->
     <div class="area">
-      <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerPermanants(enemyNo)" [darkened]="isDarkened(card)" [card]="card"
+      <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerPermanents(enemyNo)" [darkened]="isDarkened(card)" [card]="card"
         [game]="game" [@location]="locationState(card)" [target]="isTarget(card)" (click)="target(card)"></ccg-card>
     </div>
 
     <!-- Player Board -->
     <div class="area">
-      <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerPermanants(playerNo)" [darkened]="isDarkened(card)" [card]="card"
+      <ccg-card scale="1.40" *ngFor="let card of game.getBoard().getPlayerPermanents(playerNo)" [darkened]="isDarkened(card)" [card]="card"
         [game]="game" [@location]="locationState(card)" [target]="validTargets.has(card)" [selected]="card === blocker" (click)="activate(card)">
       </ccg-card>
     </div>

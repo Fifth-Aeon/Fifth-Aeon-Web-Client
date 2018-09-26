@@ -27,7 +27,7 @@ export class OverlayComponent implements OnInit {
 
   public getOverlayStyle() {
     return {
-      'background-color': this.overlay.getAnimator().isAnimiating() ? 'rgba(0, 0, 0, 0.8)' : 'transparent'
+      'background-color': this.overlay.getAnimator().isAnimating() ? 'rgba(0, 0, 0, 0.8)' : 'transparent'
     };
   }
 

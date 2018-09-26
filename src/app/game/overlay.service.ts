@@ -27,7 +27,7 @@ export class OverlayService {
   public darkened = false;
 
   constructor() {
-    this.animator.addBattleAnimiatonHandler(event => this.animateBattle(event));
+    this.animator.addBattleAnimationHandler(event => this.animateBattle(event));
   }
 
   private async animateBattle(event: BattleAnimationEvent) {

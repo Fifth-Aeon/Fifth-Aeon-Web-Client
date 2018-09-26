@@ -320,7 +320,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   public isDarkened(perm: Permanent) {
-    return perm.isUnit() && (perm as Unit).isExausted();
+    return perm.isUnit() && (perm as Unit).isExhausted();
   }
 
   private clear() {
@@ -338,7 +338,7 @@ export class GameComponent implements OnInit, OnDestroy {
       this.tips.cannotModifyEnchantment(this.player, this.game, enchantment);
   }
 
-  // Click friendly enemy Permanant
+  // Click friendly enemy Permanent
   public target(card: Card) {
     if (card.getCardType() === CardType.Enchantment) {
       this.empowerDiminish(card as Enchantment);
@@ -367,7 +367,7 @@ export class GameComponent implements OnInit, OnDestroy {
     return this.validTargets.has(unit) || this.blockable.has(unit);
   }
 
-  // Click friendly permanant
+  // Click friendly permanent
   public activate(card: Card) {
     if (card.getCardType() === CardType.Enchantment) {
       this.empowerDiminish(card as Enchantment);

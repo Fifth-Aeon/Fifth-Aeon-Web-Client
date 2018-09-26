@@ -40,7 +40,7 @@ tipText.set(TipType.Draft,
     `In draft mode you build a deck by selecting one of four cards repeatedly.
 Try to pick cards that work well with each other, it is especially important to beware of resource costs.`);
 tipText.set(TipType.Hotkeys,
-    `Many game functions may be controlled through hotkeys. Press ? to list out the avalible commands.`);
+    `Many game functions may be controlled through hotkeys. Press ? to list out the available commands.`);
 
 
 // In Game
@@ -225,7 +225,7 @@ export class TipService {
     }
 
     public cannotBlockTip(blocker: Unit, game: Game) {
-        if (blocker.isExausted())
+        if (blocker.isExhausted())
             this.announce('Exhausted units can not block.');
         else
             this.announce('That unit can not block due to a special effect.');
@@ -234,7 +234,7 @@ export class TipService {
     public cannotAttackTip(unit: Unit, game: Game) {
         if (!unit.isReady())
             this.announce('Units cannot attack the turn they are played.');
-        else if (unit.isExausted())
+        else if (unit.isExhausted())
             this.announce('Exhausted units cannot attack.');
         else if (!game.canTakeAction())
             this.announce('You must wait for a choice to be made.');
@@ -260,9 +260,9 @@ export class TipService {
             let diff = card.getCost().difference(player.getPool());
             this.announce(`You need ${diff.map(change => change.diff + ' more ' + change.name).join(' and ')} to play ${
                 card.getName().replace(/\./g, '')}.`);
-        } else if (card.isUnit() && !game.getBoard().canPlayPermanant(card as Unit)) {
+        } else if (card.isUnit() && !game.getBoard().canPlayPermanent(card as Unit)) {
             this.announce(`Your board is too full to play a unit.`);
-        } else if (card.getCardType() === CardType.Enchantment && !game.getBoard().canPlayPermanant(card as Enchantment)) {
+        } else if (card.getCardType() === CardType.Enchantment && !game.getBoard().canPlayPermanent(card as Enchantment)) {
             this.announce(`Your board is too full to play an enchantment.`);
         } else if (card.getCardType() === CardType.Item && !(card as Item).getHostTargeter().isTargetable(card, game)) {
             this.announce(`You don't have any units to attach that item to.`);
