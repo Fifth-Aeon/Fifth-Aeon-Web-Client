@@ -18,7 +18,8 @@ import { Card } from './game_model/card';
 import { Unit } from './game_model/unit';
 import { DeckList } from './game_model/deckList';
 import { Log } from './game_model/log';
-import { AI, BasicAI } from './game_model/ai';
+import { AI } from './game_model/ai/ai';
+import { DefaultAI } from './game_model/ai/defaultAi';
 import { allDecks } from './game_model/scenarios/decks';
 
 // Client side
@@ -566,7 +567,7 @@ export class WebClient {
         this.log.setPlayer(0);
         let aiDeck = sample(allDecks);
 
-        // Initilize games
+        // Initialize games
         this.gameModel = new ServerGame('server', standardFormat, [this.deck, aiDeck]);
         let aiModel = new ClientGame('ai',
             (type, params) => this.sendGameAction(type, params, true),
@@ -576,7 +577,7 @@ export class WebClient {
             this.overlay.getAnimator(),
             this.log);
 
-        this.ai = new BasicAI(1, aiModel, aiDeck, this.overlay.getAnimator());
+        this.ai = new DefaultAI(1, aiModel, aiDeck, this.overlay.getAnimator());
         this.setAISpeed(this.speed.speeds.aiTick);
 
         this.router.navigate(['/game']);
