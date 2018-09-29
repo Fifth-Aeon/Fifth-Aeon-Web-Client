@@ -24,9 +24,9 @@ export interface Message {
 }
 
 
-// Minimum time before attempting to recconect again;
+// Minimum time before attempting to reconnect again;
 let minConnectTime = 1000 * 5;
-let autoReconenctTime = 1000 * 10;
+let autoReconnectTime = 1000 * 10;
 let pingTime = 1000 * 15;
 
 
@@ -53,7 +53,7 @@ export class Messenger {
                 return;
             console.log('Attempting automatic reconnect');
             this.connect();
-        }, autoReconenctTime);
+        }, autoReconnectTime);
         setInterval(() => this.sendMessageToServer(MessageType.Ping, {}), pingTime);
     }
 
@@ -129,7 +129,7 @@ export class Messenger {
         });
     }
 
-    public addHandeler(messageType, callback: (message: Message) => void, context?: any) {
+    public addHandler(messageType, callback: (message: Message) => void, context?: any) {
         if (context) {
             callback = callback.bind(context);
         }

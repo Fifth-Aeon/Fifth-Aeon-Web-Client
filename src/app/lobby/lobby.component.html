@@ -75,7 +75,7 @@
   </ng-template>
 
   <ng-template [ngIf]="!inLobby()">
-    <p class="instructions">{{client.getInstruction()}}</p>
+    <p class="instructions">In Queue. Waiting for an opponent.</p>
     <mat-progress-spinner attr.color="primary" mode="indeterminate"></mat-progress-spinner>
   </ng-template>
 </div>

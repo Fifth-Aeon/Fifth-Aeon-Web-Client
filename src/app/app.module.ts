@@ -25,8 +25,6 @@ import { AppComponent } from './app.component';
 import { InPlayGuard } from './in-play.guard';
 import { LoggedInGuard } from './login.guard';
 import { LobbyComponent } from './lobby/lobby.component';
-import { PrivateLobbyComponent } from './private-lobby/private-lobby.component';
-
 
 import { EndDialogComponent } from './end-dialog/end-dialog.component';
 import { DeckEditorComponent } from './deck-editor/deck-editor.component';
@@ -59,7 +57,6 @@ import { DailyDialogComponent } from './daily-dialog/daily-dialog.component';
   declarations: [
     AppComponent,
     LobbyComponent,
-    PrivateLobbyComponent,
     EndDialogComponent,
     DeckEditorComponent,
     SettingsDialogComponent,

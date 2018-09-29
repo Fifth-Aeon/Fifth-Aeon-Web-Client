@@ -1,6 +1,7 @@
 import { Queue } from 'typescript-collections';
 import { Howler, Howl } from 'howler';
 import { Injectable } from '@angular/core';
+import { SyncEventType, GameSyncEvent } from './game_model/game';
 
 
 export enum VolumeType { Master, Music, Effects, Narrator }
@@ -49,6 +50,24 @@ export class SoundManager {
                 console.warn('Warning no english voice detected.');
             }
         };
+    }
+
+    public handleGameEvent( event: GameSyncEvent) {
+        switch (event.type) {
+            case SyncEventType.TurnStart:
+                if (event.params.turnNum !== 1)
+                    this.playSound('bell');
+                break;
+            case SyncEventType.AttackToggled:
+            case SyncEventType.Block:
+                this.playSound('attack');
+                break;
+            case SyncEventType.PlayCard:
+            case SyncEventType.EnchantmentModified:
+                this.playSound('magic');
+                break;
+        }
+
     }
 
     public saveSettings() {

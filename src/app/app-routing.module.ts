@@ -10,7 +10,6 @@ import { GameComponent } from './game/game.component';
 import { InPlayGuard } from './in-play.guard';
 import { LoggedInGuard } from './login.guard';
 import { DeckChooserComponent } from './deck-chooser/deck-chooser.component';
-import { PrivateLobbyComponent } from './private-lobby/private-lobby.component';
 import { DeckEditorComponent } from './deck-editor/deck-editor.component';
 import { OpenPackComponent } from './open-pack/open-pack.component';
 import { DraftComponent } from './draft/draft.component';
@@ -21,8 +20,6 @@ const routes: Routes = [
     { path: 'game', component: GameComponent, canActivate: [InPlayGuard] },
     { path: 'deck', component: DeckEditorComponent, canActivate: [LoggedInGuard] },
     { path: 'select', component: DeckChooserComponent, canActivate: [LoggedInGuard] },
-    { path: 'private/:id', component: PrivateLobbyComponent, canActivate: [LoggedInGuard] },
-    { path: 'private', component: PrivateLobbyComponent, canActivate: [LoggedInGuard] },
     { path: 'packs', component: OpenPackComponent, canActivate: [LoggedInGuard] },
     { path: 'lobby', component: LobbyComponent, canActivate: [LoggedInGuard] },
     { path: 'queue', component: LobbyComponent, canActivate: [LoggedInGuard] },

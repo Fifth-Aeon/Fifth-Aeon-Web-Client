@@ -1,19 +1,18 @@
 // Vendor
 import { sample, every } from 'lodash';
-import { MatDialogRef, MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 import { NgZone, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MatSnackBar } from '@angular/material';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { Angulartics2 } from 'angulartics2';
 
 
 // Game Model
-import { Game, GameAction, GameSyncEvent, GameActionType, SyncEventType, GamePhase } from './game_model/game';
+import { GameAction, GameSyncEvent, GameActionType, SyncEventType, GamePhase } from './game_model/game';
 import { ServerGame } from './game_model/serverGame';
 import { ClientGame } from './game_model/clientGame';
-import { GameFormat, standardFormat } from './game_model/gameFormat';
+import { standardFormat } from './game_model/gameFormat';
 import { Card } from './game_model/card';
 import { Unit } from './game_model/unit';
 import { DeckList } from './game_model/deckList';
@@ -26,8 +25,6 @@ import { allDecks } from './game_model/scenarios/decks';
 import { Messenger, MessageType, Message } from './messenger';
 import { SoundManager } from './sound';
 import { Preloader } from './preloader';
-import { DecksService } from './decks.service';
-import { getHttpUrl } from './url';
 
 import { EndDialogComponent } from './end-dialog/end-dialog.component';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
@@ -58,11 +55,9 @@ export class WebClient {
     private deck: DeckList = new DeckList(standardFormat);
 
     private messenger: Messenger;
-    private gameId: string = null;
     private state: ClientState = ClientState.UnAuth;
     private playerNumber: number;
     private opponentNumber: number;
-    private finished = false;
     private connected = false;
     private privateGameUrl: string;
     private privateGameId: string = null;
@@ -103,11 +98,10 @@ export class WebClient {
         this.messenger = messengerService.getMessenger();
         this.log = new Log(this.playerNumber);
 
-        this.messenger.addHandeler(MessageType.StartGame, this.startGame, this);
-        this.messenger.addHandeler(MessageType.GameEvent, (msg) => this.handleGameEvent(msg.data), this);
-        this.messenger.addHandeler(MessageType.ClientError, (msg) => this.clientError(msg), this);
-        this.messenger.addHandeler(MessageType.QueueJoined, (msg) => this.changeState(ClientState.InQueue), this);
-        this.messenger.addHandeler(MessageType.PrivateGameReady, (msg) => this.privateGameReady(msg), this);
+        this.messenger.addHandler(MessageType.StartGame, this.startGame, this);
+        this.messenger.addHandler(MessageType.GameEvent, (msg) => this.handleGameEvent(msg.data), this);
+        this.messenger.addHandler(MessageType.ClientError, (msg) => this.clientError(msg), this);
+        this.messenger.addHandler(MessageType.QueueJoined, (msg) => this.changeState(ClientState.InQueue), this);
         this.messenger.connectChange = (status) => zone.run(() => this.connected = status);
 
         this.addHotkeys();
@@ -181,10 +175,6 @@ export class WebClient {
         this.deck = new DeckList(standardFormat);
         this.tips.setUsername(this.username);
         this.tips.playTip(TipType.StartGame);
-
-        if (this.toJoin) {
-            this.joinPrivateGame(this.toJoin);
-        }
     }
 
     public isLoggedIn() {
@@ -250,52 +240,13 @@ export class WebClient {
         this.changeState(ClientState.InLobby);
     }
 
-    private getInviteMessage() {
-        return `You are invited to play ccg. Go to the url ${this.privateGameUrl} to play.`;
-    }
-
     public getDeck() {
         return this.deck;
-    }
-
-    public getPrivateGameUrl() {
-        return this.privateGameUrl;
-    }
-
-    public getPrivateGameEmailUrl() {
-        return this.sanitizer.bypassSecurityTrustUrl('mailto:?subject=Battleship Invite&body='
-            + encodeURIComponent(this.getInviteMessage()));
-    }
-
-    public getPrivateGameSMSUrl() {
-        return this.sanitizer.bypassSecurityTrustUrl('sms:?body=' + encodeURIComponent(this.getInviteMessage()));
-    }
-
-    private privateGameReady(msg: Message) {
-        this.privateGameUrl = getHttpUrl() + '/private/' + msg.data.gameId;
-        this.privateGameId = msg.data.gameId;
-        this.changeState(ClientState.PrivateLobby);
-        this.router.navigate(['/private']);
-    }
-
-    public joinPrivateGame(gameId: string) {
-        this.changeState(ClientState.PrivateLobby);
-        if (!this.username) {
-            this.toJoin = gameId;
-            return;
-        }
-        this.messenger.sendMessageToServer(MessageType.JoinPrivateGame, { gameId: gameId });
-        this.onError = (err: string) => {
-            if (err.includes('No game with that id.')) {
-                this.changeState(ClientState.PrivateLobbyFail);
-            }
-        };
     }
 
     public isConnected(): boolean {
         return this.connected;
     }
-
 
     public exitGame(final = false) {
         this.sendGameAction(GameActionType.Quit, {});
@@ -368,12 +319,6 @@ export class WebClient {
         } as GameAction);
     }
 
-    private namePlayer(player: number, cap: boolean = false) {
-        if (player === this.playerNumber)
-            return 'you';
-        return 'your opponent';
-    }
-
     private openDamageSelector(attacker: Unit, defenders: Unit[]) {
         let config = new MatDialogConfig();
         config.disableClose = true;
@@ -408,25 +353,19 @@ export class WebClient {
     private handleGameEvent(event: GameSyncEvent) {
         this.zone.run(() => this.game.syncServerEvent(this.playerNumber, event));
         this.tips.handleGameEvent(this.game, this.playerNumber, event);
+        this.soundManager.handleGameEvent(event);
         switch (event.type) {
             case SyncEventType.TurnStart:
                 if (event.params.turn !== this.playerNumber)
                     return;
-                if (event.params.turnNum !== 1)
-                    this.soundManager.playSound('bell');
-                break;
-            case SyncEventType.AttackToggled:
-                this.soundManager.playSound('attack');
                 break;
             case SyncEventType.EnchantmentModified:
                 let avatar = this.game.getCurrentPlayer().getPlayerNumber() === this.playerNumber ?
                     'player' : 'enemy';
                 this.overlay.addInteractionArrow(avatar, event.params.enchantmentId);
-                this.soundManager.playSound('magic');
                 break;
             case SyncEventType.Block:
                 this.addBlockOverlay(event.params.blockerId, event.params.blockedId);
-                this.soundManager.playSound('attack');
                 break;
             case SyncEventType.PhaseChange:
                 if (event.params.phase === GamePhase.DamageDistribution && this.game.isActivePlayer(this.playerNumber))
@@ -436,7 +375,6 @@ export class WebClient {
 
                 break;
             case SyncEventType.PlayCard:
-                this.soundManager.playSound('magic');
                 this.overlay.onPlay(this.game.getCardById(event.params.played.id), this.game, this.playerNumber);
                 break;
             case SyncEventType.Ended:
@@ -483,22 +421,6 @@ export class WebClient {
         this.zone.run(() => this.state = newState);
     }
 
-    public getInstruction() {
-        if (this.state === ClientState.UnAuth)
-            return 'Attempting to login to server';
-        if (this.state === ClientState.InLobby)
-            return 'Logged in as ' + this.username + '.';
-        if (this.state === ClientState.Waiting)
-            return 'Waiting for server response.';
-        if (this.state === ClientState.PrivateLobby)
-            return 'Private game ready, please invite a friend.';
-        if (this.state === ClientState.PrivateLobbyFail)
-            return 'Failed to join game (it may have been canceled).';
-        if (this.state === ClientState.InQueue)
-            return 'In Queue. Waiting for an opponent.';
-        return 'Error.';
-    }
-
     public getState() {
         return this.state;
     }
@@ -507,7 +429,7 @@ export class WebClient {
         return this.game;
     }
 
-    public getPlayerdata() {
+    public getPlayerData() {
         return {
             me: this.playerNumber,
             op: this.opponentNumber
@@ -543,7 +465,6 @@ export class WebClient {
 
         this.ai = null;
         this.gameModel = null;
-        this.gameId = msg.data.gameId;
         this.playerNumber = msg.data.playerNumber;
         this.log.setPlayer(this.playerNumber);
         this.opponentNumber = 1 - this.playerNumber;

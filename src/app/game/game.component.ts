@@ -90,10 +90,10 @@ export class GameComponent implements OnInit, OnDestroy {
   ) {
     this.game = client.getGame();
     this.overlay.setGame(this.game);
-    this.player = this.game.getPlayer(client.getPlayerdata().me);
-    this.enemy = this.game.getPlayer(client.getPlayerdata().op);
-    this.playerNo = client.getPlayerdata().me;
-    this.enemyNo = client.getPlayerdata().op;
+    this.player = this.game.getPlayer(client.getPlayerData().me);
+    this.enemy = this.game.getPlayer(client.getPlayerData().op);
+    this.playerNo = client.getPlayerData().me;
+    this.enemyNo = client.getPlayerData().op;
 
     this.game.promptCardChoice = this.openCardChooser.bind(this);
 
