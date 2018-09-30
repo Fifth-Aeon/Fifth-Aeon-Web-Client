@@ -94,7 +94,9 @@ export class GameComponent implements OnInit, OnDestroy {
     this.player = this.game.getPlayer(this.playerNo );
     this.enemy = this.game.getPlayer(this.enemyNo);
 
-    this.game.promptCardChoice = this.openCardChooser.bind(this);
+    if (this.gameManager.isInputEnabled()) {
+      this.game.promptCardChoice = this.openCardChooser.bind(this);
+    }
 
     this.addHotkeys();
   }

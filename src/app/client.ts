@@ -20,7 +20,7 @@ export enum ClientState {
 }
 
 export enum GameType {
-    AiGame, PublicGame
+    AiGame, DoubleAiGame, PublicGame
 }
 
 @Injectable()
@@ -65,18 +65,21 @@ export class WebClient {
 
     private startGame(msg: Message) {
         this.gameManager.startGame(msg.data.opponent, msg.data.opponent);
-
         this.changeState(ClientState.InGame);
         this.router.navigate(['/game']);
     }
 
     public startAIGame() {
         this.gameManager.startAIGame();
-
         this.changeState(ClientState.InGame);
         this.router.navigate(['/game']);
     }
 
+    public startDoubleAIGame() {
+        this.gameManager.startAIGame(2);
+        this.changeState(ClientState.InGame);
+        this.router.navigate(['/game']);
+    }
 
     private addHotkeys() {
         this.hotkeys.add(new Hotkey('esc', (event: KeyboardEvent): boolean => {
@@ -209,12 +212,14 @@ export class WebClient {
         return this.username;
     }
 
-
     public selectDeckAndStartGame(type: GameType) {
         this.tips.playTip(TipType.SelectDeck);
         switch (type) {
             case GameType.AiGame:
                 this.onDeckSelected = this.startAIGame;
+                break;
+                case GameType.DoubleAiGame:
+                this.onDeckSelected = this.startDoubleAIGame;
                 break;
             case GameType.PublicGame:
                 this.onDeckSelected = this.joinPublicQueue;

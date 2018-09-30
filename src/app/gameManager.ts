@@ -9,7 +9,7 @@ import { DefaultAI } from './game_model/ai/defaultAi';
 import { Card } from './game_model/card';
 import { ClientGame } from './game_model/clientGame';
 import { DeckList } from './game_model/deckList';
-import { GameAction, GameActionType, GamePhase, GameSyncEvent, SyncEventType } from './game_model/game';
+import { GameAction, GameActionType, GamePhase, GameSyncEvent, SyncEventType, Game } from './game_model/game';
 import { standardFormat } from './game_model/gameFormat';
 import { Log } from './game_model/log';
 import { Scenario } from './game_model/scenario';
@@ -30,9 +30,11 @@ export class GameManager {
     private playerNumber: number;
     private opponentNumber: number;
 
-    private game: ClientGame;
+    private game1: ClientGame;
+    private game2: ClientGame;
     private gameModel: ServerGame;
-    private ai: AI;
+
+    private ais: Array<AI> = [];
     private aiTick: any;
 
     public onGameEnd: (won: boolean, quit: boolean) => any;
@@ -46,55 +48,69 @@ export class GameManager {
         private overlay: OverlayService,
         private speed: SpeedService,
         messengerService: MessengerService,
-
     ) {
         this.setAISpeed(1000);
 
         this.log = new Log(this.playerNumber);
         this.messenger = messengerService.getMessenger();
         this.messenger.addHandler(MessageType.GameEvent, (msg) => this.handleGameEvent(msg.data), this);
+
+        this.reset();
+    }
+
+    private reset() {
+        this.game1 = null;
+        this.game2 = null;
+        this.gameModel = null;
+        this.ais = [];
+        this.stopAI();
+    }
+
+    private stopAI() {
+        clearInterval(this.aiTick);
     }
 
     public setAISpeed(ms: number) {
         if (this.aiTick !== undefined)
             clearInterval(this.aiTick);
         this.aiTick = setInterval(() => {
-            if (this.ai)
-                this.ai.pulse();
+            for (let ai of this.ais) {
+                ai.pulse();
+            }
         }, ms);
     }
 
 
     // Game Actions -------------------------------------------------------------------------
     public playCard(card: Card, targets: Unit[] = []) {
-        this.game.playCardExtern(card, targets);
-        this.tips.playCardTrigger(card, this.game);
+        this.game1.playCardExtern(card, targets);
+        this.tips.playCardTrigger(card, this.game1);
     }
 
     public makeChoice(cards: Card[]) {
-        this.game.makeChoice(this.playerNumber, cards);
+        this.game1.makeChoice(this.playerNumber, cards);
     }
 
     public pass() {
-        this.game.pass();
+        this.game1.pass();
     }
 
     public playResource(type: string) {
-        this.game.playResource(type);
+        this.game1.playResource(type);
     }
 
     public toggleAttacker(unit: Unit) {
-        this.game.declareAttacker(unit);
+        this.game1.declareAttacker(unit);
     }
 
     public declareBlocker(blocker: Unit, blocked: Unit | null) {
-        this.game.declareBlocker(blocker, blocked);
+        this.game1.declareBlocker(blocker, blocked);
     }
 
     public attackWithAll() {
-        if (this.playerNumber !== this.game.getCurrentPlayer().getPlayerNumber())
+        if (this.playerNumber !== this.game1.getCurrentPlayer().getPlayerNumber())
             return;
-        let potential = this.game.getCurrentPlayerUnits().filter(unit => unit.canAttack());
+        let potential = this.game1.getCurrentPlayerUnits().filter(unit => unit.canAttack());
         let allAttacking = every(potential, unit => unit.isAttacking());
         potential.forEach(unit => {
             if (allAttacking || !unit.isAttacking())
@@ -111,35 +127,39 @@ export class GameManager {
         return this.deck;
     }
 
-
+    // Action communication -------------------------------------
     private sendEventsToLocalPlayers(events: GameSyncEvent[]) {
         setTimeout(() => {
             for (let event of events) {
                 this.handleGameEvent(event);
-                this.ai.handleGameEvent(event);
+                for (let ai of this.ais) {
+                    ai.handleGameEvent(event);
+                }
             }
         }, 50);
     }
 
     private sendGameAction(type: GameActionType, params: any, isAi: boolean = false) {
-        if (this.ai) {
-            let res = this.gameModel.handleAction({
+        if (this.ais.length === 0) {
+            this.messenger.sendMessageToServer(MessageType.GameAction, {
                 type: type,
-                player: isAi ? 1 : 0,
                 params: params
-            });
-            if (res === null) {
-                console.error('An action sent to game model by', isAi ?
-                    'the A.I' : 'the player', 'failed.', 'It was', GameActionType[type], 'with', params);
-                return;
-            }
-            this.sendEventsToLocalPlayers(res);
+            } as GameAction);
             return;
         }
-        this.messenger.sendMessageToServer(MessageType.GameAction, {
+
+        let res = this.gameModel.handleAction({
             type: type,
+            player: isAi ? 1 : 0,
             params: params
-        } as GameAction);
+        });
+        if (res === null) {
+            console.error('An action sent to game model by', isAi ?
+                'the A.I' : 'the player', 'failed.', 'It was', GameActionType[type], 'with', params);
+            return;
+        }
+        this.sendEventsToLocalPlayers(res);
+
     }
 
     // Dialogs ----------------------------------------------------------
@@ -148,7 +168,7 @@ export class GameManager {
             this.overlay.removeBlocker(blocker);
             return;
         }
-        if (this.game.getUnitById(blocker).getBlockedUnitId() !== null)
+        if (this.game1.getUnitById(blocker).getBlockedUnitId() !== null)
             this.overlay.removeBlocker(blocker);
         this.overlay.addBlocker(blocker, blocked);
     }
@@ -163,18 +183,18 @@ export class GameManager {
 
         return dialogRef.afterClosed().toPromise()
             .then((order: Unit[]) => {
-                this.game.setAttackOrder(attacker, order);
+                this.game1.setAttackOrder(attacker, order);
             });
     }
 
     private createDamageSelectors() {
-        let orderables = Array.from(this.game.getModableDamageDistributions().entries())
+        let orderables = Array.from(this.game1.getModableDamageDistributions().entries())
             .map(entry => {
-                return { attacker: this.game.getUnitById(entry[0]), blockers: entry[1] };
+                return { attacker: this.game1.getUnitById(entry[0]), blockers: entry[1] };
             });
         let runNext = () => {
             if (orderables.length === 0) {
-                this.game.pass();
+                this.game1.pass();
                 return;
             }
             let next = orderables.pop();
@@ -185,8 +205,13 @@ export class GameManager {
     }
 
     private handleGameEvent(event: GameSyncEvent) {
-        this.zone.run(() => this.game.syncServerEvent(this.playerNumber, event));
-        this.tips.handleGameEvent(this.game, this.playerNumber, event);
+        // The game is being controlled by the player, so display tips and update the game state
+        // (otherwise the A.I will manage this so we needn't bother)
+        if (this.ais.length < 2) {
+            this.zone.run(() => this.game1.syncServerEvent(this.playerNumber, event));
+            this.tips.handleGameEvent(this.game1, this.playerNumber, event);
+        }
+
         this.soundManager.handleGameEvent(event);
         switch (event.type) {
             case SyncEventType.TurnStart:
@@ -194,7 +219,7 @@ export class GameManager {
                     return;
                 break;
             case SyncEventType.EnchantmentModified:
-                let avatar = this.game.getCurrentPlayer().getPlayerNumber() === this.playerNumber ?
+                let avatar = this.game1.getCurrentPlayer().getPlayerNumber() === this.playerNumber ?
                     'player' : 'enemy';
                 this.overlay.addInteractionArrow(avatar, event.params.enchantmentId);
                 break;
@@ -202,14 +227,13 @@ export class GameManager {
                 this.addBlockOverlay(event.params.blockerId, event.params.blockedId);
                 break;
             case SyncEventType.PhaseChange:
-                if (event.params.phase === GamePhase.DamageDistribution && this.game.isActivePlayer(this.playerNumber))
+                if (event.params.phase === GamePhase.DamageDistribution && this.game1.isActivePlayer(this.playerNumber))
                     this.createDamageSelectors();
                 if (event.params.phase === GamePhase.Play2)
                     this.overlay.clearBlockers();
-
                 break;
             case SyncEventType.PlayCard:
-                this.overlay.onPlay(this.game.getCardById(event.params.played.id), this.game, this.playerNumber);
+                this.overlay.onPlay(this.game1.getCardById(event.params.played.id), this.game1, this.playerNumber);
                 break;
             case SyncEventType.Ended:
                 this.endGame(event.params.winner, event.params.quit);
@@ -218,7 +242,7 @@ export class GameManager {
     }
 
     public getGame() {
-        return this.game;
+        return this.game1;
     }
 
     public getPlayerData() {
@@ -240,12 +264,17 @@ export class GameManager {
         return this.opponentUsername;
     }
 
+    public isInputEnabled() {
+        return this.ais.length < 2;
+    }
+
     // Game Life cycle ------------------------------------------------
 
     /** Invoked when the game ends (because a player won) */
     private endGame(winner: number, quit: boolean) {
         const playerWon = winner === this.playerNumber;
         this.soundManager.playImportantSound(playerWon ? 'fanfare' : 'defeat');
+        this.stopAI();
         this.onGameEnd(playerWon, quit);
     }
 
@@ -257,7 +286,7 @@ export class GameManager {
 
     /** Starts a multiplayer game */
     public startGame(playerNumber: number, opponentName: string) {
-        this.ai = null;
+        this.ais = [];
         this.gameModel = null;
         this.playerNumber = playerNumber;
         this.opponentNumber = 1 - this.playerNumber;
@@ -265,7 +294,7 @@ export class GameManager {
         this.log.setPlayer(this.playerNumber);
         this.log.clear();
 
-        this.game = new ClientGame('player',
+        this.game1 = new ClientGame('player',
             (type, params) => this.sendGameAction(type, params, false),
             this.overlay.getAnimator(),
             this.log);
@@ -276,8 +305,7 @@ export class GameManager {
         });
     }
 
-    public startAIGame(scenario?: Scenario) {
-
+    public startAIGame(aiCount = 1, scenario?: Scenario) {
         // The player always goes first vs the A.I
         this.playerNumber = 0;
         this.opponentNumber = 1;
@@ -287,27 +315,35 @@ export class GameManager {
 
         // Initialize games
         this.gameModel = new ServerGame('server', standardFormat, [this.deck, aiDeck]);
-        let aiModel = new ClientGame('ai',
-            (type, params) => this.sendGameAction(type, params, true),
-            this.overlay.getAnimator());
-        this.game = new ClientGame('player',
+        this.game1 = new ClientGame('player',
             (type, params) => this.sendGameAction(type, params, false),
             this.overlay.getAnimator(),
             this.log);
+        this.game2 = new ClientGame('ai',
+            (type, params) => this.sendGameAction(type, params, true),
+            this.overlay.getAnimator());
 
-        this.ai = new DefaultAI(1, aiModel, aiDeck, this.overlay.getAnimator());
+        const aiGames = [this.game2, this.game1];
+        for (let i = 0; i < aiCount; i++) {
+            let playerNumber = this.game1.getOtherPlayerNumber(i);
+            this.ais.push(new DefaultAI(playerNumber, aiGames[i], aiDeck, this.overlay.getAnimator()));
+        }
         this.setAISpeed(this.speed.speeds.aiTick);
 
         // scenario = tutorialCampaign[0];
         if (scenario) {
-            scenario.apply(this.gameModel);
-            scenario.apply(this.game);
-            scenario.apply(aiModel);
+            this.applyScenario(scenario, [this.gameModel, this.game1, this.game2]);
         }
 
         this.zone.run(() => {
             this.opponentUsername = aiDeck.name;
             this.sendEventsToLocalPlayers(this.gameModel.startGame());
+        });
+    }
+
+    private applyScenario(scenario: Scenario, games: Array<Game>) {
+        games.forEach(game => {
+            scenario.apply(game);
         });
     }
 }
