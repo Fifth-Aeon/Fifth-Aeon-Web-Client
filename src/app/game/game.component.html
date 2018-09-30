@@ -4,7 +4,7 @@
 
     <!-- Enemy Information Bar -->
     <div class="info-bar">
-      <p class="info-text" id="enemy-name">{{client.getOpponentUsername()}}</p>
+      <p class="info-text" id="enemy-name">{{gameManager.getOpponentUsername()}}</p>
       <button matTooltipPosition="below" matTooltip="View enemy crypt." color="primary" class="crypt-button" (click)="viewCrypt(enemyNo)"
         mat-mini-fab><mat-icon svgIcon="ccg:tombstone"></mat-icon></button>
 
@@ -43,7 +43,7 @@
     <!-- Player Information Bar -->
     <div class="info-bar">
       <ccg-resource-selector [canPlayResource]="canPlayResource()"></ccg-resource-selector>
-      <p class="info-text" id="player-name">{{client.getUsername()}} </p>
+      <p class="info-text" id="player-name">{{gameManager.getUsername()}} </p>
 
       <button color="primary" matTooltipPosition="above" matTooltip="View your crypt." class="crypt-button" (click)="viewCrypt(playerNo)"
         mat-mini-fab><mat-icon svgIcon="ccg:tombstone"></mat-icon></button>

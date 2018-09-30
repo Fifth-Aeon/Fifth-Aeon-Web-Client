@@ -58,7 +58,7 @@ export class DraftService {
   public playGame() {
     if (!this.currentDraft.canPlayGame())
       return;
-    this.client.onGameEnd = (won) => this.onGameEnd(won);
+    this.client.getGameReward = (won) => this.onGameEnd(won);
     this.client.setDeck(this.currentDraft.getDeck());
     this.client.startAIGame();
   }
@@ -70,7 +70,7 @@ export class DraftService {
 
   private async onGameEnd(won: boolean) {
     this.currentDraft.updateRecord(won);
-    this.client.onGameEnd = null;
+    this.client.getGameReward = null;
     if (!this.currentDraft.hasEnded()) {
       this.saveDraftData();
       return `You have ${this.currentDraft.getWins()} wins and ${this.currentDraft.getLosses()} losses this draft.`;

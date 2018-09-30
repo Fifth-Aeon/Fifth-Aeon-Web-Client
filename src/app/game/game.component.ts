@@ -1,23 +1,22 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { MatDialogRef, MatDialog, MatDialogConfig, MatIconRegistry } from '@angular/material';
-import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
-import { trigger, state, style, animate, transition } from '@angular/animations';
-import { HotkeysService, Hotkey } from 'angular2-hotkeys';
-import { remove } from 'lodash';
-
-import { OverlayService } from './overlay.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material';
+import { Hotkey, HotkeysService } from 'angular2-hotkeys';
+import { WebClient } from '../client';
+import { Card, CardType, GameZone } from '../game_model/card';
+import { ClientGame } from '../game_model/clientGame';
+import { Enchantment } from '../game_model/enchantment';
+import { GamePhase } from '../game_model/game';
+import { Item } from '../game_model/item';
+import { Permanent } from '../game_model/permanent';
+import { Player } from '../game_model/player';
+import { Targeter } from '../game_model/targeter';
+import { Unit } from '../game_model/unit';
 import { TipService, TipType } from '../tips';
 import { CardChooserComponent } from './card-chooser/card-chooser.component';
-import { WebClient, ClientState } from '../client';
-import { Game, GamePhase } from '../game_model/game';
-import { ClientGame } from '../game_model/clientGame';
-import { Player } from '../game_model/player';
-import { Card, CardType, GameZone } from '../game_model/card';
-import { Permanent } from '../game_model/permanent';
-import { Enchantment } from '../game_model/enchantment';
-import { Unit } from '../game_model/unit';
-import { Item } from '../game_model/item';
-import { Targeter } from '../game_model/targeter';
+import { OverlayService } from './overlay.service';
+import { GameManager } from '../gameManager';
+
 
 const deathFadeTime = OverlayService.arrowTimer + 200;
 
@@ -57,7 +56,6 @@ const deathFadeTime = OverlayService.arrowTimer + 200;
   ]
 })
 export class GameComponent implements OnInit, OnDestroy {
-  private targeters: Targeter[];
   private host: Unit;
   public game: ClientGame;
   public player: Player;
@@ -76,7 +74,7 @@ export class GameComponent implements OnInit, OnDestroy {
       return false;
     }, [], 'Pass'),
     new Hotkey('a', (event: KeyboardEvent): boolean => {
-      this.client.attackWithAll();
+      this.gameManager.attackWithAll();
       return false;
     }, [], 'Attack with all')
   ];
@@ -86,14 +84,15 @@ export class GameComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private hotkeyService: HotkeysService,
     public overlay: OverlayService,
-    private tips: TipService
+    private tips: TipService,
+    private gameManager: GameManager
   ) {
-    this.game = client.getGame();
+    this.game = gameManager.getGame();
     this.overlay.setGame(this.game);
-    this.player = this.game.getPlayer(client.getPlayerData().me);
-    this.enemy = this.game.getPlayer(client.getPlayerData().op);
-    this.playerNo = client.getPlayerData().me;
-    this.enemyNo = client.getPlayerData().op;
+    this.playerNo = gameManager.getPlayerData().me;
+    this.enemyNo = gameManager.getPlayerData().op;
+    this.player = this.game.getPlayer(this.playerNo );
+    this.enemy = this.game.getPlayer(this.enemyNo);
 
     this.game.promptCardChoice = this.openCardChooser.bind(this);
 
@@ -121,7 +120,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   public isInHand(card: Card) {
-    return card.getLocation() === GameZone.Hand ? 'in' : 'teal';
+    return card.getLocation() === GameZone.Hand ? 'in' : 'notIn';
   }
 
   public locationState(card: Card) {
@@ -142,7 +141,7 @@ export class GameComponent implements OnInit, OnDestroy {
     if (this.passDisabled())
       return;
     this.clear();
-    this.client.pass();
+    this.gameManager.pass();
   }
 
   public openCardChooser(player: number, cards: Array<Card>, min: number = 1, max: number = 1,
@@ -207,6 +206,8 @@ export class GameComponent implements OnInit, OnDestroy {
         return 'block';
       case GamePhase.End:
         return 'discard';
+      default:
+        return 'play1';
     }
   }
 
@@ -273,9 +274,8 @@ export class GameComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let targeter = card.getTargeter();
     if (this.doestNotNeedTarget(card)) {
-      this.client.playCard(card, []);
+      this.gameManager.playCard(card, []);
       this.clear();
     } else {
       this.setSelected(card);
@@ -348,7 +348,7 @@ export class GameComponent implements OnInit, OnDestroy {
     let phase = this.game.getPhase();
     if (!this.game.isPlayerTurn(this.playerNo) && phase === GamePhase.Block && this.blocker) {
       if (this.blocker.canBlockTarget(target)) {
-        this.client.declareBlocker(this.blocker, target);
+        this.gameManager.declareBlocker(this.blocker, target);
         this.clear();
       } else {
         this.tips.cannotBlockTargetTip(this.blocker, target, this.game);
@@ -386,13 +386,13 @@ export class GameComponent implements OnInit, OnDestroy {
           this.tips.cannotAttackTip(unit, this.game);
           return;
         }
-        this.client.toggleAttacker(unit);
+        this.gameManager.toggleAttacker(unit);
       } else {
         this.tips.announce('You may only attack once each turn. All units attack at the same time.');
       }
     } else if (!this.game.isPlayerTurn(this.playerNo) && phase === GamePhase.Block) {
       if (this.blocker === unit) {
-        this.client.declareBlocker(unit, null);
+        this.gameManager.declareBlocker(unit, null);
         this.clear();
       } else if (unit.canBlock()) {
 

@@ -52,6 +52,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { GameModule } from './game/game.module';
 import { PlayerAvatarComponent } from './player-avatar/player-avatar.component';
 import { DailyDialogComponent } from './daily-dialog/daily-dialog.component';
+import { GameManager } from './gameManager';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,7 @@ import { DailyDialogComponent } from './daily-dialog/daily-dialog.component';
     AppRoutingModule
 
   ],
-  providers: [SoundManager, WebClient, DecksService, SpeedService,
+  providers: [SoundManager, WebClient, GameManager, DecksService, SpeedService,
     TipService, Preloader, InPlayGuard, LoggedInGuard, CollectionService, DraftService, MessengerService],
   bootstrap: [AppComponent]
 })

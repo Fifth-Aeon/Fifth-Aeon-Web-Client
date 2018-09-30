@@ -1,8 +1,6 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { WebClient } from '../../client';
-
-import { HotkeysService, Hotkey } from 'angular2-hotkeys';
-
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Hotkey, HotkeysService } from 'angular2-hotkeys';
+import { GameManager } from '../../gameManager';
 
 @Component({
   selector: 'ccg-resource-selector',
@@ -22,7 +20,7 @@ export class ResourceSelectorComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private client: WebClient,
+    private gameManager: GameManager,
     private hotkeyService: HotkeysService) { }
 
 
@@ -40,7 +38,7 @@ export class ResourceSelectorComponent implements OnInit, OnDestroy {
   playResource(type: string) {
     if (!this.canPlayResource)
       return;
-    this.client.playResource(type);
+    this.gameManager.playResource(type);
   }
 
   ngOnInit() {

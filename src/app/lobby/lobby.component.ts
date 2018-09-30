@@ -29,7 +29,7 @@ export class LobbyComponent implements OnInit {
   }
 
   public join() {
-    this.client.join();
+    this.client.joinPublicQueue();
   }
 
   public fullscreen() {
