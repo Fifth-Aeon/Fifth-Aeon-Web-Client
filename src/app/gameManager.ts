@@ -26,7 +26,6 @@ export class GameManager {
     private username: string;
     private opponentUsername: string;
     private deck: DeckList = new DeckList(standardFormat);
-    public log: Log;
     private playerNumber: number;
     private opponentNumber: number;
 
@@ -37,7 +36,8 @@ export class GameManager {
     private ais: Array<AI> = [];
     private aiTick: any;
 
-    public onGameEnd: (won: boolean, quit: boolean) => any;
+    private log: Log;
+    private onGameEnd: (won: boolean, quit: boolean) => any;
     private messenger: Messenger;
 
     constructor(
@@ -263,6 +263,14 @@ export class GameManager {
         return this.opponentUsername;
     }
 
+    public setGameEndCallback(newCallback: (won: boolean, quit: boolean) => any) {
+        this.onGameEnd = newCallback;
+    }
+
+    public getLog() {
+        return this.log;
+    }
+
     public isInputEnabled() {
         return this.ais.length < 2;
     }
@@ -274,7 +282,9 @@ export class GameManager {
         const playerWon = winner === this.playerNumber;
         this.soundManager.playImportantSound(playerWon ? 'fanfare' : 'defeat');
         this.stopAI();
-        this.onGameEnd(playerWon, quit);
+        this.overlay.getAnimator().awaitAnimationEnd().then(() => {
+            this.onGameEnd(playerWon, quit);
+        });
     }
 
     /** Invoked when we quit the game (before its over) */

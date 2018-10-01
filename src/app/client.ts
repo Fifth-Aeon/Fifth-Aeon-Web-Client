@@ -58,7 +58,7 @@ export class WebClient {
         this.messenger.addHandler(MessageType.QueueJoined, (msg) => this.changeState(ClientState.InQueue), this);
         this.messenger.connectChange = (status) => zone.run(() => this.connected = status);
 
-        this.gameManager.onGameEnd = (won, quit) => this.openEndDialog(won, quit);
+        this.gameManager.setGameEndCallback((won, quit) => this.openEndDialog(won, quit));
 
         this.addHotkeys();
     }
