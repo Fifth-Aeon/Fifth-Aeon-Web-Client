@@ -51,14 +51,13 @@ export class GameManager {
     ) {
         this.setAISpeed(1000);
 
-        this.log = new Log(this.playerNumber);
         this.messenger = messengerService.getMessenger();
         this.messenger.addHandler(MessageType.GameEvent, (msg) => this.handleGameEvent(msg.data), this);
 
         this.reset();
     }
 
-    private reset() {
+    public reset() {
         this.game1 = null;
         this.game2 = null;
         this.gameModel = null;
@@ -291,8 +290,7 @@ export class GameManager {
         this.playerNumber = playerNumber;
         this.opponentNumber = 1 - this.playerNumber;
 
-        this.log.setPlayer(this.playerNumber);
-        this.log.clear();
+        this.log = new Log(this.playerNumber);
 
         this.game1 = new ClientGame('player',
             (type, params) => this.sendGameAction(type, params, false),
@@ -309,8 +307,7 @@ export class GameManager {
         // The player always goes first vs the A.I
         this.playerNumber = 0;
         this.opponentNumber = 1;
-        this.log.clear();
-        this.log.setPlayer(0);
+        this.log = new Log(this.playerNumber);
         let aiDeck = sample(allDecks);
 
         // Initialize games

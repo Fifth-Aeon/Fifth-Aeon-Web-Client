@@ -77,6 +77,7 @@ export class WebClient {
 
     public startDoubleAIGame() {
         this.gameManager.startAIGame(2);
+        this.getGameReward = () => Promise.resolve('No reward in A.I mode');
         this.changeState(ClientState.InGame);
         this.router.navigate(['/game']);
     }
@@ -190,6 +191,7 @@ export class WebClient {
         let rewardMessage = this.getGameReward ? this.getGameReward(playerWon) : this.collection.onGameEnd(playerWon, quit);
         rewardMessage.then(msg => dialogRef.componentInstance.rewards = msg);
         dialogRef.afterClosed().subscribe(result => {
+            this.gameManager.reset();
             this.returnToLobby();
         });
     }
