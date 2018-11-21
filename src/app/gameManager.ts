@@ -49,7 +49,7 @@ export class GameManager {
         private speed: SpeedService,
         messengerService: MessengerService,
     ) {
-        this.setAISpeed(1000);
+        this.startAiWithSpeed(1000);
 
         this.messenger = messengerService.getMessenger();
         this.messenger.addHandler(MessageType.GameEvent, (msg) => this.handleGameEvent(msg.data), this);
@@ -58,27 +58,24 @@ export class GameManager {
     }
 
     public reset() {
+        this.stopAI();
         this.game1 = null;
         this.game2 = null;
         this.gameModel = null;
         this.ais = [];
-        this.stopAI();
     }
 
     private stopAI() {
-        clearInterval(this.aiTick);
+        for (let ai of this.ais) {
+            ai.stopActing();
+        }
     }
 
-    public setAISpeed(ms: number) {
-        if (this.aiTick !== undefined)
-            clearInterval(this.aiTick);
-        this.aiTick = setInterval(() => {
-            for (let ai of this.ais) {
-                ai.pulse();
-            }
-        }, ms);
+    public startAiWithSpeed(ms: number) {
+        for (let ai of this.ais) {
+            ai.startActingDelayMode(ms, this.overlay.getAnimator());
+        }
     }
-
 
     // Game Actions -------------------------------------------------------------------------
     public playCard(card: Card, targets: Unit[] = []) {
@@ -130,13 +127,23 @@ export class GameManager {
     private sendEventsToLocalPlayers(events: GameSyncEvent[]) {
         setTimeout(() => {
             for (let event of events) {
-                this.handleGameEvent(event);
                 for (let ai of this.ais) {
                     ai.handleGameEvent(event);
                 }
+                this.handleGameEvent(event);
             }
-        }, 50);
+        }, 10);
     }
+
+    private checkPriorityChange(event: GameSyncEvent) {
+        if (!this.gameModel.canTakeAction())
+            return;
+        if (event.type === SyncEventType.TurnStart || event.type === SyncEventType.PhaseChange || event.type === SyncEventType.ChoiceMade) {
+            this.ais[this.gameModel.getActivePlayer()].onGainPriority();
+        }
+    }
+
+
 
     private sendGameAction(type: GameActionType, params: any, isAi: boolean = false) {
         if (this.ais.length === 0) {
@@ -210,6 +217,8 @@ export class GameManager {
             this.zone.run(() => this.game1.syncServerEvent(this.playerNumber, event));
             this.tips.handleGameEvent(this.game1, this.playerNumber, event);
         }
+
+        this.checkPriorityChange(event);
 
         this.soundManager.handleGameEvent(event);
         switch (event.type) {
@@ -314,6 +323,9 @@ export class GameManager {
     }
 
     public startAIGame(aiCount = 1, scenario?: Scenario) {
+        this.reset();
+        ServerGame.setSeed(new Date().getTime());
+
         // The player always goes first vs the A.I
         this.playerNumber = 0;
         this.opponentNumber = 1;
@@ -330,12 +342,14 @@ export class GameManager {
             (type, params) => this.sendGameAction(type, params, true),
             this.overlay.getAnimator());
 
-        const aiGames = [this.game2, this.game1];
-        for (let i = 0; i < aiCount; i++) {
-            let playerNumber = this.game1.getOtherPlayerNumber(i);
-            this.ais.push(new DefaultAI(playerNumber, aiGames[i], aiDeck, this.overlay.getAnimator()));
+        if (aiCount === 1) {
+            this.ais.push(new DefaultAI(this.opponentNumber, this.game2, aiDeck));
+        } else {
+            const aiGames = [this.game1, this.game2];
+            for (let i = 0; i < aiCount; i++) {
+                this.ais.push(new DefaultAI(i, aiGames[i], aiDeck));
+            }
         }
-        this.setAISpeed(this.speed.speeds.aiTick);
 
         // scenario = tutorialCampaign[0];
         if (scenario) {
@@ -345,6 +359,7 @@ export class GameManager {
         this.zone.run(() => {
             this.opponentUsername = aiDeck.name;
             this.sendEventsToLocalPlayers(this.gameModel.startGame());
+            this.startAiWithSpeed(this.speed.speeds.aiTick);
         });
     }
 
