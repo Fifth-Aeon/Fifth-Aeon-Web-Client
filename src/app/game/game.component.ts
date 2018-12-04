@@ -85,7 +85,7 @@ export class GameComponent implements OnInit, OnDestroy {
     private hotkeyService: HotkeysService,
     public overlay: OverlayService,
     private tips: TipService,
-    private gameManager: GameManager
+    public gameManager: GameManager
   ) {
     this.game = gameManager.getGame();
     this.overlay.setGame(this.game);
