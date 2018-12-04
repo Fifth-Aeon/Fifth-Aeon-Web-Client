@@ -34,6 +34,7 @@ export class GameManager {
     private gameModel: ServerGame;
 
     private ais: Array<AI> = [];
+    private aisByPlayerNumber = [];
     private aiTick: any;
 
     private log: Log;
@@ -139,7 +140,8 @@ export class GameManager {
         if (!this.gameModel.canTakeAction())
             return;
         if (event.type === SyncEventType.TurnStart || event.type === SyncEventType.PhaseChange || event.type === SyncEventType.ChoiceMade) {
-            this.ais[this.gameModel.getActivePlayer()].onGainPriority();
+            let aiToSend = this.aisByPlayerNumber[this.gameModel.getActivePlayer()];
+            if (aiToSend) aiToSend.onGainPriority();
         }
     }
 
@@ -338,16 +340,23 @@ export class GameManager {
             (type, params) => this.sendGameAction(type, params, false),
             this.overlay.getAnimator(),
             this.log);
+        this.game1.setOwningPlayer(this.playerNumber);
         this.game2 = new ClientGame('ai',
             (type, params) => this.sendGameAction(type, params, true),
             this.overlay.getAnimator());
+        this.game2.setOwningPlayer(this.opponentNumber);
 
         if (aiCount === 1) {
-            this.ais.push(new DefaultAI(this.opponentNumber, this.game2, aiDeck));
+            let newAI = new DefaultAI(this.opponentNumber, this.game2, aiDeck);
+
+            this.ais.push(newAI);
+            this.aisByPlayerNumber = [undefined, newAI];
         } else {
             const aiGames = [this.game1, this.game2];
             for (let i = 0; i < aiCount; i++) {
-                this.ais.push(new DefaultAI(i, aiGames[i], aiDeck));
+                let newAI = new DefaultAI(i, aiGames[i], aiDeck);
+                this.ais.push(newAI);
+                this.aisByPlayerNumber.push(newAI);
             }
         }
 
