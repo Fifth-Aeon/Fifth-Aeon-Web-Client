@@ -2,6 +2,8 @@ import { Queue } from 'typescript-collections';
 import { Howler, Howl } from 'howler';
 import { Injectable } from '@angular/core';
 import { SyncEventType, GameSyncEvent } from './game_model/game';
+import { Resource, ResourceType } from './game_model/resource';
+import { sample } from 'lodash';
 
 
 export enum VolumeType { Master, Music, Effects, Narrator }
@@ -18,27 +20,35 @@ export class SoundManager {
     private global = Howler;
     private playQueue: Queue<Howl> = new Queue<Howl>();
     private library: Map<string, Howl> = new Map<string, Howl>();
+    private musicLibrary: Map<string, Howl> = new Map<string, Howl>();
+
     private isPlaying = false;
     private delay = 100;
     private music: Howl;
     public muted = false;
     private onDone: Array<() => void> = [];
     private voice: SpeechSynthesisVoice;
+    private factionContext: Set<ResourceType> = new Set();
 
     //  Master, Music, Effects, Narrator
     private volume = [0.5, 0.5, 0.5, 0.5];
-    private baseVolume = [2, 0.15, 2, 2];
+    private baseVolume = [2, 0.5, 2, 2];
 
     constructor() {
         this.addSound('gong', new Howl({ src: ['assets/mp3/gong.mp3'] }), 1.5);
         this.addSound('magic', new Howl({ src: ['assets/mp3/warp.mp3'] }));
         this.addSound('attack', new Howl({ src: ['assets/mp3/attack.mp3'] }));
         this.addSound('bell', new Howl({ src: ['assets/mp3/bell.mp3'] }));
-        this.setMusic(new Howl({
-            src: ['assets/mp3/crunk-knight.mp3'],
-        }));
         this.addSound('fanfare', new Howl({ src: ['assets/mp3/fanfare.mp3'] }));
         this.addSound('defeat', new Howl({ src: ['assets/mp3/sad-part.mp3'] }));
+
+        this.addMusic('bg-generic', new Howl({ src: ['assets/mp3/the-pyre.mp3'] }));
+        this.addMusic('bg-growth', new Howl({ src: ['assets/mp3/kalimba_draft_1.mp3'] }));
+        this.addMusic('bg-renewal', new Howl({ src: ['assets/mp3/healing_draft_1.mp3'] }));
+        this.addMusic('bg-decay', new Howl({ src: ['assets/mp3/decay_sketch_2_draft_1.mp3'] }));
+        this.addMusic('bg-synthesis', new Howl({ src: ['assets/mp3/synthesis_idea.mp3'] }));
+
+        this.setMusic(this.musicLibrary.get('bg-generic'));
 
         this.loadSettings();
 
@@ -52,7 +62,19 @@ export class SoundManager {
         };
     }
 
-    public handleGameEvent( event: GameSyncEvent) {
+    private addMusic(name: string, howl: Howl) {
+        howl.once('end', () => this.onMusicEnd());
+        this.musicLibrary.set(name, howl);
+    }
+
+    public setFactionContext(context: Set<ResourceType>) {
+        if (context) {
+            this.factionContext = context;
+            this.endMusic();
+        }
+    }
+
+    public handleGameEvent(event: GameSyncEvent) {
         switch (event.type) {
             case SyncEventType.TurnStart:
                 if (event.params.turnNum !== 1)
@@ -138,12 +160,30 @@ export class SoundManager {
     }
 
     public setMusic(sound: Howl) {
+        if (this.music && this.music.playing())
+            this.music.stop();
         this.music = sound;
-        this.music.once('load', () => {
-            this.music.loop(true);
-            this.music.play();
-            this.music.volume(this.getAdjustedVolume(VolumeType.Music));
-        });
+        this.music.play();
+        this.music.volume(this.getAdjustedVolume(VolumeType.Music));
+    }
+
+    private endMusic() {
+        const endMusicTransitionTime = 1000;
+        this.music.fade(this.music.volume(), 0, endMusicTransitionTime);
+        setTimeout(() => {
+            this.music.stop();
+            this.onMusicEnd();
+        }, endMusicTransitionTime);
+    }
+
+    private onMusicEnd() {
+
+        let all = Array.from(this.factionContext.keys()).map(factionName => `bg-${factionName.toLowerCase()}`);
+        if (all.length === 0)
+            all.push('bg-generic');
+        let trackName = sample(all);
+        console.log(all, trackName);
+        this.setMusic(this.musicLibrary.get(trackName));
     }
 
     public addSound(name: string, sound: Howl, multiplier: number = 1) {

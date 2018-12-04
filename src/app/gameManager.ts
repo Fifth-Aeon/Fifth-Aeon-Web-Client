@@ -292,6 +292,7 @@ export class GameManager {
     private endGame(winner: number, quit: boolean) {
         const playerWon = winner === this.playerNumber;
         this.soundManager.playImportantSound(playerWon ? 'fanfare' : 'defeat');
+        this.soundManager.setFactionContext(new Set());
         this.stopAI();
         this.overlay.getAnimator().awaitAnimationEnd().then(() => {
             this.onGameEnd(playerWon, quit);
@@ -306,6 +307,7 @@ export class GameManager {
 
     /** Starts a multiplayer game */
     public startGame(playerNumber: number, opponentName: string) {
+        this.soundManager.setFactionContext(this.deck.getColors());
         this.ais = [];
         this.gameModel = null;
         this.playerNumber = playerNumber;
@@ -325,6 +327,7 @@ export class GameManager {
     }
 
     public startAIGame(aiCount = 1, scenario?: Scenario) {
+        this.soundManager.setFactionContext(this.deck.getColors());
         this.reset();
         ServerGame.setSeed(new Date().getTime());
 
