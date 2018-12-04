@@ -64,7 +64,7 @@ export class WebClient {
     }
 
     private startGame(msg: Message) {
-        this.gameManager.startGame(msg.data.opponent, msg.data.opponent);
+        this.gameManager.startGame(msg.data.playerNumber, msg.data.opponent);
         this.changeState(ClientState.InGame);
         this.router.navigate(['/game']);
     }

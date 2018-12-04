@@ -220,7 +220,8 @@ export class GameManager {
             this.tips.handleGameEvent(this.game1, this.playerNumber, event);
         }
 
-        this.checkPriorityChange(event);
+        if (this.ais.length > 0)
+            this.checkPriorityChange(event);
 
         this.soundManager.handleGameEvent(event);
         switch (event.type) {
@@ -319,6 +320,8 @@ export class GameManager {
             (type, params) => this.sendGameAction(type, params, false),
             this.overlay.getAnimator(),
             this.log);
+        this.game1.setOwningPlayer(this.playerNumber);
+
 
         this.soundManager.playImportantSound('gong');
         this.zone.run(() => {

@@ -28,17 +28,19 @@
         <span> Open Packs </span>
       </button>
 
+      <!--
       <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(1)">
         <mat-icon>android</mat-icon>
         <span> A.I vs A.I </span>
       </button>
+      --> 
       
     </mat-card>
 
     <mat-card class="lobby-card">
       <mat-card-title>Multiplayer</mat-card-title>
       <ng-template [ngIf]="showMultiplayer()">
-        <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(1)">
+        <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(2)">
           <mat-icon>public</mat-icon> Public Game</button>
 
           <!--
