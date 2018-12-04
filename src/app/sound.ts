@@ -2,7 +2,7 @@ import { Queue } from 'typescript-collections';
 import { Howler, Howl } from 'howler';
 import { Injectable } from '@angular/core';
 import { SyncEventType, GameSyncEvent } from './game_model/game';
-import { Resource, ResourceType } from './game_model/resource';
+import { ResourceType } from './game_model/resource';
 import { sample } from 'lodash';
 
 
@@ -33,6 +33,7 @@ export class SoundManager {
     //  Master, Music, Effects, Narrator
     private volume = [0.5, 0.5, 0.5, 0.5];
     private baseVolume = [2, 0.5, 2, 2];
+    private musicTransitionTime = 1500;
 
     constructor() {
         this.addSound('gong', new Howl({ src: ['assets/mp3/gong.mp3'] }), 1.5);
@@ -64,6 +65,7 @@ export class SoundManager {
 
     private addMusic(name: string, howl: Howl) {
         howl.once('end', () => this.onMusicEnd());
+        howl.loop(true);
         this.musicLibrary.set(name, howl);
     }
 
@@ -160,6 +162,8 @@ export class SoundManager {
     }
 
     public setMusic(sound: Howl) {
+        if (sound === this.music)
+            return;
         if (this.music && this.music.playing())
             this.music.stop();
         this.music = sound;
@@ -168,21 +172,17 @@ export class SoundManager {
     }
 
     private endMusic() {
-        const endMusicTransitionTime = 1000;
-        this.music.fade(this.music.volume(), 0, endMusicTransitionTime);
+        this.music.fade(this.music.volume(), 0, this.musicTransitionTime);
         setTimeout(() => {
-            this.music.stop();
             this.onMusicEnd();
-        }, endMusicTransitionTime);
+        }, this.musicTransitionTime);
     }
 
     private onMusicEnd() {
-
         let all = Array.from(this.factionContext.keys()).map(factionName => `bg-${factionName.toLowerCase()}`);
         if (all.length === 0)
             all.push('bg-generic');
         let trackName = sample(all);
-        console.log(all, trackName);
         this.setMusic(this.musicLibrary.get(trackName));
     }
 
@@ -196,15 +196,18 @@ export class SoundManager {
         sound.play();
     }
 
-    public playImportantSound(name: string) {
+    public playImportantSound(name: string): Promise<void> {
         let sound = this.library.get(name);
         sound.volume(this.getAdjustedVolume(VolumeType.Effects));
-        let time = 8000;
-        sound.once('end', () => {
-            this.music.fade(0, this.getAdjustedVolume(VolumeType.Music), time);
-        });
         this.music.volume(0);
         sound.play();
+
+        return new Promise(resolve => {
+            sound.once('end', () => {
+                this.music.fade(this.music.volume(), this.getAdjustedVolume(VolumeType.Music), this.musicTransitionTime);
+                resolve();
+            });
+        });
     }
 
     public queueSound(name: string) {

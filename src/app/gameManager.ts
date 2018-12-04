@@ -292,12 +292,14 @@ export class GameManager {
     /** Invoked when the game ends (because a player won) */
     private endGame(winner: number, quit: boolean) {
         const playerWon = winner === this.playerNumber;
-        this.soundManager.playImportantSound(playerWon ? 'fanfare' : 'defeat');
-        this.soundManager.setFactionContext(new Set());
         this.stopAI();
         this.overlay.getAnimator().awaitAnimationEnd().then(() => {
             this.onGameEnd(playerWon, quit);
         });
+
+        this.soundManager.playImportantSound(playerWon ? 'fanfare' : 'defeat').then(() =>
+            this.soundManager.setFactionContext(new Set()));
+
     }
 
     /** Invoked when we quit the game (before its over) */
