@@ -13,7 +13,8 @@ packager({
     dir: 'dist',
     out: 'standalone',
     arch: 'x64',
-    platform: 'all'
+    platform: 'win32',
+    overwrite: true
 }).then(appPaths => {
     console.log('Done, created:', appPaths.join(', '));
 });
