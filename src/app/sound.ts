@@ -40,8 +40,8 @@ export class SoundManager {
         this.addSound('magic', new Howl({ src: ['assets/mp3/warp.mp3'] }));
         this.addSound('attack', new Howl({ src: ['assets/mp3/attack.mp3'] }));
         this.addSound('bell', new Howl({ src: ['assets/mp3/bell.mp3'] }));
-        this.addSound('fanfare', new Howl({ src: ['assets/mp3/fanfare.mp3'] }));
-        this.addSound('defeat', new Howl({ src: ['assets/mp3/sad-part.mp3'] }));
+        this.addSound('fanfare', new Howl({ src: ['assets/mp3/FA_-_victory_cue_draft.mp3'] }));
+        this.addSound('defeat', new Howl({ src: ['assets/mp3/FA_-_defeat_cue_long_draft.mp3'] }));
 
         this.addMusic('bg-generic', new Howl({ src: ['assets/mp3/the-pyre.mp3'] }));
         this.addMusic('bg-growth', new Howl({ src: ['assets/mp3/kalimba_draft_1.mp3'] }));
