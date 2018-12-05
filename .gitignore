@@ -1,6 +1,6 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 src/assets/png
-src/assets/mp3
+src/assets/mp3/unused
 *.log
 .firebase
 
