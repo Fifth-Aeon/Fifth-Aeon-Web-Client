@@ -2,6 +2,7 @@
 src/assets/png
 src/assets/mp3
 *.log
+.firebase
 
 # compiled output
 /dist
