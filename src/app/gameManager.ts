@@ -297,8 +297,10 @@ export class GameManager {
             this.onGameEnd(playerWon, quit);
         });
 
-        this.soundManager.playImportantSound(playerWon ? 'fanfare' : 'defeat').then(() =>
-            this.soundManager.setFactionContext(new Set()));
+        this.soundManager.playImportantSound(playerWon ? 'fanfare' : 'defeat').then(() => {
+            if (!this.gameModel)
+                this.soundManager.setFactionContext(new Set());
+        });
 
     }
 
