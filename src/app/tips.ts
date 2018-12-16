@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { SoundManager } from './sound';
 import { MatSnackBar } from '@angular/material';
 
-import { Game, GameSyncEvent, SyncEventType, GamePhase } from './game_model/game';
+import { Game, GamePhase } from './game_model/game';
 import { Card, CardType } from './game_model/card';
 import { Player } from './game_model/player';
 import { Unit } from './game_model/unit';
 import { Item } from './game_model/item';
 import { Enchantment } from './game_model/enchantment';
 import { Unblockable, Flying, Aquatic } from './game_model/cards/mechanics/skills';
+import { SyncEventType, GameSyncEvent } from './game_model/events/syncEvent';
 
 
 
@@ -21,7 +22,8 @@ export enum TipType {
     HasPlayable, OptionalTarget, NeedsTarget,
     SoftHandLimit, HardHandLimit,
     Hotkeys,
-    TTLength
+    Fatigue,
+    TTLength,
 }
 
 const tipText = new Map<TipType, string>();
@@ -78,6 +80,9 @@ tipText.set(TipType.OptionalTarget,
  Alternatively, you can click the card again to play it without a target.`);
 tipText.set(TipType.NeedsTarget,
     `This card requires a target. Valid targets have a blue glow.`);
+    tipText.set(TipType.Fatigue,
+        `If you would draw a card, but there are none left in your deck, you will take damage instead.
+        The amount of damage will double each draw.`);
 
 const tipLocalStore = 'tip-store';
 
@@ -99,24 +104,27 @@ export class TipService {
     public handleGameEvent(game: Game, localPlayerNumber: number, event: GameSyncEvent) {
         switch (event.type) {
             case SyncEventType.TurnStart:
-                if (event.params.turn !== localPlayerNumber)
+                if (event.turn !== localPlayerNumber)
                     return;
-                if (event.params.turnNum > 10)
+                if (event.turnNum > 10)
                     this.playTip(TipType.Hotkeys);
                 this.turnStartTrigger(game, localPlayerNumber);
                 break;
             case SyncEventType.PhaseChange:
-                if (event.params.phase === GamePhase.Block)
+                if (event.phase === GamePhase.Block)
                     this.blockPhaseTrigger(game, localPlayerNumber);
                 break;
             case SyncEventType.Draw:
-                this.drawCardTrigger(game, localPlayerNumber, event.params.discarded);
+                if (event.fatigue === true)
+                    this.playTip(TipType.Fatigue);
+                else
+                    this.drawCardTrigger(game, localPlayerNumber, event.discarded);
                 break;
             case SyncEventType.PlayResource:
                 this.playResourceTrigger(game, localPlayerNumber);
                 break;
             case SyncEventType.ChoiceMade:
-                if (event.params.player === localPlayerNumber)
+                if (event.player === localPlayerNumber)
                     this.afterMulligan(game, localPlayerNumber);
                 break;
         }

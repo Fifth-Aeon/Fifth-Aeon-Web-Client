@@ -1,9 +1,9 @@
 import { Queue } from 'typescript-collections';
 import { Howler, Howl } from 'howler';
 import { Injectable } from '@angular/core';
-import { SyncEventType, GameSyncEvent } from './game_model/game';
 import { ResourceType } from './game_model/resource';
 import { sample } from 'lodash';
+import { SyncEventSystem, SyncEventType, GameSyncEvent } from './game_model/events/syncEvent';
 
 
 export enum VolumeType { Master, Music, Effects, Narrator }
@@ -79,7 +79,7 @@ export class SoundManager {
     public handleGameEvent(event: GameSyncEvent) {
         switch (event.type) {
             case SyncEventType.TurnStart:
-                if (event.params.turnNum !== 1)
+                if (event.turnNum !== 1)
                     this.playSound('bell');
                 break;
             case SyncEventType.AttackToggled:

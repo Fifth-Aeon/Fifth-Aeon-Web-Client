@@ -9,7 +9,7 @@ import { DefaultAI } from './game_model/ai/defaultAi';
 import { Card } from './game_model/card';
 import { ClientGame } from './game_model/clientGame';
 import { DeckList } from './game_model/deckList';
-import { GameAction, GameActionType, GamePhase, GameSyncEvent, SyncEventType, Game } from './game_model/game';
+import { GamePhase, Game } from './game_model/game';
 import { standardFormat } from './game_model/gameFormat';
 import { Log } from './game_model/log';
 import { Scenario } from './game_model/scenario';
@@ -20,6 +20,8 @@ import { MessageType, Messenger } from './messenger';
 import { MessengerService } from './messenger.service';
 import { SoundManager } from './sound';
 import { TipService } from './tips';
+import { GameSyncEvent, SyncEventType } from './game_model/events/syncEvent';
+import { GameActionType, GameAction } from './game_model/events/gameAction';
 
 @Injectable()
 export class GameManager {
@@ -35,7 +37,6 @@ export class GameManager {
 
     private ais: Array<AI> = [];
     private aisByPlayerNumber = [];
-    private aiTick: any;
 
     private log: Log;
     private onGameEnd: (won: boolean, quit: boolean) => any;
@@ -147,23 +148,16 @@ export class GameManager {
 
 
 
-    private sendGameAction(type: GameActionType, params: any, isAi: boolean = false) {
+    private sendGameAction(action: GameAction, isAi: boolean = false) {
         if (this.ais.length === 0) {
-            this.messenger.sendMessageToServer(MessageType.GameAction, {
-                type: type,
-                params: params
-            } as GameAction);
+            this.messenger.sendMessageToServer(MessageType.GameAction, action);
             return;
         }
 
-        let res = this.gameModel.handleAction({
-            type: type,
-            player: isAi ? 1 : 0,
-            params: params
-        });
+        let res = this.gameModel.handleAction(action);
         if (res === null) {
             console.error('An action sent to game model by', isAi ?
-                'the A.I' : 'the player', 'failed.', 'It was', GameActionType[type], 'with', params);
+                'the A.I' : 'the player', 'failed.', 'It was', GameActionType[action.type], 'with', action);
             return;
         }
         this.sendEventsToLocalPlayers(res);
@@ -226,28 +220,28 @@ export class GameManager {
         this.soundManager.handleGameEvent(event);
         switch (event.type) {
             case SyncEventType.TurnStart:
-                if (event.params.turn !== this.playerNumber)
+                if (event.turn !== this.playerNumber)
                     return;
                 break;
             case SyncEventType.EnchantmentModified:
                 let avatar = this.game1.getCurrentPlayer().getPlayerNumber() === this.playerNumber ?
                     'player' : 'enemy';
-                this.overlay.addInteractionArrow(avatar, event.params.enchantmentId);
+                this.overlay.addInteractionArrow(avatar, event.enchantmentId);
                 break;
             case SyncEventType.Block:
-                this.addBlockOverlay(event.params.blockerId, event.params.blockedId);
+                this.addBlockOverlay(event.blockerId, event.blockedId);
                 break;
             case SyncEventType.PhaseChange:
-                if (event.params.phase === GamePhase.DamageDistribution && this.game1.isActivePlayer(this.playerNumber))
+                if (event.phase === GamePhase.DamageDistribution && this.game1.isActivePlayer(this.playerNumber))
                     this.createDamageSelectors();
-                if (event.params.phase === GamePhase.Play2)
+                if (event.phase === GamePhase.Play2)
                     this.overlay.clearBlockers();
                 break;
             case SyncEventType.PlayCard:
-                this.overlay.onPlay(this.game1.getCardById(event.params.played.id), this.game1, this.playerNumber);
+                this.overlay.onPlay(this.game1.getCardById(event.played.id), this.game1, this.playerNumber);
                 break;
             case SyncEventType.Ended:
-                this.endGame(event.params.winner, event.params.quit);
+                this.endGame(event.winner, event.quit);
                 break;
         }
     }
@@ -306,7 +300,7 @@ export class GameManager {
 
     /** Invoked when we quit the game (before its over) */
     public exitGame() {
-        this.sendGameAction(GameActionType.Quit, {});
+        this.sendGameAction({ type: GameActionType.Quit, player: this.playerNumber });
     }
 
 
@@ -321,7 +315,7 @@ export class GameManager {
         this.log = new Log(this.playerNumber);
 
         this.game1 = new ClientGame('player',
-            (type, params) => this.sendGameAction(type, params, false),
+            (type, action) => this.sendGameAction(action, false),
             this.overlay.getAnimator(),
             this.log);
         this.game1.setOwningPlayer(this.playerNumber);
@@ -347,12 +341,12 @@ export class GameManager {
         // Initialize games
         this.gameModel = new ServerGame('server', standardFormat, [this.deck, aiDeck]);
         this.game1 = new ClientGame('player',
-            (type, params) => this.sendGameAction(type, params, false),
+            (type, action) => this.sendGameAction(action, false),
             this.overlay.getAnimator(),
             this.log);
         this.game1.setOwningPlayer(this.playerNumber);
         this.game2 = new ClientGame('ai',
-            (type, params) => this.sendGameAction(type, params, true),
+            (type, action) => this.sendGameAction(action, true),
             this.overlay.getAnimator());
         this.game2.setOwningPlayer(this.opponentNumber);
 
