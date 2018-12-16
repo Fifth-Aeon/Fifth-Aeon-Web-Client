@@ -59,10 +59,11 @@ const unitsDescs = new Map<string, string>();
 cardList.getCards()
   .filter(card => card.isUnit())
   .forEach(card => {
+    console.log(this);
     let unit = card as Unit;
     let base = `${unit.getDamage()}/${unit.getLife()} ${UnitType[unit.getUnitType()]}`;
-    if (unit.getText(this.game).length > 0)
-      base += ` with "${unit.getText(this.game)}"`;
+    if (unit.getText(null).length > 0)
+      base += ` with "${unit.getText(null)}"`;
     keywordsDefs.set(unit.getName(), base);
   });
 

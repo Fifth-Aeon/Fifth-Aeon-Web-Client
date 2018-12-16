@@ -81,7 +81,7 @@ import { GameManager } from './gameManager';
     ClipboardModule,
     HotkeyModule.forRoot(),
     MaterialModule,
-    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics]),
+    Angulartics2Module.forRoot(),
     EditorModule,
     AppRoutingModule
 
