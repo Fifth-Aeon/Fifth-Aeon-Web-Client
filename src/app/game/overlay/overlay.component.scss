@@ -8,6 +8,18 @@
   pointer-events: none;
 }
 
+.overlay.top-layer {
+  z-index: 12000;
+}
+
+.damage-text {
+  opacity: 0;
+  font-size: 3.5em;
+  fill: red;
+  stroke: black;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
 .overlayed-card {
   position: absolute;
   z-index: 1000;

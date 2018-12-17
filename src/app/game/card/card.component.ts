@@ -54,12 +54,9 @@ keywordsDefs.set('Immortal', 'Whenever this unit dies, play it from the crypt at
 
 // Tokens
 keywordsDefs.set('Statue', 'A 0/1 structure that cannot attack.');
-
-const unitsDescs = new Map<string, string>();
 cardList.getCards()
   .filter(card => card.isUnit())
   .forEach(card => {
-    console.log(this);
     let unit = card as Unit;
     let base = `${unit.getDamage()}/${unit.getLife()} ${UnitType[unit.getUnitType()]}`;
     if (unit.getText(null).length > 0)

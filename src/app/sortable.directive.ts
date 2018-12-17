@@ -1,7 +1,5 @@
 import { Directive, ElementRef, EventEmitter, HostListener, Output, AfterContentInit } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-
 @Directive({
   selector: '[ccgSortable]'
 })

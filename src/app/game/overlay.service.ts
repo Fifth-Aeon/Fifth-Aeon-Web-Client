@@ -1,39 +1,41 @@
-import { Injectable, ElementRef } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { remove } from 'lodash';
-
-import { Unit } from '../game_model/unit';
-import { Card, CardType } from '../game_model/card';
-import { Item } from '../game_model/item';
-import { Game } from '../game_model/game';
-import { ClientGame } from '../game_model/clientGame';
 import { Animator, BattleAnimationEvent } from '../game_model/animator';
-
+import { Card, CardType } from '../game_model/card';
+import { ClientGame } from '../game_model/clientGame';
+import { Game } from '../game_model/game';
+import { Item } from '../game_model/item';
+import { Unit } from '../game_model/unit';
 
 interface Arrow { x1: number; y1: number; x2: number; y2: number; }
+interface TextElement { text: string; x: number; y: number; }
 
 @Injectable()
 export class OverlayService {
   public static arrowTimer = 2000;
   public static cardTimer = 3500;
 
-  private uiElements: Map<string, string> = new Map();
-  private blocks: Array<[string, string]> = [];
   public displayCards: Card[] = [];
   public attacker: Unit = null;
   public defenders: Unit[] = [];
   public targets: Array<Arrow> = [];
+  public textElements: TextElement[] = [];
   public game: ClientGame;
-  private animator: Animator = new Animator();
   public darkened = false;
+
+  private uiElements: Map<string, string> = new Map();
+  private blocks: Array<[string, string]> = [];
+  private animator: Animator = new Animator();
 
   constructor() {
     this.animator.addBattleAnimationHandler(event => this.animateBattle(event));
+    this.animator.addDamageIndicatorEventHandler(event => this.createDamageIndicator(event.targetCard, event.amount));
   }
 
   private async animateBattle(event: BattleAnimationEvent) {
     this.defenders = event.defenders;
     if (event.defenders.length === 0) {
-      let defendingPlayer = this.game.getPlayer(this.game.getOtherPlayerNumber(this.game.getActivePlayer()));
+      let defendingPlayer = this.game.getPlayer(this.game.getOtherPlayerNumber(this.game.getCurrentPlayer().getPlayerNumber()));
       this.defenders = [defendingPlayer];
     }
     this.darkened = true;
@@ -48,6 +50,17 @@ export class OverlayService {
 
   public getAnimator() {
     return this.animator;
+  }
+
+  private createDamageIndicator(cardId: string, amount: number) {
+    let cardBounds = this.getBoundingRect(cardId);
+    let textElement: TextElement = {
+      text: amount.toString(),
+      x: this.getRndPointBetween(cardBounds.right, cardBounds.left, pageXOffset),
+      y: this.getRndPointBetween(cardBounds.top, cardBounds.bottom, pageYOffset)
+    };
+    this.textElements.push(textElement);
+    setTimeout(() => this.textElements.shift(), 3100);
   }
 
   public setGame(game: ClientGame) {
@@ -141,8 +154,13 @@ export class OverlayService {
     return this.blocks.map((block) => this.toArrow(block)).filter(arrow => arrow !== null);
   }
 
+  public getRndPointBetween(a: number, b: number, offset: number): number {
+    const center = this.getCenter(a, b, offset);
+    const centerOffset = (b - a) * (0.5 - Math.random()) * 0.3;
+    return center + centerOffset;
+  }
 
-  public getCenter(a, b, offset): number {
+  public getCenter(a: number, b: number, offset: number): number {
     return (a + b + offset * 2) / 2;
   }
 

@@ -1,11 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { OverlayService } from '../overlay.service';
-import { Animator, BattleAnimationEvent } from '../../game_model/animator';
+import { trigger, state, transition, animate, style } from '@angular/animations';
 
 @Component({
   selector: 'ccg-overlay',
   templateUrl: './overlay.component.html',
-  styleUrls: ['./overlay.component.scss']
+  styleUrls: ['./overlay.component.scss'],
+  animations: [
+    trigger('txtState', [
+      state('void', style({ opacity: 1 })),
+      transition(':enter', [
+        animate('3.0s ease', style({
+          opacity: 0,
+          transform: 'translateY(-60px)'
+        }))
+      ])
+    ])
+  ]
 })
 export class OverlayComponent implements OnInit {
 
