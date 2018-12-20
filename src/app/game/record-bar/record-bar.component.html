@@ -1,8 +1,11 @@
 <div class="record-bar">
-  <div class="record" 
-    *ngFor="let entry of log.getItems()" 
-    [style.border-color]="entry.color"
-    matTooltipPosition="right" [matTooltip]="entry.desc">
-    <img [src]="entry.image"/>
-  </div>
+    <div
+        class="record"
+        *ngFor="let entry of log.getItems()"
+        [style.border-color]="entry.color"
+        matTooltipPosition="right"
+        [matTooltip]="entry.desc"
+    >
+        <img [src]="entry.image" />
+    </div>
 </div>

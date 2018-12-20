@@ -1,10 +1,24 @@
 <mat-card id="card-selection">
-  <mat-card-content id="editor-cards">
-    <ccg-card noTranslate="true" scale="1.9" *ngFor="let card of editorData.getCards()" [routerLink]="getEditLink(card)" [card]="cardList.buildInstance(card)"></ccg-card>
-  </mat-card-content>
-  <p class="big-instruction" *ngIf="editorData.getCards().length === 0">
-    Click the button in the bottom right to get started.</p>
+    <mat-card-content id="editor-cards">
+        <ccg-card
+            noTranslate="true"
+            scale="1.9"
+            *ngFor="let card of editorData.getCards()"
+            [routerLink]="getEditLink(card)"
+            [card]="cardList.buildInstance(card)"
+        ></ccg-card>
+    </mat-card-content>
+    <p class="big-instruction" *ngIf="editorData.getCards().length === 0">
+        Click the button in the bottom right to get started.
+    </p>
 </mat-card>
-<button mat-fab class="new-button" (click)="newCard()" color="primary" matTooltipPosition="above" matTooltip="New Card">
-  <mat-icon>add</mat-icon>
+<button
+    mat-fab
+    class="new-button"
+    (click)="newCard()"
+    color="primary"
+    matTooltipPosition="above"
+    matTooltip="New Card"
+>
+    <mat-icon>add</mat-icon>
 </button>

@@ -1,16 +1,3 @@
-<!--
-<mat-toolbar color="primary">
-  <span>CCG</span>
-  <span class="toolbar-spacer"></span>
-
-  <mat-icon class="toolbar-icon" matTooltip="Turn volume on" (click)="toggleMute()" *ngIf="soundManager.isMuted()">volume_mute</mat-icon>
-  <mat-icon class="toolbar-icon" matTooltip="Turn volume off" (click)="toggleMute()" *ngIf="!soundManager.isMuted()">volume_up</mat-icon>
-
-  <mat-icon class="toolbar-icon" matTooltip="Connected" *ngIf="client.isConnected()">cloud</mat-icon>
-  <mat-icon class="toolbar-icon" matTooltip="Disconnected" *ngIf="!client.isConnected()">cloud_off</mat-icon>
-
-</mat-toolbar>
--->
 <hotkeys-cheatsheet></hotkeys-cheatsheet>
 <div class="content">
   <router-outlet></router-outlet>

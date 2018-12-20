@@ -1,47 +1,90 @@
 <div class="left">
-  <mat-card id="card-selection">
-    <mat-card-content id="editor-cards"  #content (window:resize)="onResize(content.getBoundingClientRect())">
-      <ccg-card scale="1.75" *ngFor="let card of cards" [darkened]="!canAddCard(card)" noTranslate="true"
-      [card]="card" (click)="add(card)"></ccg-card>
-    </mat-card-content>
-  </mat-card>
+    <mat-card id="card-selection">
+        <mat-card-content
+            id="editor-cards"
+            #content
+            (window:resize)="onResize(content.getBoundingClientRect())"
+        >
+            <ccg-card
+                scale="1.75"
+                *ngFor="let card of cards"
+                [darkened]="!canAddCard(card)"
+                noTranslate="true"
+                [card]="card"
+                (click)="add(card)"
+            ></ccg-card>
+        </mat-card-content>
+    </mat-card>
 
-  <mat-card id="card-selection-controls">
-    <mat-card-content>
-      <!--
+    <mat-card id="card-selection-controls">
+        <mat-card-content>
+            <!--
         <button mat-mini-fab matTooltipPosition="above" matTooltip="Previous Page." (click)="prev()" [disabled]="!canPrev()"><mat-icon>arrow_back</mat-icon></button>
         <button mat-mini-fab matTooltipPosition="above" matTooltip="Next Page." (click)="next()" [disabled]="!canNext()"><mat-icon>arrow_forward</mat-icon></button>
         -->
-      <button mat-fab matTooltipPosition="above" matTooltip="Done editing deck." color="primary" (click)="done()" [disabled]="!deck.isValid()">
-        <mat-icon>check</mat-icon>
-      </button>
-      <button mat-fab matTooltipPosition="above" matTooltip="Fill deck with random cards." color="accent" (click)="randomize()">
-        <mat-icon>shuffle</mat-icon>
-      </button>
-      <button mat-fab matTooltipPosition="above" matTooltip="Clear all cards from deck." color="warn" (click)="deck.clear()">
-        <mat-icon>delete</mat-icon>
-      </button>
-      <button  mat-icon-button  [matMenuTriggerFor]="menu">
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="export()" ngxClipboard [cbContent]="deck.toJson(4)">Export Deck</button>
-        <button mat-menu-item (click)="import()">Import Deck</button>
-      </mat-menu>
-
-    </mat-card-content>
-  </mat-card>
+            <button
+                mat-fab
+                matTooltipPosition="above"
+                matTooltip="Done editing deck."
+                color="primary"
+                (click)="done()"
+                [disabled]="!deck.isValid()"
+            >
+                <mat-icon>check</mat-icon>
+            </button>
+            <button
+                mat-fab
+                matTooltipPosition="above"
+                matTooltip="Fill deck with random cards."
+                color="accent"
+                (click)="randomize()"
+            >
+                <mat-icon>shuffle</mat-icon>
+            </button>
+            <button
+                mat-fab
+                matTooltipPosition="above"
+                matTooltip="Clear all cards from deck."
+                color="warn"
+                (click)="deck.clear()"
+            >
+                <mat-icon>delete</mat-icon>
+            </button>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button
+                    mat-menu-item
+                    (click)="export()"
+                    ngxClipboard
+                    [cbContent]="deck.toJson(4)"
+                >
+                    Export Deck
+                </button>
+                <button mat-menu-item (click)="import()">Import Deck</button>
+            </mat-menu>
+        </mat-card-content>
+    </mat-card>
 </div>
 
 <mat-card id="deck-list">
-  <mat-card-header>
-    <mat-card-title (click)="openMetadata()">
-      <h1>{{deck.name}} - {{deck.size()}} / {{format.minDeckSize}}</h1>
-    </mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <mat-list>
-      <mat-list-item *ngFor="let record of deck.getRecordList()" (click)="deck.removeCard(record.card)"> {{record.card.getCost().asCost()}} - {{record.card.getName()}} - ({{record.number}}) </mat-list-item>
-    </mat-list>
-  </mat-card-content>
+    <mat-card-header>
+        <mat-card-title (click)="openMetadata()">
+            <h1>
+                {{ deck.name }} - {{ deck.size() }} / {{ format.minDeckSize }}
+            </h1>
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-list>
+            <mat-list-item
+                *ngFor="let record of deck.getRecordList()"
+                (click)="deck.removeCard(record.card)"
+            >
+                {{ record.card.getCost().asCost() }} -
+                {{ record.card.getName() }} - ({{ record.number }})
+            </mat-list-item>
+        </mat-list>
+    </mat-card-content>
 </mat-card>

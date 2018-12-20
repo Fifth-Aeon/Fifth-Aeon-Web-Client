@@ -1,4 +1,3 @@
-
 import { Injectable, NgZone } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material';
 import { Router } from '@angular/router';
@@ -16,11 +15,20 @@ import { TipService, TipType } from './tips';
 import { AuthenticationService, UserData } from './user/authentication.service';
 
 export enum ClientState {
-    UnAuth, InLobby, Waiting, PrivateLobby, PrivateLobbyFail, InQueue, InGame, Any
+    UnAuth,
+    InLobby,
+    Waiting,
+    PrivateLobby,
+    PrivateLobbyFail,
+    InQueue,
+    InGame,
+    Any
 }
 
 export enum GameType {
-    AiGame, DoubleAiGame, PublicGame
+    AiGame,
+    DoubleAiGame,
+    PublicGame
 }
 
 @Injectable()
@@ -48,17 +56,30 @@ export class WebClient {
         messengerService: MessengerService,
         auth: AuthenticationService
     ) {
-        auth.onAuth((user) => {
-            if (user) this.onLogin(user);
+        auth.onAuth(user => {
+            if (user) {
+                this.onLogin(user);
+            }
         });
 
         this.messenger = messengerService.getMessenger();
         this.messenger.addHandler(MessageType.StartGame, this.startGame, this);
-        this.messenger.addHandler(MessageType.ClientError, (msg) => this.clientError(msg), this);
-        this.messenger.addHandler(MessageType.QueueJoined, (msg) => this.changeState(ClientState.InQueue), this);
-        this.messenger.connectChange = (status) => zone.run(() => this.connected = status);
+        this.messenger.addHandler(
+            MessageType.ClientError,
+            msg => this.clientError(msg),
+            this
+        );
+        this.messenger.addHandler(
+            MessageType.QueueJoined,
+            msg => this.changeState(ClientState.InQueue),
+            this
+        );
+        this.messenger.connectChange = status =>
+            zone.run(() => (this.connected = status));
 
-        this.gameManager.setGameEndCallback((won, quit) => this.openEndDialog(won, quit));
+        this.gameManager.setGameEndCallback((won, quit) =>
+            this.openEndDialog(won, quit)
+        );
 
         this.addHotkeys();
     }
@@ -83,20 +104,41 @@ export class WebClient {
     }
 
     private addHotkeys() {
-        this.hotkeys.add(new Hotkey('esc', (event: KeyboardEvent): boolean => {
-            this.openSettings();
-            return false;
-        }, [], 'Settings'));
+        this.hotkeys.add(
+            new Hotkey(
+                'esc',
+                (event: KeyboardEvent): boolean => {
+                    this.openSettings();
+                    return false;
+                },
+                [],
+                'Settings'
+            )
+        );
 
-        this.hotkeys.add(new Hotkey('m', (event: KeyboardEvent): boolean => {
-            this.soundManager.toggleMute();
-            return false;
-        }, [], 'Mute/Unmute'));
+        this.hotkeys.add(
+            new Hotkey(
+                'm',
+                (event: KeyboardEvent): boolean => {
+                    this.soundManager.toggleMute();
+                    return false;
+                },
+                [],
+                'Mute/Unmute'
+            )
+        );
 
-        this.hotkeys.add(new Hotkey('shift+t', (event: KeyboardEvent): boolean => {
-            this.tips.toggleDisable();
-            return false;
-        }, [], 'Disable/Enable Tips'));
+        this.hotkeys.add(
+            new Hotkey(
+                'shift+t',
+                (event: KeyboardEvent): boolean => {
+                    this.tips.toggleDisable();
+                    return false;
+                },
+                [],
+                'Disable/Enable Tips'
+            )
+        );
     }
 
     // Misc --------------------
@@ -181,15 +223,17 @@ export class WebClient {
     }
 
     private openEndDialog(playerWon: boolean, quit: boolean) {
-        let config = new MatDialogConfig();
+        const config = new MatDialogConfig();
         config.disableClose = true;
-        let dialogRef = this.dialog.open(EndDialogComponent, config);
+        const dialogRef = this.dialog.open(EndDialogComponent, config);
 
         dialogRef.componentInstance.winner = playerWon;
         dialogRef.componentInstance.quit = quit;
 
-        let rewardMessage = this.getGameReward ? this.getGameReward(playerWon) : this.collection.onGameEnd(playerWon, quit);
-        rewardMessage.then(msg => dialogRef.componentInstance.rewards = msg);
+        const rewardMessage = this.getGameReward
+            ? this.getGameReward(playerWon)
+            : this.collection.onGameEnd(playerWon, quit);
+        rewardMessage.then(msg => (dialogRef.componentInstance.rewards = msg));
         dialogRef.afterClosed().subscribe(result => {
             this.gameManager.reset();
             this.returnToLobby();
@@ -203,7 +247,7 @@ export class WebClient {
     }
 
     private changeState(newState: ClientState) {
-        this.zone.run(() => this.state = newState);
+        this.zone.run(() => (this.state = newState));
     }
 
     public getState() {
@@ -220,7 +264,7 @@ export class WebClient {
             case GameType.AiGame:
                 this.onDeckSelected = this.startAIGame;
                 break;
-                case GameType.DoubleAiGame:
+            case GameType.DoubleAiGame:
                 this.onDeckSelected = this.startDoubleAIGame;
                 break;
             case GameType.PublicGame:
@@ -229,5 +273,4 @@ export class WebClient {
         }
         this.router.navigate(['/select']);
     }
-
 }

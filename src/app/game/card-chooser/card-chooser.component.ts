@@ -2,84 +2,94 @@ import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { Card } from '../../game_model/card';
 
-
 @Component({
-  selector: 'ccg-card-chooser',
-  templateUrl: './card-chooser.component.html'
+    selector: 'ccg-card-chooser',
+    templateUrl: './card-chooser.component.html'
 })
 export class CardChooserComponent {
-  public cards: Array<Card>;
-  public pageCards: Array<Card>;
-  public min = 0;
-  public max = 1;
-  public skippable = false;
-  public selected: Set<Card> = new Set();
-  public pageNumber = 0;
-  private pageSize = 5;
-  public suffix: string;
+    public cards: Array<Card>;
+    public pageCards: Array<Card>;
+    public min = 0;
+    public max = 1;
+    public skippable = false;
+    public selected: Set<Card> = new Set();
+    public pageNumber = 0;
+    private pageSize = 5;
+    public suffix: string;
 
-  constructor(public dialogRef: MatDialogRef<CardChooserComponent>) {
-    this.pageCards = [];
-  }
-
-  getMessage() {
-    if (this.max === 0)
-      return 'View cards';
-    let ending = `${this.max === 1 ? 'a card' : this.max + ' cards'} ${this.suffix}.`;
-    if (this.max === this.min)
-      return `Choose ${ending}`;
-    if (this.min === 0)
-      return `Choose up to ${ending}`;
-    return `Choose between ${this.min === 1 ? 'a card' : this.min + ' cards'} and ${ending}`;
-  }
-
-  public select(card) {
-    if (this.selected.has(card)) {
-      this.selected.delete(card);
-    } else if (this.selected.size < this.max) {
-      this.selected.add(card);
+    constructor(public dialogRef: MatDialogRef<CardChooserComponent>) {
+        this.pageCards = [];
     }
-  }
 
-  public onResize(rect: ClientRect) {
-    let width = rect.right - rect.left;
-    this.pageSize = Math.floor(width / 175) * 2;
-    this.setPage();
-  }
+    getMessage() {
+        if (this.max === 0) {
+            return 'View cards';
+        }
+        const ending = `${this.max === 1 ? 'a card' : this.max + ' cards'} ${
+            this.suffix
+        }.`;
+        if (this.max === this.min) {
+            return `Choose ${ending}`;
+        }
+        if (this.min === 0) {
+            return `Choose up to ${ending}`;
+        }
+        return `Choose between ${
+            this.min === 1 ? 'a card' : this.min + ' cards'
+        } and ${ending}`;
+    }
 
-  public canNext() {
-    return this.pageNumber + 1 < this.cards.length / this.pageSize;
-  }
+    public select(card) {
+        if (this.selected.has(card)) {
+            this.selected.delete(card);
+        } else if (this.selected.size < this.max) {
+            this.selected.add(card);
+        }
+    }
 
-  public next() {
-    this.pageNumber++;
-    this.setPage();
-  }
+    public onResize(rect: ClientRect) {
+        const width = rect.right - rect.left;
+        this.pageSize = Math.floor(width / 175) * 2;
+        this.setPage();
+    }
 
-  public canPrev() {
-    return this.pageNumber !== 0;
-  }
+    public canNext() {
+        return this.pageNumber + 1 < this.cards.length / this.pageSize;
+    }
 
-  public prev() {
-    this.pageNumber--;
-    this.setPage();
-  }
+    public next() {
+        this.pageNumber++;
+        this.setPage();
+    }
 
-  public setPage() {
-    this.pageCards = this.cards.slice(this.pageNumber * this.pageSize, this.pageNumber * this.pageSize + this.pageSize);
-  }
+    public canPrev() {
+        return this.pageNumber !== 0;
+    }
 
-  public canFinish(): boolean {
-    return this.selected.size >= this.min ||
-      this.selected.size === this.cards.length;
-  }
+    public prev() {
+        this.pageNumber--;
+        this.setPage();
+    }
 
-  public finish() {
-    this.dialogRef.close(Array.from(this.selected.values()));
-  }
+    public setPage() {
+        this.pageCards = this.cards.slice(
+            this.pageNumber * this.pageSize,
+            this.pageNumber * this.pageSize + this.pageSize
+        );
+    }
 
-  public skip() {
-    this.dialogRef.close([]);
-  }
+    public canFinish(): boolean {
+        return (
+            this.selected.size >= this.min ||
+            this.selected.size === this.cards.length
+        );
+    }
+
+    public finish() {
+        this.dialogRef.close(Array.from(this.selected.values()));
+    }
+
+    public skip() {
+        this.dialogRef.close([]);
+    }
 }
-

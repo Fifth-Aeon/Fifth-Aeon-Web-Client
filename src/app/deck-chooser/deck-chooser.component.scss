@@ -1,32 +1,32 @@
 .deck-card {
-  img {
-    width: 278px;
-    height: 150px;
-  }
-  button {
-    margin-right: 10px;
-    margin-left: 10px;
-  }
+    img {
+        width: 278px;
+        height: 150px;
+    }
+    button {
+        margin-right: 10px;
+        margin-left: 10px;
+    }
 
-  display: inline-block;
-  width: 230px;
-  height: 250px;
-  margin: 20px;
-  overflow: hidden;
+    display: inline-block;
+    width: 230px;
+    height: 250px;
+    margin: 20px;
+    overflow: hidden;
 }
 
 .deck-zone {
-  text-align: center;
+    text-align: center;
 }
 
 .new-button {
-  position: fixed;
-  bottom: 40px;
-  right: 110px;
+    position: fixed;
+    bottom: 40px;
+    right: 110px;
 }
 
 .back-button {
-  position: fixed;
-  bottom: 40px;
-  right: 30px;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
 }

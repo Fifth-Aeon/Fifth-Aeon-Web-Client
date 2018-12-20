@@ -1,17 +1,16 @@
 .editor-container {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
-.editor-container>* {
-  width: 100%;
+.editor-container > * {
+    width: 100%;
 }
 
 mat-card {
-  box-sizing: border-box;
-  margin: 20px;
-  float: left;
-  overflow: hidden;
-  min-width: 300px;
+    box-sizing: border-box;
+    margin: 20px;
+    float: left;
+    overflow: hidden;
+    min-width: 300px;
 }
-

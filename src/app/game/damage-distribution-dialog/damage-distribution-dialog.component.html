@@ -1,12 +1,16 @@
 <h1 mat-dialog-title>Select Damage Order</h1>
 
 <div mat-dialog-actions>
-  <ccg-card scale="1.45" [card]="attacker"></ccg-card>
-  <div ccgSortable class="sortable" (orderChanged)="orderChanged($event)">
-    <ccg-card scale="1.45" *ngFor="let defender of defenders" [card]="defender"></ccg-card>
-  </div>
+    <ccg-card scale="1.45" [card]="attacker"></ccg-card>
+    <div ccgSortable class="sortable" (orderChanged)="orderChanged($event)">
+        <ccg-card
+            scale="1.45"
+            *ngFor="let defender of defenders"
+            [card]="defender"
+        ></ccg-card>
+    </div>
 </div>
 
 <div mat-dialog-actions>
-  <button mat-raised-button (click)="done()">Done</button>
+    <button mat-raised-button (click)="done()">Done</button>
 </div>

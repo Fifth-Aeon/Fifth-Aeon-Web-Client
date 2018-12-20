@@ -6,66 +6,68 @@ import { SoundManager } from '../sound';
 import { DecksService } from 'app/decks.service';
 import { AuthenticationService } from '../user/authentication.service';
 
-
-const feedbackBody = 'Please write about any bugs, suggestions, etc that came to mind while playing the game.';
+const feedbackBody =
+    'Please write about any bugs, suggestions, etc that came to mind while playing the game.';
 
 @Component({
-  selector: 'ccg-lobby',
-  templateUrl: './lobby.component.html',
-  styleUrls: ['./lobby.component.scss']
+    selector: 'ccg-lobby',
+    templateUrl: './lobby.component.html',
+    styleUrls: ['./lobby.component.scss']
 })
 export class LobbyComponent implements OnInit {
-  public feedbackUrl = `mailto:william.ritson@gmail.com?subject=Card Game Feedback&body=${feedbackBody}`;
+    public feedbackUrl = `mailto:william.ritson@gmail.com?subject=Card Game Feedback&body=${feedbackBody}`;
 
-  constructor(
-    private router: Router,
-    public client: WebClient,
-    public decks: DecksService,
-    public soundManager: SoundManager,
-    public auth: AuthenticationService
-  ) {
-    if (client.getState() !== ClientState.UnAuth && client.getState() !== ClientState.Waiting)
-      client.returnToLobby();
-  }
-
-  public join() {
-    this.client.joinPublicQueue();
-  }
-
-  public fullscreen() {
-    let fsRequester: any = document.documentElement;
-    if (fsRequester.mozRequestFullScreen) {
-      fsRequester.mozRequestFullScreen();
-    } else if (fsRequester.webkitRequestFullScreen) {
-      fsRequester.webkitRequestFullScreen();
-    } else if (fsRequester.requestFullscreen) {
-      fsRequester.requestFullscreen();
+    constructor(
+        private router: Router,
+        public client: WebClient,
+        public decks: DecksService,
+        public soundManager: SoundManager,
+        public auth: AuthenticationService
+    ) {
+        if (
+            client.getState() !== ClientState.UnAuth &&
+            client.getState() !== ClientState.Waiting
+        ) {
+            client.returnToLobby();
+        }
     }
-  }
 
-  public showMultiplayer() {
-    return this.client.isConnected();
-  }
+    public join() {
+        this.client.joinPublicQueue();
+    }
 
-  public inLobby() {
-    return this.client.getState() === ClientState.InLobby;
-  }
+    public fullscreen() {
+        const fsRequester: any = document.documentElement;
+        if (fsRequester.mozRequestFullScreen) {
+            fsRequester.mozRequestFullScreen();
+        } else if (fsRequester.webkitRequestFullScreen) {
+            fsRequester.webkitRequestFullScreen();
+        } else if (fsRequester.requestFullscreen) {
+            fsRequester.requestFullscreen();
+        }
+    }
 
-  @HostListener('window:beforeunload')
-  public exit() {
-    if (this.client.getState() === ClientState.InQueue)
-      this.client.leaveQueue();
-    this.client.exitGame(true);
-    return null;
-  }
+    public showMultiplayer() {
+        return this.client.isConnected();
+    }
 
-  ngOnInit() { }
+    public inLobby() {
+        return this.client.getState() === ClientState.InLobby;
+    }
 
-  public getState() {
-    if (!this.client)
-      return 0;
-    return this.client.getState();
-  }
+    @HostListener('window:beforeunload')
+    public exit() {
+        if (this.client.getState() === ClientState.InQueue) {
+            this.client.leaveQueue();
+        }
+        this.client.exitGame(true);
+        return null;
+    }
 
+    ngOnInit() {}
+
+    public getState() {
+        if (!this.client) { return 0; }
+        return this.client.getState();
+    }
 }
-

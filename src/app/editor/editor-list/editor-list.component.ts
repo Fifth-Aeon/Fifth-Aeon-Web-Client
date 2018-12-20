@@ -3,24 +3,22 @@ import { EditorDataService } from '../editor-data.service';
 import { CardData, cardList } from '../../game_model/cards/cardList';
 
 @Component({
-  selector: 'ccg-editor-list',
-  templateUrl: './editor-list.component.html',
-  styleUrls: ['./editor-list.component.scss']
+    selector: 'ccg-editor-list',
+    templateUrl: './editor-list.component.html',
+    styleUrls: ['./editor-list.component.scss']
 })
 export class EditorListComponent implements OnInit {
-  public cardList = cardList;
+    public cardList = cardList;
 
-  constructor(public editorData: EditorDataService) { }
+    constructor(public editorData: EditorDataService) {}
 
-  public getEditLink(card: CardData) {
-    return `/editor/card/${card.id}`;
-  }
+    public getEditLink(card: CardData) {
+        return `/editor/card/${card.id}`;
+    }
 
-  public newCard() {
-    this.editorData.createCard(prompt('Card Name'));
-  }
+    public newCard() {
+        this.editorData.createCard(prompt('Card Name'));
+    }
 
-  ngOnInit() {
-  }
-
+    ngOnInit() {}
 }

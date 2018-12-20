@@ -1,62 +1,111 @@
 <mat-card>
-  <mat-card-title>Mechanics</mat-card-title>
-  <mat-card-content>
-    <table>
-      <tbody>
-        <tr *ngFor="let data of card.mechanics; let i = index;">
-          <td>
-            <mat-form-field>
-              <mat-select placeholder="Mechanic ID" [(ngModel)]="data.id"
-                (selectionChange)="changeMechanic(data, $event)">
-                <mat-option *ngFor="let constructor of mechanicList.getConstructors(card.cardType)" 
-                [value]="constructor.getId()"
-                >{{constructor.getId()}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </td>
-          <td *ngIf="isTriggered(data)">
-            <mat-form-field>
-              <mat-select placeholder="Trigger ID" [(ngModel)]="data.trigger.id">
-                <mat-option *ngFor="let id of getTriggerIds()" [value]="id">{{id}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </td>
-          <td *ngIf="isTargeted(data)">
-            <mat-form-field>
-              <mat-select placeholder="Targeter ID" [(ngModel)]="data.targeter.id">
-                <mat-option value="Host">Use Host Targeter</mat-option>
-                <mat-option *ngFor="let id of getTargeterIds()" [value]="id">{{id}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </td>
-          <td *ngFor="let parameter of mechanicList.getParameters(data); let i = index;">
-            <ccg-parameter-editor 
-              [name]="parameter.name" 
-              [type]="parameter.type" 
-              [data]="data.parameters[i]"
-              (change)="setParam(data, i, $event)">
-            </ccg-parameter-editor>
-          </td>    
-          <td>
-            
-            <button mat-icon-button  [disabled]="i === 0" (click)="moveUp(i)" matTooltip="Move Up">
-              <mat-icon>arrow_upward</mat-icon>
-            </button>
-            <button mat-icon-button  [disabled]="i === card.mechanics.length - 1" (click)="moveDown(i)" matTooltip="Move Down">
-              <mat-icon>arrow_downward</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="delete(i)" matTooltip="Delete Mechanic">
-                <mat-icon>delete</mat-icon>
-              </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-mini-fab color="primary" (click)="add()" matTooltip="Add Mechanic">
-      <mat-icon>add</mat-icon>
-    </button>
-  </mat-card-actions>
-
+    <mat-card-title>Mechanics</mat-card-title>
+    <mat-card-content>
+        <table>
+            <tbody>
+                <tr *ngFor="let data of card.mechanics; let i = index">
+                    <td>
+                        <mat-form-field>
+                            <mat-select
+                                placeholder="Mechanic ID"
+                                [(ngModel)]="data.id"
+                                (selectionChange)="changeMechanic(data, $event)"
+                            >
+                                <mat-option
+                                    *ngFor="
+                                        let constructor of mechanicList.getConstructors(
+                                            card.cardType
+                                        )
+                                    "
+                                    [value]="constructor.getId()"
+                                    >{{ constructor.getId() }}</mat-option
+                                >
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                    <td *ngIf="isTriggered(data)">
+                        <mat-form-field>
+                            <mat-select
+                                placeholder="Trigger ID"
+                                [(ngModel)]="data.trigger.id"
+                            >
+                                <mat-option
+                                    *ngFor="let id of getTriggerIds()"
+                                    [value]="id"
+                                    >{{ id }}</mat-option
+                                >
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                    <td *ngIf="isTargeted(data)">
+                        <mat-form-field>
+                            <mat-select
+                                placeholder="Targeter ID"
+                                [(ngModel)]="data.targeter.id"
+                            >
+                                <mat-option value="Host"
+                                    >Use Host Targeter</mat-option
+                                >
+                                <mat-option
+                                    *ngFor="let id of getTargeterIds()"
+                                    [value]="id"
+                                    >{{ id }}</mat-option
+                                >
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                    <td
+                        *ngFor="
+                            let parameter of mechanicList.getParameters(data);
+                            let i = index
+                        "
+                    >
+                        <ccg-parameter-editor
+                            [name]="parameter.name"
+                            [type]="parameter.type"
+                            [data]="data.parameters[i]"
+                            (change)="setParam(data, i, $event)"
+                        >
+                        </ccg-parameter-editor>
+                    </td>
+                    <td>
+                        <button
+                            mat-icon-button
+                            [disabled]="i === 0"
+                            (click)="moveUp(i)"
+                            matTooltip="Move Up"
+                        >
+                            <mat-icon>arrow_upward</mat-icon>
+                        </button>
+                        <button
+                            mat-icon-button
+                            [disabled]="i === card.mechanics.length - 1"
+                            (click)="moveDown(i)"
+                            matTooltip="Move Down"
+                        >
+                            <mat-icon>arrow_downward</mat-icon>
+                        </button>
+                        <button
+                            mat-icon-button
+                            color="warn"
+                            (click)="delete(i)"
+                            matTooltip="Delete Mechanic"
+                        >
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </mat-card-content>
+    <mat-card-actions>
+        <button
+            mat-mini-fab
+            color="primary"
+            (click)="add()"
+            matTooltip="Add Mechanic"
+        >
+            <mat-icon>add</mat-icon>
+        </button>
+    </mat-card-actions>
 </mat-card>

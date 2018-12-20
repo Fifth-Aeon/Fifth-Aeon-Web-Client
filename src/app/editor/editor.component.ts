@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ccg-editor',
-  templateUrl: './editor.component.html',
-  styleUrls: ['./editor.component.scss']
+    selector: 'ccg-editor',
+    templateUrl: './editor.component.html',
+    styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent implements OnInit {
+    constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+    ngOnInit() {}
 }

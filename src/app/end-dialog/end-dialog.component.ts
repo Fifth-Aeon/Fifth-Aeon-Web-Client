@@ -1,20 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
-
+import { MatDialogRef } from '@angular/material';
 
 @Component({
-  selector: 'ccg-end-dialog',
-  templateUrl: './end-dialog.component.html',
-  styleUrls: ['./end-dialog.component.scss']
+    selector: 'ccg-end-dialog',
+    templateUrl: './end-dialog.component.html',
+    styleUrls: ['./end-dialog.component.scss']
 })
 export class EndDialogComponent implements OnInit {
-  public winner = false;
-  public quit = false;
-  public rewards = 'Loading rewards...';
+    public winner = false;
+    public quit = false;
+    public rewards = 'Loading rewards...';
 
-  constructor(public dialogRef: MatDialogRef<EndDialogComponent>) { }
+    constructor(public dialogRef: MatDialogRef<EndDialogComponent>) {}
 
-  ngOnInit() {
-  }
-
+    ngOnInit() {}
 }

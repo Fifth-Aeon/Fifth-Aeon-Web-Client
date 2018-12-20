@@ -1,71 +1,71 @@
-  .game-container {
-    height:  100vh;
+.game-container {
+    height: 100vh;
     overflow: hidden;
-  }
-  
-  .board-area {
+}
+
+.board-area {
     float: left;
     text-align: center;
     overflow: hidden;
     width: 100%;
-  }
+}
 
-  .game-area {
+.game-area {
     float: left;
     width: calc(100% - 82px);
-  }
+}
 
-  .area {
+.area {
     width: 100%;
-    height: calc((100vh - 106px)/3);
+    height: calc((100vh - 106px) / 3);
     border: 1px solid grey;
-  }
+}
 
-  .life-display {
+.life-display {
     position: absolute;
     right: 40%;
     width: 50px;
     height: 50px;
-  }
+}
 
-  .phase-display {
+.phase-display {
     position: absolute;
     right: 35%;
     width: 50px;
     height: 50px;
-  }
+}
 
-  .card-display {
+.card-display {
     position: absolute;
     left: 40%;
     width: 50px;
     height: 50px;
-  }
+}
 
-  .crypt-button {
+.crypt-button {
     display: inline-block;
     position: absolute;
     margin-top: 25px;
     left: 35%;
     transform: translateY(-50%);
     vertical-align: top;
-  }
+}
 
-  .menu-button {
+.menu-button {
     display: inline-block;
     position: absolute;
     margin-top: 25px;
     right: 20px;
     transform: translateY(-50%);
     vertical-align: top;
-  }
+}
 
-  .info-bar {
+.info-bar {
     border-left: 1px solid grey;
     height: 50px;
-  }
+}
 
-  .info-text {
+.info-text {
     pointer-events: none;
     position: absolute;
     float: left;
@@ -75,13 +75,13 @@
     height: 30px;
     margin: 0px;
     transform: translate(-50%);
-  }
+}
 
-  .pass-button {
+.pass-button {
     float: right;
     position: relative;
     top: 50%;
     margin-right: 15px;
     transform: translateY(-50%);
     vertical-align: top;
-  }
+}

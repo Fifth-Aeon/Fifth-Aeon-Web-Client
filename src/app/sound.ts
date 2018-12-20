@@ -3,10 +3,18 @@ import { Howler, Howl } from 'howler';
 import { Injectable } from '@angular/core';
 import { ResourceType } from './game_model/resource';
 import { sample } from 'lodash';
-import { SyncEventSystem, SyncEventType, GameSyncEvent } from './game_model/events/syncEvent';
+import {
+    SyncEventSystem,
+    SyncEventType,
+    GameSyncEvent
+} from './game_model/events/syncEvent';
 
-
-export enum VolumeType { Master, Music, Effects, Narrator }
+export enum VolumeType {
+    Master,
+    Music,
+    Effects,
+    Narrator
+}
 
 interface SoundSettings {
     volume: [number, number, number, number];
@@ -40,21 +48,44 @@ export class SoundManager {
         this.addSound('magic', new Howl({ src: ['assets/mp3/warp.mp3'] }));
         this.addSound('attack', new Howl({ src: ['assets/mp3/attack.mp3'] }));
         this.addSound('bell', new Howl({ src: ['assets/mp3/bell.mp3'] }));
-        this.addSound('fanfare', new Howl({ src: ['assets/mp3/FA_-_victory_cue_draft.mp3'] }));
-        this.addSound('defeat', new Howl({ src: ['assets/mp3/FA_-_defeat_cue_long_draft.mp3'] }));
+        this.addSound(
+            'fanfare',
+            new Howl({ src: ['assets/mp3/FA_-_victory_cue_draft.mp3'] })
+        );
+        this.addSound(
+            'defeat',
+            new Howl({ src: ['assets/mp3/FA_-_defeat_cue_long_draft.mp3'] })
+        );
 
-        this.addMusic('bg-generic', new Howl({ src: ['assets/mp3/the-pyre.mp3'] }));
-        this.addMusic('bg-growth', new Howl({ src: ['assets/mp3/kalimba_draft_1.mp3'] }));
-        this.addMusic('bg-renewal', new Howl({ src: ['assets/mp3/healing_draft_1.mp3'] }));
-        this.addMusic('bg-decay', new Howl({ src: ['assets/mp3/decay_sketch_2_draft_1.mp3'] }));
-        this.addMusic('bg-synthesis', new Howl({ src: ['assets/mp3/synthesis_idea.mp3'] }));
+        this.addMusic(
+            'bg-generic',
+            new Howl({ src: ['assets/mp3/the-pyre.mp3'] })
+        );
+        this.addMusic(
+            'bg-growth',
+            new Howl({ src: ['assets/mp3/kalimba_draft_1.mp3'] })
+        );
+        this.addMusic(
+            'bg-renewal',
+            new Howl({ src: ['assets/mp3/healing_draft_1.mp3'] })
+        );
+        this.addMusic(
+            'bg-decay',
+            new Howl({ src: ['assets/mp3/decay_sketch_2_draft_1.mp3'] })
+        );
+        this.addMusic(
+            'bg-synthesis',
+            new Howl({ src: ['assets/mp3/synthesis_idea.mp3'] })
+        );
 
         this.setMusic(this.musicLibrary.get('bg-generic'));
 
         this.loadSettings();
 
         speechSynthesis.onvoiceschanged = () => {
-            let englishVoice = window.speechSynthesis.getVoices().find(voice => voice.lang.includes('en'));
+            const englishVoice = window.speechSynthesis
+                .getVoices()
+                .find(voice => voice.lang.includes('en'));
             if (englishVoice) {
                 this.voice = englishVoice;
             } else {
@@ -79,8 +110,7 @@ export class SoundManager {
     public handleGameEvent(event: GameSyncEvent) {
         switch (event.type) {
             case SyncEventType.TurnStart:
-                if (event.turnNum !== 1)
-                    this.playSound('bell');
+                if (event.turnNum !== 1) { this.playSound('bell'); }
                 break;
             case SyncEventType.AttackToggled:
             case SyncEventType.Block:
@@ -91,20 +121,22 @@ export class SoundManager {
                 this.playSound('magic');
                 break;
         }
-
     }
 
     public saveSettings() {
-        localStorage.setItem(SoundManager.localStorageKey, JSON.stringify({
-            volume: this.volume,
-            muted: this.muted
-        } as SoundSettings));
+        localStorage.setItem(
+            SoundManager.localStorageKey,
+            JSON.stringify({
+                volume: this.volume,
+                muted: this.muted
+            } as SoundSettings)
+        );
     }
 
     public loadSettings() {
-        let settingData = localStorage.getItem(SoundManager.localStorageKey);
+        const settingData = localStorage.getItem(SoundManager.localStorageKey);
         if (settingData) {
-            let savedSettings: SoundSettings = JSON.parse(settingData);
+            const savedSettings: SoundSettings = JSON.parse(settingData);
             this.muted = savedSettings.muted;
             this.volume = savedSettings.volume;
         }
@@ -116,24 +148,28 @@ export class SoundManager {
     }
 
     private getAdjustedVolume(type: VolumeType) {
-        return this.baseVolume[type] * this.volume[type] * this.volume[VolumeType.Master] * this.baseVolume[VolumeType.Master];
+        return (
+            this.baseVolume[type] *
+            this.volume[type] *
+            this.volume[VolumeType.Master] *
+            this.baseVolume[VolumeType.Master]
+        );
     }
-
 
     public changeVolume(type: VolumeType, newVal: number) {
         this.volume[type] = newVal;
         this.saveSettings();
-        if (type === VolumeType.Music || type === VolumeType.Master)
+        if (type === VolumeType.Music || type === VolumeType.Master) {
             this.music.volume(this.getAdjustedVolume(VolumeType.Music));
+        }
     }
 
     public speak(text: string) {
         if (!this.muted) {
-            let msg = new SpeechSynthesisUtterance(text);
+            const msg = new SpeechSynthesisUtterance(text);
             this.music.volume(this.getAdjustedVolume(VolumeType.Music) / 4);
             msg.volume = this.getAdjustedVolume(VolumeType.Narrator);
-            if (this.voice)
-                msg.voice = this.voice;
+            if (this.voice) { msg.voice = this.voice; }
             speechSynthesis.speak(msg);
             msg.onend = () => {
                 this.music.volume(this.getAdjustedVolume(VolumeType.Music));
@@ -152,8 +188,7 @@ export class SoundManager {
     public toggleMute() {
         this.muted = !this.muted;
         this.global.mute(this.muted);
-        if (this.muted)
-            speechSynthesis.cancel();
+        if (this.muted) { speechSynthesis.cancel(); }
         this.saveSettings();
     }
 
@@ -162,10 +197,8 @@ export class SoundManager {
     }
 
     public setMusic(sound: Howl) {
-        if (sound === this.music)
-            return;
-        if (this.music && this.music.playing())
-            this.music.stop();
+        if (sound === this.music) { return; }
+        if (this.music && this.music.playing()) { this.music.stop(); }
         this.music = sound;
         this.music.play();
         this.music.volume(this.getAdjustedVolume(VolumeType.Music));
@@ -179,10 +212,11 @@ export class SoundManager {
     }
 
     private onMusicEnd() {
-        let all = Array.from(this.factionContext.keys()).map(factionName => `bg-${factionName.toLowerCase()}`);
-        if (all.length === 0)
-            all.push('bg-generic');
-        let trackName = sample(all);
+        const all = Array.from(this.factionContext.keys()).map(
+            factionName => `bg-${factionName.toLowerCase()}`
+        );
+        if (all.length === 0) { all.push('bg-generic'); }
+        const trackName = sample(all);
         this.setMusic(this.musicLibrary.get(trackName));
     }
 
@@ -191,27 +225,31 @@ export class SoundManager {
     }
 
     public playSound(name: string) {
-        let sound = this.library.get(name);
+        const sound = this.library.get(name);
         sound.volume(this.getAdjustedVolume(VolumeType.Effects));
         sound.play();
     }
 
     public playImportantSound(name: string): Promise<void> {
-        let sound = this.library.get(name);
+        const sound = this.library.get(name);
         sound.volume(this.getAdjustedVolume(VolumeType.Effects));
         this.music.volume(0);
         sound.play();
 
         return new Promise(resolve => {
             sound.once('end', () => {
-                this.music.fade(this.music.volume(), this.getAdjustedVolume(VolumeType.Music), this.musicTransitionTime);
+                this.music.fade(
+                    this.music.volume(),
+                    this.getAdjustedVolume(VolumeType.Music),
+                    this.musicTransitionTime
+                );
                 resolve();
             });
         });
     }
 
     public queueSound(name: string) {
-        let sound = this.library.get(name);
+        const sound = this.library.get(name);
         this.playQueue.enqueue(sound);
 
         if (!this.isPlaying) {
@@ -221,13 +259,11 @@ export class SoundManager {
     }
 
     private playNext() {
-        let sound = this.playQueue.dequeue();
+        const sound = this.playQueue.dequeue();
         sound.play();
         sound.once('end', () => {
             setTimeout(() => {
-                if (!this.playQueue.isEmpty())
-                    this.playNext();
-                else {
+                if (!this.playQueue.isEmpty()) { this.playNext(); } else {
                     this.isPlaying = false;
                     this.onDone.forEach(cb => cb());
                     this.onDone = [];

@@ -3,13 +3,13 @@ import { TestBed, inject } from '@angular/core/testing';
 import { OverlayService } from './overlay.service';
 
 describe('OverlayService', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [OverlayService]
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [OverlayService]
+        });
     });
-  });
 
-  it('should ...', inject([OverlayService], (service: OverlayService) => {
-    expect(service).toBeTruthy();
-  }));
+    it('should ...', inject([OverlayService], (service: OverlayService) => {
+        expect(service).toBeTruthy();
+    }));
 });

@@ -1,19 +1,25 @@
 <div mat-dialog-content>
-  <form >
-    <mat-form-field >
-      <input matInput #deckName name="deckname" placeholder="Deck Name" [(ngModel)]="deck.name" type="text" maxlength="20">
-      <mat-hint align="end">{{deckName.value.length}} / 20</mat-hint>
-    </mat-form-field>
-    <mat-form-field >
-      <mat-select placeholder="Deck Avatar" [(value)]="deck.avatar">
-        <mat-option *ngFor="let card of cards" [value]="card.imageUrl">
-          {{ card.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </form>
+    <form>
+        <mat-form-field>
+            <input
+                matInput
+                #deckName
+                name="deckname"
+                placeholder="Deck Name"
+                [(ngModel)]="deck.name"
+                type="text"
+                maxlength="20"
+            />
+            <mat-hint align="end">{{ deckName.value.length }} / 20</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-select placeholder="Deck Avatar" [(value)]="deck.avatar">
+                <mat-option *ngFor="let card of cards" [value]="card.imageUrl">
+                    {{ card.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </form>
 </div>
 
-<div mat-dialog-actions>
-  <button mat-button (click)="done()">Done</button>
-</div>
+<div mat-dialog-actions><button mat-button (click)="done()">Done</button></div>

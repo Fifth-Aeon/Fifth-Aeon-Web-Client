@@ -2,17 +2,17 @@
 <h1 *ngIf="!winner" mat-dialog-title>You Lost</h1>
 
 <div mat-dialog-content>
-  <div *ngIf="winner">
-    <p *ngIf="quit">Your opponent left.</p>
-    <p *ngIf="!quit">You reduced your oponents life to zero.</p>
-  </div>
-  <div *ngIf="!winner">
-    <p *ngIf="quit">You left the game.</p>
-    <p *ngIf="!quit">Your life was reduced to zero.</p>
-  </div>
-  <p> {{this.rewards}}</p>
+    <div *ngIf="winner">
+        <p *ngIf="quit">Your opponent left.</p>
+        <p *ngIf="!quit">You reduced your oponents life to zero.</p>
+    </div>
+    <div *ngIf="!winner">
+        <p *ngIf="quit">You left the game.</p>
+        <p *ngIf="!quit">Your life was reduced to zero.</p>
+    </div>
+    <p>{{ this.rewards }}</p>
 </div>
 
 <div mat-dialog-actions>
-  <button mat-button mat-dialog-close="">Back to lobby</button>
+    <button mat-button mat-dialog-close="">Back to lobby</button>
 </div>

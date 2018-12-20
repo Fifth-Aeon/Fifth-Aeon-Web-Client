@@ -3,18 +3,29 @@ import { getWsUrl } from './url';
 
 export enum MessageType {
     // General
-    Info, ClientError, Connect, Ping,
+    Info,
+    ClientError,
+    Connect,
+    Ping,
 
     // Accounts
-    AnonymousLogin, LoginResponce, SetDeck,
+    AnonymousLogin,
+    LoginResponce,
+    SetDeck,
 
     // Queuing
-    JoinQueue, ExitQueue, QueueJoined, StartGame,
-    NewPrivateGame, JoinPrivateGame, CancelPrivateGame,
+    JoinQueue,
+    ExitQueue,
+    QueueJoined,
+    StartGame,
+    NewPrivateGame,
+    JoinPrivateGame,
+    CancelPrivateGame,
     PrivateGameReady,
 
     // In Game
-    GameEvent, GameAction
+    GameEvent,
+    GameAction
 }
 
 export interface Message {
@@ -23,17 +34,14 @@ export interface Message {
     data: any;
 }
 
-
 // Minimum time before attempting to reconnect again;
-let minConnectTime = 1000 * 5;
-let autoReconnectTime = 1000 * 10;
-let pingTime = 1000 * 15;
-
+const minConnectTime = 1000 * 5;
+const autoReconnectTime = 1000 * 10;
+const pingTime = 1000 * 15;
 
 /**
  * Used to communicate via websockets.
  *
- * @class Messenger
  */
 export class Messenger {
     private handlers: Map<string, (msg: Message) => void>;
@@ -49,12 +57,16 @@ export class Messenger {
     constructor() {
         this.handlers = new Map();
         setInterval(() => {
-            if (!this.id || !this.ws || this.ws.readyState === this.ws.OPEN)
+            if (!this.id || !this.ws || this.ws.readyState === this.ws.OPEN) {
                 return;
+            }
             console.log('Attempting automatic reconnect');
             this.connect();
         }, autoReconnectTime);
-        setInterval(() => this.sendMessageToServer(MessageType.Ping, {}), pingTime);
+        setInterval(
+            () => this.sendMessageToServer(MessageType.Ping, {}),
+            pingTime
+        );
     }
 
     public setID(id: string) {
@@ -71,7 +83,7 @@ export class Messenger {
             return;
         }
         this.lastConnectAttempt = Date.now();
-        let url = getWsUrl();
+        const url = getWsUrl();
         this.ws = new WebSocket(url);
         this.ws.onmessage = this.handleMessage.bind(this);
         this.ws.onopen = () => this.onConnect();
@@ -93,12 +105,12 @@ export class Messenger {
         }
     }
 
-
-
     private handleMessage(ev: MessageEvent) {
-        let message = this.readMessage(ev.data);
-        if (!message) return;
-        let cb = this.handlers.get(message.type);
+        const message = this.readMessage(ev.data);
+        if (!message) {
+            return;
+        }
+        const cb = this.handlers.get(message.type);
         if (!(message.data && message.source && message.type)) {
             console.error('Invalid message', message);
             return;
@@ -112,7 +124,7 @@ export class Messenger {
 
     private readMessage(data: any): Message | null {
         try {
-            let parsed = JSON.parse(data);
+            const parsed = JSON.parse(data);
             parsed.type = MessageType[parsed.type];
             return parsed as Message;
         } catch (e) {
@@ -121,7 +133,10 @@ export class Messenger {
         }
     }
 
-    private makeMessage(messageType: MessageType, data: string | object): string {
+    private makeMessage(
+        messageType: MessageType,
+        data: string | object
+    ): string {
         return JSON.stringify({
             type: MessageType[messageType],
             data: data,
@@ -129,15 +144,22 @@ export class Messenger {
         });
     }
 
-    public addHandler(messageType, callback: (message: Message) => void, context?: any) {
+    public addHandler(
+        messageType,
+        callback: (message: Message) => void,
+        context?: any
+    ) {
         if (context) {
             callback = callback.bind(context);
         }
         this.handlers.set(messageType, callback);
     }
 
-    public sendMessageToServer(messageType: MessageType, data: string | object) {
-        let message = this.makeMessage(messageType, data);
+    public sendMessageToServer(
+        messageType: MessageType,
+        data: string | object
+    ) {
+        const message = this.makeMessage(messageType, data);
         if (this.ws && this.ws.readyState === this.ws.OPEN) {
             this.ws.send(message);
         } else {
@@ -146,4 +168,3 @@ export class Messenger {
         }
     }
 }
-

@@ -1,66 +1,64 @@
 .card {
-  margin-left: -9px;
-  margin-right: -9px;
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-  vertical-align: top;
-  font-family: serif;
+    margin-left: -9px;
+    margin-right: -9px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    vertical-align: top;
+    font-family: serif;
 }
 
 .overlapped {
-  -webkit-transition: all 0.25s;
-  transition: all 0.25s;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
 }
 
 .hovered {
-  z-index: 10; //transform: translate(-2%, -50%);
+    z-index: 10; //transform: translate(-2%, -50%);
 }
 
 .bordered {
-  stroke-width: 1;
-  stroke-opacity: 1;
+    stroke-width: 1;
+    stroke-opacity: 1;
 }
 
 .text-holder {
-  font-size: 16px;
-  padding: 1px;
-  overflow: hidden;
+    font-size: 16px;
+    padding: 1px;
+    overflow: hidden;
 }
 
 .image-border {
-  stroke: black;
-  stroke-width: 1;
-  stroke-opacity: 1;
-  fill: white;
+    stroke: black;
+    stroke-width: 1;
+    stroke-opacity: 1;
+    fill: white;
 }
 
 .bubble-text {
-  font-family: "Impact", monospace;
-  fill: white;
-  stroke: black;
-  stroke-width: 0.75;
-  font-size: 25px;
+    font-family: 'Impact', monospace;
+    fill: white;
+    stroke: black;
+    stroke-width: 0.75;
+    font-size: 25px;
 }
 
-
-
 .darkened {
-  filter: brightness(0.8);
+    filter: brightness(0.8);
 }
 
 .card-name {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 .card-text {
-  text-align: center;
-  padding: 0px;
-  margin: 0px;
-  b {
+    text-align: center;
+    padding: 0px;
     margin: 0px;
-  }
-  span {
-    margin: 0px;
-  }
+    b {
+        margin: 0px;
+    }
+    span {
+        margin: 0px;
+    }
 }

@@ -1,22 +1,49 @@
 <div class="left">
-  <mat-card id="card-selection">
-    <mat-card-content id="editor-cards">
-      <ccg-card scale="1.75" *ngFor="let card of cards" [card]="card" noTranslate="true"></ccg-card>
-    </mat-card-content>
-  </mat-card>
+    <mat-card id="card-selection">
+        <mat-card-content id="editor-cards">
+            <ccg-card
+                scale="1.75"
+                *ngFor="let card of cards"
+                [card]="card"
+                noTranslate="true"
+            ></ccg-card>
+        </mat-card-content>
+    </mat-card>
 
-  <mat-card id="card-selection-controls">
-    <mat-card-content>
-        <span>{{message}}</span>
-      <button mat-fab matTooltipPosition="above" matTooltip="Open a pack." color="primary" (click)="open()" [disabled]="!collection.canOpenBooster() || working">
-        <mat-icon>grade</mat-icon>
-      </button>
-        <button  routerLink="/lobby" mat-fab matTooltipPosition="above" matTooltip="Return to lobby" color="accent" (click)="done()" [disabled]="working">
-          <mat-icon>check</mat-icon>
-        </button>
-      <button mat-fab matTooltipPosition="above" matTooltip="Buy a pack for 100 gold." color="primary" (click)="buy()" [disabled]="!collection.canBuyPack() || working">
-        <mat-icon>shopping_card</mat-icon>
-      </button>
-    </mat-card-content>
-  </mat-card>
+    <mat-card id="card-selection-controls">
+        <mat-card-content>
+            <span>{{ message }}</span>
+            <button
+                mat-fab
+                matTooltipPosition="above"
+                matTooltip="Open a pack."
+                color="primary"
+                (click)="open()"
+                [disabled]="!collection.canOpenBooster() || working"
+            >
+                <mat-icon>grade</mat-icon>
+            </button>
+            <button
+                routerLink="/lobby"
+                mat-fab
+                matTooltipPosition="above"
+                matTooltip="Return to lobby"
+                color="accent"
+                (click)="done()"
+                [disabled]="working"
+            >
+                <mat-icon>check</mat-icon>
+            </button>
+            <button
+                mat-fab
+                matTooltipPosition="above"
+                matTooltip="Buy a pack for 100 gold."
+                color="primary"
+                (click)="buy()"
+                [disabled]="!collection.canBuyPack() || working"
+            >
+                <mat-icon>shopping_card</mat-icon>
+            </button>
+        </mat-card-content>
+    </mat-card>
 </div>

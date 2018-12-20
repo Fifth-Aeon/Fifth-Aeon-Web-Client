@@ -1,71 +1,106 @@
 <div class="lobby">
+    <mat-toolbar color="primary">
+        <span>Fifth Aeon</span> <span class="toolbar-spacer"></span>
 
-  <mat-toolbar color="primary">
-    <span>Fifth Aeon</span>
-    <span class="toolbar-spacer"></span>
+        <mat-icon
+            class="toolbar-icon"
+            matTooltip="Turn volume on"
+            (click)="soundManager.toggleMute()"
+            *ngIf="soundManager.isMuted()"
+            >volume_mute</mat-icon
+        >
+        <mat-icon
+            class="toolbar-icon"
+            matTooltip="Turn volume off"
+            (click)="soundManager.toggleMute()"
+            *ngIf="!soundManager.isMuted()"
+            >volume_up</mat-icon
+        >
 
-    <mat-icon class="toolbar-icon" matTooltip="Turn volume on" (click)="soundManager.toggleMute()" *ngIf="soundManager.isMuted()">volume_mute</mat-icon>
-    <mat-icon class="toolbar-icon" matTooltip="Turn volume off" (click)="soundManager.toggleMute()" *ngIf="!soundManager.isMuted()">volume_up</mat-icon>
+        <mat-icon
+            class="toolbar-icon"
+            matTooltip="Connected"
+            *ngIf="client.isConnected()"
+            >cloud</mat-icon
+        >
+        <mat-icon
+            class="toolbar-icon"
+            matTooltip="Disconnected"
+            *ngIf="!client.isConnected()"
+            >cloud_off</mat-icon
+        >
+    </mat-toolbar>
 
-    <mat-icon class="toolbar-icon" matTooltip="Connected" *ngIf="client.isConnected()">cloud</mat-icon>
-    <mat-icon class="toolbar-icon" matTooltip="Disconnected" *ngIf="!client.isConnected()">cloud_off</mat-icon>
+    <ng-template [ngIf]="inLobby()">
+        <mat-card class="lobby-card">
+            <mat-card-title>Singleplayer</mat-card-title>
+            <button
+                mat-raised-button
+                color="primary"
+                (click)="client.selectDeckAndStartGame(0)"
+            >
+                <mat-icon>android</mat-icon>
+                <span> Play vs A.I </span>
+            </button>
+            <button mat-raised-button color="primary" routerLink="/draft">
+                <mat-icon svgIcon="ccg:deck"></mat-icon>
+                <span> Limited vs A.I </span>
+            </button>
+            <button routerLink="/packs" mat-raised-button color="primary">
+                <mat-icon>grade</mat-icon>
+                <span> Open Packs </span>
+            </button>
 
-  </mat-toolbar>
-
-  <ng-template [ngIf]="inLobby()">
-    <mat-card class="lobby-card">
-      <mat-card-title>Singleplayer</mat-card-title>
-      <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(0)">
-        <mat-icon>android</mat-icon>
-        <span> Play vs A.I </span>
-      </button>
-      <button mat-raised-button color="primary" routerLink="/draft">
-        <mat-icon svgIcon="ccg:deck"></mat-icon>
-        <span> Limited vs A.I </span>
-      </button>
-      <button routerLink="/packs" mat-raised-button color="primary">
-        <mat-icon>grade</mat-icon>
-        <span> Open Packs </span>
-      </button>
-
-      <!--
+            <!--
       <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(1)">
         <mat-icon>android</mat-icon>
         <span> A.I vs A.I </span>
       </button>
-      --> 
-      
-    </mat-card>
+      -->
+        </mat-card>
 
-    <mat-card class="lobby-card">
-      <mat-card-title>Multiplayer</mat-card-title>
-      <ng-template [ngIf]="showMultiplayer()">
-        <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(2)">
-          <mat-icon>public</mat-icon> Public Game</button>
+        <mat-card class="lobby-card">
+            <mat-card-title>Multiplayer</mat-card-title>
+            <ng-template [ngIf]="showMultiplayer()">
+                <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="client.selectDeckAndStartGame(2)"
+                >
+                    <mat-icon>public</mat-icon> Public Game
+                </button>
 
-          <!--
+                <!--
         <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(2)">
           <mat-icon>vpn_key</mat-icon> Private Game</button>
           -->
-      </ng-template>
-      <ng-template [ngIf]="!showMultiplayer()">
-        <span>Connecting...</span>
-        <mat-progress-bar class="mp-bar" attr.color="primary" mode="indeterminate"></mat-progress-bar>
-      </ng-template>
-    </mat-card>
+            </ng-template>
+            <ng-template [ngIf]="!showMultiplayer()">
+                <span>Connecting...</span>
+                <mat-progress-bar
+                    class="mp-bar"
+                    attr.color="primary"
+                    mode="indeterminate"
+                ></mat-progress-bar>
+            </ng-template>
+        </mat-card>
 
-    <mat-card class="lobby-card">
-      <mat-card-title>Other</mat-card-title>
-      <button mat-raised-button color="primary" (click)="client.openSettings()">
-        <mat-icon>settings</mat-icon>
-        <span> Settings</span>
-      </button>
+        <mat-card class="lobby-card">
+            <mat-card-title>Other</mat-card-title>
+            <button
+                mat-raised-button
+                color="primary"
+                (click)="client.openSettings()"
+            >
+                <mat-icon>settings</mat-icon>
+                <span> Settings</span>
+            </button>
 
-      <button routerLink="/editor" mat-raised-button color="primary">
-        <mat-icon>mode_edit</mat-icon>
-        <span> Card Editor (alpha) </span>
-      </button>
-      <!-- 
+            <button routerLink="/editor" mat-raised-button color="primary">
+                <mat-icon>mode_edit</mat-icon>
+                <span> Card Editor (alpha) </span>
+            </button>
+            <!--
       <a href="{{feedbackUrl}}" target="_blank">
         <button mat-raised-button color="primary">
           <mat-icon>bug_report</mat-icon>
@@ -74,15 +109,18 @@
       </a>
       -->
 
-      <button mat-raised-button  (click)="auth.logout()" color="primary">
-        <mat-icon>cancel</mat-icon>
-        <span> Logout</span>
-      </button>
-    </mat-card>
-  </ng-template>
+            <button mat-raised-button (click)="auth.logout()" color="primary">
+                <mat-icon>cancel</mat-icon>
+                <span> Logout</span>
+            </button>
+        </mat-card>
+    </ng-template>
 
-  <ng-template [ngIf]="!inLobby()">
-    <p class="instructions">In Queue. Waiting for an opponent.</p>
-    <mat-progress-spinner attr.color="primary" mode="indeterminate"></mat-progress-spinner>
-  </ng-template>
+    <ng-template [ngIf]="!inLobby()">
+        <p class="instructions">In Queue. Waiting for an opponent.</p>
+        <mat-progress-spinner
+            attr.color="primary"
+            mode="indeterminate"
+        ></mat-progress-spinner>
+    </ng-template>
 </div>

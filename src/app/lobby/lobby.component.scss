@@ -1,14 +1,14 @@
 .instructions {
-  font-size: 2em;
+    font-size: 2em;
 }
 
 .mp-bar {
-  width: 40%;
-  margin: 0 auto;
+    width: 40%;
+    margin: 0 auto;
 }
 
 h2 {
-  display: inline;
+    display: inline;
 }
 
 // header hight = 64px
@@ -16,37 +16,37 @@ h2 {
 // calc((100vh - 64px - (168px * 3))/5)
 $vertical-marign: 2vh;
 .lobby-card {
-  margin: 0 auto;
-  max-width: 600px;
-  margin-top: $vertical-marign;
-  margin-bottom: $vertical-marign;
+    margin: 0 auto;
+    max-width: 600px;
+    margin-top: $vertical-marign;
+    margin-bottom: $vertical-marign;
 }
 
 button {
-  margin: 20px;
+    margin: 20px;
 }
 
 mat-progress-spinner {
-  margin: 0 auto;
+    margin: 0 auto;
 }
 
 .lobby {
-  width: 100%;
-  text-align: center;
+    width: 100%;
+    text-align: center;
 }
 
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 mat-radio-button {
-  margin: 5px;
+    margin: 5px;
 }
 
 .toolbar-icon {
-  padding: 0 14px;
+    padding: 0 14px;
 }
 
 .toolbar-spacer {
-  flex: 1 1 auto;
+    flex: 1 1 auto;
 }
