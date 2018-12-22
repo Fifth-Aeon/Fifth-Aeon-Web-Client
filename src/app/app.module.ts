@@ -36,7 +36,6 @@ import { OpenPackComponent } from './open-pack/open-pack.component';
 import { PlayerAvatarComponent } from './player-avatar/player-avatar.component';
 import { Preloader } from './preloader';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
-import { SortableDirective } from './sortable.directive';
 // App Angular Services
 import { SoundManager } from './sound';
 import { TipService } from './tips';
@@ -51,7 +50,6 @@ import { TipService } from './tips';
         DeckChooserComponent,
         DeckMetadataDialogComponent,
         OpenPackComponent,
-        SortableDirective,
         DraftComponent,
         LandingComponent,
         PlayerAvatarComponent,

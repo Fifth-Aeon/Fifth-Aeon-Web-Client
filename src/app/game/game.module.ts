@@ -10,11 +10,12 @@ import { OverlayComponent } from './overlay/overlay.component';
 import { RecordBarComponent } from './record-bar/record-bar.component';
 import { ResourceDisplayComponent } from './resource-display/resource-display.component';
 import { ResourceSelectorComponent } from './resource-selector/resource-selector.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 
 @NgModule({
-    imports: [CommonModule, MaterialModule],
+    imports: [CommonModule, MaterialModule, DragDropModule],
     declarations: [
         CardComponent,
         GameComponent,

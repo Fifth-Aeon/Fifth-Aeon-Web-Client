@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { Unit } from '../../game_model/unit';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+
 
 @Component({
     selector: 'ccg-damage-distribution-dialog',
@@ -15,10 +17,8 @@ export class DamageDistributionDialogComponent {
         public dialogRef: MatDialogRef<DamageDistributionDialogComponent>
     ) {}
 
-    orderChanged(order: Array<string>) {
-        const indexes = order.map(ind => parseInt(ind, 10));
-        const newOrder = indexes.map(index => this.defenders[index]);
-        this.defenders = newOrder;
+    orderChanged(event: CdkDragDrop<string[]>) {
+        moveItemInArray(this.defenders, event.previousIndex, event.currentIndex);
     }
 
     public done() {

@@ -1,13 +1,19 @@
 <h1 mat-dialog-title>Select Damage Order</h1>
 
 <div mat-dialog-actions>
-    <ccg-card scale="1.45" [card]="attacker"></ccg-card>
-    <div ccgSortable class="sortable" (orderChanged)="orderChanged($event)">
-        <ccg-card
-            scale="1.45"
-            *ngFor="let defender of defenders"
-            [card]="defender"
-        ></ccg-card>
+    <ccg-card scale="1.45" [card]="attacker" noTranslate="true"></ccg-card>
+    <div
+        cdkDropList
+        class="sortable"
+        (cdkDropListDropped)="orderChanged($event)"
+    >
+        <div class="card-wrapper" cdkDrag *ngFor="let defender of defenders">
+            <ccg-card
+                scale="1.45"
+                [card]="defender"
+                noTranslate="true"
+            ></ccg-card>
+        </div>
     </div>
 </div>
 

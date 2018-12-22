@@ -30,7 +30,7 @@ export enum MessageType {
 
 export interface Message {
     source: string;
-    type: string;
+    type: MessageType;
     data: any;
 }
 
@@ -44,7 +44,7 @@ const pingTime = 1000 * 15;
  *
  */
 export class Messenger {
-    private handlers: Map<string, (msg: Message) => void>;
+    private handlers: Map<MessageType, (msg: Message) => void>;
     private ws: WebSocket | undefined;
     private messageQueue: Queue<string> = new Queue<string>();
     private lastConnectAttempt = 0;
@@ -115,15 +115,15 @@ export class Messenger {
         if (!message) {
             return;
         }
-        const cb = this.handlers.get(message.type);
         if (!(message.data && message.source && message.type)) {
             console.error('Invalid message', message);
             return;
         }
+        const cb = this.handlers.get(message.type);
         if (cb) {
             cb(message);
         } else {
-            console.error('No handler for message type', message.type);
+            console.error('No handler for message type', message.type, 'in', message);
         }
     }
 
@@ -157,7 +157,7 @@ export class Messenger {
         if (context) {
             callback = callback.bind(context);
         }
-        this.handlers.set(MessageType[messageType], callback);
+        this.handlers.set(messageType, callback);
     }
 
     public sendMessageToServer(
