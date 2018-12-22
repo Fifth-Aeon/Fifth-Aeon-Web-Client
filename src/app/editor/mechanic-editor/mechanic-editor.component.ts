@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { MatSelectChange } from '@angular/material';
-import { Card } from '../../game_model/card';
+import { Card } from '../../game_model/card-types/card';
 import { cardList, SpellData, defaultDataObj } from '../../game_model/cards/cardList';
 import {
     MechanicData,

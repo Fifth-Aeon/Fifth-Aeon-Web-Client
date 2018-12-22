@@ -277,7 +277,7 @@
             [attr.y]="y() * 0.6"
             class="text-holder"
             [attr.width]="x()"
-            [attr.height]="card.isUnit() ? y() * 0.4 - 30 : y() * 0.4"
+            [attr.height]="card instanceof Unit ? y() * 0.4 - 30 : y() * 0.4"
         >
             <xhtml:p
                 xmlns="http://www.w3.org/1999/xhtml"
@@ -288,7 +288,7 @@
         </foreignObject>
 
         <!-- Unit info bar -->
-        <g attr.transform="translate(0 {{ y() - 25 }})" *ngIf="card.isUnit()">
+        <g attr.transform="translate(0 {{ y() - 25 }})" *ngIf="card instanceof Unit">
             <g attr.transform="translate({{ 25 }} 0)">
                 <rect
                     [attr.width]="x() - 50"

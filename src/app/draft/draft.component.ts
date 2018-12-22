@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material';
 import { CollectionService } from 'app/collection.service';
 import { DecksService } from '../decks.service';
 import { DraftService } from '../draft.service';
-import { Card } from '../game_model/card';
+import { Card } from '../game_model/card-types/card';
 import { DeckList } from '../game_model/deckList';
 import { Draft } from '../game_model/draft';
 import { standardFormat } from '../game_model/gameFormat';

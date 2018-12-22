@@ -5,8 +5,8 @@ import {
     CardData,
     defaultDataObj
 } from '../../game_model/cards/cardList';
-import { UnitType } from '../../game_model/unit';
-import { Card, CardType } from '../../game_model/card';
+import { UnitType } from '../../game_model/card-types/unit';
+import { Card, CardType } from '../../game_model/card-types/card';
 import { Route, ActivatedRoute, Router } from '@angular/router';
 import { EditorDataService } from '../editor-data.service';
 import { MatSelectChange } from '@angular/material';

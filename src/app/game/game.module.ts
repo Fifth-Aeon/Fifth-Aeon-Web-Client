@@ -12,8 +12,6 @@ import { ResourceDisplayComponent } from './resource-display/resource-display.co
 import { ResourceSelectorComponent } from './resource-selector/resource-selector.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
-
-
 @NgModule({
     imports: [CommonModule, MaterialModule, DragDropModule],
     declarations: [

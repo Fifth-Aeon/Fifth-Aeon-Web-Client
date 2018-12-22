@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CardType } from '../../game_model/card';
+import { CardType } from '../../game_model/card-types/card';
 import { cardList } from '../../game_model/cards/cardList';
 import {
     ParameterData,

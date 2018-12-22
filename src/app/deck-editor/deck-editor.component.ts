@@ -5,7 +5,7 @@ import { DeckMetadataDialogComponent } from 'app/deck-metadata-dialog/deck-metad
 import { Collection } from 'app/game_model/collection';
 import { random, sortBy } from 'lodash';
 import { DecksService } from '../decks.service';
-import { Card } from '../game_model/card';
+import { Card } from '../game_model/card-types/card';
 import { DeckList } from '../game_model/deckList';
 import { GameFormat } from '../game_model/gameFormat';
 

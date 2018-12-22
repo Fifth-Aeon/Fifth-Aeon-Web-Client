@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Card, GameZone, CardType } from '../../game_model/card';
-import { Unit, UnitType } from '../../game_model/unit';
+import { Card, GameZone, CardType } from '../../game_model/card-types/card';
+import { Unit, UnitType } from '../../game_model/card-types/unit';
 import { Game } from '../../game_model/game';
 import { cardList } from '../../game_model/cards/cardList';
 
@@ -107,7 +107,7 @@ keywordsDefs.set(
 keywordsDefs.set('Statue', 'A 0/1 structure that cannot attack.');
 cardList
     .getCards()
-    .filter(card => card.isUnit())
+    .filter(card => card instanceof Unit)
     .forEach(card => {
         const unit = card as Unit;
         let base = `${unit.getDamage()}/${unit.getLife()} ${
@@ -142,8 +142,8 @@ function toProperCase(str: string) {
     styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit {
-    @Input() card: Card;
-    @Input() game: Game;
+    @Input() card?: Card;
+    @Input() game?: Game;
     @Input() scale = 1.0;
     @Input() distFromMid = 0;
     sizeY = 0;
@@ -241,6 +241,9 @@ export class CardComponent implements OnInit {
     }
 
     private getKeywords() {
+        if (!this.card || !this.game) {
+            throw new Error('Card lacks required inputs');
+        }
         return Array.from(
             new Set(this.card.getText(this.game).match(keywordRegex))
         );
@@ -258,6 +261,9 @@ export class CardComponent implements OnInit {
     }
 
     public getImage() {
+        if (!this.card) {
+            throw new Error('Card lacks required inputs');
+        }
         const url = this.card.getImage();
         const prefix = url.includes('data:image/png;base64')
             ? ''
@@ -271,6 +277,9 @@ export class CardComponent implements OnInit {
         }
         if (this.target) {
             return GlowType.Targeted;
+        }
+        if (!this.card) {
+            throw new Error('Card lacks required inputs');
         }
         if (this.card.isAttacking()) {
             return GlowType.Attack;

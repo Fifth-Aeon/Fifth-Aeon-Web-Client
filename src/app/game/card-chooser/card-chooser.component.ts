@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
-import { Card } from '../../game_model/card';
+import { Card } from '../../game_model/card-types/card';
 
 @Component({
     selector: 'ccg-card-chooser',

@@ -16,7 +16,7 @@ import { Log } from './game_model/log';
 import { Scenario } from './game_model/scenario';
 import { allDecks } from './game_model/scenarios/decks';
 import { ServerGame } from './game_model/serverGame';
-import { Unit } from './game_model/unit';
+import { Unit } from './game_model/card-types/unit';
 import { MessageType, Messenger } from './messenger';
 import { MessengerService } from './messenger.service';
 import { SoundManager } from './sound';

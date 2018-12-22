@@ -10,14 +10,14 @@ import { MatDialog, MatDialogConfig } from '@angular/material';
 import { Hotkey, HotkeysService } from 'angular2-hotkeys';
 import { WebClient } from '../client';
 import { GameManager } from '../gameManager';
-import { Card, CardType, GameZone } from '../game_model/card';
+import { Card, CardType, GameZone } from '../game_model/card-types/card';
 import { ClientGame } from '../game_model/clientGame';
-import { Enchantment } from '../game_model/enchantment';
+import { Enchantment } from '../game_model/card-types/enchantment';
 import { GamePhase } from '../game_model/game';
-import { Item } from '../game_model/item';
-import { Permanent } from '../game_model/permanent';
+import { Item } from '../game_model/card-types/item';
+import { Permanent } from '../game_model/card-types/permanent';
 import { Player } from '../game_model/player';
-import { Unit } from '../game_model/unit';
+import { Unit } from '../game_model/card-types/unit';
 import { TipService, TipType } from '../tips';
 import { CardChooserComponent } from './card-chooser/card-chooser.component';
 import { OverlayService } from './overlay.service';
@@ -339,10 +339,9 @@ export class GameComponent implements OnInit, OnDestroy {
     private setSelected(card: Card) {
         const targeter = card.getTargeter();
         this.selected = card;
-        if (card.getCardType() === CardType.Item && this.host === undefined) {
-            const item = card as Item;
+        if (card instanceof Item && this.host === undefined) {
             this.validTargets = new Set(
-                item.getHostTargeter().getValidTargets(card, this.game)
+                card.getHostTargeter().getValidTargets(card, this.game)
             );
             return;
         }
@@ -387,7 +386,7 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     public isDarkened(perm: Permanent) {
-        return perm.isUnit() && (perm as Unit).isExhausted();
+        return perm instanceof Unit && perm.isExhausted();
     }
 
     private clear() {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { DeckList } from 'app/game_model/deckList';
-import { Card } from 'app/game_model/card';
+import { Card } from 'app/game_model/card-types/card';
 
 @Component({
     selector: 'ccg-deck-metadata-dialog',

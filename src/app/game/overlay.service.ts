@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { remove } from 'lodash';
 import { Animator, BattleAnimationEvent } from '../game_model/animator';
-import { Card, CardType } from '../game_model/card';
+import { Card, CardType } from '../game_model/card-types/card';
 import { ClientGame } from '../game_model/clientGame';
 import { Game } from '../game_model/game';
-import { Item } from '../game_model/item';
-import { Unit } from '../game_model/unit';
+import { Item } from '../game_model/card-types/item';
+import { Unit } from '../game_model/card-types/unit';
 
 interface Arrow {
     x1: number;
@@ -126,7 +126,7 @@ export class OverlayService {
     }
 
     public addTargets(card: Card, targets: Array<Unit>) {
-        if (!card.isUnit()) {
+        if (!(card instanceof Unit)) {
             this.displayCards.push(card);
             setTimeout(() => {
                 remove(this.displayCards, card);

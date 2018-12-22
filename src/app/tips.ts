@@ -4,11 +4,11 @@ import { SoundManager } from './sound';
 import { MatSnackBar } from '@angular/material';
 
 import { Game, GamePhase } from './game_model/game';
-import { Card, CardType } from './game_model/card';
+import { Card, CardType } from './game_model/card-types/card';
 import { Player } from './game_model/player';
-import { Unit } from './game_model/unit';
-import { Item } from './game_model/item';
-import { Enchantment } from './game_model/enchantment';
+import { Unit } from './game_model/card-types/unit';
+import { Item } from './game_model/card-types/item';
+import { Enchantment } from './game_model/card-types/enchantment';
 import {
     Unblockable,
     Flying,
@@ -244,7 +244,7 @@ export class TipService {
                 this.playTip(TipType.PlayedEnchantment);
                 break;
         }
-        if (card.isUnit()) {
+        if (card instanceof Unit) {
         } else {
             this.playTip(TipType.EndTurn);
         }
@@ -372,7 +372,7 @@ export class TipService {
                     .replace(/\./g, '')}.`
             );
         } else if (
-            card.isUnit() &&
+            card instanceof Unit &&
             !game.getBoard().canPlayPermanent(card as Unit)
         ) {
             this.announce(`Your board is too full to play a unit.`);

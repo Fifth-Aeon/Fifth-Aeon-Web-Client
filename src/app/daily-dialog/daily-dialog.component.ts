@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Card } from '../game_model/card';
+import { Card } from '../game_model/card-types/card';
 import { MatDialogRef } from '@angular/material';
 
 @Component({

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { cardList, CardData } from '../game_model/cards/cardList';
 import * as uuid from 'uuid';
-import { CardType } from '../game_model/card';
-import { UnitType } from '../game_model/unit';
+import { CardType } from '../game_model/card-types/card';
+import { UnitType } from '../game_model/card-types/unit';
 import { CollectionService } from '../collection.service';
 
 @Injectable()

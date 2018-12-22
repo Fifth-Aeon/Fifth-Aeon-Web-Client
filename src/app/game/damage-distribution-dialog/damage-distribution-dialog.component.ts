@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
-import { Unit } from '../../game_model/unit';
+import { Unit } from '../../game_model/card-types/unit';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 
