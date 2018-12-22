@@ -15,8 +15,8 @@ const deleteUrl = `${apiURL}/api/cards/deleteDeck`;
 @Injectable()
 export class DecksService {
     private decks: Array<DeckList> = [];
-    private currentDeck: DeckList;
-    private editingDeck: DeckList;
+    private currentDeck: DeckList = new DeckList();
+    private editingDeck: DeckList = new DeckList();
     private currentDeckNumber = 0;
 
     constructor(
@@ -51,9 +51,9 @@ export class DecksService {
 
     public loadDecks() {
         return this.http
-            .get(loadUrl, { headers: this.auth.getAuthHeader() })
+            .get<SavedDeck[]>(loadUrl, { headers: this.auth.getAuthHeader() })
             .toPromise()
-            .then((decks: SavedDeck[]) => {
+            .then(decks => {
                 this.decks.length = 0;
                 for (const deckData of decks) {
                     try {

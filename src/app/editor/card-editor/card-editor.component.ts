@@ -63,10 +63,10 @@ export class CardEditorComponent implements OnInit {
         resoureName: 'synthesis' | 'growth' | 'renewal' | 'decay'
     ) {
         const total =
-            this.data.cost.renewal +
-            this.data.cost.synthesis +
-            this.data.cost.growth +
-            this.data.cost.decay;
+            (this.data.cost.renewal || 0) +
+            (this.data.cost.synthesis || 0) +
+            (this.data.cost.growth || 0) +
+            (this.data.cost.decay || 0);
         return (
             CardEditorComponent.MaxRequirementTotal -
             total +
@@ -74,7 +74,7 @@ export class CardEditorComponent implements OnInit {
         );
     }
 
-    public getKeys(enumeration) {
+    public getKeys(enumeration: any) {
         return Object.keys(enumeration)
             .filter(key => !isNaN(parseInt(key, 10)))
             .map(key => parseInt(key, 10));

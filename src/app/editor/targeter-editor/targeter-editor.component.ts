@@ -11,7 +11,7 @@ import {
 })
 export class TargeterEditorComponent implements OnInit {
     public targeterList = targeterList;
-    @Input() data: TargeterData;
+    @Input() data?: TargeterData;
 
     constructor() {}
 

@@ -33,14 +33,13 @@ export enum GameType {
 
 @Injectable()
 export class WebClient {
-    private username: string;
-
+    private username = '';
     private messenger: Messenger;
     private state: ClientState = ClientState.UnAuth;
     private connected = false;
 
-    public onDeckSelected: () => void;
-    public getGameReward: (won: boolean) => Promise<string> = null;
+    public getGameReward: ((won: boolean) => Promise<string>) | null = null;
+    public onDeckSelected: (() => void) = () => null;
     private onError: (error: string) => void = () => null;
 
     constructor(

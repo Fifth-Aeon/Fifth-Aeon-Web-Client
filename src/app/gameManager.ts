@@ -6,7 +6,6 @@ import { DamageDistributionDialogComponent } from './game/damage-distribution-di
 import { OverlayService } from './game/overlay.service';
 import { AI } from './game_model/ai/ai';
 import { DefaultAI } from './game_model/ai/defaultAi';
-import { Card } from './game_model/card';
 import { ClientGame } from './game_model/clientGame';
 import { DeckList } from './game_model/deckList';
 import { GameAction, GameActionType } from './game_model/events/gameAction';
@@ -25,21 +24,21 @@ import { TipService } from './tips';
 
 @Injectable()
 export class GameManager {
-    private username: string;
-    private opponentUsername: string;
+    private username = '';
+    private opponentUsername = '';
     private deck: DeckList = new DeckList(standardFormat);
-    private playerNumber: number;
-    private opponentNumber: number;
+    private playerNumber = 0;
+    private opponentNumber = 1;
 
-    private game1: ClientGame;
-    private game2: ClientGame;
-    private gameModel: ServerGame;
+    private game1: ClientGame | null = null;
+    private game2: ClientGame | null = null;
+    private gameModel: ServerGame | null = null;
 
     private ais: Array<AI> = [];
-    private aisByPlayerNumber = [];
+    private aisByPlayerNumber: Array<AI | null> = [];
 
-    private log: Log;
-    private onGameEnd: (won: boolean, quit: boolean) => any;
+    private log: Log | null = null;
+    private onGameEnd: ((won: boolean, quit: boolean) => any) | null = null;
     private messenger: Messenger;
 
     constructor(
@@ -84,45 +83,21 @@ export class GameManager {
     }
 
     // Game Actions -------------------------------------------------------------------------
-    public playCard(card: Card, targets: Unit[] = []) {
-        this.game1.playCardExtern(card, targets);
-        this.tips.playCardTrigger(card, this.game1);
-    }
-
-    public makeChoice(cards: Card[]) {
-        this.game1.makeChoice(this.playerNumber, cards);
-    }
-
-    public pass() {
-        this.game1.pass();
-    }
-
-    public playResource(type: string) {
-        this.game1.playResource(type);
-    }
-
-    public toggleAttacker(unit: Unit) {
-        this.game1.declareAttacker(unit);
-    }
-
-    public declareBlocker(blocker: Unit, blocked: Unit | null) {
-        this.game1.declareBlocker(blocker, blocked);
-    }
-
     public attackWithAll() {
+        const game = this.game1;
         if (
-            this.playerNumber !==
-            this.game1.getCurrentPlayer().getPlayerNumber()
+            !game ||
+            this.playerNumber !== game.getCurrentPlayer().getPlayerNumber()
         ) {
             return;
         }
-        const potential = this.game1
+        const potential = game
             .getCurrentPlayerUnits()
             .filter(unit => unit.canAttack());
         const allAttacking = every(potential, unit => unit.isAttacking());
         potential.forEach(unit => {
             if (allAttacking || !unit.isAttacking()) {
-                this.toggleAttacker(unit);
+                game.declareAttacker(unit);
             }
         });
     }
@@ -149,7 +124,7 @@ export class GameManager {
     }
 
     private checkPriorityChange(event: GameSyncEvent) {
-        if (!this.gameModel.canTakeAction()) {
+        if (!this.gameModel || !this.gameModel.canTakeAction()) {
             return;
         }
         if (
@@ -172,6 +147,10 @@ export class GameManager {
             return;
         }
 
+        if (!this.gameModel) {
+            throw new Error('Game model is undefined');
+        }
+
         const res = this.gameModel.handleAction(action);
         if (res === null) {
             console.error(
@@ -189,12 +168,16 @@ export class GameManager {
     }
 
     // Dialogs ----------------------------------------------------------
-    public addBlockOverlay(blocker: string, blocked: string) {
+    public addBlockOverlay(blocker: string, blocked: string | null) {
         if (blocked === null) {
             this.overlay.removeBlocker(blocker);
             return;
         }
-        if (this.game1.getUnitById(blocker).getBlockedUnitId() !== null) {
+        const game = this.game1;
+        if (
+            game !== null &&
+            game.getUnitById(blocker).getBlockedUnitId() !== null
+        ) {
             this.overlay.removeBlocker(blocker);
         }
         this.overlay.addBlocker(blocker, blocked);
@@ -215,38 +198,55 @@ export class GameManager {
             .afterClosed()
             .toPromise()
             .then((order: Unit[]) => {
-                this.game1.setAttackOrder(attacker, order);
+                const game = this.game1;
+                if (!game) {
+                    throw new Error('Game has not started.');
+                }
+                game.setAttackOrder(attacker, order);
             });
     }
 
     private createDamageSelectors() {
+        const playerGame = this.game1;
+        if (!playerGame) {
+            throw new Error('Games not in progress');
+        }
         const orderables = Array.from(
-            this.game1.getModableDamageDistributions().entries()
+            playerGame.getModableDamageDistributions().entries()
         ).map(entry => {
             return {
-                attacker: this.game1.getUnitById(entry[0]),
+                attacker: playerGame.getUnitById(entry[0]),
                 blockers: entry[1]
             };
         });
         const runNext = () => {
             if (orderables.length === 0) {
-                this.game1.pass();
+                playerGame.pass();
                 return;
             }
             const next = orderables.pop();
-            this.openDamageSelector(next.attacker, next.blockers).then(runNext);
+            if (next) {
+                this.openDamageSelector(next.attacker, next.blockers).then(
+                    runNext
+                );
+            }
         };
         runNext();
     }
 
     private handleGameEvent(event: GameSyncEvent) {
+        const playerGame = this.game1;
+        if (!playerGame) {
+            throw new Error('Games not in progress');
+        }
+
         // The game is being controlled by the player, so display tips and update the game state
         // (otherwise the A.I will manage this so we needn't bother)
         if (this.ais.length < 2) {
             this.zone.run(() =>
-                this.game1.syncServerEvent(this.playerNumber, event)
+                playerGame.syncServerEvent(this.playerNumber, event)
             );
-            this.tips.handleGameEvent(this.game1, this.playerNumber, event);
+            this.tips.handleGameEvent(playerGame, this.playerNumber, event);
         }
 
         if (this.ais.length > 0) {
@@ -262,7 +262,7 @@ export class GameManager {
                 break;
             case SyncEventType.EnchantmentModified:
                 const avatar =
-                    this.game1.getCurrentPlayer().getPlayerNumber() ===
+                    playerGame.getCurrentPlayer().getPlayerNumber() ===
                     this.playerNumber
                         ? 'player'
                         : 'enemy';
@@ -274,7 +274,7 @@ export class GameManager {
             case SyncEventType.PhaseChange:
                 if (
                     event.phase === GamePhase.DamageDistribution &&
-                    this.game1.isActivePlayer(this.playerNumber)
+                    playerGame.isActivePlayer(this.playerNumber)
                 ) {
                     this.createDamageSelectors();
                 }
@@ -284,8 +284,8 @@ export class GameManager {
                 break;
             case SyncEventType.PlayCard:
                 this.overlay.onPlay(
-                    this.game1.getCardById(event.played.id),
-                    this.game1,
+                    playerGame.getCardById(event.played.id),
+                    playerGame,
                     this.playerNumber
                 );
                 break;
@@ -295,7 +295,7 @@ export class GameManager {
         }
     }
 
-    public getGame() {
+    public getGame(): ClientGame | null {
         return this.game1;
     }
 
@@ -342,7 +342,11 @@ export class GameManager {
             .getAnimator()
             .awaitAnimationEnd()
             .then(() => {
-                this.onGameEnd(playerWon, quit);
+                if (this.onGameEnd) {
+                    this.onGameEnd(playerWon, quit);
+                } else {
+                    console.warn('No Game end callback');
+                }
             });
 
         this.soundManager
@@ -396,6 +400,9 @@ export class GameManager {
         this.opponentNumber = 1;
         this.log = new Log(this.playerNumber);
         const aiDeck = sample(allDecks);
+        if (!aiDeck) {
+            throw new Error('No A.I decks found');
+        }
 
         // Initialize games
         this.gameModel = new ServerGame('server', standardFormat, [
@@ -424,7 +431,7 @@ export class GameManager {
             );
 
             this.ais.push(newAI);
-            this.aisByPlayerNumber = [undefined, newAI];
+            this.aisByPlayerNumber = [null, newAI];
         } else {
             const aiGames = [this.game1, this.game2];
             for (let i = 0; i < aiCount; i++) {
@@ -445,7 +452,9 @@ export class GameManager {
 
         this.zone.run(() => {
             this.opponentUsername = aiDeck.name;
-            this.sendEventsToLocalPlayers(this.gameModel.startGame());
+            if (this.gameModel) {
+                this.sendEventsToLocalPlayers(this.gameModel.startGame());
+            }
             this.startAiWithSpeed(this.speed.speeds.aiTick);
         });
     }

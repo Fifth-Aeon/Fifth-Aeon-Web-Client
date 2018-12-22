@@ -134,8 +134,7 @@ const tipLocalStore = 'tip-store';
 @Injectable()
 export class TipService {
     private played: any;
-    private lastMsg: string;
-    private username: string;
+    private lastMsg = '';
 
     constructor(
         private soundManager: SoundManager,
@@ -192,7 +191,6 @@ export class TipService {
     }
 
     public setUsername(username: string) {
-        this.username = username;
         tipText.set(
             TipType.StartGame,
             `Welcome ${username}. I will provide tips to help you learn to play.
@@ -216,7 +214,7 @@ export class TipService {
         if (this.played[tip] || this.played.disabled) {
             return false;
         }
-        this.announce(tipText.get(tip));
+        this.announce(tipText.get(tip) || '');
         this.played[tip] = true;
         localStorage.setItem(tipLocalStore, JSON.stringify(this.played));
         return true;

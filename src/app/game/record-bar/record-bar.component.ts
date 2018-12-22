@@ -7,5 +7,5 @@ import { Log } from '../../game_model/log';
     styleUrls: ['./record-bar.component.css']
 })
 export class RecordBarComponent {
-    @Input() log: Log;
+    @Input() log: Log = new Log();
 }

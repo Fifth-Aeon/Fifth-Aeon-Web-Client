@@ -72,17 +72,17 @@ const deathFadeTime = OverlayService.arrowTimer + 200;
     ]
 })
 export class GameComponent implements OnInit, OnDestroy {
-    private host: Unit;
+    private host: Unit | undefined;
     public game: ClientGame;
     public player: Player;
     public playerNo: number;
     public enemy: Player;
     public enemyNo: number;
     public locations = GameZone;
-    public selected: Card = null;
+    public selected: Card | null = null;
     public validTargets: Set<Unit> = new Set();
     public blockable: Set<Unit> = new Set();
-    public blocker: Unit;
+    public blocker: Unit | undefined;
 
     private hotkeys = [
         new Hotkey(
@@ -113,7 +113,13 @@ export class GameComponent implements OnInit, OnDestroy {
         private tips: TipService,
         public gameManager: GameManager
     ) {
-        this.game = gameManager.getGame();
+        const game = gameManager.getGame();
+        if (!game) {
+            throw new Error(
+                'Cannot initlize game component, game not in progress'
+            );
+        }
+        this.game = game;
         this.overlay.setGame(this.game);
         this.playerNo = gameManager.getPlayerData().me;
         this.enemyNo = gameManager.getPlayerData().op;
@@ -172,7 +178,7 @@ export class GameComponent implements OnInit, OnDestroy {
             return;
         }
         this.clear();
-        this.gameManager.pass();
+        this.game.pass();
     }
 
     public openCardChooser(
@@ -180,7 +186,7 @@ export class GameComponent implements OnInit, OnDestroy {
         cards: Array<Card>,
         min: number = 1,
         max: number = 1,
-        callback: (cards: Card[]) => void = null,
+        callback: ((cards: Card[]) => void) | null = null,
         message: string = ''
     ) {
         this.game.deferChoice(player, cards, min, max, callback);
@@ -302,6 +308,7 @@ export class GameComponent implements OnInit, OnDestroy {
             }
             return 'Enemy Turn';
         }
+        return 'Error';
     }
 
     private doestNotNeedTarget(card: Card): boolean {
@@ -322,7 +329,7 @@ export class GameComponent implements OnInit, OnDestroy {
         }
 
         if (this.doestNotNeedTarget(card)) {
-            this.gameManager.playCard(card, []);
+            this.game.playCardExtern(card, []);
             this.clear();
         } else {
             this.setSelected(card);
@@ -332,7 +339,7 @@ export class GameComponent implements OnInit, OnDestroy {
     private setSelected(card: Card) {
         const targeter = card.getTargeter();
         this.selected = card;
-        if (card.getCardType() === CardType.Item && this.host === null) {
+        if (card.getCardType() === CardType.Item && this.host === undefined) {
             const item = card as Item;
             this.validTargets = new Set(
                 item.getHostTargeter().getValidTargets(card, this.game)
@@ -348,8 +355,10 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     public setHost(host: Unit) {
-        const item = this.selected as Item;
         this.host = host;
+        if (!this.selected) {
+            throw new Error('Selected must be defined');
+        }
         if (this.doestNotNeedTarget(this.selected)) {
             this.game.playCardExtern(this.selected, [], this.host);
             this.clear();
@@ -359,6 +368,10 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     public playTargeting(target: Unit) {
+        if (!this.selected) {
+            throw new Error('Selected must be defined');
+        }
+        console.log('play', this.selected, 'targeting', target);
         this.game.playCardExtern(this.selected, [target], this.host);
         this.clear();
     }
@@ -379,8 +392,8 @@ export class GameComponent implements OnInit, OnDestroy {
 
     private clear() {
         this.selected = null;
-        this.host = null;
-        this.blocker = null;
+        this.host = undefined;
+        this.blocker = undefined;
         this.validTargets = new Set();
         this.blockable = new Set();
     }
@@ -411,7 +424,7 @@ export class GameComponent implements OnInit, OnDestroy {
             this.blocker
         ) {
             if (this.blocker.canBlockTarget(target)) {
-                this.gameManager.declareBlocker(this.blocker, target);
+                this.game.declareBlocker(this.blocker, target);
                 this.clear();
             } else {
                 this.tips.cannotBlockTargetTip(this.blocker, target, this.game);
@@ -442,11 +455,8 @@ export class GameComponent implements OnInit, OnDestroy {
         }
         const unit = card as Unit;
         const phase = this.game.getPhase();
-        if (this.canPlayTargeting(unit)) {
-            if (
-                this.selected.getCardType() === CardType.Item &&
-                this.host === null
-            ) {
+        if (this.selected && this.canPlayTargeting(unit)) {
+            if (this.selected.getCardType() === CardType.Item && !this.host) {
                 this.setHost(unit);
             } else {
                 this.playTargeting(unit);
@@ -462,7 +472,7 @@ export class GameComponent implements OnInit, OnDestroy {
                     this.tips.cannotAttackTip(unit, this.game);
                     return;
                 }
-                this.gameManager.toggleAttacker(unit);
+                this.game.declareAttacker(unit);
             } else {
                 this.tips.announce(
                     'You may only attack once each turn. All units attack at the same time.'
@@ -473,7 +483,7 @@ export class GameComponent implements OnInit, OnDestroy {
             phase === GamePhase.Block
         ) {
             if (this.blocker === unit) {
-                this.gameManager.declareBlocker(unit, null);
+                this.game.declareBlocker(unit, null);
                 this.clear();
             } else if (unit.canBlock()) {
                 this.setBlocker(unit);

@@ -17,6 +17,12 @@ const buyPackURL = `${apiURL}/api/cards/buy`;
 const openPackURL = `${apiURL}/api/cards/openPack`;
 const dailyURL = `${apiURL}/api/cards/checkDaily`;
 
+interface DailyRewardData {
+    daily: boolean;
+    cards: string[];
+    nextRewardTime: number;
+}
+
 @Injectable()
 export class CollectionService {
     private collection = new Collection();
@@ -45,27 +51,23 @@ export class CollectionService {
 
     private checkDaily() {
         this.http
-            .get(dailyURL, { headers: this.auth.getAuthHeader() })
+            .get<DailyRewardData>(dailyURL, {
+                headers: this.auth.getAuthHeader()
+            })
             .toPromise()
-            .then(
-                (res: {
-                    daily: boolean;
-                    cards: string[];
-                    nextRewardTime: number;
-                }) => {
-                    const dialogRef = this.dialog.open(DailyDialogComponent);
+            .then(res => {
+                const dialogRef = this.dialog.open(DailyDialogComponent);
 
-                    if (!res.daily) {
-                        const wait = res.nextRewardTime / 1000 / 60 / 60;
-                        dialogRef.componentInstance.nextRewardTime = wait;
-                        return;
-                    }
-
-                    dialogRef.componentInstance.rewards = res.cards.map(id =>
-                        cardList.getCard(id)
-                    );
+                if (!res.daily) {
+                    const wait = res.nextRewardTime / 1000 / 60 / 60;
+                    dialogRef.componentInstance.nextRewardTime = wait;
+                    return;
                 }
-            );
+
+                dialogRef.componentInstance.rewards = res.cards.map(id =>
+                    cardList.getCard(id)
+                );
+            });
     }
 
     public unlockAll() {
@@ -87,9 +89,11 @@ export class CollectionService {
 
     public load() {
         return this.http
-            .get(loadUrl, { headers: this.auth.getAuthHeader() })
+            .get<SavedCollection>(loadUrl, {
+                headers: this.auth.getAuthHeader()
+            })
             .toPromise()
-            .then((res: SavedCollection) => {
+            .then(res => {
                 this.collection.fromSavable(res);
                 this.checkDaily();
             });

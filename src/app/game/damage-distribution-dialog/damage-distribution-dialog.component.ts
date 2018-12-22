@@ -8,8 +8,8 @@ import { Unit } from '../../game_model/unit';
     styleUrls: ['./damage-distribution-dialog.component.scss']
 })
 export class DamageDistributionDialogComponent {
-    public attacker: Unit;
-    public defenders: Array<Unit>;
+    public attacker?: Unit;
+    public defenders: Array<Unit> = [];
 
     constructor(
         public dialogRef: MatDialogRef<DamageDistributionDialogComponent>

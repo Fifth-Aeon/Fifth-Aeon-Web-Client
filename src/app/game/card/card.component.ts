@@ -113,8 +113,8 @@ cardList
         let base = `${unit.getDamage()}/${unit.getLife()} ${
             UnitType[unit.getUnitType()]
         }`;
-        if (unit.getText(null).length > 0) {
-            base += ` with "${unit.getText(null)}"`;
+        if (unit.getText().length > 0) {
+            base += ` with "${unit.getText()}"`;
         }
         keywordsDefs.set(unit.getName(), base);
     });
@@ -144,10 +144,10 @@ function toProperCase(str: string) {
 export class CardComponent implements OnInit {
     @Input() card: Card;
     @Input() game: Game;
-    @Input() scale: number;
-    @Input() distFromMid: number;
-    sizeY: number;
-    sizeX: number;
+    @Input() scale = 1.0;
+    @Input() distFromMid = 0;
+    sizeY = 0;
+    sizeX = 0;
     padding = 30;
     hovered = false;
     @Input() darkened = false;
@@ -160,8 +160,6 @@ export class CardComponent implements OnInit {
         multiline: true
     };
     public glowTypes = GlowType;
-
-    constructor() {}
 
     public getResUrl(type: string) {
         switch (type) {

@@ -17,7 +17,7 @@ export class EditorListComponent implements OnInit {
     }
 
     public newCard() {
-        this.editorData.createCard(prompt('Card Name'));
+        this.editorData.createCard('');
     }
 
     ngOnInit() {}

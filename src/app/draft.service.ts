@@ -14,7 +14,7 @@ export class DraftService {
     private static getURL = `${apiURL}/api/drafts/getDraft`;
     private static endURL = `${apiURL}/api/drafts/endDraft`;
 
-    private currentDraft: Draft = null;
+    private currentDraft: Draft | null = null;
 
     constructor(
         private client: WebClient,
@@ -42,6 +42,9 @@ export class DraftService {
     }
 
     public endDraft() {
+        if (!this.currentDraft) {
+            throw new Error('Cannot end draft that is not in progress');
+        }
         return this.http
             .post<{ message: string; reward: Rewards }>(
                 DraftService.endURL,
@@ -57,6 +60,9 @@ export class DraftService {
     }
 
     public saveDraftData() {
+        if (!this.currentDraft) {
+            throw new Error('Cannot save draft that is not in progress');
+        }
         return this.http
             .post(
                 DraftService.updateURL,
@@ -68,7 +74,7 @@ export class DraftService {
     }
 
     public playGame() {
-        if (!this.currentDraft.canPlayGame()) {
+        if (!this.currentDraft || !this.currentDraft.canPlayGame()) {
             return;
         }
         this.client.getGameReward = won => this.onGameEnd(won);
@@ -77,11 +83,17 @@ export class DraftService {
     }
 
     public async retire() {
+        if (!this.currentDraft) {
+            throw new Error('Draft not in progress');
+        }
         this.currentDraft.retire();
         return CollectionService.describeReward(await this.endDraft());
     }
 
     private async onGameEnd(won: boolean) {
+        if (!this.currentDraft) {
+            throw new Error('Draft not in progress');
+        }
         this.currentDraft.updateRecord(won);
         this.client.getGameReward = null;
         if (!this.currentDraft.hasEnded()) {
@@ -91,7 +103,7 @@ export class DraftService {
         return CollectionService.describeReward(await this.endDraft());
     }
 
-    public getServerDraft(): Promise<Draft> {
+    public getServerDraft(): Promise<Draft | undefined> {
         return this.http
             .get<{ message: string; draftData: SavedDraft }>(
                 DraftService.getURL,

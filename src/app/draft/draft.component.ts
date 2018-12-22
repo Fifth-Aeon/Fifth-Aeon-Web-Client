@@ -15,10 +15,10 @@ import { TipService, TipType } from '../tips';
     styleUrls: ['./draft.component.scss']
 })
 export class DraftComponent {
-    public draft: Draft;
+    public draft?: Draft;
     public loaded = false;
-    public selectable: Array<Card>;
-    public deck: DeckList;
+    public selectable: Array<Card> = [];
+    public deck: DeckList = new DeckList();
     public format = standardFormat;
     public retired = false;
 
@@ -33,8 +33,8 @@ export class DraftComponent {
         draftService.getCurrentDraft().then(draft => {
             this.draft = draft;
             if (draft) {
-                this.deck = this.draft.getDeck();
-                if (this.draft.canPickCard()) {
+                this.deck = draft.getDeck();
+                if (draft.canPickCard()) {
                     this.nextRound();
                 }
             }
@@ -53,6 +53,9 @@ export class DraftComponent {
             } else {
                 this.draftService.getCurrentDraft().then(draft => {
                     this.collection.getCollection().removeGold(Draft.cost);
+                    if (draft === undefined) {
+                        throw new Error();
+                    }
                     this.draft = draft;
                     this.deck = this.draft.getDeck();
                     if (this.draft.canPickCard()) {
@@ -76,10 +79,16 @@ export class DraftComponent {
     }
 
     private nextRound() {
+        if (this.draft === undefined) {
+            throw new Error('Draft no started.');
+        }
         this.selectable = Array.from(this.draft.getChoices());
     }
 
     public add(card: Card) {
+        if (this.draft === undefined) {
+            throw new Error('Draft no started.');
+        }
         this.draft.pickCard(card);
         if (this.draft.canPickCard()) {
             this.nextRound();

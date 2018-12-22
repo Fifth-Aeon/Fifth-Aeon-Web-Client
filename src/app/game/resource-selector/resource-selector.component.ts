@@ -8,7 +8,7 @@ import { GameManager } from '../../gameManager';
     styleUrls: ['./resource-selector.component.css']
 })
 export class ResourceSelectorComponent implements OnInit, OnDestroy {
-    @Input() canPlayResource: boolean;
+    @Input() canPlayResource = false;
 
     private hotkeys: Array<Hotkey> = [];
 
@@ -43,10 +43,11 @@ export class ResourceSelectorComponent implements OnInit, OnDestroy {
     }
 
     playResource(type: string) {
-        if (!this.canPlayResource) {
+        const game = this.gameManager.getGame();
+        if (!this.canPlayResource || !game) {
             return;
         }
-        this.gameManager.playResource(type);
+        game.playResource(type);
     }
 
     ngOnInit() {

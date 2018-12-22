@@ -25,9 +25,9 @@ export class SpeedService {
     public setMultiplier(multiplier: number) {
         this.multiplier = multiplier;
         this.saveSettings();
-        for (const prop in this.speeds) {
-            this.speeds[prop] = this.baseSpeed[prop] / multiplier;
-        }
+        this.speeds.aiTick = this.baseSpeed.aiTick / multiplier;
+        this.speeds.arrow = this.baseSpeed.arrow / multiplier;
+        this.speeds.cardDeath = this.baseSpeed.cardDeath / multiplier;
     }
 
     private saveSettings() {

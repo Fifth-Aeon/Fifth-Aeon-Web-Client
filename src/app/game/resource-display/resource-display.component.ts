@@ -7,7 +7,7 @@ import { Resource } from '../../game_model/resource';
     styleUrls: ['./resource-display.component.scss']
 })
 export class ResourceDisplayComponent implements OnInit {
-    @Input() resource: Resource;
+    @Input() resource: Resource = new Resource(0);
 
     iconSize = 28;
     padding = 15;

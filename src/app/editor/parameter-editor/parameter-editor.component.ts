@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CardType } from '../../game_model/card';
 import { cardList } from '../../game_model/cards/cardList';
-import { ParameterData, ParameterType } from '../../game_model/cards/parameters';
+import {
+    ParameterData,
+    ParameterType
+} from '../../game_model/cards/parameters';
 import { ResourceType } from '../../game_model/resource';
 
 enum EditorType {
@@ -21,15 +24,15 @@ interface EnumValue {
     styleUrls: ['./parameter-editor.component.scss']
 })
 export class ParameterEditorComponent implements OnInit {
-    @Input() name: string;
-    @Input() type: ParameterType;
-    @Input() data: ParameterData;
+    @Input() name = '';
+    @Input() type: ParameterType = ParameterType.Integer;
+    @Input() data: ParameterData = 0;
     @Output() change: EventEmitter<ParameterData> = new EventEmitter<
         ParameterData
     >();
     public EditorType = EditorType;
 
-    private cardTypeValues = new Map<CardType, EnumValue[]>();
+    private cardTypeValues = new Map<CardType | undefined, EnumValue[]>();
     private resourceEnumValues = this.getEnumValues(ResourceType);
     private cardEnumValues = this.getEnumValues(CardType);
 
@@ -57,7 +60,7 @@ export class ParameterEditorComponent implements OnInit {
             case ParameterType.CardType:
                 return this.cardEnumValues;
             case ParameterType.Card:
-                return this.getCardTypeValues(null);
+                return this.getCardTypeValues();
             case ParameterType.Spell:
                 return this.getCardTypeValues(CardType.Spell);
             case ParameterType.Unit:
@@ -67,9 +70,10 @@ export class ParameterEditorComponent implements OnInit {
             case ParameterType.Enchantment:
                 return this.getCardTypeValues(CardType.Enchantment);
         }
+        return [];
     }
 
-    private getEnumValues(enumeration): EnumValue[] {
+    private getEnumValues(enumeration: any): EnumValue[] {
         const results = [];
         for (const key in enumeration) {
             if (typeof enumeration[key] !== 'number') {
@@ -82,20 +86,23 @@ export class ParameterEditorComponent implements OnInit {
         return results;
     }
 
-    public onChange(event) {
+    public onChange() {
         this.change.emit(this.data);
     }
 
     public ngOnInit() {}
 
-    private getCardTypeValues(type: CardType): EnumValue[] {
-        if (!this.cardTypeValues.has(type)) {
-            this.cardTypeValues.set(type, this.generateCardTypeValues(type));
+    private getCardTypeValues(type?: CardType): EnumValue[] {
+        const oldVals = this.cardTypeValues.get(type);
+        if (oldVals) {
+            return oldVals;
         }
-        return this.cardTypeValues.get(type);
+        const newVals = this.generateCardTypeValues(type);
+        this.cardTypeValues.set(type, newVals);
+        return newVals;
     }
 
-    private generateCardTypeValues(type: CardType): EnumValue[] {
+    private generateCardTypeValues(type?: CardType): EnumValue[] {
         return cardList
             .getCards()
             .filter(card => !type || card.getCardType() === type)

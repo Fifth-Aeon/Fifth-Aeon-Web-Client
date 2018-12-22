@@ -1,13 +1,9 @@
-import { Queue } from 'typescript-collections';
-import { Howler, Howl } from 'howler';
 import { Injectable } from '@angular/core';
-import { ResourceType } from './game_model/resource';
+import { Howl, Howler } from 'howler';
 import { sample } from 'lodash';
-import {
-    SyncEventSystem,
-    SyncEventType,
-    GameSyncEvent
-} from './game_model/events/syncEvent';
+import { Queue } from 'typescript-collections';
+import { GameSyncEvent, SyncEventType } from './game_model/events/syncEvent';
+import { ResourceType } from './game_model/resource';
 
 export enum VolumeType {
     Master,
@@ -35,7 +31,7 @@ export class SoundManager {
     private music: Howl;
     public muted = false;
     private onDone: Array<() => void> = [];
-    private voice: SpeechSynthesisVoice;
+    private voice: SpeechSynthesisVoice | undefined;
     private factionContext: Set<ResourceType> = new Set();
 
     //  Master, Music, Effects, Narrator
@@ -57,10 +53,9 @@ export class SoundManager {
             new Howl({ src: ['assets/mp3/FA_-_defeat_cue_long_draft.mp3'] })
         );
 
-        this.addMusic(
-            'bg-generic',
-            new Howl({ src: ['assets/mp3/the-pyre.mp3'] })
-        );
+        this.music = new Howl({ src: ['assets/mp3/the-pyre.mp3'] });
+
+        this.addMusic('bg-generic', this.music);
         this.addMusic(
             'bg-growth',
             new Howl({ src: ['assets/mp3/kalimba_draft_1.mp3'] })
@@ -78,7 +73,7 @@ export class SoundManager {
             new Howl({ src: ['assets/mp3/synthesis_idea.mp3'] })
         );
 
-        this.setMusic(this.musicLibrary.get('bg-generic'));
+        this.setMusic(this.music);
 
         this.loadSettings();
 
@@ -110,7 +105,9 @@ export class SoundManager {
     public handleGameEvent(event: GameSyncEvent) {
         switch (event.type) {
             case SyncEventType.TurnStart:
-                if (event.turnNum !== 1) { this.playSound('bell'); }
+                if (event.turnNum !== 1) {
+                    this.playSound('bell');
+                }
                 break;
             case SyncEventType.AttackToggled:
             case SyncEventType.Block:
@@ -169,7 +166,9 @@ export class SoundManager {
             const msg = new SpeechSynthesisUtterance(text);
             this.music.volume(this.getAdjustedVolume(VolumeType.Music) / 4);
             msg.volume = this.getAdjustedVolume(VolumeType.Narrator);
-            if (this.voice) { msg.voice = this.voice; }
+            if (this.voice) {
+                msg.voice = this.voice;
+            }
             speechSynthesis.speak(msg);
             msg.onend = () => {
                 this.music.volume(this.getAdjustedVolume(VolumeType.Music));
@@ -188,7 +187,9 @@ export class SoundManager {
     public toggleMute() {
         this.muted = !this.muted;
         this.global.mute(this.muted);
-        if (this.muted) { speechSynthesis.cancel(); }
+        if (this.muted) {
+            speechSynthesis.cancel();
+        }
         this.saveSettings();
     }
 
@@ -197,8 +198,12 @@ export class SoundManager {
     }
 
     public setMusic(sound: Howl) {
-        if (sound === this.music) { return; }
-        if (this.music && this.music.playing()) { this.music.stop(); }
+        if (sound === this.music) {
+            return;
+        }
+        if (this.music && this.music.playing()) {
+            this.music.stop();
+        }
         this.music = sound;
         this.music.play();
         this.music.volume(this.getAdjustedVolume(VolumeType.Music));
@@ -215,9 +220,12 @@ export class SoundManager {
         const all = Array.from(this.factionContext.keys()).map(
             factionName => `bg-${factionName.toLowerCase()}`
         );
-        if (all.length === 0) { all.push('bg-generic'); }
-        const trackName = sample(all);
-        this.setMusic(this.musicLibrary.get(trackName));
+        const trackName = sample(all) || 'bg-generic';
+        const song = this.musicLibrary.get(trackName);
+        if (!song) {
+            throw new Error(`No song named ${trackName}`);
+        }
+        this.setMusic(song);
     }
 
     public addSound(name: string, sound: Howl, multiplier: number = 1) {
@@ -226,12 +234,18 @@ export class SoundManager {
 
     public playSound(name: string) {
         const sound = this.library.get(name);
+        if (!sound) {
+            throw new Error(`No sound named ${name}.`);
+        }
         sound.volume(this.getAdjustedVolume(VolumeType.Effects));
         sound.play();
     }
 
     public playImportantSound(name: string): Promise<void> {
         const sound = this.library.get(name);
+        if (!sound) {
+            throw new Error(`No sound named ${name}.`);
+        }
         sound.volume(this.getAdjustedVolume(VolumeType.Effects));
         this.music.volume(0);
         sound.play();
@@ -250,6 +264,9 @@ export class SoundManager {
 
     public queueSound(name: string) {
         const sound = this.library.get(name);
+        if (!sound) {
+            throw new Error(`No sound named ${name}.`);
+        }
         this.playQueue.enqueue(sound);
 
         if (!this.isPlaying) {
@@ -260,10 +277,15 @@ export class SoundManager {
 
     private playNext() {
         const sound = this.playQueue.dequeue();
+        if (!sound) {
+            return;
+        }
         sound.play();
         sound.once('end', () => {
             setTimeout(() => {
-                if (!this.playQueue.isEmpty()) { this.playNext(); } else {
+                if (!this.playQueue.isEmpty()) {
+                    this.playNext();
+                } else {
                     this.isPlaying = false;
                     this.onDone.forEach(cb => cb());
                     this.onDone = [];

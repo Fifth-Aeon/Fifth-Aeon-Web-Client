@@ -7,7 +7,7 @@ import { Card } from '../../game_model/card';
     templateUrl: './card-chooser.component.html'
 })
 export class CardChooserComponent {
-    public cards: Array<Card>;
+    public cards: Array<Card> = [];
     public pageCards: Array<Card>;
     public min = 0;
     public max = 1;
@@ -15,7 +15,7 @@ export class CardChooserComponent {
     public selected: Set<Card> = new Set();
     public pageNumber = 0;
     private pageSize = 5;
-    public suffix: string;
+    public suffix = '';
 
     constructor(public dialogRef: MatDialogRef<CardChooserComponent>) {
         this.pageCards = [];
@@ -39,7 +39,7 @@ export class CardChooserComponent {
         } and ${ending}`;
     }
 
-    public select(card) {
+    public select(card: Card) {
         if (this.selected.has(card)) {
             this.selected.delete(card);
         } else if (this.selected.size < this.max) {

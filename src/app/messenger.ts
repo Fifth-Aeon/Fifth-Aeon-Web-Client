@@ -45,10 +45,10 @@ const pingTime = 1000 * 15;
  */
 export class Messenger {
     private handlers: Map<string, (msg: Message) => void>;
-    private ws: WebSocket;
+    private ws: WebSocket | undefined;
     private messageQueue: Queue<string> = new Queue<string>();
-    private lastConnectAttempt: number;
-    private id: string;
+    private lastConnectAttempt = 0;
+    private id: string | undefined;
 
     private loggedIn = false;
 
@@ -75,7 +75,9 @@ export class Messenger {
     }
 
     public close() {
-        this.ws.close();
+        if (this.ws) {
+            this.ws.close();
+        }
     }
 
     private connect() {
@@ -91,8 +93,11 @@ export class Messenger {
     }
 
     private emptyMessageQueue() {
-        while (!this.messageQueue.isEmpty()) {
-            this.ws.send(this.messageQueue.dequeue());
+        if (!this.ws) {
+            return;
+        }
+        for (const msg = this.messageQueue.dequeue(); msg !== undefined; ) {
+            this.ws.send(msg);
         }
     }
 
@@ -145,14 +150,14 @@ export class Messenger {
     }
 
     public addHandler(
-        messageType,
+        messageType: MessageType,
         callback: (message: Message) => void,
         context?: any
     ) {
         if (context) {
             callback = callback.bind(context);
         }
-        this.handlers.set(messageType, callback);
+        this.handlers.set(MessageType[messageType], callback);
     }
 
     public sendMessageToServer(

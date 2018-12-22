@@ -25,11 +25,11 @@ export class OverlayService {
     public static cardTimer = 3500;
 
     public displayCards: Card[] = [];
-    public attacker: Unit = null;
+    public attacker?: Unit;
     public defenders: Unit[] = [];
     public targets: Array<Arrow> = [];
     public textElements: TextElement[] = [];
-    public game: ClientGame;
+    public game?: ClientGame;
     public darkened = false;
 
     private uiElements: Map<string, string> = new Map();
@@ -46,6 +46,9 @@ export class OverlayService {
     }
 
     private async animateBattle(event: BattleAnimationEvent) {
+        if (!this.game) {
+            throw new Error('Overlay cannot animate when not attached to a game');
+        }
         this.defenders = event.defenders;
         if (event.defenders.length === 0) {
             const defendingPlayer = this.game.getPlayer(
@@ -61,7 +64,7 @@ export class OverlayService {
         await this.animator.getAnimationDelay();
 
         this.defenders = [];
-        this.attacker = null;
+        this.attacker = undefined;
         this.darkened = false;
     }
 
@@ -71,6 +74,9 @@ export class OverlayService {
 
     private createDamageIndicator(cardId: string, amount: number) {
         const cardBounds = this.getBoundingRect(cardId);
+        if (!cardBounds) {
+            return;
+        }
         const textElement: TextElement = {
             text: amount.toString(),
             x: this.getRndPointBetween(
@@ -134,7 +140,7 @@ export class OverlayService {
                             [card.getId(), target.getId()] as [string, string]
                     )
                     .map(target => this.toArrow(target))
-                    .filter(arrow => arrow !== null);
+                    .filter(arrow => arrow !== null) as Arrow[];
                 this.targets = this.targets.concat(newTargets);
                 setTimeout(() => {
                     const toRemove = new Set(newTargets);
@@ -152,7 +158,7 @@ export class OverlayService {
         this.addTargets(card, targets);
     }
 
-    private getBoundingRect(sourceId: string): ClientRect {
+    private getBoundingRect(sourceId: string): ClientRect | undefined {
         let id = this.uiElements.get(sourceId);
         if (!id) {
             id = 'card-' + sourceId;
@@ -183,7 +189,7 @@ export class OverlayService {
     public getBlockArrows(): Arrow[] {
         return this.blocks
             .map(block => this.toArrow(block))
-            .filter(arrow => arrow !== null);
+            .filter(arrow => arrow !== null) as Arrow[];
     }
 
     public getRndPointBetween(a: number, b: number, offset: number): number {
