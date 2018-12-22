@@ -9,8 +9,8 @@ import { FormControl, Validators } from '@angular/forms';
     styleUrls: ['./reset-password.component.scss']
 })
 export class ResetPasswordComponent implements OnInit {
-    public message: string;
-    public password: string;
+    public message = '';
+    public password = '';
     private token: string;
     public hide = true;
 
@@ -24,7 +24,7 @@ export class ResetPasswordComponent implements OnInit {
         private route: ActivatedRoute,
         private auth: AuthenticationService
     ) {
-        this.token = this.route.snapshot.paramMap.get('token');
+        this.token = this.route.snapshot.paramMap.get('token') as string;
     }
 
     passwordError() {
@@ -45,11 +45,11 @@ export class ResetPasswordComponent implements OnInit {
         this.message = 'Password reset in process.';
         this.auth
             .resetPassword(this.token, this.password)
-            .then(res => {
+            .then(() => {
                 this.message =
                     'Your Password has been changed and you have been logged in.';
             })
-            .catch(err => {
+            .catch(() => {
                 this.message =
                     'There was a problem reseting your password. Your token may have expired.';
             });

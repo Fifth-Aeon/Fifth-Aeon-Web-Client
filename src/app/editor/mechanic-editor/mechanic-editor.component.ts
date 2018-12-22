@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { MatSelectChange } from '@angular/material';
 import { Card } from '../../game_model/card';
-import { cardList, SpellData } from '../../game_model/cards/cardList';
+import { cardList, SpellData, defaultDataObj } from '../../game_model/cards/cardList';
 import {
     MechanicData,
     mechanicList
@@ -17,7 +17,7 @@ import { triggerList } from '../../game_model/cards/triggerList';
 })
 export class MechanicEditorComponent {
     public mechanicList = mechanicList;
-    @Input() public card: SpellData;
+    @Input() public card: SpellData = defaultDataObj;
 
     constructor() {
         // this.mechanics = this.mechanicList.getConstructors(this.card.cardType);
@@ -55,7 +55,7 @@ export class MechanicEditorComponent {
         this.card.mechanics.splice(index, 1);
     }
 
-    public setParam(mechanic: MechanicData, i: number, event) {
+    public setParam(mechanic: MechanicData, i: number, event: any) {
         if (typeof event === 'object' && event.target) {
             mechanic.parameters[i] = event.target.value;
         } else {

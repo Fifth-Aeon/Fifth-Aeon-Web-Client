@@ -18,7 +18,7 @@ import { GameFormat } from '../game_model/gameFormat';
 export class DeckEditorComponent implements OnInit {
     public cards: Array<Card>;
     public collection: Collection;
-    public pageCards: Array<Card>;
+    public pageCards: Array<Card> = [];
     public pageNumber = 0;
     private pageSize = 10;
     public deck: DeckList;
@@ -40,7 +40,7 @@ export class DeckEditorComponent implements OnInit {
     }
 
     public import() {
-        const text = prompt('Copy paste the deck code here.');
+        const text = prompt('Copy paste the deck code here.') || '';
         try {
             this.deck.fromJson(text);
             this.snackbar.open('Import succeeded.', '', { duration: 2000 });
@@ -112,8 +112,6 @@ export class DeckEditorComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.onResize(
-            document.getElementById('editor-cards').getBoundingClientRect()
-        );
+        // this.onResize(document.getElementById('editor-cards').getBoundingClientRect());
     }
 }

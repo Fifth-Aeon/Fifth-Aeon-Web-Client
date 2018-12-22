@@ -16,11 +16,10 @@ export class RegisterComponent implements OnInit {
     passwordControl: FormControl;
     hide = true;
 
-    username: string;
-    email: string;
-    password: string;
-
-    message: string;
+    username = '';
+    email = '';
+    password = '';
+    message = '';
     working = false;
 
     constructor(
@@ -64,7 +63,7 @@ export class RegisterComponent implements OnInit {
         this.passwordControl.disable();
     }
 
-    handleError(err) {
+    handleError(err: any) {
         console.error(err, err.error);
         this.message = err.error || err.status;
         this.endRequest();

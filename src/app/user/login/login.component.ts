@@ -15,9 +15,9 @@ export class LoginComponent implements OnInit {
     passwordControl: FormControl;
     hide = true;
 
-    username: string;
-    password: string;
-    message: string;
+    username = '';
+    password = '';
+    message = '';
     working = false;
 
     constructor(
@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
         this.passwordControl.enable();
     }
 
-    handleError(err) {
+    handleError(err: any) {
         console.error(err, err.error);
         if (err.error) {
             this.message = err.error.message || err.error;

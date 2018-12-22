@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UnitData, cardList, CardData } from '../../game_model/cards/cardList';
+import {
+    UnitData,
+    cardList,
+    CardData,
+    defaultDataObj
+} from '../../game_model/cards/cardList';
 import { UnitType } from '../../game_model/unit';
 import { Card, CardType } from '../../game_model/card';
 import { Route, ActivatedRoute, Router } from '@angular/router';
@@ -19,8 +24,8 @@ export class CardEditorComponent implements OnInit {
     public unitTypeKeys = this.getKeys(UnitType).filter(key => key !== 0);
     public cardTypes = CardType;
     public cardTypeKeys = this.getKeys(CardType);
-    public previewCard: Card;
-    public data: CardData;
+    public previewCard: Card = cardList.buildInstance(defaultDataObj);
+    public data: CardData = defaultDataObj;
 
     constructor(
         route: ActivatedRoute,
@@ -29,9 +34,14 @@ export class CardEditorComponent implements OnInit {
     ) {
         setInterval(() => this.refreshPreview(), 3000);
         route.paramMap.subscribe(params => {
-            const id = params.get('id');
-            this.data = editorData.getCard(id);
-            this.refreshPreview();
+            const id = params.get('id') as string;
+            const card = editorData.getCard(id);
+            if (card) {
+                this.data = card;
+                this.refreshPreview();
+            } else {
+                console.error('No card with id', id);
+            }
         });
     }
 
@@ -41,12 +51,12 @@ export class CardEditorComponent implements OnInit {
         );
     }
 
-    public fileChange(event): void {
+    public fileChange(event: any): void {
         const files: FileList = event.target.files;
-        if (files.length === 0) {
+        const image = files.item(0);
+        if (image === null) {
             return;
         }
-        const image = files.item(0);
         const reader = new FileReader();
         reader.onload = (e: any) => {
             this.data.imageUrl = e.target.result;
@@ -70,7 +80,7 @@ export class CardEditorComponent implements OnInit {
         return (
             CardEditorComponent.MaxRequirementTotal -
             total +
-            this.data.cost[resoureName]
+            (this.data.cost[resoureName] as number)
         );
     }
 

@@ -9,8 +9,8 @@ import { Card } from 'app/game_model/card';
     styleUrls: ['./deck-metadata-dialog.component.scss']
 })
 export class DeckMetadataDialogComponent implements OnInit {
-    public deck: DeckList;
-    public cards: Array<Card>;
+    public deck: DeckList = new DeckList();
+    public cards: Array<Card> = [];
 
     constructor(public dialogRef: MatDialogRef<DeckMetadataDialogComponent>) {}
 

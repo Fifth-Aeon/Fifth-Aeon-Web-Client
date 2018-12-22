@@ -11,9 +11,9 @@ import { CollectionService } from 'app/collection.service';
 })
 export class OpenPackComponent implements OnInit {
     collection: Collection;
-    cards: Card[];
-    working: boolean;
-    message: string;
+    cards: Card[] = [];
+    working = false;
+    message = '';
 
     constructor(
         decks: DecksService,
