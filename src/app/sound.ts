@@ -40,37 +40,37 @@ export class SoundManager {
     private musicTransitionTime = 1500;
 
     constructor() {
-        this.addSound('gong', new Howl({ src: ['assets/mp3/gong.mp3'] }), 1.5);
-        this.addSound('magic', new Howl({ src: ['assets/mp3/warp.mp3'] }));
-        this.addSound('attack', new Howl({ src: ['assets/mp3/attack.mp3'] }));
-        this.addSound('bell', new Howl({ src: ['assets/mp3/bell.mp3'] }));
+        this.addSound('gong', new Howl({ src: ['assets/mp3/sfx/gong.mp3'] }), 1.5);
+        this.addSound('magic', new Howl({ src: ['assets/mp3/sfx/warp.mp3'] }));
+        this.addSound('attack', new Howl({ src: ['assets/mp3/sfx/attack.mp3'] }));
+        this.addSound('bell', new Howl({ src: ['assets/mp3/sfx/bell.mp3'] }));
         this.addSound(
             'fanfare',
-            new Howl({ src: ['assets/mp3/FA_-_victory_cue_draft.mp3'] })
+            new Howl({ src: ['assets/mp3/music/06-victory-cue.mp3'] })
         );
         this.addSound(
             'defeat',
-            new Howl({ src: ['assets/mp3/FA_-_defeat_cue_long_draft.mp3'] })
+            new Howl({ src: ['assets/mp3/music/05-defeat-cue.mp3'] })
         );
 
-        this.music = new Howl({ src: ['assets/mp3/the-pyre.mp3'] });
+        this.music = new Howl({ src: ['assets/mp3/music/the-pyre.mp3'] });
 
         this.addMusic('bg-generic', this.music);
         this.addMusic(
             'bg-growth',
-            new Howl({ src: ['assets/mp3/kalimba_draft_1.mp3'] })
+            new Howl({ src: ['assets/mp3/music/01-growth.mp3'] })
         );
         this.addMusic(
             'bg-renewal',
-            new Howl({ src: ['assets/mp3/healing_draft_1.mp3'] })
+            new Howl({ src: ['assets/mp3/music/04-renewal.mp3'] })
         );
         this.addMusic(
             'bg-decay',
-            new Howl({ src: ['assets/mp3/decay_sketch_2_draft_1.mp3'] })
+            new Howl({ src: ['assets/mp3/music/02-decay.mp3'] })
         );
         this.addMusic(
             'bg-synthesis',
-            new Howl({ src: ['assets/mp3/synthesis_idea.mp3'] })
+            new Howl({ src: ['assets/mp3/music/03-synthesis.mp3'] })
         );
 
         this.setMusic(this.music);
