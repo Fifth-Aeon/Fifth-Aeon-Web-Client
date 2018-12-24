@@ -174,6 +174,10 @@ export class CardComponent implements OnInit {
         }
     }
 
+    public isUnit(card: Card) {
+        return card instanceof Unit ;
+    }
+
     public getSymbolSize() {
         return this.y() * 0.1 - 3;
     }
@@ -241,7 +245,7 @@ export class CardComponent implements OnInit {
     }
 
     private getKeywords() {
-        if (!this.card || !this.game) {
+        if (!this.card) {
             throw new Error('Card lacks required inputs');
         }
         return Array.from(

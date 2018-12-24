@@ -15,14 +15,14 @@ interface GuestData extends UserData {
 
 @Injectable()
 export class AuthenticationService {
-    private user: UserData;
-    private authChangeCallbacks: Array<(user: UserData) => void> = [];
+    private user: UserData | null = null;
+    private authChangeCallbacks: Array<(user: UserData | null) => void> = [];
 
     constructor(private http: HttpClient, private router: Router) {}
 
     public attemptLogin() {
         try {
-            const data = JSON.parse(localStorage.getItem('login'));
+            const data = JSON.parse(localStorage.getItem('login') || '');
             return this.confirmLogin(data.token).then(res => {
                 if (res) {
                     this.setLogin(res);
@@ -34,8 +34,11 @@ export class AuthenticationService {
         }
     }
 
-    public getUser(): UserData {
-        return { ...this.user };
+    public getUser(): UserData | null {
+        if (this.user) {
+            return { ...this.user };
+        }
+        return null;
     }
 
     public gotoLogin() {
@@ -51,13 +54,13 @@ export class AuthenticationService {
     }
 
     public logout() {
-        this.user = undefined;
+        this.user = null;
         localStorage.setItem('login', '');
         this.authChangeCallbacks.forEach(callback => callback(null));
         this.router.navigateByUrl('/');
     }
 
-    public onAuth(callback: (user: UserData) => void) {
+    public onAuth(callback: (user: UserData | null) => void) {
         this.authChangeCallbacks.push(callback);
         if (this.loggedIn()) {
             callback(this.user);
@@ -65,12 +68,15 @@ export class AuthenticationService {
     }
 
     public getAuthHeader() {
+        if (!this.user) {
+            throw new Error('Cannot get auth token for unauthorised user');
+        }
         return new HttpHeaders({
             token: this.user.token
         });
     }
 
-    public verifyEmail(emailToken) {
+    public verifyEmail(emailToken: string) {
         return this.http
             .post(
                 `${apiURL}/api/auth/verifyEmail`,
@@ -92,9 +98,9 @@ export class AuthenticationService {
             .toPromise();
     }
 
-    public resetPassword(restToken, newPassword) {
+    public resetPassword(restToken: string, newPassword: string) {
         return this.http
-            .post(
+            .post<UserData>(
                 `${apiURL}/api/auth/verifyReset`,
                 {
                     password: newPassword
@@ -113,7 +119,7 @@ export class AuthenticationService {
 
     public register(username: string, email: string, password: string) {
         return this.http
-            .post(`${apiURL}/api/auth/register`, {
+            .post<UserData>(`${apiURL}/api/auth/register`, {
                 username: username,
                 email: email.toLowerCase(),
                 password: password
@@ -127,7 +133,7 @@ export class AuthenticationService {
 
     public registerGuest() {
         return this.http
-            .post(`${apiURL}/api/auth/registerGuest`, {})
+            .post<GuestData>(`${apiURL}/api/auth/registerGuest`, {})
             .toPromise()
             .then((res: GuestData) => {
                 this.setLogin(res);
@@ -138,25 +144,25 @@ export class AuthenticationService {
 
     public login(usernameOrEmail: string, password: string) {
         return this.http
-            .post(`${apiURL}/api/auth/login`, {
+            .post<UserData>(`${apiURL}/api/auth/login`, {
                 usernameOrEmail: usernameOrEmail,
                 password: password
             })
             .toPromise()
-            .then((res: UserData) => {
+            .then(res => {
                 this.setLogin(res);
             });
     }
 
-    private confirmLogin(token: string): Promise<UserData> {
+    private confirmLogin(token: string): Promise<UserData | null> {
         return this.http
-            .get(`${apiURL}/api/auth/userdata`, {
+            .get<UserData>(`${apiURL}/api/auth/userdata`, {
                 headers: new HttpHeaders({
                     token: token
                 })
             })
             .toPromise()
-            .then((res: UserData) => res)
+            .then(res => res)
             .catch(err => null);
     }
 

@@ -14,7 +14,7 @@ export class VerifyEmailComponent implements OnInit {
         private route: ActivatedRoute,
         private auth: AuthenticationService
     ) {
-        const token = this.route.snapshot.paramMap.get('token');
+        const token = this.route.snapshot.paramMap.get('token') as string;
         this.message = 'Verification in process';
         auth.verifyEmail(token)
             .then(() => {
