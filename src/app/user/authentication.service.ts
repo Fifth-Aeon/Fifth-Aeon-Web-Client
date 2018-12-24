@@ -22,7 +22,11 @@ export class AuthenticationService {
 
     public attemptLogin() {
         try {
-            const data = JSON.parse(localStorage.getItem('login') || '');
+            const rawData = localStorage.getItem('login');
+            if (!rawData) {
+                return Promise.resolve(false);
+            }
+            const data = JSON.parse(rawData);
             return this.confirmLogin(data.token).then(res => {
                 if (res) {
                     this.setLogin(res);
@@ -50,7 +54,7 @@ export class AuthenticationService {
     }
 
     public loggedIn() {
-        return this.user !== undefined;
+        return this.user !== null;
     }
 
     public logout() {
