@@ -1,7 +1,7 @@
 <h1>Fifth Aeon</h1>
 <h2>A Collectable Card Game</h2>
 
-<ng-template [ngIf]="state == states.WaitingForAction">
+<ng-template [ngIf]="state === states.WaitingForAction">
     <button mat-raised-button color="primary" (click)="newPlayer()">
         New Player
     </button>
@@ -10,7 +10,7 @@
     </button>
 </ng-template>
 
-<ng-template [ngIf]="state == states.NewPlayer">
+<ng-template [ngIf]="state === states.NewPlayer">
     <button mat-raised-button color="primary" (click)="createGuestAccount()">
         Play as Guest
     </button>
@@ -19,7 +19,7 @@
     </button>
 </ng-template>
 
-<ng-template [ngIf]="state == states.Working">
+<ng-template [ngIf]="state === states.Working">
     <mat-progress-spinner
         class="mp-bar"
         color="primary"

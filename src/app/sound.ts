@@ -40,9 +40,16 @@ export class SoundManager {
     private musicTransitionTime = 1500;
 
     constructor() {
-        this.addSound('gong', new Howl({ src: ['assets/mp3/sfx/gong.mp3'] }), 1.5);
+        this.addSound(
+            'gong',
+            new Howl({ src: ['assets/mp3/sfx/gong.mp3'] }),
+            1.5
+        );
         this.addSound('magic', new Howl({ src: ['assets/mp3/sfx/warp.mp3'] }));
-        this.addSound('attack', new Howl({ src: ['assets/mp3/sfx/attack.mp3'] }));
+        this.addSound(
+            'attack',
+            new Howl({ src: ['assets/mp3/sfx/attack.mp3'] })
+        );
         this.addSound('bell', new Howl({ src: ['assets/mp3/sfx/bell.mp3'] }));
         this.addSound(
             'fanfare',
@@ -72,8 +79,6 @@ export class SoundManager {
             'bg-synthesis',
             new Howl({ src: ['assets/mp3/music/03-synthesis.mp3'] })
         );
-
-        this.setMusic(this.music);
 
         this.loadSettings();
 
@@ -184,6 +189,10 @@ export class SoundManager {
         }
     }
 
+    public musicIsPlaying() {
+        return this.music.playing();
+    }
+
     public toggleMute() {
         this.muted = !this.muted;
         this.global.mute(this.muted);
@@ -198,7 +207,7 @@ export class SoundManager {
     }
 
     public setMusic(sound: Howl) {
-        if (sound === this.music) {
+        if (sound === this.music && this.music.playing()) {
             return;
         }
         if (this.music && this.music.playing()) {

@@ -18,7 +18,9 @@ export class LandingComponent implements OnInit {
 
     constructor(private auth: AuthenticationService) {
         auth.attemptLogin().then(loginOk => {
-            if (!loginOk) { this.state = LandingState.WaitingForAction; }
+            if (!loginOk) {
+                this.state = LandingState.WaitingForAction;
+            }
         });
     }
 

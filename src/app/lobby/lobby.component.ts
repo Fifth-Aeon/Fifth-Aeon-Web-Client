@@ -1,13 +1,8 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-
-import { WebClient, ClientState } from '../client';
-import { SoundManager } from '../sound';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { DecksService } from 'app/decks.service';
+import { ClientState, WebClient } from '../client';
+import { SoundManager } from '../sound';
 import { AuthenticationService } from '../user/authentication.service';
-
-const feedbackBody =
-    'Please write about any bugs, suggestions, etc that came to mind while playing the game.';
 
 @Component({
     selector: 'ccg-lobby',
@@ -15,10 +10,7 @@ const feedbackBody =
     styleUrls: ['./lobby.component.scss']
 })
 export class LobbyComponent implements OnInit {
-    public feedbackUrl = `mailto:william.ritson@gmail.com?subject=Card Game Feedback&body=${feedbackBody}`;
-
     constructor(
-        private router: Router,
         public client: WebClient,
         public decks: DecksService,
         public soundManager: SoundManager,
@@ -29,6 +21,9 @@ export class LobbyComponent implements OnInit {
             client.getState() !== ClientState.Waiting
         ) {
             client.returnToLobby();
+        }
+        if (!this.soundManager.musicIsPlaying()) {
+            this.soundManager.setFactionContext(new Set());
         }
     }
 
@@ -67,7 +62,9 @@ export class LobbyComponent implements OnInit {
     ngOnInit() {}
 
     public getState() {
-        if (!this.client) { return 0; }
+        if (!this.client) {
+            return 0;
+        }
         return this.client.getState();
     }
 }
