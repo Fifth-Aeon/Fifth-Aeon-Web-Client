@@ -4,6 +4,11 @@ import {
     TargeterData
 } from '../../game_model/cards/targeterList';
 
+const dummyData: TargeterData = {
+    id: '',
+    optional: false
+};
+
 @Component({
     selector: 'ccg-targeter-editor',
     templateUrl: './targeter-editor.component.html',
@@ -11,7 +16,7 @@ import {
 })
 export class TargeterEditorComponent implements OnInit {
     public targeterList = targeterList;
-    @Input() data?: TargeterData;
+    @Input() data: TargeterData = dummyData;
 
     constructor() {}
 

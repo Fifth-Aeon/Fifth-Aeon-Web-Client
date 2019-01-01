@@ -3,6 +3,8 @@ import { Card, GameZone, CardType } from '../../game_model/card-types/card';
 import { Unit, UnitType } from '../../game_model/card-types/unit';
 import { Game } from '../../game_model/game';
 import { cardList } from '../../game_model/cards/cardList';
+import { Resource } from 'app/game_model/resource';
+import { Untargeted } from 'app/game_model/cards/targeters/basicTargeter';
 
 enum GlowType {
     None,
@@ -136,13 +138,15 @@ function toProperCase(str: string) {
     return str.replace(/\b\w/g, l => l.toUpperCase());
 }
 
+const dummyCard = new Card('', '', '', new Resource(1), new Untargeted(), []);
+
 @Component({
     selector: 'ccg-card',
     templateUrl: './card.component.html',
     styleUrls: ['./card.component.scss']
 })
 export class CardComponent implements OnInit {
-    @Input() card?: Card;
+    @Input() card: Card = dummyCard;
     @Input() game?: Game;
     @Input() scale = 1.0;
     @Input() distFromMid = 0;
