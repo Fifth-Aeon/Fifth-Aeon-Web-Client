@@ -150,15 +150,14 @@ export class CardComponent implements OnInit {
     @Input() game?: Game;
     @Input() scale = 1.0;
     @Input() distFromMid = 0;
-    sizeY = 0;
-    sizeX = 0;
-    padding = 30;
-    hovered = false;
     @Input() darkened = false;
     @Input() selected = false;
     @Input() target = false;
     @Input() overlap = false;
     @Input() noTranslate = false;
+
+    public padding = 30;
+    public hovered = false;
 
     public tooltipClass = {
         multiline: true
