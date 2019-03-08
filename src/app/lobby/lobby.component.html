@@ -51,6 +51,11 @@
                 <span> Open Packs </span>
             </button>
 
+            <button mat-raised-button color="primary" *ngIf="client.isConnectedToLocalServer()" (click)="client.selectDeckAndStartGame(3)">
+                <mat-icon>android</mat-icon>
+                <span> Play Local A.I </span>
+            </button>
+
             <!--
       <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(1)">
         <mat-icon>android</mat-icon>

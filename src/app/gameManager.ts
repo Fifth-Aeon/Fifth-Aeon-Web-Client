@@ -21,6 +21,7 @@ import { MessageType, Messenger } from './messenger';
 import { MessengerService } from './messenger.service';
 import { SoundManager } from './sound';
 import { TipService } from './tips';
+import { GameType } from './client';
 
 @Injectable()
 export class GameManager {
@@ -40,6 +41,9 @@ export class GameManager {
     private log: Log | null = null;
     private onGameEnd: ((won: boolean, quit: boolean) => any) | null = null;
     private messenger: Messenger;
+    private localMessenger: Messenger;
+
+    private gameType: GameType = GameType.AiGame;
 
     constructor(
         private soundManager: SoundManager,
@@ -58,6 +62,12 @@ export class GameManager {
             msg => this.handleGameEvent(msg.data),
             this
         );
+
+        this.localMessenger = messengerService.getLocalMessenger();
+        this.localMessenger.addHandler(MessageType.GameEvent, msg => {
+            console.log('got', msg);
+            this.handleGameEvent(msg.data);
+        });
 
         this.reset();
     }
@@ -142,8 +152,16 @@ export class GameManager {
     }
 
     private sendGameAction(action: GameAction, isAi: boolean = false) {
-        if (this.ais.length === 0) {
+        if (this.gameType === GameType.PublicGame) {
             this.messenger.sendMessageToServer(MessageType.GameAction, action);
+            return;
+        } else if (this.gameType === GameType.ServerAIGame) {
+            if (this.localMessenger) {
+                this.localMessenger.sendMessageToServer(
+                    MessageType.GameAction,
+                    action
+                );
+            }
             return;
         }
 
@@ -367,7 +385,8 @@ export class GameManager {
     }
 
     /** Starts a multiplayer game */
-    public startGame(playerNumber: number, opponentName: string) {
+    public startMultiplayerGame(playerNumber: number, opponentName: string) {
+        this.gameType = GameType.PublicGame;
         this.soundManager.setFactionContext(this.deck.getColors());
         this.ais = [];
         this.gameModel = null;
@@ -378,7 +397,7 @@ export class GameManager {
 
         this.game1 = new ClientGame(
             'player',
-            (type, action) => this.sendGameAction(action, false),
+            (_, action) => this.sendGameAction(action, false),
             this.overlay.getAnimator(),
             this.log
         );
@@ -387,6 +406,36 @@ export class GameManager {
         this.soundManager.playImportantSound('gong');
         this.zone.run(() => {
             this.opponentUsername = opponentName;
+        });
+    }
+
+    public async startAiServerGame() {
+        this.gameType = GameType.ServerAIGame;
+        this.playerNumber = Math.random() > 0.5 ? 1 : 0;
+        this.opponentNumber = 1 - this.playerNumber;
+        this.localMessenger.sendMessageToServer(MessageType.StartGame, {
+            playerNumber: this.opponentNumber,
+            deck: this.deck.getSavable()
+        });
+
+        this.soundManager.setFactionContext(this.deck.getColors());
+        this.ais = [];
+        this.gameModel = null;
+
+        this.log = new Log(this.playerNumber);
+
+        this.game1 = new ClientGame(
+            'player',
+            (_, action) => this.sendGameAction(action, false),
+            this.overlay.getAnimator(),
+            this.log
+        );
+        this.game1.setOwningPlayer(this.playerNumber);
+
+        this.soundManager.playImportantSound('gong');
+        this.zone.run(() => {
+            console.log(this.playerNumber, this.opponentNumber);
+            this.opponentUsername = 'Server A.I';
         });
     }
 
@@ -411,19 +460,21 @@ export class GameManager {
         ]);
         this.game1 = new ClientGame(
             'player',
-            (type, action) => this.sendGameAction(action, false),
+            (_, action) => this.sendGameAction(action, false),
             this.overlay.getAnimator(),
             this.log
         );
         this.game1.setOwningPlayer(this.playerNumber);
         this.game2 = new ClientGame(
             'ai',
-            (type, action) => this.sendGameAction(action, true),
+            (_, action) => this.sendGameAction(action, true),
             this.overlay.getAnimator()
         );
         this.game2.setOwningPlayer(this.opponentNumber);
 
         if (aiCount === 1) {
+            this.gameType = GameType.AiGame;
+
             const newAI = new DefaultAI(
                 this.opponentNumber,
                 this.game2,
@@ -433,6 +484,8 @@ export class GameManager {
             this.ais.push(newAI);
             this.aisByPlayerNumber = [null, newAI];
         } else {
+            this.gameType = GameType.DoubleAiGame;
+
             const aiGames = [this.game1, this.game2];
             for (let i = 0; i < aiCount; i++) {
                 const newAI = new DefaultAI(i, aiGames[i], aiDeck);

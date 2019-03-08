@@ -54,7 +54,7 @@ export class Messenger {
 
     public connectChange: (status: boolean) => void = () => null;
 
-    constructor() {
+    constructor(private url = getWsUrl()) {
         this.handlers = new Map();
         setInterval(() => {
             if (!this.id || !this.ws || this.ws.readyState === this.ws.OPEN) {
@@ -80,12 +80,12 @@ export class Messenger {
         }
     }
 
-    private connect() {
+    public connect() {
         if (Date.now() - this.lastConnectAttempt < minConnectTime) {
             return;
         }
         this.lastConnectAttempt = Date.now();
-        const url = getWsUrl();
+        const url = this.url;
         this.ws = new WebSocket(url);
         this.ws.onmessage = this.handleMessage.bind(this);
         this.ws.onopen = () => this.onConnect();

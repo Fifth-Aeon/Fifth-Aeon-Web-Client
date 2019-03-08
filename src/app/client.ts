@@ -28,7 +28,8 @@ export enum ClientState {
 export enum GameType {
     AiGame,
     DoubleAiGame,
-    PublicGame
+    PublicGame,
+    ServerAIGame
 }
 
 @Injectable()
@@ -37,9 +38,10 @@ export class WebClient {
     private messenger: Messenger;
     private state: ClientState = ClientState.UnAuth;
     private connected = false;
+    private connectedToLocalServer = false;
 
     public getGameReward: ((won: boolean) => Promise<string>) | null = null;
-    public onDeckSelected: (() => void) = () => null;
+    public onDeckSelected: () => void = () => null;
     private onError: (error: string) => void = () => null;
 
     constructor(
@@ -73,8 +75,11 @@ export class WebClient {
             msg => this.changeState(ClientState.InQueue),
             this
         );
+
         this.messenger.connectChange = status =>
             zone.run(() => (this.connected = status));
+        messengerService.getLocalMessenger().connectChange = status =>
+            zone.run(() => (this.connectedToLocalServer = status));
 
         this.gameManager.setGameEndCallback((won, quit) =>
             this.openEndDialog(won, quit)
@@ -84,7 +89,10 @@ export class WebClient {
     }
 
     private startGame(msg: Message) {
-        this.gameManager.startGame(msg.data.playerNumber, msg.data.opponent);
+        this.gameManager.startMultiplayerGame(
+            msg.data.playerNumber,
+            msg.data.opponent
+        );
         this.changeState(ClientState.InGame);
         this.router.navigate(['/game']);
     }
@@ -97,6 +105,15 @@ export class WebClient {
 
     public startDoubleAIGame() {
         this.gameManager.startAIGame(2);
+        this.getGameReward = () => Promise.resolve('No reward in A.I mode');
+        this.changeState(ClientState.InGame);
+        this.router.navigate(['/game']);
+    }
+
+    public async startLocalAIGame() {
+        this.router.navigate(['/queue']);
+
+        await this.gameManager.startAiServerGame();
         this.getGameReward = () => Promise.resolve('No reward in A.I mode');
         this.changeState(ClientState.InGame);
         this.router.navigate(['/game']);
@@ -188,6 +205,10 @@ export class WebClient {
         return this.connected;
     }
 
+    public isConnectedToLocalServer(): boolean {
+        return this.connectedToLocalServer;
+    }
+
     public exitGame(final = false) {
         this.gameManager.exitGame();
         if (final) {
@@ -268,6 +289,9 @@ export class WebClient {
                 break;
             case GameType.PublicGame:
                 this.onDeckSelected = this.joinPublicQueue;
+                break;
+            case GameType.ServerAIGame:
+                this.onDeckSelected = this.startLocalAIGame;
                 break;
         }
         this.router.navigate(['/select']);

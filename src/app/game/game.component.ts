@@ -211,7 +211,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
     private isMyTurn(): boolean {
         const currentPlayer = this.game.getActivePlayer();
-        return !currentPlayer || currentPlayer === this.playerNo;
+        return currentPlayer === this.playerNo;
     }
     public currPlayerName(): string {
         return this.isMyTurn() ? 'your' : 'your opponent\'s';
