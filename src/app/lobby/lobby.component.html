@@ -53,15 +53,9 @@
 
             <button mat-raised-button color="primary" *ngIf="client.isConnectedToLocalServer()" (click)="client.selectDeckAndStartGame(3)">
                 <mat-icon>android</mat-icon>
-                <span> Play Local A.I </span>
+                <span> Play Local Server A.I </span>
             </button>
 
-            <!--
-      <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(1)">
-        <mat-icon>android</mat-icon>
-        <span> A.I vs A.I </span>
-      </button>
-      -->
         </mat-card>
 
         <mat-card class="lobby-card">

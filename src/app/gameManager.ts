@@ -65,7 +65,6 @@ export class GameManager {
 
         this.localMessenger = messengerService.getLocalMessenger();
         this.localMessenger.addHandler(MessageType.GameEvent, msg => {
-            console.log('got', msg);
             this.handleGameEvent(msg.data);
         });
 
@@ -401,6 +400,7 @@ export class GameManager {
             this.overlay.getAnimator(),
             this.log
         );
+        this.game1.enableAnimations();
         this.game1.setOwningPlayer(this.playerNumber);
 
         this.soundManager.playImportantSound('gong');
@@ -431,6 +431,7 @@ export class GameManager {
             this.log
         );
         this.game1.setOwningPlayer(this.playerNumber);
+        this.game1.enableAnimations();
 
         this.soundManager.playImportantSound('gong');
         this.zone.run(() => {
@@ -465,6 +466,7 @@ export class GameManager {
             this.log
         );
         this.game1.setOwningPlayer(this.playerNumber);
+        this.game1.enableAnimations();
         this.game2 = new ClientGame(
             'ai',
             (_, action) => this.sendGameAction(action, true),
