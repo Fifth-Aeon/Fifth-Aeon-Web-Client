@@ -39,6 +39,7 @@ import { SettingsDialogComponent } from './settings-dialog/settings-dialog.compo
 // App Angular Services
 import { SoundManager } from './sound';
 import { TipService } from './tips';
+import { TournamentModule } from './tournament/tournament.module';
 
 @NgModule({
     declarations: [
@@ -73,6 +74,7 @@ import { TipService } from './tips';
         MaterialModule,
         Angulartics2Module.forRoot(),
         EditorModule,
+        TournamentModule,
         AppRoutingModule
     ],
     providers: [
