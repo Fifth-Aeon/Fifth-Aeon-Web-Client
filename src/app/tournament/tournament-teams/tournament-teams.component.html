@@ -1,3 +1,53 @@
-<p>
-  tournament-teams works!
-</p>
+<div *ngIf="teams.isLoggedIn()">
+    <article *ngIf="teams.isInTeam()">
+        <p>{{ teamDescription() }}</p>
+        <h1>Team Mates</h1>
+        <p *ngFor="let teamMate of teams.getTeamData().teamMates">
+            {{ teamMate.name }} is
+            {{ teamMate.isLeader ? 'the leader' : 'a member' }}.
+        </p>
+        <p *ngIf="teams.getTeamData().isLeader">
+            You can invite more team members with the code
+            <span class="cb-span" ngxClipboard [cbContent]="teams.getTeamData().joinCode">{{ teams.getTeamData().joinCode }}</span>
+        </p>
+        <h1>Actions</h1>
+        <button mat-raised-button color="primary" routerLink="/tournament/submit">
+            <mat-icon>add</mat-icon>
+            <span> Submit Bot </span>
+        </button>
+
+        <button mat-raised-button color="warn" (click)="exitAction()">
+            <mat-icon>delete</mat-icon>
+            <span> {{ exitText() }} </span>
+        </button>
+    </article>
+
+    <div *ngIf="!teams.isInTeam()">
+        <p>Your not on a team yet.</p>
+        <br />
+        <p>
+            You can
+            <button
+                mat-raised-button
+                color="primary"
+                (click)="teams.createTeam()"
+            >
+                <mat-icon>add</mat-icon>
+                <span> Form a new Team </span>
+            </button>
+        </p>
+
+        <p>
+            Or
+
+            <button mat-raised-button color="primary" (click)="promptAndJoin()">
+                <mat-icon>share</mat-icon>
+                <span> Join an existing Team </span>
+            </button>
+        </p>
+    </div>
+</div>
+
+<div *ngIf="!teams.isLoggedIn()">
+    You need to log in to manage your team.
+</div>

@@ -17,6 +17,7 @@ interface GuestData extends UserData {
 export class AuthenticationService {
     private user: UserData | null = null;
     private authChangeCallbacks: Array<(user: UserData | null) => void> = [];
+    private redirectTarget = 'lobby';
 
     constructor(private http: HttpClient, private router: Router) {}
 
@@ -36,6 +37,10 @@ export class AuthenticationService {
         } catch (e) {
             return Promise.resolve(false);
         }
+    }
+
+    public setRedirect(redirect: string) {
+        this.redirectTarget = redirect;
     }
 
     public getUser(): UserData | null {
@@ -174,6 +179,6 @@ export class AuthenticationService {
         this.user = user;
         localStorage.setItem('login', JSON.stringify(user));
         this.authChangeCallbacks.forEach(callback => callback(this.getUser()));
-        this.router.navigateByUrl('/lobby');
+        this.router.navigateByUrl('/' + this.redirectTarget);
     }
 }

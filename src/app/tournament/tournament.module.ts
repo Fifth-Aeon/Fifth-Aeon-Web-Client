@@ -8,6 +8,7 @@ import { TournamentRulesComponent } from './tournament-rules/tournament-rules.co
 import { TournamentHelpComponent } from './tournament-help/tournament-help.component';
 import { TournamentTeamsComponent } from './tournament-teams/tournament-teams.component';
 import { TournamentSubmitComponent } from './tournament-submit/tournament-submit.component';
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import { TournamentSubmitComponent } from './tournament-submit/tournament-submit
         FormsModule,
         ReactiveFormsModule,
         MaterialModule,
-        TournamentRoutingModule
+        TournamentRoutingModule,
+        ClipboardModule
     ],
     declarations: [
         TournamentComponent,
