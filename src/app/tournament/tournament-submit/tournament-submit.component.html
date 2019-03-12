@@ -1,3 +1,38 @@
-<p>
-  tournament-submit works!
-</p>
+<article *ngIf="team.isLoggedIn()">
+    <h1 *ngIf="submissions.length > 0">Past Submissions</h1>
+    <p *ngFor="let submission of submissions">
+        On {{ submission.submitted | date: 'short' }}
+
+        {{ submission.submitter }} submitted a version
+        <button mat-icon-button (click)="team.downloadSubmission(submission)">
+            <mat-icon>file_download</mat-icon>
+        </button>
+    </p>
+
+    <h2>Instructions</h2>
+    <p>
+        Within your bot tool kit installation, navigate to src/bots. Make a copy
+        of the folder then remove all bots other than the one your team intends
+        to submit. Compress the copied folder into an .zip archive and upload
+        that archive here.
+    </p>
+
+
+    <h1>Submit your bot</h1>
+    <input
+        #fileInput
+        hidden
+        type="file"
+        (change)="fileChange($event)"
+        placeHolder="Upload Bot Zip Archive"
+        accept="application/zip,application/x-zip,application/x-zip-compressed"
+        single
+    />
+    <button type="button" mat-raised-button (click)="fileInput.click()">
+        <mat-icon>file_upload</mat-icon> Upload Bot Version
+    </button>
+</article>
+
+<article *ngIf="!team.isLoggedIn()">
+    <p>You need to <a routerLink="/login">log in</a> to manage submit.</p>
+</article>

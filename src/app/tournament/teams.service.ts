@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthenticationService } from '../user/authentication.service';
 import { apiURL } from '../url';
+import { saveAs } from 'file-saver';
+
 
 export interface TeamData {
     isLeader: boolean;
@@ -11,6 +13,12 @@ export interface TeamData {
         name: string;
         isLeader: boolean;
     }[];
+}
+
+export interface SubmissionsData {
+    submitter: string;
+    submitted: Date;
+    submissionID: number;
 }
 
 @Injectable({
@@ -23,8 +31,10 @@ export class TeamsService {
     private static exitTeamUrl = `${apiURL}/api/tournament/exitTeam`;
     private static dissolveTeamUrl = `${apiURL}/api/tournament/dissolveTeam`;
 
+    private static submissionURL = `${apiURL}/api/tournament/submit`;
+    private static getSubmissionsURL = `${apiURL}/api/tournament/submissions`;
+
     private teamData?: TeamData;
-    private loaded = false;
     private loggedIn = false;
 
     constructor(private http: HttpClient, private auth: AuthenticationService) {
@@ -38,6 +48,43 @@ export class TeamsService {
         });
         auth.setRedirect('tournament/teams');
         auth.attemptLogin();
+    }
+
+    public downloadSubmission(sub: SubmissionsData) {
+        const url = `${apiURL}/api/tournament/submission/${sub.submissionID}`;
+        const name = this.teamData ? this.teamData.teamName : '';
+        this.http
+            .get(url, {
+                headers: this.auth.getAuthHeader(),
+                responseType: 'blob'
+            })
+            .toPromise()
+            .then(buffer => saveAs(buffer, `${sub.submitted.toISOString()}-${name}-submission.zip`));
+    }
+
+    public getSubmissions() {
+        return this.http
+            .get<SubmissionsData[]>(TeamsService.getSubmissionsURL, {
+                headers: this.auth.getAuthHeader()
+            })
+            .toPromise()
+            .then(submissions => {
+                for (const sub of submissions) {
+                    sub.submitted = new Date(sub.submitted);
+                }
+                return submissions;
+            });
+    }
+
+    public uploadSubmission(file: File) {
+        const formData = new FormData();
+        formData.append('submission', file);
+
+        return this.http
+            .post(TeamsService.submissionURL, formData, {
+                headers: this.auth.getAuthHeader()
+            })
+            .toPromise();
     }
 
     public exitOrDissolve(): any {
@@ -75,9 +122,7 @@ export class TeamsService {
             .toPromise()
             .then(data => {
                 this.teamData = data;
-                this.loaded = true;
-            })
-            .catch(err => (this.loaded = true));
+            });
     }
 
     public getTeamData() {

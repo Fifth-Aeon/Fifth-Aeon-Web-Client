@@ -48,6 +48,6 @@
     </div>
 </div>
 
-<div *ngIf="!teams.isLoggedIn()">
-    You need to log in to manage your team.
-</div>
+<article *ngIf="!teams.isLoggedIn()">
+    <p>You need to <a routerLink="/login">log in</a> to manage your team.</p>
+</article>
