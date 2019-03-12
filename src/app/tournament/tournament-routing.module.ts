@@ -11,8 +11,9 @@ const routes: Routes = [
         path: 'tournament',
         component: TournamentComponent,
         children: [
-            { path: 'rules', component: TournamentRulesComponent },
+            { path: '', component: TournamentHelpComponent },
             { path: 'help', component: TournamentHelpComponent },
+            { path: 'rules', component: TournamentRulesComponent },
             { path: 'submit', component: TournamentSubmitComponent },
             { path: 'teams', component: TournamentTeamsComponent }
         ]
