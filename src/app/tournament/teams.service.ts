@@ -45,23 +45,19 @@ export class TeamsService {
             console.warn('Not in team');
             return;
         }
-        if (this.teamData.isLeader) {
-            this.http.post(
-                TeamsService.dissolveTeamUrl,
-                {},
-                { headers: this.auth.getAuthHeader() }
-            );
-        } else {
-            this.http.post(
-                TeamsService.exitTeamUrl,
-                {},
-                { headers: this.auth.getAuthHeader() }
-            );
-        }
+        const url = this.teamData.isLeader
+            ? TeamsService.dissolveTeamUrl
+            : TeamsService.exitTeamUrl;
+        this.http
+            .post(url, {}, { headers: this.auth.getAuthHeader() })
+            .toPromise()
+            .then(res => {
+                this.teamData = undefined;
+            });
     }
 
     public isInTeam() {
-        return !this.loaded || this.teamData !== undefined;
+        return this.teamData !== undefined;
     }
 
     public isLoggedIn() {
