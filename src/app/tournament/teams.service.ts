@@ -139,7 +139,10 @@ export class TeamsService {
                 { teamName },
                 { headers: this.auth.getAuthHeader() }
             )
-            .subscribe(data => (this.teamData = data));
+            .toPromise().then(data => (this.teamData = data))
+            .catch(err => {
+                alert('Could not create team: ' + err.error.message);
+            });
     }
 
     public joinTeam(joinCode: string) {
@@ -152,6 +155,9 @@ export class TeamsService {
                 { joinCode },
                 { headers: this.auth.getAuthHeader() }
             )
-            .subscribe(data => (this.teamData = data));
+            .toPromise().then(data => (this.teamData = data))
+            .catch(err => {
+                alert('Could not join team: ' + err.error.message);
+            });
     }
 }
