@@ -56,17 +56,17 @@ export class CollectionService {
             })
             .toPromise()
             .then(res => {
-                const dialogRef = this.dialog.open(DailyDialogComponent);
-
                 if (!res.daily) {
-                    const wait = res.nextRewardTime / 1000 / 60 / 60;
-                    dialogRef.componentInstance.nextRewardTime = wait;
+                    // const wait = res.nextRewardTime / 1000 / 60 / 60;
+                    // dialogRef.componentInstance.nextRewardTime = wait;
                     return;
-                }
+                } else {
+                    const dialogRef = this.dialog.open(DailyDialogComponent);
 
-                dialogRef.componentInstance.rewards = res.cards.map(id =>
-                    cardList.getCard(id)
-                );
+                    dialogRef.componentInstance.rewards = res.cards.map(id =>
+                        cardList.getCard(id)
+                    );
+                }
             });
     }
 
