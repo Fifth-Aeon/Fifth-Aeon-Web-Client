@@ -18,12 +18,6 @@ export class TournamentTeamsComponent implements OnInit {
         }
     }
 
-    public createTeam() {
-        const name = prompt('Enter the name of the new team');
-        if (name) {
-            this.teams.createTeam(name);
-        }
-    }
 
     public teamDescription() {
         const data = this.teams.getTeamData();

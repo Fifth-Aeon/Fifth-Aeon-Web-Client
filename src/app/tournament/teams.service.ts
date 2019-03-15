@@ -4,7 +4,6 @@ import { AuthenticationService } from '../user/authentication.service';
 import { apiURL } from '../url';
 import { saveAs } from 'file-saver';
 
-
 export interface TeamData {
     isLeader: boolean;
     teamName: string;
@@ -59,7 +58,12 @@ export class TeamsService {
                 responseType: 'blob'
             })
             .toPromise()
-            .then(buffer => saveAs(buffer, `${sub.submitted.toISOString()}-${name}-submission.zip`));
+            .then(buffer =>
+                saveAs(
+                    buffer,
+                    `${sub.submitted.toISOString()}-${name}-submission.zip`
+                )
+            );
     }
 
     public getSubmissions() {
@@ -129,20 +133,23 @@ export class TeamsService {
         return this.teamData;
     }
 
-    public createTeam(teamName: string) {
+    public createTeam(
+        teamName: string,
+        contactEmail: string,
+        contactName: string,
+        contactOrg: string
+    ) {
         if (this.teamData) {
-            return;
+            return Promise.reject();
         }
-        this.http
+        return this.http
             .post<TeamData>(
                 TeamsService.createTeamUrl,
-                { teamName },
+                { teamName, contactEmail, contactName, contactOrg },
                 { headers: this.auth.getAuthHeader() }
             )
-            .toPromise().then(data => (this.teamData = data))
-            .catch(err => {
-                alert('Could not create team: ' + err.error.message);
-            });
+            .toPromise()
+            .then(data => (this.teamData = data));
     }
 
     public joinTeam(joinCode: string) {
@@ -155,7 +162,8 @@ export class TeamsService {
                 { joinCode },
                 { headers: this.auth.getAuthHeader() }
             )
-            .toPromise().then(data => (this.teamData = data))
+            .toPromise()
+            .then(data => (this.teamData = data))
             .catch(err => {
                 alert('Could not join team: ' + err.error.message);
             });

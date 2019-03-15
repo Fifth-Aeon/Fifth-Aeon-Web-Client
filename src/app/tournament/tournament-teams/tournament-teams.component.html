@@ -8,10 +8,19 @@
         </p>
         <p *ngIf="teams.getTeamData().isLeader">
             You can invite more team members with the code
-            <span class="cb-span" ngxClipboard [cbContent]="teams.getTeamData().joinCode">{{ teams.getTeamData().joinCode }}</span>
+            <span
+                class="cb-span"
+                ngxClipboard
+                [cbContent]="teams.getTeamData().joinCode"
+                >{{ teams.getTeamData().joinCode }}</span
+            >
         </p>
         <h1>Actions</h1>
-        <button mat-raised-button color="primary" routerLink="/tournament/submit">
+        <button
+            mat-raised-button
+            color="primary"
+            routerLink="/tournament/submit"
+        >
             <mat-icon>add</mat-icon>
             <span> Submit Bot </span>
         </button>
@@ -24,18 +33,8 @@
 
     <div *ngIf="!teams.isInTeam()">
         <p>Your not on a team yet.</p>
-        <br />
-        <p>
-            You can
-            <button
-                mat-raised-button
-                color="primary"
-                (click)="createTeam()"
-            >
-                <mat-icon>add</mat-icon>
-                <span> Form a new Team </span>
-            </button>
-        </p>
+
+        <ccg-new-team></ccg-new-team>
 
         <p>
             Or

@@ -1,0 +1,83 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Form a new Team</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <form #registerForm="ngForm" class="form-container">
+            <mat-form-field>
+                <input
+                    matInput
+                    #titleIn
+                    name="teamname"
+                    [(ngModel)]="name"
+                    [formControl]="nameControl"
+                    maxlength="30"
+                    placeholder="Team Name"
+                    required
+                />
+                <mat-error *ngIf="nameControl.invalid">{{
+                    nameError()
+                }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input
+                    matInput
+                    #titleIn
+                    name="contactName"
+                    [(ngModel)]="contactName"
+                    [formControl]="contactNameControl"
+                    maxlength="60"
+                    placeholder="Legal name of Team Contact"
+                    required
+                />
+                <mat-error *ngIf="contactNameControl.invalid">{{
+                    nameError()
+                }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input
+                    matInput
+                    #emailIn
+                    name="contactEmail"
+                    [(ngModel)]="contactEmail"
+                    [formControl]="contactEmailControl"
+                    maxlength="60"
+                    placeholder="Email of Team Contact"
+                    required
+                />
+                <mat-error *ngIf="contactEmailControl.invalid">{{
+                    emailError()
+                }}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input
+                    matInput
+                    #emailIn
+                    name="contactOrg"
+                    [(ngModel)]="contactOrg"
+                    [formControl]="contactOrgControl"
+                    maxlength="60"
+                    placeholder="Affiliated school or organisation"
+                    required
+                />
+                <mat-error *ngIf="contactOrgControl.invalid">{{
+                    nameError()
+                }}</mat-error>
+            </mat-form-field>
+        </form>
+    </mat-card-content>
+    <mat-card-actions>
+        <button
+            mat-raised-button
+            color="primary"
+            (click)="submit()"
+            [disabled]="!ok()"
+        >
+            <mat-icon>add</mat-icon>
+            <span> Launch Team </span>
+        </button>
+    </mat-card-actions>
+</mat-card>
