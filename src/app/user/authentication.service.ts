@@ -43,6 +43,10 @@ export class AuthenticationService {
         this.redirectTarget = redirect;
     }
 
+    public redirect() {
+        this.router.navigateByUrl('/' + this.redirectTarget);
+    }
+
     public getUser(): UserData | null {
         if (this.user) {
             return { ...this.user };
@@ -179,6 +183,6 @@ export class AuthenticationService {
         this.user = user;
         localStorage.setItem('login', JSON.stringify(user));
         this.authChangeCallbacks.forEach(callback => callback(this.getUser()));
-        this.router.navigateByUrl('/' + this.redirectTarget);
+        this.redirect();
     }
 }

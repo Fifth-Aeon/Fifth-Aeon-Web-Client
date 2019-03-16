@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
         this.auth
             .login(this.username, this.password)
             .then(() => {
-                this.router.navigate([`/lobby`]);
+                this.auth.redirect();
             })
             .catch(this.handleError.bind(this));
     }
