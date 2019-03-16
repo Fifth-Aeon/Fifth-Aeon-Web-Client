@@ -29,6 +29,7 @@ export class NewTeamComponent {
     contactOrg = '';
     message = '';
     working = false;
+    error = '';
 
     constructor(
         private auth: AuthenticationService,
@@ -77,7 +78,13 @@ export class NewTeamComponent {
                 this.contactName,
                 this.contactOrg
             )
-            .then(() => this.endRequest());
+            .then(() => this.endRequest())
+            .catch(err => {
+                this.error = err.error.message;
+                console.error(this.error, err);
+
+                this.endRequest();
+            });
     }
 
 
@@ -86,6 +93,18 @@ export class NewTeamComponent {
             ? 'You must enter a value.'
             : this.nameControl.hasError('availability')
             ? 'No account exists with that username or email.'
+            : '';
+    }
+
+    contactError() {
+        return this.contactNameControl.hasError('required')
+            ? 'You must enter a value.'
+            : '';
+    }
+
+    orgError() {
+        return this.contactOrgControl.hasError('required')
+            ? 'You must enter a value.'
             : '';
     }
 

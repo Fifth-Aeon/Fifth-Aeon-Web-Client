@@ -32,7 +32,7 @@
                     required
                 />
                 <mat-error *ngIf="contactNameControl.invalid">{{
-                    nameError()
+                    contactError()
                 }}</mat-error>
             </mat-form-field>
 
@@ -64,10 +64,11 @@
                     required
                 />
                 <mat-error *ngIf="contactOrgControl.invalid">{{
-                    nameError()
+                    orgError()
                 }}</mat-error>
             </mat-form-field>
         </form>
+        <mat-error *ngIf="error !== ''">{{ error }}</mat-error>
     </mat-card-content>
     <mat-card-actions>
         <button
