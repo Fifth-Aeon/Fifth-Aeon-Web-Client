@@ -19,7 +19,7 @@ const keywordsDefs = new Map<string, string>();
 // Game mechanics
 keywordsDefs.set(
     'Refresh',
-    'Refreshing restores a unit’s health and removes exaustion. Units normally refresh at the start of their owners turn.'
+    'Refreshing restores a unit’s health and removes exhaustion. Units normally refresh at the start of their owners turn.'
 );
 
 // Evasion
