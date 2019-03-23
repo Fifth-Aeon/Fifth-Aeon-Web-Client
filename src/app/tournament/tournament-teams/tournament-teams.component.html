@@ -10,10 +10,11 @@
             You can invite more team members with the code
             <span
                 class="cb-span"
+                (click)="clipboardMessage()"
                 ngxClipboard
                 [cbContent]="teams.getTeamData().joinCode"
                 >{{ teams.getTeamData().joinCode }}</span
-            >
+            > (click to the cody to copy it)
         </p>
         <h1>Actions</h1>
         <button

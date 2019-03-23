@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TeamsService } from '../teams.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
     selector: 'ccg-tournament-teams',
@@ -7,7 +8,7 @@ import { TeamsService } from '../teams.service';
     styleUrls: ['./tournament-teams.component.scss']
 })
 export class TournamentTeamsComponent implements OnInit {
-    constructor(public teams: TeamsService) {}
+    constructor(public teams: TeamsService, private snackbar: MatSnackBar) {}
 
     ngOnInit() {}
 
@@ -16,6 +17,10 @@ export class TournamentTeamsComponent implements OnInit {
         if (code) {
             this.teams.joinTeam(code);
         }
+    }
+
+    public clipboardMessage() {
+        this.snackbar.open('Join code copied to clipboard.');
     }
 
 
