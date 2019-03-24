@@ -6,6 +6,7 @@ import { TournamentHelpComponent } from './tournament-help/tournament-help.compo
 import { TournamentSubmitComponent } from './tournament-submit/tournament-submit.component';
 import { TournamentTeamsComponent } from './tournament-teams/tournament-teams.component';
 import { TournamentAdminComponent } from './tournament-admin/tournament-admin.component';
+import { PrizesComponent } from './prizes/prizes.component';
 
 const routes: Routes = [
     {
@@ -17,6 +18,7 @@ const routes: Routes = [
             { path: 'rules', component: TournamentRulesComponent },
             { path: 'submit', component: TournamentSubmitComponent },
             { path: 'teams', component: TournamentTeamsComponent },
+            { path: 'prizes', component: PrizesComponent },
             { path: 'admin', component: TournamentAdminComponent },
         ]
     }

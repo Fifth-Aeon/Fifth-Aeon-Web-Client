@@ -11,6 +11,7 @@ import { TournamentSubmitComponent } from './tournament-submit/tournament-submit
 import { ClipboardModule } from 'ngx-clipboard';
 import { NewTeamComponent } from './new-team/new-team.component';
 import { TournamentAdminComponent } from './tournament-admin/tournament-admin.component';
+import { PrizesComponent } from './prizes/prizes.component';
 
 @NgModule({
     imports: [
@@ -28,7 +29,8 @@ import { TournamentAdminComponent } from './tournament-admin/tournament-admin.co
         TournamentTeamsComponent,
         TournamentSubmitComponent,
         NewTeamComponent,
-        TournamentAdminComponent
+        TournamentAdminComponent,
+        PrizesComponent
     ],
     exports: [],
     providers: []
