@@ -1,0 +1,55 @@
+<table mat-table [dataSource]="teamInfo" class="mat-elevation-z8">
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Team Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.teamName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="members">
+        <th mat-header-cell *matHeaderCellDef>Members</th>
+        <td mat-cell *matCellDef="let element">{{ element.members.join(', ') }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastSubmission">
+        <th mat-header-cell *matHeaderCellDef>Last submission</th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.lastSubmission | date }}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="submissions">
+        <th mat-header-cell *matHeaderCellDef>Number of submissions</th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.numberOfSubmissions }}
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<table mat-table [dataSource]="contestantInfo" class="mat-elevation-z8">
+    <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef>Username Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.username }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="teamName">
+        <th mat-header-cell *matHeaderCellDef>Team Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.teamName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="leader">
+        <th mat-header-cell *matHeaderCellDef>Last submission</th>
+        <td mat-cell *matCellDef="let element">{{ element.isTeamOwner }}</td>
+    </ng-container>
+
+    <tr
+        mat-header-row
+        *matHeaderRowDef="['username', 'teamName', 'leader']"
+    ></tr>
+    <tr
+        mat-row
+        *matRowDef="let row; columns: ['username', 'teamName', 'leader']"
+    ></tr>
+</table>
+

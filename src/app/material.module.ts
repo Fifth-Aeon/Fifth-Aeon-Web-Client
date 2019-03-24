@@ -20,8 +20,10 @@ import {
     MatSnackBarModule,
     MatTabsModule,
     MatToolbarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatTableModule
 } from '@angular/material';
+import { CdkTableModule } from '@angular/cdk/table';
 
 const matModules = [
     MatButtonModule,
@@ -44,11 +46,12 @@ const matModules = [
     MatMenuModule,
     MatTooltipModule,
     MatListModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatTableModule,
+    CdkTableModule
 ];
 
 @NgModule({
-    imports: matModules,
     exports: matModules
 })
 export class MaterialModule {}

@@ -10,6 +10,7 @@ import { TournamentTeamsComponent } from './tournament-teams/tournament-teams.co
 import { TournamentSubmitComponent } from './tournament-submit/tournament-submit.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NewTeamComponent } from './new-team/new-team.component';
+import { TournamentAdminComponent } from './tournament-admin/tournament-admin.component';
 
 @NgModule({
     imports: [
@@ -26,7 +27,8 @@ import { NewTeamComponent } from './new-team/new-team.component';
         TournamentHelpComponent,
         TournamentTeamsComponent,
         TournamentSubmitComponent,
-        NewTeamComponent
+        NewTeamComponent,
+        TournamentAdminComponent
     ],
     exports: [],
     providers: []

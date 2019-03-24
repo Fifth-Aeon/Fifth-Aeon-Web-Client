@@ -39,6 +39,19 @@ export class AuthenticationService {
         }
     }
 
+    public afterLogin(): Promise<UserData> {
+        if (this.user != null) {
+            return Promise.resolve(this.user);
+        }
+        return new Promise(resolve => {
+            this.onAuth((user) => {
+                if (user !== null) {
+                    resolve(user);
+                }
+            });
+        });
+    }
+
     public setRedirect(redirect: string) {
         this.redirectTarget = redirect;
     }
