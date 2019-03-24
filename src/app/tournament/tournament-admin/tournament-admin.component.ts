@@ -14,7 +14,8 @@ export class TournamentAdminComponent implements OnInit {
         'name',
         'members',
         'lastSubmission',
-        'submissions'
+        'submissions',
+        'download'
     ];
 
     constructor(public adminService: TournamentAdminService) {
