@@ -49,13 +49,25 @@ export class Messenger {
     private messageQueue: Queue<string> = new Queue<string>();
     private lastConnectAttempt = 0;
     private id: string | undefined;
+    private enabled = true;
 
     private loggedIn = false;
-
     public connectChange: (status: boolean) => void = () => null;
 
     constructor(private url = getWsUrl()) {
         this.handlers = new Map();
+
+        // Firefox does not allow you to open a connection via the ws protocol if the page is served via https
+        // So if we try to do that, abort
+        if (
+            location.href.startsWith('https://') &&
+            url.startsWith('ws://') &&
+            navigator.userAgent.search('Firefox')
+        ) {
+            console.warn('Cannot conenct to ws from https page on Firefox, abort connection');
+            this.enabled = false;
+            return;
+        }
         setInterval(() => {
             if (!this.id || !this.ws || this.ws.readyState === this.ws.OPEN) {
                 return;
@@ -81,6 +93,9 @@ export class Messenger {
     }
 
     public connect() {
+        if (!this.enabled) {
+            return;
+        }
         if (Date.now() - this.lastConnectAttempt < minConnectTime) {
             return;
         }
@@ -123,7 +138,12 @@ export class Messenger {
         if (cb) {
             cb(message);
         } else {
-            console.error('No handler for message type', message.type, 'in', message);
+            console.error(
+                'No handler for message type',
+                message.type,
+                'in',
+                message
+            );
         }
     }
 
