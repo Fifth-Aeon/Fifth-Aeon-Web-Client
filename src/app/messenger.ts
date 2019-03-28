@@ -62,7 +62,7 @@ export class Messenger {
         if (
             location.href.startsWith('https://') &&
             url.startsWith('ws://') &&
-            navigator.userAgent.search('Firefox')
+            navigator.userAgent.search('Firefox') !== -1
         ) {
             console.warn('Cannot conenct to ws from https page on Firefox, abort connection');
             this.enabled = false;
