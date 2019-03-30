@@ -10,6 +10,11 @@ import {
 import { AuthenticationService } from 'app/user/authentication.service';
 import { DailyDialogComponent } from './daily-dialog/daily-dialog.component';
 import { apiURL } from './url';
+import { ResourceTypeNames } from './game_model/resource';
+import { Unit } from './game_model/card-types/unit';
+import { Item } from './game_model/card-types/item';
+import { Enchantment } from './game_model/card-types/enchantment';
+import { CardType } from './game_model/cardType';
 
 const saveURL = `${apiURL}/api/cards/storeCollection`;
 const loadUrl = `${apiURL}/api/cards/getCollection`;
@@ -47,6 +52,35 @@ export class CollectionService {
                 this.load();
             }
         });
+        (window as any).getCardSheet = () => {
+            const cards = cardList
+                .getCards()
+                .sort((a, b) => (a.getName() > b.getName() ? 1 : -1));
+            let output = `Name\tType\tEnergy Cost\t${ResourceTypeNames.join(
+                '\t'
+            )}\tDamage/Empower\tLife/Power\tText\n`;
+
+            for (const card of cards) {
+                output += card.getName() + '\t';
+                output += CardType[card.getCardType()] + '\t';
+                output += card.getCost().getNumeric() + '\t';
+                for (const resourceName of ResourceTypeNames) {
+                    output += card.getCost().getOfType(resourceName) + '\t';
+                }
+                if (card instanceof Unit) {
+                    output += card.getDamage() + '\t';
+                    output += card.getLife();
+                } else if (card instanceof Item) {
+                    output += card.getDamage() + '\t';
+                    output += card.getLife();
+                } else if (card instanceof Enchantment) {
+                    output += card.getModifyCost().getNumeric() + '\t';
+                    output += card.getPower();
+                }
+                output += card.getText() + '\n';
+            }
+            return output;
+        };
     }
 
     private checkDaily() {
