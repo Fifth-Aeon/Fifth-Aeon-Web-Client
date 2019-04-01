@@ -435,7 +435,6 @@ export class GameManager {
 
         this.soundManager.playImportantSound('gong');
         this.zone.run(() => {
-            console.log(this.playerNumber, this.opponentNumber);
             this.opponentUsername = 'Server A.I';
         });
     }
