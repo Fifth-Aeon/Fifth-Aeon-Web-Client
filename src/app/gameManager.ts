@@ -67,6 +67,13 @@ export class GameManager {
         this.localMessenger.addHandler(MessageType.GameEvent, msg => {
             this.handleGameEvent(msg.data);
         });
+        this.localMessenger.addHandler(MessageType.TransferScenario, msg => {
+            const scenario = new Scenario(msg.data.scenario);
+            if (this.game1) {
+                scenario.apply(this.game1);
+            }
+        });
+
 
         this.reset();
     }
@@ -400,6 +407,7 @@ export class GameManager {
             this.overlay.getAnimator(),
             this.log
         );
+
         this.game1.enableAnimations();
         this.game1.setOwningPlayer(this.playerNumber);
 

@@ -22,6 +22,7 @@ export enum MessageType {
     JoinPrivateGame,
     CancelPrivateGame,
     PrivateGameReady,
+    TransferScenario,
 
     // In Game
     GameEvent,
