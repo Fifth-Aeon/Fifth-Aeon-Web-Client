@@ -172,7 +172,8 @@ export class GameManager {
         }
 
         if (!this.gameModel) {
-            throw new Error('Game model is undefined');
+            console.warn('Sent action to empty game model');
+            return;
         }
 
         const res = this.gameModel.handleAction(action);
