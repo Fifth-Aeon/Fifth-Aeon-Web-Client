@@ -12,7 +12,10 @@
    version="1.1"
    id="svg8"
    sodipodi:docname="cards.svg"
-   inkscape:version="0.92.1 r15371">
+   inkscape:version="0.92.1 r15371"
+   inkscape:export-filename="C:\Users\William\Documents\Dev\Games\ccg\ccgclient\src\assets\png\card.png"
+   inkscape:export-xdpi="240"
+   inkscape:export-ydpi="240">
   <metadata
      id="metadata14">
     <rdf:RDF>
@@ -47,23 +50,17 @@
      inkscape:window-y="-16"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg8" />
-  <ellipse
-     cx="255.8026"
-     cy="255.72647"
-     id="circle2"
-     style="fill:#000000;stroke-width:0.98163605"
-     rx="252.54836"
-     ry="250.05551" />
   <g
      class=""
      transform="translate(1.7670311,0.21867097)"
-     id="g6">
+     id="g6"
+     style="fill:#1a1a1a">
     <path
        d="m 119.436,36 c -16.126,0 -29.2,17.237 -29.2,38.5 v 363 c 0,21.263 13.074,38.5 29.2,38.5 h 275.298 c 16.126,0 29.198,-17.237 29.198,-38.5 V 74.5 C 423.932,53.237 410.86,36 394.734,36 Z"
        transform="matrix(0.9,0,0,0.9,25.6,25.6)"
        id="path4"
        inkscape:connector-curvature="0"
-       style="fill:#ffffff"
+       style="fill:#1a1a1a"
        sodipodi:nodetypes="sssssssss" />
   </g>
   <!-- react-empty: 13 -->
