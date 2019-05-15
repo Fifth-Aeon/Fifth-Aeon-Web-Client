@@ -331,8 +331,10 @@ export class GameComponent implements OnInit, OnDestroy {
         if (this.doestNotNeedTarget(card)) {
             this.game.playCardExtern(card, []);
             this.clear();
-        } else {
+        } else if (this.selected !== card) {
             this.setSelected(card);
+        } else {
+            this.clear();
         }
     }
 
