@@ -95,7 +95,7 @@ export class AuthenticationService {
 
     public getAuthHeader() {
         if (!this.user) {
-            throw new Error('Cannot get auth token for unauthorised user');
+            throw new Error('Cannot get auth token for unauthorized user');
         }
         return new HttpHeaders({
             token: this.user.token
