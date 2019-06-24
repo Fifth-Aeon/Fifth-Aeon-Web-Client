@@ -1,0 +1,18 @@
+<mat-card class="list-area">
+    <mat-card-content id="editor-cards">
+       
+    </mat-card-content>
+    <p class="big-instruction" *ngIf="editorData.getSets().length === 0">
+        Click the button in the bottom right to create a new set.
+    </p>
+</mat-card>
+<button
+    mat-fab
+    class="new-button"
+    (click)="newSet()"
+    color="primary"
+    matTooltipPosition="above"
+    matTooltip="New Set"
+>
+    <mat-icon>add</mat-icon>
+</button>

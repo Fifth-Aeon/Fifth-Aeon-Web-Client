@@ -8,10 +8,14 @@
 <mat-sidenav-container>
     <mat-sidenav #nav mode="side" class="editor-sidenav">
         <ul>
-            <li><a (click)="nav.close()" routerLink="/lobby">Lobby</a></li>
             <li>
-                <a (click)="nav.close()" routerLink="/editor">Editor Home</a>
+                <a (click)="nav.close()" routerLink="/editor">Card List</a>
             </li>
+            <li>
+                <a (click)="nav.close()" routerLink="/editor/sets">Set List</a>
+            </li>
+            <li><a (click)="nav.close()" routerLink="/lobby">Lobby</a></li>
+
         </ul>
     </mat-sidenav>
     <router-outlet></router-outlet>

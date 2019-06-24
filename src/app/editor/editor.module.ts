@@ -11,6 +11,7 @@ import { EditorComponent } from './editor.component';
 import { MechanicEditorComponent } from './mechanic-editor/mechanic-editor.component';
 import { ParameterEditorComponent } from './parameter-editor/parameter-editor.component';
 import { TargeterEditorComponent } from './targeter-editor/targeter-editor.component';
+import { SetEditorComponent } from './set-editor/set-editor.component';
 
 @NgModule({
     imports: [
@@ -27,7 +28,8 @@ import { TargeterEditorComponent } from './targeter-editor/targeter-editor.compo
         TargeterEditorComponent,
         MechanicEditorComponent,
         EditorListComponent,
-        ParameterEditorComponent
+        ParameterEditorComponent,
+        SetEditorComponent
     ],
     exports: [],
     providers: [EditorDataService]
