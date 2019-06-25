@@ -1,0 +1,120 @@
+.new-button {
+    position: fixed;
+    bottom: 40px;
+    right: 60px;
+}
+
+.editor-component {
+    width: 100%;
+}
+
+.list-area {
+    overflow: hidden;
+    box-sizing: border-box;
+    margin: 20px;
+    padding: 12px;
+    min-height: calc(100vh - 102px);
+}
+
+.big-instruction {
+    font-size: 2em;
+}
+
+.item-card {
+    float: left;
+    overflow: hidden;
+    display: block;
+    margin: 20px;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+@media only screen and (max-width: 1200px) {
+    .card-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.empty-instruction {
+    font-size: 4em;
+    margin-top: 10vh;
+    text-align: center;
+}
+
+.centered-buttons {
+    text-align: center;
+
+    button {
+        display: inline-block;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+
+/* The animation code */
+
+$target-base-size: 56px;
+$base-extension: 6px;
+$base-size: $target-base-size + $base-extension;
+
+$base-right: 75px;
+$base-bottom: 75px;
+
+$multiplier: 1.65;
+$extended-size: $base-size * $multiplier;
+$extended-right: $base-right + ($extended-size - $base-size) / 2;
+$extended-bottom: $base-bottom + ($extended-size - $base-size) / 2;
+
+$extension-offset: ($extended-size - $base-size)/2;
+
+@keyframes draw-attention {
+    0% {
+        width: $base-size;
+        height: $base-size;
+    }
+    50% {
+        width: $extended-size;
+        height: $extended-size;
+        transform: translate($extension-offset, $extension-offset);
+    }
+    100% {
+        width: $base-size;
+        height: $base-size;
+    }
+}
+
+.primary-fab {
+    position: fixed;
+    right: $base-right;
+    bottom: $base-bottom;
+}
+
+.wave-attention {
+    width: $base-size;
+    height: $base-size;
+    border-radius: 50%;
+    animation-name: draw-attention;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    background-image: radial-gradient(#ffa216, rgba(255, 255, 255, 0));
+    animation-timing-function: ease-in-out;
+    position: fixed;
+    right: calc(#{$base-right} - 3px);
+    bottom: calc(#{$base-bottom} - 3px);
+    z-index: -1;
+}

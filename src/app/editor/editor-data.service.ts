@@ -36,14 +36,25 @@ export class EditorDataService {
                 this.loadData();
             }
         });
-        setInterval(() => this.saveData(), 2000);
+        setInterval(() => this.saveData(), 10000);
     }
 
-    public saveSet(set: SetInformation, isPublic: boolean) {
+    public createSet() {
+        const id: string = uuid.v4();
+
+        this.sets.push({
+            name: 'New Set',
+            description: '',
+            id: id,
+            public: false
+        });
+    }
+
+    public saveSet(set: SetInformation) {
         this.http
             .post(
                 EditorDataService.saveSetRoute,
-                { setInfo: set, public: isPublic },
+                { setInfo: set },
                 {
                     headers: this.auth.getAuthHeader()
                 }
@@ -132,6 +143,12 @@ export class EditorDataService {
             const lastSaved = this.lastSavedCardVersion.get(card.id);
             if (!lastSaved || !isEqual(card, lastSaved)) {
                 this.saveCard(card);
+            }
+        }
+        for (const set of this.sets) {
+            const lastSaved = this.lastSavedSetVersion.get(set.id);
+            if (!lastSaved || !isEqual(set, lastSaved)) {
+                this.saveSet(set);
             }
         }
         this.addToCollection();

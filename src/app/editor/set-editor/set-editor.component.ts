@@ -16,5 +16,9 @@ export class SetEditorComponent implements OnInit {
         this.auth.attemptLogin();
     }
 
+    public newSet() {
+      this.editorData.createSet();
+    }
+
     ngOnInit() {}
 }

@@ -1,14 +1,41 @@
-<mat-card class="list-area">
-    <mat-card-content id="editor-cards">
-       
-    </mat-card-content>
-    <p class="big-instruction" *ngIf="editorData.getSets().length === 0">
-        Click the button in the bottom right to create a new set.
-    </p>
-</mat-card>
+<div class="card-grid">
+    <mat-card *ngFor="let set of editorData.getSets()" class="item-card">
+        <mat-card-content>
+            <form>
+                <mat-form-field class="editor-component">
+                    <input
+                        matInput
+                        name="setName"
+                        placeholder="Set Name"
+                        [(ngModel)]="set.name"
+                    />
+                </mat-form-field>
+
+                <mat-form-field class="editor-component">
+                    <textarea
+                        rows="4"
+                        matInput
+                        name="setDescription"
+                        placeholder="Set Description"
+                        [(ngModel)]="set.description"
+                    ></textarea>
+                </mat-form-field>
+
+                <mat-slide-toggle [(checked)]="set.public"
+                    >Public</mat-slide-toggle
+                >
+            </form>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="primary">Edit Cards</button>
+            <button mat-raised-button color="warn">Delete</button>
+        </mat-card-actions>
+    </mat-card>
+</div>
+
 <button
     mat-fab
-    class="new-button"
+    class="primary-fab"
     (click)="newSet()"
     color="primary"
     matTooltipPosition="above"
@@ -16,3 +43,9 @@
 >
     <mat-icon>add</mat-icon>
 </button>
+
+<p class="empty-instruction" *ngIf="editorData.getSets().length === 0">
+    Click the button in the bottom right to create a new set.
+</p>
+
+<div *ngIf="editorData.getSets().length === 0" class="wave-attention"></div>
