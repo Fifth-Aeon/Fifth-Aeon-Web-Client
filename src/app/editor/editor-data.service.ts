@@ -16,15 +16,19 @@ export class EditorDataService {
     private static getCardsRoute = `${apiURL}/api/modding/getUserCards`;
     private static saveCardRoute = `${apiURL}/api/modding/insertOrUpdateCard`;
     private static saveSetRoute = `${apiURL}/api/modding/insertOrUpdateSet`;
-    private static getUserSetsRoute = `${apiURL}/api/modding/getUserSets/`;
+    private static getUserSetsRoute = `${apiURL}/api/modding/userSets`;
     private static getSpecificSetRoute = `${apiURL}/api/modding/publicSet/`;
     private static getPublicSetsRoute = `${apiURL}/api/modding/publicSets`;
     private static addCardToSetRoute = `${apiURL}/api/modding/addCardToSet`;
+    private static removeCardFromSetRoute = `${apiURL}/api/modding/removeCardFromSet`;
+    private static deleteSetRoute = `${apiURL}/api/modding/deleteSet`;
+    private static getCardMemberships = `${apiURL}/api/modding/getUserSetMemberships`;
 
     private cards: Array<CardData> = [];
     private lastSavedCardVersion = new Map<string, CardData>();
     private sets: Array<SetInformation> = [];
     private lastSavedSetVersion = new Map<string, SetInformation>();
+    private cardsInSet = new Map<string, Set<string>>();
 
     constructor(
         private collectionService: CollectionService,
@@ -37,6 +41,50 @@ export class EditorDataService {
             }
         });
         setInterval(() => this.saveData(), 10000);
+    }
+
+    public addCardToSet(setId: string, id: string) {
+        this.http
+            .post(
+                EditorDataService.addCardToSetRoute,
+                { cardId: id, setId: setId },
+                {
+                    headers: this.auth.getAuthHeader()
+                }
+            )
+            .toPromise()
+            .catch(err => console.warn(err));
+    }
+
+    public removeCardFromSet(setId: string, id: string) {
+        this.http
+            .post(
+                EditorDataService.removeCardFromSetRoute,
+                { cardId: id, setId: setId },
+                {
+                    headers: this.auth.getAuthHeader()
+                }
+            )
+            .toPromise()
+            .catch(err => console.warn(err));
+    }
+
+    public deleteSet(set: SetInformation) {
+        this.sets = this.sets.filter(curr => curr.id !== set.id);
+        this.http
+            .post(
+                EditorDataService.deleteSetRoute,
+                { setId: set.id },
+                {
+                    headers: this.auth.getAuthHeader()
+                }
+            )
+            .toPromise()
+            .then(() => console.log('Set deleted'));
+    }
+
+    public getCardsInSet(setId: string): Set<string> {
+        return this.cardsInSet.get(setId) || new Set();
     }
 
     public createSet() {
@@ -60,6 +108,7 @@ export class EditorDataService {
                 }
             )
             .toPromise()
+            .then(() => this.markSetSaved(set))
             .catch(err => console.warn('Failed to save set', err));
     }
 
@@ -158,6 +207,22 @@ export class EditorDataService {
         this.loadCardsFromLocalStorage();
         this.loadCards();
         this.loadSets();
+        this.loadCardsInSet();
+    }
+
+    private loadCardsInSet() {
+        this.http
+            .get<{setId: string, cardId: string}[]>(EditorDataService.getCardMemberships, {
+                headers: this.auth.getAuthHeader()
+            })
+            .toPromise()
+            .then(memberships => {
+                for (const membership of memberships) {
+                    const set = this.cardsInSet.get(membership.setId) || new Set();
+                    set.add(membership.cardId);
+                    this.cardsInSet.set(membership.setId, set);
+                }
+            });
     }
 
     private loadCards() {

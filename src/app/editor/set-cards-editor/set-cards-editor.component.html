@@ -1,0 +1,12 @@
+<div class="list-area" *ngIf="!loading">
+    <ccg-card
+        noTranslate="true"
+        scale="1.9"
+        *ngFor="let card of cards"
+        (click)="toggleCardInSet(card)"
+        [card]="cardList.buildInstance(card)"
+        [selected]="isCardInSet(card)"
+    ></ccg-card>
+</div>
+
+<mat-spinner *ngIf="loading"></mat-spinner>

@@ -4,6 +4,7 @@ import { CardEditorComponent } from './card-editor/card-editor.component';
 import { EditorComponent } from './editor.component';
 import { EditorListComponent } from './editor-list/editor-list.component';
 import { SetEditorComponent } from './set-editor/set-editor.component';
+import { SetCardsEditorComponent } from './set-cards-editor/set-cards-editor.component';
 
 const routes: Routes = [
     {
@@ -13,6 +14,7 @@ const routes: Routes = [
             { path: '', component: EditorListComponent },
             { path: 'card/:id', component: CardEditorComponent },
             { path: 'sets', component: SetEditorComponent },
+            { path: 'sets/:id', component: SetCardsEditorComponent },
         ]
     }
 ];

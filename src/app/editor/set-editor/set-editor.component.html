@@ -21,14 +21,24 @@
                     ></textarea>
                 </mat-form-field>
 
-                <mat-slide-toggle [(checked)]="set.public"
+                <mat-slide-toggle
+                    [checked]="set.public"
+                    (change)="changePublicity(set, $event)"
                     >Public</mat-slide-toggle
                 >
             </form>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-raised-button color="primary">Edit Cards</button>
-            <button mat-raised-button color="warn">Delete</button>
+            <button
+                mat-raised-button
+                color="primary"
+                [routerLink]="getChangeCardsLink(set)"
+            >
+                Edit Cards
+            </button>
+            <button mat-raised-button color="warn" (click)="deleteSet(set)">
+                Delete
+            </button>
         </mat-card-actions>
     </mat-card>
 </div>

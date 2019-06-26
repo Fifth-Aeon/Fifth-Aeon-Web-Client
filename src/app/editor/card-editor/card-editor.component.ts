@@ -68,9 +68,9 @@ export class CardEditorComponent implements OnInit {
         this.previewCard = cardList.buildInstance(this.data);
     }
 
-    // Enforce resource requirments summing up to 6 (so it fits in UI)
+    // Enforce resource requirements summing up to 6 (so it fits in UI)
     public getReqMax(
-        resoureName: 'synthesis' | 'growth' | 'renewal' | 'decay'
+        resourceName: 'synthesis' | 'growth' | 'renewal' | 'decay'
     ) {
         const total =
             (this.data.cost.renewal || 0) +
@@ -80,7 +80,7 @@ export class CardEditorComponent implements OnInit {
         return (
             CardEditorComponent.MaxRequirementTotal -
             total +
-            (this.data.cost[resoureName] as number)
+            (this.data.cost[resourceName] as number)
         );
     }
 

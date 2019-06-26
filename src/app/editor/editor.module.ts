@@ -12,6 +12,7 @@ import { MechanicEditorComponent } from './mechanic-editor/mechanic-editor.compo
 import { ParameterEditorComponent } from './parameter-editor/parameter-editor.component';
 import { TargeterEditorComponent } from './targeter-editor/targeter-editor.component';
 import { SetEditorComponent } from './set-editor/set-editor.component';
+import { SetCardsEditorComponent } from './set-cards-editor/set-cards-editor.component';
 
 @NgModule({
     imports: [
@@ -29,7 +30,8 @@ import { SetEditorComponent } from './set-editor/set-editor.component';
         MechanicEditorComponent,
         EditorListComponent,
         ParameterEditorComponent,
-        SetEditorComponent
+        SetEditorComponent,
+        SetCardsEditorComponent
     ],
     exports: [],
     providers: [EditorDataService]
