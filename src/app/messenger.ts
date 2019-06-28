@@ -55,7 +55,7 @@ export class Messenger {
     private loggedIn = false;
     public connectChange: (status: boolean) => void = () => null;
 
-    constructor(private url = getWsUrl()) {
+    constructor(private url = getWsUrl(), private maxConnectAttempts = Infinity) {
         this.handlers = new Map();
 
         // Firefox does not allow you to open a connection via the ws protocol if the page is served via https
@@ -65,7 +65,9 @@ export class Messenger {
             url.startsWith('ws://') &&
             navigator.userAgent.search('Firefox') !== -1
         ) {
-            console.warn('Cannot conenct to ws from https page on Firefox, abort connection');
+            console.warn(
+                'Cannot connect to ws from https page on Firefox, abort connection'
+            );
             this.enabled = false;
             return;
         }
@@ -97,7 +99,7 @@ export class Messenger {
         if (!this.enabled) {
             return;
         }
-        if (Date.now() - this.lastConnectAttempt < minConnectTime) {
+        if (Date.now() - this.lastConnectAttempt < minConnectTime || this.maxConnectAttempts <= 0) {
             return;
         }
         this.lastConnectAttempt = Date.now();
@@ -106,6 +108,7 @@ export class Messenger {
         this.ws.onmessage = this.handleMessage.bind(this);
         this.ws.onopen = () => this.onConnect();
         this.ws.onclose = () => this.connectChange(false);
+        this.maxConnectAttempts--;
     }
 
     private emptyMessageQueue() {
