@@ -1,0 +1,37 @@
+<div class="set-selector">
+    <div class="set-selection">
+        <div *ngIf="setsLoaded">
+            <mat-card
+                *ngFor="let set of sets"
+                (click)="selectSet(set)"
+                class="set-card"
+            >
+                <mat-card-header>
+                    <mat-card-title>{{ set.name }}</mat-card-title>
+                    <mat-card-subtitle>By {{ set.author }}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <p *ngFor="let paragraph of describe(set)">{{ paragraph }} </p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <mat-slide-toggle>Active</mat-slide-toggle>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+        <mat-spinner *ngIf="!setsLoaded"></mat-spinner>
+    </div>
+    <div class="card-selection">
+        <p *ngIf="!set" class="large-explainer">
+            Select a set to see its contents.
+        </p>
+        <div *ngIf="set && cardsLoaded">
+            <ccg-card
+                noTranslate="true"
+                scale="1.9"
+                *ngFor="let card of cards"
+                [card]="cardList.buildInstance(card)"
+            ></ccg-card>
+        </div>
+        <mat-spinner *ngIf="set && !cardsLoaded" diameter="180"></mat-spinner>
+    </div>
+</div>

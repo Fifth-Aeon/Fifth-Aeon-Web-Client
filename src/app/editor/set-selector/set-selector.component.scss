@@ -1,0 +1,30 @@
+.set-selector {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    height: calc(100vh - 70px);
+    overflow: hidden;
+}
+
+.large-explainer {
+    font-size: 3em;
+}
+
+.set-card {
+    margin: 6px;
+}
+
+.set-selection {
+    background-color: white;
+    border-right: 1px solid grey;
+    overflow-y: scroll;
+    height: calc(100vh - 70px);
+}
+
+.card-selection {
+    overflow-y: scroll;
+}
+
+mat-spinner {
+    margin: 0 auto;
+    margin-top: 20%;
+}

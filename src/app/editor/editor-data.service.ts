@@ -140,6 +140,7 @@ export class EditorDataService {
             .toPromise();
     }
 
+
     public getSet(setInfo: SetInformation): Promise<CardSet> {
         return this.http
             .get<CardSet>(EditorDataService.getSpecificSetRoute + setInfo.id)

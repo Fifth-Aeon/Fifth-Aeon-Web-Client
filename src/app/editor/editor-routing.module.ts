@@ -5,6 +5,7 @@ import { EditorComponent } from './editor.component';
 import { EditorListComponent } from './editor-list/editor-list.component';
 import { SetEditorComponent } from './set-editor/set-editor.component';
 import { SetCardsEditorComponent } from './set-cards-editor/set-cards-editor.component';
+import { SetSelectorComponent } from './set-selector/set-selector.component';
 
 const routes: Routes = [
     {
@@ -15,6 +16,7 @@ const routes: Routes = [
             { path: 'card/:id', component: CardEditorComponent },
             { path: 'sets', component: SetEditorComponent },
             { path: 'sets/:id', component: SetCardsEditorComponent },
+            { path: 'myMods', component: SetSelectorComponent },
         ]
     }
 ];
