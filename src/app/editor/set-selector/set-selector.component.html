@@ -24,6 +24,9 @@
         <p *ngIf="!set" class="large-explainer">
             Select a set to see its contents.
         </p>
+        <p *ngIf="set && cardsLoaded && cards.length === 0" class="large-explainer">
+            This set is empty.
+        </p>
         <div *ngIf="set && cardsLoaded">
             <ccg-card
                 noTranslate="true"
