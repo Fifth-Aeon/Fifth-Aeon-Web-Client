@@ -16,7 +16,7 @@ const routes: Routes = [
             { path: 'card/:id', component: CardEditorComponent },
             { path: 'sets', component: SetEditorComponent },
             { path: 'sets/:id', component: SetCardsEditorComponent },
-            { path: 'myMods', component: SetSelectorComponent },
+            { path: 'selectMods', component: SetSelectorComponent },
         ]
     }
 ];

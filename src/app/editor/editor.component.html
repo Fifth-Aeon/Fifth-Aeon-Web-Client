@@ -2,7 +2,11 @@
     <button mat-icon-button (click)="nav.toggle()">
         <mat-icon>menu</mat-icon>
     </button>
-    <span>Fifth Aeon - Editor</span> <span class="fill-remaining-space"></span>
+    <span>Fifth Aeon - Editor</span> 
+    <span class="toolbar-spacer"></span>
+    <button mat-icon-button routerLink="/lobby">
+        <mat-icon>home</mat-icon>
+    </button>
 </mat-toolbar>
 
 <mat-sidenav-container>
@@ -13,6 +17,11 @@
             </li>
             <li>
                 <a (click)="nav.close()" routerLink="/editor/sets">Set List</a>
+            </li>
+            <li>
+                <a (click)="nav.close()" routerLink="/editor/selectMods"
+                    >Activate Sets</a
+                >
             </li>
             <li><a (click)="nav.close()" routerLink="/lobby">Lobby</a></li>
         </ul>

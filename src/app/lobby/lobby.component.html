@@ -97,8 +97,14 @@
 
             <button routerLink="/editor" mat-raised-button color="primary">
                 <mat-icon>mode_edit</mat-icon>
-                <span> Card Editor (alpha) </span>
+                <span> Card Editor </span>
             </button>
+
+            <button routerLink="/editor/selectMods" mat-raised-button color="primary">
+                <mat-icon>import_export</mat-icon>
+                <span> Import Sets </span>
+            </button>
+            
 
             <button mat-raised-button (click)="auth.logout()" color="primary">
                 <mat-icon>cancel</mat-icon>
