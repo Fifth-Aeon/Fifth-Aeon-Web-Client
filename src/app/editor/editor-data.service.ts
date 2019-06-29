@@ -333,7 +333,7 @@ export class EditorDataService {
         }
         const cards = JSON.parse(jsonStr).cards as CardData[];
         Promise.all(cards.map(card => this.saveCard(card))).then(() => {
-            localStorage.setItem(EditorDataService.localStorageKey, '{cards: []}');
+            localStorage.setItem(EditorDataService.localStorageKey, '{"cards": []}');
         });
     }
 
