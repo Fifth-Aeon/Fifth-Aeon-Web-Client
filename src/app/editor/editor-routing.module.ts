@@ -6,17 +6,38 @@ import { EditorListComponent } from './editor-list/editor-list.component';
 import { SetEditorComponent } from './set-editor/set-editor.component';
 import { SetCardsEditorComponent } from './set-cards-editor/set-cards-editor.component';
 import { SetSelectorComponent } from './set-selector/set-selector.component';
+import { LoggedInGuard } from 'app/login.guard';
 
 const routes: Routes = [
     {
         path: 'editor',
         component: EditorComponent,
         children: [
-            { path: '', component: EditorListComponent },
-            { path: 'card/:id', component: CardEditorComponent },
-            { path: 'sets', component: SetEditorComponent },
-            { path: 'sets/:id', component: SetCardsEditorComponent },
-            { path: 'selectMods', component: SetSelectorComponent },
+            {
+                path: '',
+                component: EditorListComponent,
+                canActivate: [LoggedInGuard]
+            },
+            {
+                path: 'card/:id',
+                component: CardEditorComponent,
+                canActivate: [LoggedInGuard]
+            },
+            {
+                path: 'sets',
+                component: SetEditorComponent,
+                canActivate: [LoggedInGuard]
+            },
+            {
+                path: 'sets/:id',
+                component: SetCardsEditorComponent,
+                canActivate: [LoggedInGuard]
+            },
+            {
+                path: 'selectMods',
+                component: SetSelectorComponent,
+                canActivate: [LoggedInGuard]
+            }
         ]
     }
 ];
