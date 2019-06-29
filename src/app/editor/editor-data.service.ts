@@ -33,6 +33,7 @@ export class EditorDataService {
     private sets: Array<SetInformation> = [];
     private lastSavedSetVersion = new Map<string, SetInformation>();
     private cardsInSet = new Map<string, Set<string>>();
+    private setCache = new Map<string, CardSet>();
 
     constructor(
         private collectionService: CollectionService,
@@ -174,9 +175,17 @@ export class EditorDataService {
 
     public getSet(setInfo: SetInformation | string): Promise<CardSet> {
         const id = typeof setInfo === 'string' ? setInfo : setInfo.id;
+        const cached = this.setCache.get(id);
+        if (cached) {
+            return Promise.resolve(cached);
+        }
         return this.http
             .get<CardSet>(EditorDataService.getSpecificSetRoute + id)
-            .toPromise();
+            .toPromise()
+            .then(set => {
+                this.setCache.set(id, set);
+                return set;
+            });
     }
 
     public getSets() {
