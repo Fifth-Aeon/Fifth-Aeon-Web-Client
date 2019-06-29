@@ -11,10 +11,18 @@
                     <mat-card-subtitle>By {{ set.author }}</mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content>
-                    <p *ngFor="let paragraph of describe(set)">{{ paragraph }} </p>
+                    <p *ngFor="let paragraph of describe(set)">
+                        {{ paragraph }}
+                    </p>
                 </mat-card-content>
                 <mat-card-actions>
-                    <mat-slide-toggle>Active</mat-slide-toggle>
+                    <mat-slide-toggle
+                        [checked]="activeSets.has(set.id)"
+                        [disabled]="!activeSetsLoaded"
+                        (change)="setActive(set.id, $event)"
+
+                        >Active</mat-slide-toggle
+                    >
                 </mat-card-actions>
             </mat-card>
         </div>
@@ -24,7 +32,10 @@
         <p *ngIf="!set" class="large-explainer">
             Select a set to see its contents.
         </p>
-        <p *ngIf="set && cardsLoaded && cards.length === 0" class="large-explainer">
+        <p
+            *ngIf="set && cardsLoaded && cards.length === 0"
+            class="large-explainer"
+        >
             This set is empty.
         </p>
         <div *ngIf="set && cardsLoaded">

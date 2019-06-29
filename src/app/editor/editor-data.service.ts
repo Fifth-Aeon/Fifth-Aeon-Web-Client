@@ -23,8 +23,12 @@ export class EditorDataService {
     private static removeCardFromSetRoute = `${apiURL}/api/modding/removeCardFromSet`;
     private static deleteSetRoute = `${apiURL}/api/modding/deleteSet`;
     private static getCardMemberships = `${apiURL}/api/modding/getUserSetMemberships`;
+    private static getActiveSets = `${apiURL}/api/modding/getActiveSets`;
+    private static activateSet = `${apiURL}/api/modding/activateSet`;
+    private static deactivateSet = `${apiURL}/api/modding/deactivateSet`;
 
     private cards: Array<CardData> = [];
+    private activeSets?: Set<string>;
     private lastSavedCardVersion = new Map<string, CardData>();
     private sets: Array<SetInformation> = [];
     private lastSavedSetVersion = new Map<string, SetInformation>();
@@ -41,6 +45,34 @@ export class EditorDataService {
             }
         });
         setInterval(() => this.saveData(), 10000);
+    }
+
+    private loadActiveSets() {
+        return this.http
+            .get<CardSet[]>(EditorDataService.getActiveSets, {
+                headers: this.auth.getAuthHeader()
+            })
+            .toPromise();
+    }
+
+    public setSetActive(setId: string, active: boolean) {
+        if (active) {
+            this.getSet(setId).then(set => this.activateSet(set));
+        } else {
+            this.getSet(setId).then(set => this.deactivateSet(set));
+        }
+        this.http
+            .post(
+                active
+                    ? EditorDataService.activateSet
+                    : EditorDataService.deactivateSet,
+                { setId: setId },
+                {
+                    headers: this.auth.getAuthHeader()
+                }
+            )
+            .toPromise()
+            .catch(err => console.warn(err));
     }
 
     public addCardToSet(setId: string, id: string) {
@@ -113,7 +145,7 @@ export class EditorDataService {
     }
 
     private saveCard(card: CardData) {
-        this.http
+        return this.http
             .post(
                 EditorDataService.saveCardRoute,
                 { cardData: card },
@@ -140,10 +172,10 @@ export class EditorDataService {
             .toPromise();
     }
 
-
-    public getSet(setInfo: SetInformation): Promise<CardSet> {
+    public getSet(setInfo: SetInformation | string): Promise<CardSet> {
+        const id = typeof setInfo === 'string' ? setInfo : setInfo.id;
         return this.http
-            .get<CardSet>(EditorDataService.getSpecificSetRoute + setInfo.id)
+            .get<CardSet>(EditorDataService.getSpecificSetRoute + id)
             .toPromise();
     }
 
@@ -205,21 +237,65 @@ export class EditorDataService {
     }
 
     private loadData() {
-        this.loadCardsFromLocalStorage();
+        this.migrateCardsFromLocalStorage();
         this.loadCards();
         this.loadSets();
         this.loadCardsInSet();
+        this.activateSets();
+    }
+
+    public getActiveSets(): Promise<Set<string>> {
+        if (this.activeSets) {
+            return Promise.resolve(this.activeSets);
+        }
+        return new Promise(resolve => {
+            this.onActiveSetsLoaded = activeSets => resolve(activeSets);
+        });
+    }
+
+    private onActiveSetsLoaded: (activeSets: Set<string>) => void = () => null;
+    private activateSets() {
+        this.loadActiveSets().then(activeSets => {
+            this.activeSets = new Set();
+            for (const set of activeSets) {
+                this.activateSet(set);
+            }
+            this.onActiveSetsLoaded(this.activeSets);
+        });
+    }
+
+    private activateSet(set: CardSet) {
+        if (this.activeSets) {
+            this.activeSets.add(set.id);
+        }
+        for (const card of set.cards) {
+            cardList.addFactory(cardList.buildCardFactory(card));
+            this.collectionService.getCollection().addCardPlayset(card.id);
+        }
+    }
+
+    private deactivateSet(set: CardSet) {
+        if (this.activeSets) {
+            this.activeSets.delete(set.id);
+        }
+        for (const card of set.cards) {
+            this.collectionService.getCollection().removeCardPlayset(card.id);
+        }
     }
 
     private loadCardsInSet() {
         this.http
-            .get<{setId: string, cardId: string}[]>(EditorDataService.getCardMemberships, {
-                headers: this.auth.getAuthHeader()
-            })
+            .get<{ setId: string; cardId: string }[]>(
+                EditorDataService.getCardMemberships,
+                {
+                    headers: this.auth.getAuthHeader()
+                }
+            )
             .toPromise()
             .then(memberships => {
                 for (const membership of memberships) {
-                    const set = this.cardsInSet.get(membership.setId) || new Set();
+                    const set =
+                        this.cardsInSet.get(membership.setId) || new Set();
                     set.add(membership.cardId);
                     this.cardsInSet.set(membership.setId, set);
                 }
@@ -241,15 +317,15 @@ export class EditorDataService {
             });
     }
 
-    private loadCardsFromLocalStorage() {
+    private migrateCardsFromLocalStorage() {
         const jsonStr = localStorage.getItem(EditorDataService.localStorageKey);
         if (!jsonStr) {
             return;
         }
         const cards = JSON.parse(jsonStr).cards as CardData[];
-        for (const card of cards) {
-            this.saveCard(card);
-        }
+        Promise.all(cards.map(card => this.saveCard(card))).then(() => {
+            localStorage.setItem(EditorDataService.localStorageKey, '{cards: []}');
+        });
     }
 
     private loadSets() {
