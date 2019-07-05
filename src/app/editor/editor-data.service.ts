@@ -34,6 +34,7 @@ export class EditorDataService {
     private lastSavedSetVersion = new Map<string, SetInformation>();
     private cardsInSet = new Map<string, Set<string>>();
     private setCache = new Map<string, CardSet>();
+    private loaded?: string;
 
     constructor(
         private collectionService: CollectionService,
@@ -41,7 +42,8 @@ export class EditorDataService {
         private http: HttpClient
     ) {
         this.auth.onAuth(user => {
-            if (user !== null) {
+            if (user !== null && user.username !== this.loaded) {
+                this.loaded = user.username;
                 this.loadData();
             }
         });
@@ -146,6 +148,7 @@ export class EditorDataService {
     }
 
     private saveCard(card: CardData) {
+        console.log('Save', card.name);
         return this.http
             .post(
                 EditorDataService.saveCardRoute,
