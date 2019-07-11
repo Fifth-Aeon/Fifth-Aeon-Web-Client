@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { SoundManager } from './sound';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Game, GamePhase } from './game_model/game';
 import { Card, CardType } from './game_model/card-types/card';

@@ -6,7 +6,7 @@ import {
     trigger
 } from '@angular/animations';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Hotkey, HotkeysService } from 'angular2-hotkeys';
 import { WebClient } from '../client';
 import { GameManager } from '../gameManager';

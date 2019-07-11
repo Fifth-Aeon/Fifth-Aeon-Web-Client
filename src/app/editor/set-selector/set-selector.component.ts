@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EditorDataService } from '../editor-data.service';
 import { SetInformation, CardSet } from 'app/game_model/cardSet';
 import { CardData, cardList } from 'app/game_model/cards/cardList';
-import { MatSlideToggleChange } from '@angular/material';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { AuthenticationService } from 'app/user/authentication.service';
 
 @Component({

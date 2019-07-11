@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EditorDataService } from '../editor-data.service';
 import { AuthenticationService } from 'app/user/authentication.service';
 import { SetInformation } from 'app/game_model/cardSet';
-import { MatSlideToggleChange } from '@angular/material';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
     selector: 'ccg-set-editor',

@@ -9,7 +9,7 @@ import { UnitType } from '../../game_model/card-types/unit';
 import { Card, CardType } from '../../game_model/card-types/card';
 import { Route, ActivatedRoute, Router } from '@angular/router';
 import { EditorDataService } from '../editor-data.service';
-import { MatSelectChange } from '@angular/material';
+import { MatSelectChange } from '@angular/material/select';
 import { mechanicList } from '../../game_model/cards/mechanicList';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 import { SpeedService } from 'app/speed.service';
 import { toPairs } from 'lodash';
 import { CollectionService } from '../collection.service';
