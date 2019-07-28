@@ -8,6 +8,7 @@ import { AuthenticationService } from './authentication.service';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
+import { UpgradeAccountComponent } from './upgrade-account/upgrade-account.component';
 
 @NgModule({
     imports: [
@@ -21,6 +22,7 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
         RegisterComponent,
         LoginComponent,
         VerifyEmailComponent,
+        UpgradeAccountComponent,
         ResetPasswordComponent
     ],
     providers: [AuthenticationService],
@@ -28,7 +30,8 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
         RegisterComponent,
         LoginComponent,
         VerifyEmailComponent,
-        ResetPasswordComponent
+        ResetPasswordComponent,
+        UpgradeAccountComponent
     ]
 })
 export class UserModule {}

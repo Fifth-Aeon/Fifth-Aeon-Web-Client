@@ -13,6 +13,7 @@ import { LoginComponent } from './user/login/login.component';
 import { RegisterComponent } from './user/register/register.component';
 import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
 import { VerifyEmailComponent } from './user/verify-email/verify-email.component';
+import { UpgradeAccountComponent } from './user/upgrade-account/upgrade-account.component';
 
 const routes: Routes = [
     { path: '', component: LandingComponent },
@@ -37,6 +38,7 @@ const routes: Routes = [
     { path: 'draft', component: DraftComponent, canActivate: [LoggedInGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
+    { path: 'upgradeAccount', component: UpgradeAccountComponent, canActivate: [LoggedInGuard] },
     { path: 'reset/:token', component: ResetPasswordComponent },
     { path: 'verify/:token', component: VerifyEmailComponent },
     { path: '**', component: LobbyComponent, canActivate: [LoggedInGuard] }

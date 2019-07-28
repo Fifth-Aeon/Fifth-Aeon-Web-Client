@@ -7,8 +7,9 @@ export function existenceValidator(
     type: string,
     lowercase = false,
     expected = false,
-    old?: any
+    old?: string
 ): AsyncValidatorFn {
+    console.log(type, old);
     return (control: AbstractControl) => {
         if (!control.value) {
             return new Promise(res => res(null));

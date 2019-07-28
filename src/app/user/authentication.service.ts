@@ -44,7 +44,7 @@ export class AuthenticationService {
             return Promise.resolve(this.user);
         }
         return new Promise(resolve => {
-            this.onAuth((user) => {
+            this.onAuth(user => {
                 if (user !== null) {
                     resolve(user);
                 }
@@ -140,6 +140,24 @@ export class AuthenticationService {
             .toPromise()
             .then((res: UserData) => {
                 this.setLogin(res);
+            });
+    }
+
+    public upgradeAccount(username: string, email: string, password: string) {
+        return this.http
+            .post<UserData>(
+                `${apiURL}/api/auth/upgradeGuest`,
+                {
+                    username: username,
+                    email: email.toLowerCase(),
+                    password: password
+                },
+                { headers: this.getAuthHeader() }
+            )
+            .toPromise()
+            .then((res: UserData) => {
+                this.setLogin(res);
+                localStorage.setItem('madeAccount', 'true');
             });
     }
 
