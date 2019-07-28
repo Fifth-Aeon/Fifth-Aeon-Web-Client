@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { DecksService } from 'app/decks.service';
 import { ClientState, WebClient } from '../client';
 import { SoundManager } from '../sound';
-import { AuthenticationService } from '../user/authentication.service';
+import { AuthenticationService, UserData } from '../user/authentication.service';
 
 @Component({
     selector: 'ccg-lobby',
@@ -10,6 +10,7 @@ import { AuthenticationService } from '../user/authentication.service';
     styleUrls: ['./lobby.component.scss']
 })
 export class LobbyComponent implements OnInit {
+    public user: UserData;
     constructor(
         public client: WebClient,
         public decks: DecksService,
@@ -22,6 +23,9 @@ export class LobbyComponent implements OnInit {
         ) {
             client.returnToLobby();
         }
+
+        this.user = auth.getUser() as UserData;
+
         if (!this.soundManager.musicIsPlaying()) {
             this.soundManager.setFactionContext(new Set());
         }

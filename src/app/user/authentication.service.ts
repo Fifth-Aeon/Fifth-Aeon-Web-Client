@@ -7,6 +7,7 @@ export interface UserData {
     token: string;
     username: string;
     mpToken: string;
+    role: 'guest' | 'user' | 'mod' | 'admin';
 }
 
 interface GuestData extends UserData {
@@ -20,6 +21,12 @@ export class AuthenticationService {
     private redirectTarget = 'lobby';
 
     constructor(private http: HttpClient, private router: Router) {}
+
+    public getRole() {
+        if (this.user) {
+            return this.user.role;
+        }
+    }
 
     public attemptLogin() {
         try {

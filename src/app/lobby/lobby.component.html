@@ -104,7 +104,16 @@
                 <mat-icon>import_export</mat-icon>
                 <span> Import Sets </span>
             </button>
-            
+
+            <button routerLink="/upgradeAccount" *ngIf="user.role === 'guest'" mat-raised-button color="primary">
+                <mat-icon>vertical_align_top</mat-icon>
+                <span> Upgrade to Full Account </span>
+            </button>
+
+            <button routerLink="/admin" *ngIf="user.role === 'admin'" mat-raised-button color="primary">
+                <mat-icon>adb</mat-icon>
+                <span> Admin Panel </span>
+            </button>            
 
             <button mat-raised-button (click)="auth.logout()" color="primary">
                 <mat-icon>cancel</mat-icon>
