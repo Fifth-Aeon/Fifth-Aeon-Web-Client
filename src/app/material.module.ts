@@ -22,6 +22,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CdkTableModule } from '@angular/cdk/table';
+import { MatSortModule } from '@angular/material/sort';
 
 const matModules = [
     MatButtonModule,
@@ -46,7 +47,8 @@ const matModules = [
     MatListModule,
     MatCheckboxModule,
     MatTableModule,
-    CdkTableModule
+    CdkTableModule,
+    MatSortModule
 ];
 
 @NgModule({

@@ -1,5 +1,41 @@
-<p>admin-panel works!</p>
-<pre>{{cardCounts | async | json}}</pre>
+<h1>Admin Panel</h1>
 
-<pre>{{userData | async | json}}</pre>
+<h2>Card Data</h2>
 
+<p>
+    There are {{ (cardCounts | async).cardCount }} custom cards in the database
+    of which {{ (cardCounts | async).publicCardCount }} are available public
+    sets.
+</p>
+
+<h2>User Data</h2>
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>User Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.username }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastActive">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Active</th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.lastActive | date }}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="joined">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date Joined</th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.joined | date }}
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>User Role</th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.role }}
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
