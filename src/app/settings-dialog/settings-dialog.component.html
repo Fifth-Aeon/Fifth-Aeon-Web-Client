@@ -1,6 +1,18 @@
 <div class="settings">
     <div mat-dialog-content>
         <mat-tab-group>
+            <mat-tab label="Navigation" *ngIf="isInGame()">
+                <button
+                    class="settings-element"
+                    mat-raised-button
+                    color="primary"
+                    mat-button
+                    (click)="concede()"
+                    mat-dialog-close="done"
+                >
+                    Concede Game
+                </button>
+            </mat-tab>
             <mat-tab label="Volume">
                 <table>
                     <tbody *ngFor="let volume of volumes; let i = index">

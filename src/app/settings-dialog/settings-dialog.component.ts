@@ -5,6 +5,7 @@ import { toPairs } from 'lodash';
 import { CollectionService } from '../collection.service';
 import { SoundManager, VolumeType } from '../sound';
 import { TipService } from '../tips';
+import { Router } from '@angular/router';
 
 export enum SpeedSetting {
     Turtle = 0.5,
@@ -37,8 +38,17 @@ export class SettingsDialogComponent implements OnInit {
         public sound: SoundManager,
         public tips: TipService,
         public speed: SpeedService,
-        public collection: CollectionService
+        public collection: CollectionService,
+        private router: Router
     ) {}
+
+    public isInGame() {
+        return this.router.url.includes('game');
+    }
+
+    public concede() {
+        this.router.navigateByUrl('/lobby');
+    }
 
     ngOnInit() {
         this.volumes = toPairs(this.sound.getVolumes()).map(pair => [
