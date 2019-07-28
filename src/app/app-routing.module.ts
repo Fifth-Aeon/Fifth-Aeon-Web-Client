@@ -14,6 +14,7 @@ import { RegisterComponent } from './user/register/register.component';
 import { ResetPasswordComponent } from './user/reset-password/reset-password.component';
 import { VerifyEmailComponent } from './user/verify-email/verify-email.component';
 import { UpgradeAccountComponent } from './user/upgrade-account/upgrade-account.component';
+import { InitialSetupComponent } from './settings/inital-setup/inital-setup.component';
 
 const routes: Routes = [
     { path: '', component: LandingComponent },
@@ -39,6 +40,7 @@ const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'upgradeAccount', component: UpgradeAccountComponent, canActivate: [LoggedInGuard] },
+    { path: 'initialSetup', component: InitialSetupComponent, canActivate: [LoggedInGuard] },
     { path: 'reset/:token', component: ResetPasswordComponent },
     { path: 'verify/:token', component: VerifyEmailComponent },
     { path: '**', component: LobbyComponent, canActivate: [LoggedInGuard] }

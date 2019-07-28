@@ -35,12 +35,12 @@ import { MessengerService } from './messenger.service';
 import { OpenPackComponent } from './open-pack/open-pack.component';
 import { PlayerAvatarComponent } from './player-avatar/player-avatar.component';
 import { Preloader } from './preloader';
-import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 // App Angular Services
 import { SoundManager } from './sound';
 import { TipService } from './tips';
 import { TournamentModule } from './tournament/tournament.module';
 import { AdminModule } from './admin/admin.module';
+import { SettingsModule } from './settings/settings.module';
 
 @NgModule({
     declarations: [
@@ -48,7 +48,6 @@ import { AdminModule } from './admin/admin.module';
         LobbyComponent,
         EndDialogComponent,
         DeckEditorComponent,
-        SettingsDialogComponent,
         DeckChooserComponent,
         DeckMetadataDialogComponent,
         OpenPackComponent,
@@ -59,7 +58,6 @@ import { AdminModule } from './admin/admin.module';
     ],
     entryComponents: [
         EndDialogComponent,
-        SettingsDialogComponent,
         DeckMetadataDialogComponent,
         DailyDialogComponent
     ],
@@ -76,6 +74,7 @@ import { AdminModule } from './admin/admin.module';
         Angulartics2Module.forRoot(),
         EditorModule,
         TournamentModule,
+        SettingsModule,
         AdminModule,
         AppRoutingModule
     ],

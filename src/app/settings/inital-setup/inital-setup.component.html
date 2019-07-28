@@ -1,0 +1,49 @@
+<mat-card class="auth-form settings">
+    <mat-card-header>
+        <mat-card-title>Initial Settings</mat-card-title>
+        <mat-card-subtitle
+            >Welcome to Fifth Aeon! Just a few settings before you
+            start.</mat-card-subtitle
+        >
+    </mat-card-header>
+
+    <mat-card-content class="editor-container">
+        <div>
+            <mat-checkbox
+                (change)="sound.toggleMute()"
+                [ngModel]="!sound.isMuted()"
+                >Sound Enabled</mat-checkbox
+            >
+        </div>
+        <div>
+            <mat-checkbox
+                (change)="tips.toggleDisable()"
+                [ngModel]="!tips.isDisabled()"
+                >Tips Enabled</mat-checkbox
+            >
+        </div>
+        <div>
+            <mat-checkbox
+                (change)="toggleNarrator()"
+                [ngModel]="narratorEnabled"
+                >Text To Speech Narrator Enabled</mat-checkbox
+            >
+        </div>
+        <p>
+            You can change these settings latter from the settings menu which
+            can be opened with the ESCAPE key.
+        </p>
+        <p>
+            For a full list of keyboard commands press the question mark key
+            (?).
+        </p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button mat-button (click)="exampleTip()">
+            Play Example Tip
+        </button>
+        <button mat-raised-button mat-button routerLink="lobby" color="primary">
+            Continue To Lobby
+        </button>
+    </mat-card-actions>
+</mat-card>

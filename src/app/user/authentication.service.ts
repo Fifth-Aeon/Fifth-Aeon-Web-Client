@@ -64,6 +64,7 @@ export class AuthenticationService {
     }
 
     public redirect() {
+        console.log('redir to', this.redirectTarget);
         this.router.navigateByUrl('/' + this.redirectTarget);
     }
 
@@ -187,6 +188,7 @@ export class AuthenticationService {
             .post<GuestData>(`${apiURL}/api/auth/registerGuest`, {})
             .toPromise()
             .then((res: GuestData) => {
+                this.setRedirect('initialSetup');
                 this.setLogin(res);
                 localStorage.setItem('madeAccount', 'true');
                 localStorage.setItem('guest', res.password);

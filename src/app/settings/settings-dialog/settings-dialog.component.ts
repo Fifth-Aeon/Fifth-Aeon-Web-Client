@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { SpeedService } from 'app/speed.service';
 import { toPairs } from 'lodash';
-import { CollectionService } from '../collection.service';
-import { SoundManager, VolumeType } from '../sound';
-import { TipService } from '../tips';
+import { CollectionService } from '../../collection.service';
+import { SoundManager, VolumeType } from '../../sound';
+import { TipService } from '../../tips';
 import { Router } from '@angular/router';
 
 export enum SpeedSetting {

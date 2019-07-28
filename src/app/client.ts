@@ -9,10 +9,10 @@ import { DeckList } from './game_model/deckList';
 import { Message, MessageType, Messenger } from './messenger';
 import { MessengerService } from './messenger.service';
 import { Preloader } from './preloader';
-import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 import { SoundManager } from './sound';
 import { TipService, TipType } from './tips';
 import { AuthenticationService, UserData } from './user/authentication.service';
+import { SettingsDialogComponent } from './settings/settings-dialog/settings-dialog.component';
 
 export enum ClientState {
     UnAuth,

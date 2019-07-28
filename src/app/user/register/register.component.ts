@@ -74,7 +74,7 @@ export class RegisterComponent implements OnInit {
         this.auth
             .register(this.username, this.email, this.password)
             .then(() => {
-                this.router.navigate([`/lobby`]);
+                this.router.navigate([`/initialSetup`]);
             })
             .catch(this.handleError.bind(this));
     }

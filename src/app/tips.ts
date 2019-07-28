@@ -199,8 +199,8 @@ export class TipService {
         );
     }
 
-    public announce(text: string) {
-        if (text === this.lastMsg) {
+    public announce(text: string, force = false) {
+        if (!force && text === this.lastMsg) {
             return;
         }
         this.lastMsg = text;
