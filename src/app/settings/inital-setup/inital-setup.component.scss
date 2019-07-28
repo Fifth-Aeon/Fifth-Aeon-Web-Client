@@ -20,7 +20,6 @@
 
 .settings p {
     font-size: 15px;
-
 }
 
 .settings-element {
@@ -31,11 +30,3 @@
 .spacer {
     flex: 1 1 auto;
 }
-
-.mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
-    background-color: rgb(27, 142, 241) !important;
-  }
-  
-  .mat-ripple-element {
-    background: rgba(27, 142, 241, .4) !important;
-  }
