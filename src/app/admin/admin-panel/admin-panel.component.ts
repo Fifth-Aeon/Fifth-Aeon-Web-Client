@@ -9,7 +9,8 @@ import { MatTableDataSource } from '@angular/material/table';
     styleUrls: ['./admin-panel.component.scss']
 })
 export class AdminPanelComponent implements OnInit {
-    public cardCounts: Promise<any>;
+    public cardCount = -1;
+    public publicCardCount = -1;
     public userData: Promise<AccountData[]>;
     public userInfo: AccountData[] = [];
     public displayedColumns: string[] = [
@@ -24,13 +25,18 @@ export class AdminPanelComponent implements OnInit {
     sort!: MatSort;
 
     constructor(public admin: AdminDataService) {
-        this.cardCounts = admin.getCardCounts();
         this.userData = admin.getUserData();
         this.dataSource = new MatTableDataSource<AccountData>([]);
 
         this.userData.then(data => {
             this.dataSource.data = data;
         });
+
+        admin.getCardCounts().then(data => {
+            this.cardCount = data.cardCount;
+            this.publicCardCount = data.publicCardCount;
+        });
+
     }
 
     ngOnInit() {

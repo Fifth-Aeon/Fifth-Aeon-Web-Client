@@ -23,7 +23,6 @@ export class AdminDataService {
     ) {}
 
     public getCardCounts() {
-        console.log('getCardCounts');
         return this.http.get<{ cardCount: number; publicCardCount: number }>(
             AdminDataService.getCardData,
             {
