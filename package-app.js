@@ -12,8 +12,10 @@ packager({
     executableName: 'Fifth Aeon',
     dir: 'dist',
     out: 'standalone',
-    arch: 'x64',
-    platform: 'win32',
+    arch: 'all',
+    platform: 'all',
+    // icon: 'src/assets/icon-256x256.png',
+
     overwrite: true
 }).then(appPaths => {
     console.log('Done, created:', appPaths.join(', '));
