@@ -22,6 +22,7 @@ import { MessengerService } from './messenger.service';
 import { SoundManager } from './sound';
 import { TipService } from './tips';
 import { GameType } from './client';
+import { aiManger } from './game_model/aiManager';
 
 @Injectable()
 export class GameManager {
@@ -73,7 +74,6 @@ export class GameManager {
                 scenario.apply(this.game1);
             }
         });
-
 
         this.reset();
     }
@@ -457,10 +457,9 @@ export class GameManager {
         this.playerNumber = 0;
         this.opponentNumber = 1;
         this.log = new Log(this.playerNumber);
-        const aiDeck = sample(allDecks);
-        if (!aiDeck) {
-            throw new Error('No A.I decks found');
-        }
+
+        const matchup = aiManger.getLeveledOpponent();
+        const aiDeck = matchup.deck;
 
         // Initialize games
         this.gameModel = new ServerGame('server', standardFormat, [
@@ -485,7 +484,7 @@ export class GameManager {
         if (aiCount === 1) {
             this.gameType = GameType.AiGame;
 
-            const newAI = new DefaultAI(
+            const newAI = new matchup.ai(
                 this.opponentNumber,
                 this.game2,
                 aiDeck
