@@ -196,6 +196,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
         const config = new MatDialogConfig();
         config.disableClose = true;
+        config.maxWidth = '95vw';
         const dialogRef = this.dialog.open(CardChooserComponent, config);
         dialogRef.componentInstance.cards = cards;
         dialogRef.componentInstance.min = min;
