@@ -6,6 +6,7 @@ import {
     ParameterType
 } from '../../game_model/cards/parameters';
 import { ResourceType } from '../../game_model/resource';
+import { UnitType } from 'app/game_model/card-types/unit';
 
 enum EditorType {
     Numeric,
@@ -35,6 +36,7 @@ export class ParameterEditorComponent implements OnInit {
     private cardTypeValues = new Map<CardType | undefined, EnumValue[]>();
     private resourceEnumValues = this.getEnumValues(ResourceType);
     private cardEnumValues = this.getEnumValues(CardType);
+    private unitEnumValues = this.getEnumValues(UnitType);
 
     public getEditorType() {
         if (
@@ -59,6 +61,8 @@ export class ParameterEditorComponent implements OnInit {
                 return this.resourceEnumValues;
             case ParameterType.CardType:
                 return this.cardEnumValues;
+            case ParameterType.UnitType:
+                return this.unitEnumValues;
             case ParameterType.Card:
                 return this.getCardTypeValues();
             case ParameterType.Spell:
