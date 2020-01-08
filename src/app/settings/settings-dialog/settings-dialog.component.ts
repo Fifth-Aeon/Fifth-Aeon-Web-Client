@@ -6,6 +6,9 @@ import { CollectionService } from '../../collection.service';
 import { SoundManager, VolumeType } from '../../sound';
 import { TipService } from '../../tips';
 import { Router } from '@angular/router';
+import { aiManger } from 'app/game_model/aiManager';
+import { DifficultyLevel } from 'app/game_model/scenarios/decks';
+
 
 export enum SpeedSetting {
     Turtle = 0.5,
@@ -15,12 +18,16 @@ export enum SpeedSetting {
     Ninja = 2
 }
 
-const speedNames: string[] = [];
-for (const speed in SpeedSetting) {
-    if (typeof SpeedSetting[speed] === 'number') {
-        speedNames.push(speed);
+const getNames =  (en: any) => {
+    const names = [];
+    for (const item in en) {
+        if (typeof en[item] === 'number') {
+            names.push(item);
+        }
     }
-}
+    return names as string[];
+};
+
 
 @Component({
     selector: 'ccg-settings-dialog',
@@ -30,8 +37,11 @@ for (const speed in SpeedSetting) {
 export class SettingsDialogComponent implements OnInit {
     public volumes: [number, number][] = [];
     public volumeNames = VolumeType;
-    public speedNames = speedNames;
+    public speedNames = getNames(SpeedSetting);
     public speedSettings = SpeedSetting;
+    public difficultyNames = getNames(DifficultyLevel);
+    public difficultyLevels = DifficultyLevel;
+    public ai = aiManger;
 
     constructor(
         public dialogRef: MatDialogRef<SettingsDialogComponent>,

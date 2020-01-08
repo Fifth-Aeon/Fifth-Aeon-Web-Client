@@ -75,7 +75,19 @@ export class GameManager {
             }
         });
 
+        this.setupAiManager();
+
         this.reset();
+    }
+
+    private setupAiManager() {
+        const localStorageKey = 'ai-data';
+        aiManger.save = data => localStorage.setItem(localStorageKey, JSON.stringify(data));
+
+        const json = localStorage.getItem(localStorageKey);
+        if (json) {
+            aiManger.load(JSON.parse(json));
+        }
     }
 
     public reset() {
@@ -367,6 +379,7 @@ export class GameManager {
             .getAnimator()
             .awaitAnimationEnd()
             .then(() => {
+                aiManger.recordGameResult(playerWon);
                 if (this.onGameEnd) {
                     this.onGameEnd(playerWon, quit);
                 } else {

@@ -43,20 +43,50 @@
                     </tbody>
                 </table>
             </mat-tab>
-            <mat-tab label="A.I Speed">
-                <mat-radio-group
-                    class="radio-group"
-                    [ngModel]="speed.multiplier"
-                    (change)="speed.setMultiplier($event.value)"
-                >
-                    <mat-radio-button
-                        class="radio-button"
-                        *ngFor="let speedName of speedNames"
-                        [value]="speedSettings[speedName]"
-                    >
-                        {{ speedName }}
-                    </mat-radio-button>
-                </mat-radio-group>
+            <mat-tab label="A.I. Settings">
+                <mat-card class="small-card">
+                    <mat-card-header>
+                        <mat-card-title>Difficultly</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <mat-radio-group
+                            class="radio-group"
+                            [ngModel]="ai.getSelectedDifficulty()"
+                            (change)="ai.setDifficulty($event.value)"
+                        >
+                            <mat-radio-button
+                                class="radio-button"
+                                *ngFor="let name of difficultyNames"
+                                [value]="difficultyLevels[name]"
+                            >
+                                {{ name }}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </mat-card-content>
+                </mat-card>
+
+                <mat-card class="small-card">
+                    <mat-card-header>
+                        <mat-card-title>Speed</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <mat-radio-group
+                            class="radio-group"
+                            [ngModel]="speed.multiplier"
+                            (change)="speed.setMultiplier($event.value)"
+                        >
+                            <mat-radio-button
+                                class="radio-button"
+                                *ngFor="let speedName of speedNames"
+                                [value]="speedSettings[speedName]"
+                            >
+                                {{ speedName }}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </mat-card-content>
+                </mat-card>
+
+                <mat-divider [vertical]="true"></mat-divider>
             </mat-tab>
             <mat-tab label="Tips">
                 <mat-slide-toggle
