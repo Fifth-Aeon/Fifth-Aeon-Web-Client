@@ -22,7 +22,7 @@ import { MessengerService } from './messenger.service';
 import { SoundManager } from './sound';
 import { TipService } from './tips';
 import { GameType } from './client';
-import { aiManger } from './game_model/aiManager';
+import { aiManager } from './game_model/aiManager';
 
 @Injectable()
 export class GameManager {
@@ -82,11 +82,11 @@ export class GameManager {
 
     private setupAiManager() {
         const localStorageKey = 'ai-data';
-        aiManger.save = data => localStorage.setItem(localStorageKey, JSON.stringify(data));
+        aiManager.save = data => localStorage.setItem(localStorageKey, JSON.stringify(data));
 
         const json = localStorage.getItem(localStorageKey);
         if (json) {
-            aiManger.load(JSON.parse(json));
+            aiManager.load(JSON.parse(json));
         }
     }
 
@@ -379,7 +379,7 @@ export class GameManager {
             .getAnimator()
             .awaitAnimationEnd()
             .then(() => {
-                aiManger.recordGameResult(playerWon);
+                aiManager.recordGameResult(playerWon);
                 if (this.onGameEnd) {
                     this.onGameEnd(playerWon, quit);
                 } else {
@@ -471,7 +471,7 @@ export class GameManager {
         this.opponentNumber = 1;
         this.log = new Log(this.playerNumber);
 
-        const matchup = aiManger.getLeveledOpponent();
+        const matchup = aiManager.getLeveledOpponent();
         const aiDeck = matchup.deck;
 
         // Initialize games

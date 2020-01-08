@@ -6,7 +6,7 @@ import { CollectionService } from '../../collection.service';
 import { SoundManager, VolumeType } from '../../sound';
 import { TipService } from '../../tips';
 import { Router } from '@angular/router';
-import { aiManger } from 'app/game_model/aiManager';
+import { aiManager } from 'app/game_model/aiManager';
 import { DifficultyLevel } from 'app/game_model/scenarios/decks';
 
 
@@ -41,7 +41,7 @@ export class SettingsDialogComponent implements OnInit {
     public speedSettings = SpeedSetting;
     public difficultyNames = getNames(DifficultyLevel);
     public difficultyLevels = DifficultyLevel;
-    public ai = aiManger;
+    public ai = aiManager;
 
     constructor(
         public dialogRef: MatDialogRef<SettingsDialogComponent>,
