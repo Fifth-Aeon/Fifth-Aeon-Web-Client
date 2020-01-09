@@ -51,11 +51,15 @@
                 <span> Open Packs </span>
             </button>
 
-            <button mat-raised-button color="primary" *ngIf="client.isConnectedToLocalServer()" (click)="client.selectDeckAndStartGame(3)">
+            <button
+                mat-raised-button
+                color="primary"
+                *ngIf="client.isConnectedToLocalServer()"
+                (click)="client.selectDeckAndStartGame(3)"
+            >
                 <mat-icon>android</mat-icon>
                 <span> Play Local Server A.I </span>
             </button>
-
         </mat-card>
 
         <mat-card class="lobby-card">
@@ -95,25 +99,49 @@
                 <span> Settings</span>
             </button>
 
+            <a
+                href="https://github.com/Fifth-Aeon/Fifth-Aeon-Wiki/wiki"
+                target="_blank"
+            >
+                <button mat-raised-button color="primary">
+                    <mat-icon>help</mat-icon>
+                    <span> Help </span>
+                </button>
+            </a>
+
             <button routerLink="/editor" mat-raised-button color="primary">
                 <mat-icon>mode_edit</mat-icon>
                 <span> Card Editor </span>
             </button>
 
-            <button routerLink="/editor/selectMods" mat-raised-button color="primary">
+            <button
+                routerLink="/editor/selectMods"
+                mat-raised-button
+                color="primary"
+            >
                 <mat-icon>import_export</mat-icon>
                 <span> Import Sets </span>
             </button>
 
-            <button routerLink="/upgradeAccount" *ngIf="user.role === 'guest'" mat-raised-button color="primary">
+            <button
+                routerLink="/upgradeAccount"
+                *ngIf="user.role === 'guest'"
+                mat-raised-button
+                color="primary"
+            >
                 <mat-icon>vertical_align_top</mat-icon>
                 <span> Upgrade to Full Account </span>
             </button>
 
-            <button routerLink="/admin" *ngIf="user.role === 'admin'" mat-raised-button color="primary">
+            <button
+                routerLink="/admin"
+                *ngIf="user.role === 'admin'"
+                mat-raised-button
+                color="primary"
+            >
                 <mat-icon>adb</mat-icon>
                 <span> Admin Panel </span>
-            </button>            
+            </button>
 
             <button mat-raised-button (click)="auth.logout()" color="primary">
                 <mat-icon>cancel</mat-icon>
