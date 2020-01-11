@@ -204,8 +204,9 @@ export class TipService {
             return;
         }
         this.lastMsg = text;
-        this.snackbar.open(text, '', {
-            duration: text.length * 75
+        this.snackbar.open(text, 'Dismiss', {
+            duration: text.length * 75,
+
         });
         this.soundManager.speak(text);
     }
