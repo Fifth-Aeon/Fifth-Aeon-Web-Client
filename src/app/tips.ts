@@ -195,7 +195,7 @@ export class TipService {
             TipType.StartGame,
             `Welcome ${username}. I will provide tips to help you learn to play.
             I suggest you start by playing a game against the computer.
-            If you don't want tips you can disable them in the settings menu or with the hotkey shift t.`
+            If you don't want tips you can disable them in the settings menu or with the hot key shift t.`
         );
     }
 
