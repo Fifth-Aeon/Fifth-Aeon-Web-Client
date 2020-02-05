@@ -13,6 +13,7 @@ import { SoundManager } from './sound';
 import { TipService, TipType } from './tips';
 import { AuthenticationService, UserData } from './user/authentication.service';
 import { SettingsDialogComponent } from './settings/settings-dialog/settings-dialog.component';
+import { GameType } from './gameType';
 
 export enum ClientState {
     UnAuth,
@@ -25,12 +26,6 @@ export enum ClientState {
     Any
 }
 
-export enum GameType {
-    AiGame,
-    DoubleAiGame,
-    PublicGame,
-    ServerAIGame
-}
 
 @Injectable()
 export class WebClient {

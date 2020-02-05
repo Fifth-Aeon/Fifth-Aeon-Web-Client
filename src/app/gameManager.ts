@@ -14,15 +14,14 @@ import { Game, GamePhase } from './game_model/game';
 import { standardFormat } from './game_model/gameFormat';
 import { Log } from './game_model/log';
 import { Scenario } from './game_model/scenario';
-import { allDecks } from './game_model/scenarios/decks';
 import { ServerGame } from './game_model/serverGame';
 import { Unit } from './game_model/card-types/unit';
 import { MessageType, Messenger } from './messenger';
 import { MessengerService } from './messenger.service';
 import { SoundManager } from './sound';
 import { TipService } from './tips';
-import { GameType } from './client';
 import { aiManager } from './game_model/aiManager';
+import { GameType } from './gameType';
 
 @Injectable()
 export class GameManager {
