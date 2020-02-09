@@ -5,6 +5,7 @@ import { Game } from '../../game_model/game';
 import { cardList } from '../../game_model/cards/cardList';
 import { Resource } from 'app/game_model/resource';
 import { Untargeted } from 'app/game_model/cards/targeters/basicTargeter';
+import { Spell } from 'app/game_model/card-types/spell';
 
 enum GlowType {
     None,
@@ -138,7 +139,7 @@ function toProperCase(str: string) {
     return str.replace(/\b\w/g, l => l.toUpperCase());
 }
 
-const dummyCard = new Card('', '', '', new Resource(1), new Untargeted(), []);
+const dummyCard = new Spell('', '', '', new Resource(1), new Untargeted(), []);
 
 @Component({
     selector: 'ccg-card',

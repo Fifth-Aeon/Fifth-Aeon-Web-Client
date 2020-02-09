@@ -80,7 +80,7 @@ export class GameComponent implements OnInit, OnDestroy {
     public enemyNo: number;
     public locations = GameZone;
     public selected: Card | null = null;
-    public validTargets: Set<Unit> = new Set();
+    public validTargets: Set<Permanent> = new Set();
     public blockable: Set<Unit> = new Set();
     public blocker: Unit | undefined;
 

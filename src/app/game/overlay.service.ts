@@ -6,6 +6,7 @@ import { ClientGame } from '../game_model/clientGame';
 import { Game } from '../game_model/game';
 import { Item } from '../game_model/card-types/item';
 import { Unit } from '../game_model/card-types/unit';
+import { Permanent } from 'app/game_model/card-types/permanent';
 
 interface Arrow {
     x1: number;
@@ -125,7 +126,7 @@ export class OverlayService {
         this.blocks = [];
     }
 
-    public addTargets(card: Card, targets: Array<Unit>) {
+    public addTargets(card: Card, targets: Array<Permanent>) {
         if (!(card instanceof Unit)) {
             this.displayCards.push(card);
             setTimeout(() => {
