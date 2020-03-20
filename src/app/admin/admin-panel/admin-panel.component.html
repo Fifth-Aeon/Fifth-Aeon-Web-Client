@@ -8,6 +8,8 @@
     sets.
 </p>
 
+<button (click)="getUsersToPurge()">Purge</button>
+
 <h2>User Data</h2>
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
     <ng-container matColumnDef="username">

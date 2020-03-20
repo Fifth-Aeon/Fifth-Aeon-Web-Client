@@ -39,6 +39,14 @@ export class AdminPanelComponent implements OnInit {
 
     }
 
+    public async getUsersToPurge() {
+        const numberOfUsers = (await this.admin.getOldAccounts()).length;
+        if (!confirm(`purge ${numberOfUsers} users?`)) {
+            return;
+        }
+        this.admin.deleteOldAccounts();
+    }
+
     ngOnInit() {
         this.dataSource.sort = this.sort;
     }

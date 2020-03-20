@@ -15,6 +15,7 @@ export interface AccountData {
 })
 export class AdminDataService {
     private static getUserData = `${apiURL}/api/admin/userData`;
+    private static oldAccounts = `${apiURL}/api/admin/oldAccounts`;
     private static getCardData = `${apiURL}/api/admin/cardData`;
 
     constructor(
@@ -33,6 +34,18 @@ export class AdminDataService {
 
     public getUserData() {
         return this.http.get<AccountData[]>(AdminDataService.getUserData, {
+            headers: this.auth.getAuthHeader()
+        }).toPromise();
+    }
+
+    public getOldAccounts() {
+        return this.http.get<AccountData[]>(AdminDataService.oldAccounts, {
+            headers: this.auth.getAuthHeader()
+        }).toPromise();
+    }
+
+    public deleteOldAccounts() {
+        return this.http.delete<AccountData[]>(AdminDataService.oldAccounts, {
             headers: this.auth.getAuthHeader()
         }).toPromise();
     }
