@@ -9,13 +9,12 @@ copy('electron-index.js', 'dist/index.js');
 copy('package.json', 'dist/package.json');
 
 packager({
-    executableName: 'Fifth Aeon',
+    executableName: 'fifth-aeon',
+    name: 'fifth-aeon',
     dir: 'dist',
     out: 'standalone',
-    arch: 'all',
-    platform: 'all',
-    // icon: 'src/assets/icon-256x256.png',
-
+    arch: 'x64',
+    platform: ['win32', 'linux'],
     overwrite: true
 }).then(appPaths => {
     console.log('Done, created:', appPaths.join(', '));
