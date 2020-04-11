@@ -8,23 +8,13 @@ on:
 
 jobs:
   build:
-
     runs-on: macos-latest
-
-    strategy:
-      matrix:
-        node-version: [12.x]
-
     steps:
     - uses: actions/checkout@v2
     - name: Checkout submodules
       uses: textbook/git-checkout-submodule-action@2.1.1
     - name: Install Wine
       run: brew cask install wine-stable
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run package
     - run: bash .github/scripts/upload.sh
