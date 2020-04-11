@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install Wine
-      run: brew cask install wine-stable
+      run: brew cask install xquartz wine-stable
     - name: Checkout submodule
       run: git submodule init && git submodule update
     - run: npm ci
