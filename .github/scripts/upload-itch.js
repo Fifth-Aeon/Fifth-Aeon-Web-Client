@@ -27,7 +27,7 @@ async function main() {
     try {
         await utils.exec(`curl -L -o butler.zip https://broth.itch.ovh/butler/${currentPlatformInfo.butler}/LATEST/archive/default`, { echo: true })
         await utils.exec(`unzip ./butler.zip`, { echo: true })
-        await utils.exec(`./butler push ${sourceFolder}/${currentPlatformInfo.source} ${account}/${game}:${currentPlatformInfo.channel}`, { echo: true })
+        await utils.exec(`./butler push ${sourceFolder} ${account}/${game}:${currentPlatformInfo.channel}`, { echo: true })
     } catch (e) {
         console.error(e.error);
         process.exit(e.code);
