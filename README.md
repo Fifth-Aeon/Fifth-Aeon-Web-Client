@@ -2,10 +2,10 @@
 
 A web client for the # Fifth Aeon collectible card game, written using Angular and Typescript.
 
-You can find the coresponding server at <https://github.com/Fifth-Aeon/CCG-Server>. The game's core logic is shared between the client and the server. To facilitate this sharing it uses a [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules) which is hosted at <https://github.com/WilliamRitson/CCG-Model>.
+You can find the corresponding server at <https://github.com/Fifth-Aeon/CCG-Server>. The game's core logic is shared between the client and the server. To facilitate this sharing it uses a [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules) which is hosted at <https://github.com/WilliamRitson/CCG-Model>.
 
 ## Installation
-Install [Git LFS](https://git-lfs.github.com/) and make sure its avalible in your path.
+Install [Git LFS](https://git-lfs.github.com/) and make sure its available in your path.
 
 Run `git clone --recursive https://github.com/WilliamRitson/CCG-Client.git
 ` to clone the project and its submodule (do this wherever you want the project stored on your computer).
