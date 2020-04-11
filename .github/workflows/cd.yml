@@ -26,5 +26,5 @@ jobs:
     - run: npm ci
     - run: npm run package
     - run: bash .github/scripts/upload.sh
-      env:
-        CI: true
+      env: BUTLER_API_KEY
+        BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
