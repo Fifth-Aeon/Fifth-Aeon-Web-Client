@@ -14,5 +14,5 @@ do
     echo "Upload '$sourceFolder/${sources[i]}' to '$account/$game:${channels[i]}'"
     mkdir $sourceFolder/${sources[i]}/app
     mv $sourceFolder/${sources[i]}/* $sourceFolder/${sources[i]}/app
-    butler push ./$sourceFolder/${sources[i]} $account/$game:${channels[i]}
+    ./butler push ./$sourceFolder/${sources[i]} $account/$game:${channels[i]}
 done
