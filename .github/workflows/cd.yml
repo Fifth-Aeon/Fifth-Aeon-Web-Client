@@ -25,6 +25,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run package
-    - run: sh .github/scripts/upload.sh
+    - run: bash .github/scripts/upload.sh
       env:
         CI: true
