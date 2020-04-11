@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     strategy:
       matrix:
@@ -20,7 +20,7 @@ jobs:
     - name: Checkout submodules
       uses: textbook/git-checkout-submodule-action@2.1.1
     - name: Install Wine
-      run: sudo apt-get install wine-stable
+      run: brew cask install wine-stable
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
