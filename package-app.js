@@ -14,7 +14,7 @@ packager({
     dir: 'dist',
     out: 'standalone',
     arch: 'x64',
-    platform: ['win32', 'linux', 'darwin'],
+    platform: process.platform,
     overwrite: true
 }).then(appPaths => {
     console.log('Done, created:', appPaths.join(', '));

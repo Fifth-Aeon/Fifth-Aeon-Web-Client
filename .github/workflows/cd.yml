@@ -8,15 +8,18 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
     steps:
     - uses: actions/checkout@v2
-    - name: Install Wine
-      run: brew cask install xquartz wine-stable
     - name: Checkout submodule
       run: git submodule init && git submodule update
     - run: npm ci
     - run: npm run package
-    - run: bash .github/scripts/upload.sh
+    - run: node .github/scripts/upload-itch.js
       env:
         BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
