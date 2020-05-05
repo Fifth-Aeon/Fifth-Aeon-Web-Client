@@ -38,7 +38,7 @@ export class ParameterEditorComponent implements OnInit {
     private resourceEnumValues = this.getEnumValues(ResourceType);
     private cardEnumValues = this.getEnumValues(CardType);
     private unitEnumValues = this.getEnumValues(UnitType);
-    private abilityValues = this.getAbilityValues(UnitType);
+    private abilityValues = this.getAbilityValues();
 
 
     public getEditorType() {
