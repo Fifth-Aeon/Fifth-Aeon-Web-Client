@@ -3,15 +3,16 @@ import { CardType } from '../../game_model/card-types/card';
 import { cardList } from '../../game_model/cards/cardList';
 import {
     ParameterData,
-    ParameterType
+    ParameterType,
 } from '../../game_model/cards/parameters';
 import { ResourceType } from '../../game_model/resource';
 import { UnitType } from 'app/game_model/card-types/unit';
+import { mechanicList } from 'app/game_model/cards/mechanicList';
 
 enum EditorType {
     Numeric,
     Enumerable,
-    Resource
+    Resource,
 }
 
 interface EnumValue {
@@ -22,7 +23,7 @@ interface EnumValue {
 @Component({
     selector: 'ccg-parameter-editor',
     templateUrl: './parameter-editor.component.html',
-    styleUrls: ['./parameter-editor.component.scss']
+    styleUrls: ['./parameter-editor.component.scss'],
 })
 export class ParameterEditorComponent implements OnInit {
     @Input() name = '';
@@ -37,6 +38,8 @@ export class ParameterEditorComponent implements OnInit {
     private resourceEnumValues = this.getEnumValues(ResourceType);
     private cardEnumValues = this.getEnumValues(CardType);
     private unitEnumValues = this.getEnumValues(UnitType);
+    private abilityValues = this.getAbilityValues(UnitType);
+
 
     public getEditorType() {
         if (
@@ -73,6 +76,8 @@ export class ParameterEditorComponent implements OnInit {
                 return this.getCardTypeValues(CardType.Item);
             case ParameterType.Enchantment:
                 return this.getCardTypeValues(CardType.Enchantment);
+            case ParameterType.Ability:
+                return this.abilityValues;
         }
         return [];
     }
@@ -83,7 +88,7 @@ export class ParameterEditorComponent implements OnInit {
             if (typeof enumeration[key] !== 'number') {
                 results.push({
                     id: key,
-                    name: enumeration[key]
+                    name: enumeration[key],
                 });
             }
         }
@@ -106,14 +111,21 @@ export class ParameterEditorComponent implements OnInit {
         return newVals;
     }
 
+    private getAbilityValues(): EnumValue[] {
+        const abilityIds = mechanicList.getAbilityIds();
+        return abilityIds.map((id) => {
+            return { id, name: id };
+        });
+    }
+
     private generateCardTypeValues(type?: CardType): EnumValue[] {
         return cardList
             .getCards()
-            .filter(card => !type || card.getCardType() === type)
-            .map(card => {
+            .filter((card) => !type || card.getCardType() === type)
+            .map((card) => {
                 return {
                     id: card.getDataId(),
-                    name: card.getName()
+                    name: card.getName(),
                 };
             });
     }

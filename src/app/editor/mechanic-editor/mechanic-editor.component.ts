@@ -27,7 +27,7 @@ export class MechanicEditorComponent {
         const paramTypes = mechanicList
             .getParameters(data)
             .map(param => param.type);
-        data.parameters = buildParameters(paramTypes, [], cardList).map(
+        data.parameters = buildParameters(paramTypes, [], cardList, new Map()).map(
             param => {
                 if (typeof param !== 'function') {
                     return param;
