@@ -1,4 +1,4 @@
-name: Upload Standalone Version to Itch.ip
+name: Upload Standalone Version to Itch.io
 
 on:
   push:
