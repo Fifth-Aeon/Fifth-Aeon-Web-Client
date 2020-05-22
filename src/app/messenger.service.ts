@@ -5,7 +5,7 @@ import { AuthenticationService } from './user/authentication.service';
 @Injectable()
 export class MessengerService {
     private messenger: Messenger = new Messenger();
-    private localMessenger: Messenger = new Messenger('ws://localhost:4236', 4);
+    private localMessenger: Messenger = new Messenger('ws://localhost:4236');
 
     constructor(auth: AuthenticationService) {
         auth.onAuth(user => {
