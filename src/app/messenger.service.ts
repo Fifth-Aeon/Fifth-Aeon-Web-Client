@@ -14,8 +14,7 @@ export class MessengerService {
             }
             this.setMessengerID(user.mpToken);
         });
-        this.messenger.connect();
-        this.localMessenger.connect();
+        this.messenger.startConnection();
     }
 
     private setMessengerID(id: string) {

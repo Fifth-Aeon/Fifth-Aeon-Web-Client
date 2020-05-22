@@ -26,7 +26,7 @@ export enum MessageType {
 
     // In Game
     GameEvent,
-    GameAction
+    GameAction,
 }
 
 export interface Message {
@@ -51,18 +51,36 @@ export class Messenger {
     private lastConnectAttempt = 0;
     private id: string | undefined;
     private enabled = true;
+    private maxConnectAttempts = Infinity;
 
     private loggedIn = false;
     public connectChange: (status: boolean) => void = () => null;
 
-    constructor(private url = getWsUrl(), private maxConnectAttempts = Infinity) {
+    constructor(
+        private url = getWsUrl()
+    ) {
         this.handlers = new Map();
+    }
+
+    public setID(id: string) {
+        this.id = id;
+        this.connect();
+    }
+
+    public close() {
+        if (this.ws) {
+            this.ws.close();
+        }
+    }
+
+    public startConnection(maxConnectAttempts?: number) {
+        this.maxConnectAttempts = maxConnectAttempts !== undefined ? maxConnectAttempts : this.maxConnectAttempts;
 
         // Firefox does not allow you to open a connection via the ws protocol if the page is served via https
         // So if we try to do that, abort
         if (
             location.href.startsWith('https://') &&
-            url.startsWith('ws://') &&
+            this.url.startsWith('ws://') &&
             navigator.userAgent.search('Firefox') !== -1
         ) {
             console.warn(
@@ -82,24 +100,17 @@ export class Messenger {
             () => this.sendMessageToServer(MessageType.Ping, {}),
             pingTime
         );
-    }
-
-    public setID(id: string) {
-        this.id = id;
         this.connect();
     }
 
-    public close() {
-        if (this.ws) {
-            this.ws.close();
-        }
-    }
-
-    public connect() {
+    private connect() {
         if (!this.enabled) {
             return;
         }
-        if (Date.now() - this.lastConnectAttempt < minConnectTime || this.maxConnectAttempts <= 0) {
+        if (
+            Date.now() - this.lastConnectAttempt < minConnectTime ||
+            this.maxConnectAttempts <= 0
+        ) {
             return;
         }
         this.lastConnectAttempt = Date.now();
@@ -107,7 +118,7 @@ export class Messenger {
         this.ws = new WebSocket(url);
         this.ws.onmessage = this.handleMessage.bind(this);
         this.ws.onopen = () => this.onConnect();
-        this.ws.onclose = () => this.connectChange(false);
+        this.ws.onclose = () => this.onConnectChange(false);
         this.maxConnectAttempts--;
     }
 
@@ -121,12 +132,21 @@ export class Messenger {
     }
 
     private onConnect() {
-        this.connectChange(true);
+        this.onConnectChange(true);
         this.sendMessageToServer(MessageType.Connect, {});
         console.log('Connected, requesting queued messages.');
         if (this.loggedIn) {
             this.emptyMessageQueue();
         }
+    }
+
+    private onConnectChange(isConnected: boolean) {
+        if (!isConnected) {
+            console.warn('Multiplayer connection lost');
+        } else {
+            console.log('now connected');
+        }
+        this.connectChange(isConnected);
     }
 
     private handleMessage(ev: MessageEvent) {
@@ -169,7 +189,7 @@ export class Messenger {
         return JSON.stringify({
             type: MessageType[messageType],
             data: data,
-            source: this.id
+            source: this.id,
         });
     }
 
