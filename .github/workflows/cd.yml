@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  itch:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -25,3 +25,21 @@ jobs:
     - run: node .github/scripts/upload-itch.js
       env:
         BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+
+  firebase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo with LFS
+        uses: actions/checkout@v2
+        with:
+          lfs: 'true'
+      - name: Checkout submodule
+        run: git submodule init && git submodule update
+      - run: npm ci
+      - run: npm run build
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
