@@ -34,7 +34,7 @@
     "file-saver": "^2.0.1",
     "hammerjs": "^2.0.8",
     "howler": "^2.1.1",
-    "lodash": "4.17.14",
+    "lodash": "4.17.21",
     "ngx-clipboard": "12.2.0",
     "prando": "^5.1.0",
     "random-js": "^1.0.8",
