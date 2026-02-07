@@ -25,6 +25,14 @@ export class LobbyComponent implements OnInit {
         }
 
         this.user = auth.getUser() as UserData;
+        if (!this.user && this.client.getState() === ClientState.InLobby) {
+            this.user = {
+                username: 'Offline Player',
+                role: 'user',
+                token: '',
+                mpToken: ''
+            };
+        }
 
         if (!this.soundManager.musicIsPlaying()) {
             this.soundManager.setFactionContext(new Set());
@@ -63,7 +71,7 @@ export class LobbyComponent implements OnInit {
         return null;
     }
 
-    ngOnInit() {}
+    ngOnInit() { }
 
     public getState() {
         if (!this.client) {

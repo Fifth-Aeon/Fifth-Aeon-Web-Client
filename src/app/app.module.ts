@@ -41,6 +41,8 @@ import { TipService } from './tips';
 import { TournamentModule } from './tournament/tournament.module';
 import { AdminModule } from './admin/admin.module';
 import { SettingsModule } from './settings/settings.module';
+import { LocalDataProvider } from './data/local-data-provider';
+import { ServerDataProvider } from './data/server-data-provider';
 
 @NgModule({
     declarations: [
@@ -90,8 +92,10 @@ import { SettingsModule } from './settings/settings.module';
         LoggedInGuard,
         CollectionService,
         DraftService,
-        MessengerService
+        MessengerService,
+        LocalDataProvider,
+        ServerDataProvider
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

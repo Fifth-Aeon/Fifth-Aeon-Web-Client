@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { WebClient, ClientState } from './client';
 import { SoundManager } from './sound';
-import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
+
 
 @Component({
     selector: 'ccg-root',
@@ -13,8 +13,8 @@ export class AppComponent {
     constructor(
         public client: WebClient,
         public soundManager: SoundManager,
-        tagManager: Angulartics2GoogleAnalytics
-    ) {}
+        // tagManager: Angulartics2GoogleAnalytics
+    ) { }
 
     toggleMute() {
         this.soundManager.toggleMute();

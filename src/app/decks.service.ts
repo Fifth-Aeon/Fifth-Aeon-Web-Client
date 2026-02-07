@@ -13,6 +13,11 @@ const saveURL = `${apiURL}/api/cards/storeDeck`;
 const loadUrl = `${apiURL}/api/cards/getDecks`;
 const deleteUrl = `${apiURL}/api/cards/deleteDeck`;
 
+import { IDataProvider } from './data/data-provider';
+import { SettingsService } from './settings/settings.service';
+import { LocalDataProvider } from './data/local-data-provider';
+import { ServerDataProvider } from './data/server-data-provider';
+
 @Injectable()
 export class DecksService {
     private decks: Array<DeckList> = [];
@@ -25,23 +30,29 @@ export class DecksService {
         private collection: CollectionService,
         private auth: AuthenticationService,
         private http: HttpClient,
-        private editorData: EditorDataService
+        private editorData: EditorDataService,
+        private settings: SettingsService,
+        private localData: LocalDataProvider,
+        private serverData: ServerDataProvider
     ) {
         this.auth.onAuth(data => {
             if (data) {
                 this.loadDecks();
             }
         });
+        this.settings.isOffline$.subscribe(() => {
+            this.loadDecks();
+        });
+    }
+
+    private getDataProvider(): IDataProvider {
+        return this.settings.isOffline() ? this.localData : this.serverData;
     }
 
     public saveDeck(deck: DeckList) {
-        return lastValueFrom(this.http
-            .post(
-                saveURL,
-                { deck: deck.getSavable() },
-                { headers: this.auth.getAuthHeader() }
-            ))
-            .then((res: any) => (deck.id = res.id))
+        return this.getDataProvider()
+            .saveDeck(deck.getSavable())
+            .then((id: number) => (deck.id = id))
             .catch(console.error);
     }
 
@@ -50,8 +61,11 @@ export class DecksService {
     }
 
     public loadDecks() {
-        return lastValueFrom(this.http
-            .get<SavedDeck[]>(loadUrl, { headers: this.auth.getAuthHeader() }))
+        if (!this.auth.loggedIn() && !this.settings.isOffline()) {
+            return;
+        }
+        return this.getDataProvider()
+            .getDecks()
             .then(decks => {
                 this.decks.length = 0;
                 for (const deckData of decks) {
@@ -87,12 +101,8 @@ export class DecksService {
             this.currentDeckNumber,
             this.decks.length - 1
         );
-        lastValueFrom(this.http
-            .post(
-                deleteUrl,
-                { id: removed.id },
-                { headers: this.auth.getAuthHeader() }
-            ))
+        this.getDataProvider()
+            .deleteDeck(removed.id)
             .catch(console.error);
     }
 

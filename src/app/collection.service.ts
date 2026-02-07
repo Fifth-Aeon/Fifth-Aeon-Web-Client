@@ -29,6 +29,11 @@ interface DailyRewardData {
     nextRewardTime: number;
 }
 
+import { IDataProvider } from './data/data-provider';
+import { SettingsService } from './settings/settings.service';
+import { LocalDataProvider } from './data/local-data-provider';
+import { ServerDataProvider } from './data/server-data-provider';
+
 @Injectable()
 export class CollectionService {
     private collection = new Collection();
@@ -46,12 +51,18 @@ export class CollectionService {
     constructor(
         private auth: AuthenticationService,
         private http: HttpClient,
-        private dialog: MatDialog
+        private dialog: MatDialog,
+        private settings: SettingsService,
+        private localData: LocalDataProvider,
+        private serverData: ServerDataProvider
     ) {
         auth.onAuth(data => {
             if (data) {
                 this.load();
             }
+        });
+        this.settings.isOffline$.subscribe(() => {
+            this.load();
         });
         (window as any).getCardSheet = () => {
             const cards = cardList
@@ -84,15 +95,20 @@ export class CollectionService {
         };
     }
 
+    private getDataProvider(): IDataProvider {
+        return this.settings.isOffline() ? this.localData : this.serverData;
+    }
+
     private checkDaily() {
+        if (this.settings.isOffline()) {
+            return;
+        }
         lastValueFrom(this.http
             .get<DailyRewardData>(dailyURL, {
                 headers: this.auth.getAuthHeader()
             }))
             .then(res => {
                 if (!res.daily) {
-                    // const wait = res.nextRewardTime / 1000 / 60 / 60;
-                    // dialogRef.componentInstance.nextRewardTime = wait;
                     return;
                 } else {
                     const dialogRef = this.dialog.open(DailyDialogComponent);
@@ -109,22 +125,18 @@ export class CollectionService {
             const diff = 4 - this.collection.getCardCount(card);
             this.collection.addCard(card, Math.max(diff, 0));
         }
+        this.save();
     }
 
     public save() {
-        return lastValueFrom(this.http
-            .post(
-                saveURL,
-                { collection: this.collection.getSavable() },
-                { headers: this.auth.getAuthHeader() }
-            ));
+        return this.getDataProvider().saveCollection(this.collection.getSavable());
     }
 
     public load() {
-        return lastValueFrom(this.http
-            .get<SavedCollection>(loadUrl, {
-                headers: this.auth.getAuthHeader()
-            }))
+        if (!this.auth.loggedIn() && !this.settings.isOffline()) {
+            return Promise.resolve();
+        }
+        return this.getDataProvider().getCollection()
             .then(res => {
                 this.collection.fromSavable(res);
                 this.checkDaily();
@@ -132,6 +144,15 @@ export class CollectionService {
     }
 
     public async openPack() {
+        if (this.settings.isOffline()) {
+            const cards = this.collection.openBooster();
+            if (cards) {
+                await this.save();
+                return cards.map(id => cardList.getCard(id));
+            }
+            return 'No packs to open';
+        }
+
         return lastValueFrom(this.http
             .post<string[]>(
                 openPackURL,
@@ -155,6 +176,15 @@ export class CollectionService {
     }
 
     public buyPack() {
+        if (this.settings.isOffline()) {
+            if (this.collection.getGold() >= 100) {
+                this.collection.buyPack();
+                this.save();
+                return Promise.resolve(true);
+            }
+            return Promise.resolve(false);
+        }
+
         return lastValueFrom(this.http
             .post(
                 buyPackURL,
@@ -178,6 +208,13 @@ export class CollectionService {
         if (!won && quit) {
             return '';
         }
+
+        if (this.settings.isOffline()) {
+            const reward = this.collection.addWinReward(won);
+            await this.save();
+            return CollectionService.describeReward(reward);
+        }
+
         let reward: Rewards;
         try {
             reward = await lastValueFrom(this.http

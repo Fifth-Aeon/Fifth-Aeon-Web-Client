@@ -18,7 +18,7 @@ export enum SpeedSetting {
     Ninja = 2
 }
 
-const getNames =  (en: any) => {
+const getNames = (en: any) => {
     const names = [];
     for (const item in en) {
         if (typeof en[item] === 'number') {
@@ -28,6 +28,8 @@ const getNames =  (en: any) => {
     return names as string[];
 };
 
+
+import { SettingsService } from '../settings.service';
 
 @Component({
     selector: 'ccg-settings-dialog',
@@ -49,8 +51,9 @@ export class SettingsDialogComponent implements OnInit {
         public tips: TipService,
         public speed: SpeedService,
         public collection: CollectionService,
-        private router: Router
-    ) {}
+        private router: Router,
+        public settings: SettingsService
+    ) { }
 
     public isInGame() {
         return this.router.url.includes('game');

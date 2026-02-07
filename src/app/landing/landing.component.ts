@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../user/authentication.service';
+import { SettingsService } from 'app/settings/settings.service';
+import { Router } from '@angular/router';
+import { WebClient } from 'app/client';
 
 enum LandingState {
     Working,
     WaitingForAction,
-    NewPlayer
+    NewPlayer,
+    OfflineOnly
 }
 
 @Component({
@@ -16,12 +20,26 @@ export class LandingComponent implements OnInit {
     public states = LandingState;
     public state = LandingState.Working;
 
-    constructor(private auth: AuthenticationService) {
-        auth.attemptLogin().then(loginOk => {
-            if (!loginOk) {
-                this.state = LandingState.WaitingForAction;
-            }
-        });
+    constructor(
+        private auth: AuthenticationService,
+        private settings: SettingsService,
+        private router: Router,
+        private client: WebClient
+    ) {
+        this.init();
+    }
+
+    private async init() {
+        const serverAvailable = await this.auth.checkServerAvailable();
+        if (!serverAvailable) {
+            this.state = LandingState.OfflineOnly;
+            return;
+        }
+
+        const loginOk = await this.auth.attemptLogin();
+        if (!loginOk) {
+            this.state = LandingState.WaitingForAction;
+        }
     }
 
     public newPlayer() {
@@ -33,5 +51,11 @@ export class LandingComponent implements OnInit {
         this.auth.registerGuest();
     }
 
-    public ngOnInit() {}
+    public enterOfflineMode() {
+        this.settings.setOffline(true);
+        this.client.enterOfflineMode();
+        this.router.navigateByUrl('/lobby');
+    }
+
+    public ngOnInit() { }
 }

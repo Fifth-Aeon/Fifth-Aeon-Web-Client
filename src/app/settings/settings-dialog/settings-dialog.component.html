@@ -2,16 +2,16 @@
     <div mat-dialog-content>
         <mat-tab-group>
             <mat-tab label="Navigation" *ngIf="isInGame()">
-                <button
-                    class="settings-element"
-                    mat-raised-button
-                    color="primary"
-                    mat-button
-                    (click)="concede()"
-                    mat-dialog-close="done"
-                >
+                <button class="settings-element" mat-raised-button color="primary" mat-button (click)="concede()"
+                    mat-dialog-close="done">
                     Concede Game
                 </button>
+            </mat-tab>
+            <mat-tab label="Network">
+                <div class="settings-content">
+                    <mat-slide-toggle class="settings-element" (change)="settings.setOffline($event.checked)"
+                        [checked]="settings.isOffline()">Offline Mode</mat-slide-toggle>
+                </div>
             </mat-tab>
             <mat-tab label="Volume">
                 <table>
@@ -19,25 +19,16 @@
                         <tr>
                             <td>{{ volumeNames[volume[0]] }}:</td>
                             <td>
-                                <mat-slider
-                                    (change)="
+                                <mat-slider (change)="
                                         sound.changeVolume(
                                             volume[0],
                                             $event.value
                                         )
-                                    "
-                                    min="0"
-                                    max="1"
-                                    step="0.01"
-                                    [value]="volume[1]"
-                                ></mat-slider>
+                                    " min="0" max="1" step="0.01" [value]="volume[1]"></mat-slider>
                             </td>
                             <td *ngIf="i === 0">
-                                <mat-checkbox
-                                    (change)="sound.toggleMute()"
-                                    [ngModel]="sound.isMuted()"
-                                    >Mute all</mat-checkbox
-                                >
+                                <mat-checkbox (change)="sound.toggleMute()" [ngModel]="sound.isMuted()">Mute
+                                    all</mat-checkbox>
                             </td>
                         </tr>
                     </tbody>
@@ -49,16 +40,10 @@
                         <mat-card-title>Difficultly</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <mat-radio-group
-                            class="radio-group"
-                            [ngModel]="ai.getSelectedDifficulty()"
-                            (change)="ai.setDifficulty($event.value)"
-                        >
-                            <mat-radio-button
-                                class="radio-button"
-                                *ngFor="let name of difficultyNames"
-                                [value]="difficultyLevels[name]"
-                            >
+                        <mat-radio-group class="radio-group" [ngModel]="ai.getSelectedDifficulty()"
+                            (change)="ai.setDifficulty($event.value)">
+                            <mat-radio-button class="radio-button" *ngFor="let name of difficultyNames"
+                                [value]="difficultyLevels[name]">
                                 {{ name }}
                             </mat-radio-button>
                         </mat-radio-group>
@@ -70,16 +55,10 @@
                         <mat-card-title>Speed</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <mat-radio-group
-                            class="radio-group"
-                            [ngModel]="speed.multiplier"
-                            (change)="speed.setMultiplier($event.value)"
-                        >
-                            <mat-radio-button
-                                class="radio-button"
-                                *ngFor="let speedName of speedNames"
-                                [value]="speedSettings[speedName]"
-                            >
+                        <mat-radio-group class="radio-group" [ngModel]="speed.multiplier"
+                            (change)="speed.setMultiplier($event.value)">
+                            <mat-radio-button class="radio-button" *ngFor="let speedName of speedNames"
+                                [value]="speedSettings[speedName]">
                                 {{ speedName }}
                             </mat-radio-button>
                         </mat-radio-group>
@@ -89,39 +68,19 @@
                 <mat-divider [vertical]="true"></mat-divider>
             </mat-tab>
             <mat-tab label="Tips">
-                <mat-slide-toggle
-                    class="settings-element "
-                    (change)="toggleTips()"
-                    [checked]="!tips.isDisabled()"
-                    >{{ tipMessage() }}</mat-slide-toggle
-                >
-                <button
-                    class="settings-element"
-                    mat-raised-button
-                    color="primary"
-                    mat-button
-                    (click)="tips.markUnread()"
-                >
+                <mat-slide-toggle class="settings-element " (change)="toggleTips()" [checked]="!tips.isDisabled()">{{
+                    tipMessage() }}</mat-slide-toggle>
+                <button class="settings-element" mat-raised-button color="primary" mat-button
+                    (click)="tips.markUnread()">
                     Mark All Tips as Unread
                 </button>
-                <button
-                    class="settings-element "
-                    mat-raised-button
-                    color="warn"
-                    mat-button
-                    (click)="tips.markRead()"
-                >
+                <button class="settings-element " mat-raised-button color="warn" mat-button (click)="tips.markRead()">
                     Mark All Tips as Read
                 </button>
             </mat-tab>
             <mat-tab label="Dev">
-                <button
-                    class="settings-element"
-                    mat-raised-button
-                    color="primary"
-                    mat-button
-                    (click)="collection.unlockAll()"
-                >
+                <button class="settings-element" mat-raised-button color="primary" mat-button
+                    (click)="collection.unlockAll()">
                     Unlock Cards
                 </button>
             </mat-tab>

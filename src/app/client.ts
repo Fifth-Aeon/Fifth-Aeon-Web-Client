@@ -161,6 +161,13 @@ export class WebClient {
         this.tips.playTip(TipType.StartGame);
     }
 
+    public enterOfflineMode() {
+        this.changeState(ClientState.InLobby);
+        this.username = 'Offline Player';
+        this.tips.setUsername(this.username);
+        this.gameManager.setUsername(this.username);
+    }
+
     public isLoggedIn() {
         return !(this.state === ClientState.UnAuth);
     }

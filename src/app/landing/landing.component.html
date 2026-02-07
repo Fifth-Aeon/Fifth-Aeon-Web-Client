@@ -8,6 +8,10 @@
     <button mat-raised-button color="primary" routerLink="/login">
         Returning Player
     </button>
+    <br>
+    <button mat-raised-button class="offline-button" (click)="enterOfflineMode()">
+        Play Offline
+    </button>
 </ng-template>
 
 <ng-template [ngIf]="state === states.NewPlayer">
@@ -20,9 +24,12 @@
 </ng-template>
 
 <ng-template [ngIf]="state === states.Working">
-    <mat-progress-spinner
-        class="mp-bar"
-        color="primary"
-        mode="indeterminate"
-    ></mat-progress-spinner>
+    <mat-progress-spinner class="mp-bar" color="primary" mode="indeterminate"></mat-progress-spinner>
+</ng-template>
+
+<ng-template [ngIf]="state === states.OfflineOnly">
+    <p>Server Unavailable</p>
+    <button mat-raised-button class="offline-button" (click)="enterOfflineMode()">
+        Play Offline
+    </button>
 </ng-template>

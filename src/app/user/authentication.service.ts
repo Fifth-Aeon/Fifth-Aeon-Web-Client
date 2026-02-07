@@ -29,6 +29,15 @@ export class AuthenticationService {
         }
     }
 
+    public async checkServerAvailable() {
+        try {
+            await lastValueFrom(this.http.get(apiURL, { responseType: 'text' }));
+            return true;
+        } catch (err: any) {
+            return err.status !== 0;
+        }
+    }
+
     public attemptLogin() {
         try {
             const rawData = localStorage.getItem('login');
