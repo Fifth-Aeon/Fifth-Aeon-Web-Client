@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { cardList } from 'app/game_model/cards/cardList';
@@ -84,11 +85,10 @@ export class CollectionService {
     }
 
     private checkDaily() {
-        this.http
+        lastValueFrom(this.http
             .get<DailyRewardData>(dailyURL, {
                 headers: this.auth.getAuthHeader()
-            })
-            .toPromise()
+            }))
             .then(res => {
                 if (!res.daily) {
                     // const wait = res.nextRewardTime / 1000 / 60 / 60;
@@ -112,21 +112,19 @@ export class CollectionService {
     }
 
     public save() {
-        return this.http
+        return lastValueFrom(this.http
             .post(
                 saveURL,
                 { collection: this.collection.getSavable() },
                 { headers: this.auth.getAuthHeader() }
-            )
-            .toPromise();
+            ));
     }
 
     public load() {
-        return this.http
+        return lastValueFrom(this.http
             .get<SavedCollection>(loadUrl, {
                 headers: this.auth.getAuthHeader()
-            })
-            .toPromise()
+            }))
             .then(res => {
                 this.collection.fromSavable(res);
                 this.checkDaily();
@@ -134,13 +132,12 @@ export class CollectionService {
     }
 
     public async openPack() {
-        return this.http
+        return lastValueFrom(this.http
             .post<string[]>(
                 openPackURL,
                 { item: 'pack' },
                 { headers: this.auth.getAuthHeader() }
-            )
-            .toPromise()
+            ))
             .then(ids => {
                 this.collection.removePack();
                 return ids.map(id => {
@@ -158,13 +155,12 @@ export class CollectionService {
     }
 
     public buyPack() {
-        return this.http
+        return lastValueFrom(this.http
             .post(
                 buyPackURL,
                 { item: 'pack' },
                 { headers: this.auth.getAuthHeader() }
-            )
-            .toPromise()
+            ))
             .then(() => {
                 this.collection.buyPack();
                 return true;
@@ -184,13 +180,12 @@ export class CollectionService {
         }
         let reward: Rewards;
         try {
-            reward = await this.http
+            reward = await lastValueFrom(this.http
                 .post<Rewards>(
                     `${apiURL}/api/cards/reward`,
                     { won: won },
                     { headers: this.auth.getAuthHeader() }
-                )
-                .toPromise();
+                ));
         } catch (e) {
             console.error(e);
             return 'Error loading rewards.';

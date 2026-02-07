@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { apiURL } from '../url';
 import { AuthenticationService } from '../user/authentication.service';
 import { HttpClient } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
+import { saveAs } from 'file-saver';
 
 export interface TeamInfo {
     name: string;
@@ -31,14 +33,14 @@ export class TournamentAdminService {
 
     public getLatestSubmission(teamName: string, id: number) {
         return this.auth.afterLogin().then(() => {
-            return this.http
+            return lastValueFrom(this.http
                 .get(TournamentAdminService.getLatestSubmission + id, {
                     headers: this.auth.getAuthHeader(),
                     responseType: 'blob'
-                })
-                .toPromise().then(buffer =>
+                }))
+                .then(buffer =>
                     saveAs(
-                        buffer,
+                        buffer as Blob,
                         `${teamName}-submission.zip`
                     )
                 );
@@ -48,21 +50,19 @@ export class TournamentAdminService {
 
     public getTeamInfo() {
         return this.auth.afterLogin().then(() => {
-            return this.http
+            return lastValueFrom(this.http
                 .get<TeamInfo[]>(TournamentAdminService.getTeamInfoUrl, {
                     headers: this.auth.getAuthHeader()
-                })
-                .toPromise();
+                }));
         });
     }
 
     public getContestantInfo() {
         return this.auth.afterLogin().then(() => {
-            return this.http
+            return lastValueFrom(this.http
                 .get<ContestantInfo[]>(TournamentAdminService.getContestantInfoUrl, {
                     headers: this.auth.getAuthHeader()
-                })
-                .toPromise();
+                }));
         });
     }
 }

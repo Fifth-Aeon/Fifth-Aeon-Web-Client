@@ -1,4 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { apiURL } from '../url';
@@ -20,7 +21,7 @@ export class AuthenticationService {
     private authChangeCallbacks: Array<(user: UserData | null) => void> = [];
     private redirectTarget = 'lobby';
 
-    constructor(private http: HttpClient, private router: Router) {}
+    constructor(private http: HttpClient, private router: Router) { }
 
     public getRole() {
         if (this.user) {
@@ -111,7 +112,7 @@ export class AuthenticationService {
     }
 
     public verifyEmail(emailToken: string) {
-        return this.http
+        return lastValueFrom(this.http
             .post(
                 `${apiURL}/api/auth/verifyEmail`,
                 {},
@@ -120,20 +121,18 @@ export class AuthenticationService {
                         token: emailToken
                     })
                 }
-            )
-            .toPromise();
+            ));
     }
 
     public requestPasswordReset(usernameOrEmail: string) {
-        return this.http
+        return lastValueFrom(this.http
             .post(`${apiURL}/api/auth/requestReset`, {
                 usernameOrEmail: usernameOrEmail
-            })
-            .toPromise();
+            }));
     }
 
     public resetPassword(restToken: string, newPassword: string) {
-        return this.http
+        return lastValueFrom<UserData>(this.http
             .post<UserData>(
                 `${apiURL}/api/auth/verifyReset`,
                 {
@@ -144,15 +143,14 @@ export class AuthenticationService {
                         token: restToken
                     })
                 }
-            )
-            .toPromise()
+            ))
             .then((res: UserData) => {
                 this.setLogin(res);
             });
     }
 
     public upgradeAccount(username: string, email: string, password: string) {
-        return this.http
+        return lastValueFrom<UserData>(this.http
             .post<UserData>(
                 `${apiURL}/api/auth/upgradeGuest`,
                 {
@@ -161,8 +159,7 @@ export class AuthenticationService {
                     password: password
                 },
                 { headers: this.getAuthHeader() }
-            )
-            .toPromise()
+            ))
             .then((res: UserData) => {
                 this.setLogin(res);
                 localStorage.setItem('madeAccount', 'true');
@@ -170,13 +167,12 @@ export class AuthenticationService {
     }
 
     public register(username: string, email: string, password: string) {
-        return this.http
+        return lastValueFrom<UserData>(this.http
             .post<UserData>(`${apiURL}/api/auth/register`, {
                 username: username,
                 email: email.toLowerCase(),
                 password: password
-            })
-            .toPromise()
+            }))
             .then((res: UserData) => {
                 this.setLogin(res);
                 localStorage.setItem('madeAccount', 'true');
@@ -184,9 +180,8 @@ export class AuthenticationService {
     }
 
     public registerGuest() {
-        return this.http
-            .post<GuestData>(`${apiURL}/api/auth/registerGuest`, {})
-            .toPromise()
+        return lastValueFrom<GuestData>(this.http
+            .post<GuestData>(`${apiURL}/api/auth/registerGuest`, {}))
             .then((res: GuestData) => {
                 this.setRedirect('initialSetup');
                 this.setLogin(res);
@@ -196,25 +191,23 @@ export class AuthenticationService {
     }
 
     public login(usernameOrEmail: string, password: string) {
-        return this.http
+        return lastValueFrom<UserData>(this.http
             .post<UserData>(`${apiURL}/api/auth/login`, {
                 usernameOrEmail: usernameOrEmail,
                 password: password
-            })
-            .toPromise()
+            }))
             .then(res => {
                 this.setLogin(res);
             });
     }
 
     private confirmLogin(token: string): Promise<UserData | null> {
-        return this.http
+        return lastValueFrom<UserData>(this.http
             .get<UserData>(`${apiURL}/api/auth/userdata`, {
                 headers: new HttpHeaders({
                     token: token
                 })
-            })
-            .toPromise()
+            }))
             .then(res => res)
             .catch(err => null);
     }

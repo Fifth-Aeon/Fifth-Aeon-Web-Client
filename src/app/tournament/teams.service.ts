@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthenticationService } from '../user/authentication.service';
 import { apiURL } from '../url';
+import { lastValueFrom } from 'rxjs';
 import { saveAs } from 'file-saver';
 
 export interface TeamData {
@@ -52,26 +53,24 @@ export class TeamsService {
     public downloadSubmission(sub: SubmissionsData) {
         const url = `${apiURL}/api/tournament/submission/${sub.submissionID}`;
         const name = this.teamData ? this.teamData.teamName : '';
-        this.http
+        lastValueFrom(this.http
             .get(url, {
                 headers: this.auth.getAuthHeader(),
                 responseType: 'blob'
-            })
-            .toPromise()
+            }))
             .then(buffer =>
                 saveAs(
-                    buffer,
+                    buffer as Blob,
                     `${sub.submitted.toISOString()}-${name}-submission.zip`
                 )
             );
     }
 
     public getSubmissions() {
-        return this.http
+        return lastValueFrom(this.http
             .get<SubmissionsData[]>(TeamsService.getSubmissionsURL, {
                 headers: this.auth.getAuthHeader()
-            })
-            .toPromise()
+            }))
             .then(submissions => {
                 for (const sub of submissions) {
                     sub.submitted = new Date(sub.submitted);
@@ -84,11 +83,10 @@ export class TeamsService {
         const formData = new FormData();
         formData.append('submission', file);
 
-        return this.http
+        return lastValueFrom(this.http
             .post(TeamsService.submissionURL, formData, {
                 headers: this.auth.getAuthHeader()
-            })
-            .toPromise();
+            }));
     }
 
     public exitOrDissolve(): any {
@@ -99,9 +97,8 @@ export class TeamsService {
         const url = this.teamData.isLeader
             ? TeamsService.dissolveTeamUrl
             : TeamsService.exitTeamUrl;
-        this.http
-            .post(url, {}, { headers: this.auth.getAuthHeader() })
-            .toPromise()
+        lastValueFrom(this.http
+            .post(url, {}, { headers: this.auth.getAuthHeader() }))
             .then(res => {
                 this.teamData = undefined;
             });
@@ -119,11 +116,10 @@ export class TeamsService {
         if (this.teamData) {
             return;
         }
-        this.http
+        lastValueFrom(this.http
             .get<TeamData>(TeamsService.teamInfoURL, {
                 headers: this.auth.getAuthHeader()
-            })
-            .toPromise()
+            }))
             .then(data => {
                 this.teamData = data;
             });
@@ -142,13 +138,12 @@ export class TeamsService {
         if (this.teamData) {
             return Promise.reject();
         }
-        return this.http
+        return lastValueFrom(this.http
             .post<TeamData>(
                 TeamsService.createTeamUrl,
                 { teamName, contactEmail, contactName, contactOrg },
                 { headers: this.auth.getAuthHeader() }
-            )
-            .toPromise()
+            ))
             .then(data => (this.teamData = data));
     }
 
@@ -156,13 +151,12 @@ export class TeamsService {
         if (this.teamData) {
             return;
         }
-        this.http
+        lastValueFrom(this.http
             .post<TeamData>(
                 TeamsService.joinTeamUrl,
                 { joinCode },
                 { headers: this.auth.getAuthHeader() }
-            )
-            .toPromise()
+            ))
             .then(data => (this.teamData = data))
             .catch(err => {
                 alert('Could not join team: ' + err.error.message);

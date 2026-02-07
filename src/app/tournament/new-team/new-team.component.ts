@@ -15,12 +15,7 @@ export class NewTeamComponent {
     contactNameControl: FormControl;
     contactEmailControl: FormControl;
     contactOrgControl: FormControl;
-    controls = [
-        this.nameControl,
-        this.contactEmailControl,
-        this.contactEmailControl,
-        this.contactOrgControl
-    ];
+    controls: FormControl[];
     hide = true;
 
     name = '';
@@ -46,6 +41,12 @@ export class NewTeamComponent {
             Validators.email
         ]);
         this.contactOrgControl = new FormControl('', [Validators.required]);
+        this.controls = [
+            this.nameControl,
+            this.contactEmailControl,
+            this.contactEmailControl,
+            this.contactOrgControl
+        ];
     }
 
     startRequest() {
@@ -92,8 +93,8 @@ export class NewTeamComponent {
         return this.nameControl.hasError('required')
             ? 'You must enter a value.'
             : this.nameControl.hasError('availability')
-            ? 'No account exists with that username or email.'
-            : '';
+                ? 'No account exists with that username or email.'
+                : '';
     }
 
     contactError() {
@@ -112,10 +113,10 @@ export class NewTeamComponent {
         return this.contactEmailControl.hasError('required')
             ? 'You must enter a value'
             : this.contactEmailControl.hasError('email')
-            ? 'Must be a valid email address.'
-            : this.contactEmailControl.hasError('availability')
-            ? 'That email is already in use.'
-            : '';
+                ? 'Must be a valid email address.'
+                : this.contactEmailControl.hasError('availability')
+                    ? 'That email is already in use.'
+                    : '';
     }
 
     ok() {

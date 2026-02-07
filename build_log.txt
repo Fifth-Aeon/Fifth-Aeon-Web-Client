@@ -1,0 +1,20 @@
+Node.js version v25.4.0 detected.
+Odd numbered Node.js versions will not enter LTS status and should not be used for production. For more information, please see https://nodejs.org/en/about/releases/.
+- Generating browser application bundles (phase: setup)...
+✔ Browser application bundle generation complete.
+✔ Browser application bundle generation complete.
+
+Warning: C:\Users\willi\Dev\Fifth Aeon\CCG-Client\src\app\app.module.ts depends on 'angular2-hotkeys'. CommonJS or AMD dependencies can cause optimization bailouts.
+For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+Warning: C:\Users\willi\Dev\Fifth Aeon\CCG-Client\src\app\editor\editor-data.service.ts depends on 'uuid'. CommonJS or AMD dependencies can cause optimization bailouts.
+For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+Warning: C:\Users\willi\Dev\Fifth Aeon\CCG-Client\src\app\tournament\tournament-admin.service.ts depends on 'file-saver'. CommonJS or AMD dependencies can cause optimization bailouts.
+For more info see: https://angular.io/guide/build#configuring-commonjs-dependencies
+
+
+
+./src/polyfills.ts:43:0-29 - Error: Module not found: Error: Can't resolve 'core-js/es6/reflect' in 'C:\Users\willi\Dev\Fifth Aeon\CCG-Client\src'
+
+

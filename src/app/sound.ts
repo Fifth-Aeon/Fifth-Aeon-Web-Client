@@ -259,7 +259,7 @@ export class SoundManager {
         this.music.volume(0);
         sound.play();
 
-        return new Promise(resolve => {
+        return new Promise<void>(resolve => {
             sound.once('end', () => {
                 this.music.fade(
                     this.music.volume(),

@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { CollectionService } from 'app/collection.service';
 import { AuthenticationService } from 'app/user/authentication.service';
@@ -34,13 +35,12 @@ export class DecksService {
     }
 
     public saveDeck(deck: DeckList) {
-        return this.http
+        return lastValueFrom(this.http
             .post(
                 saveURL,
                 { deck: deck.getSavable() },
                 { headers: this.auth.getAuthHeader() }
-            )
-            .toPromise()
+            ))
             .then((res: any) => (deck.id = res.id))
             .catch(console.error);
     }
@@ -50,16 +50,15 @@ export class DecksService {
     }
 
     public loadDecks() {
-        return this.http
-            .get<SavedDeck[]>(loadUrl, { headers: this.auth.getAuthHeader() })
-            .toPromise()
+        return lastValueFrom(this.http
+            .get<SavedDeck[]>(loadUrl, { headers: this.auth.getAuthHeader() }))
             .then(decks => {
                 this.decks.length = 0;
                 for (const deckData of decks) {
                     try {
                         const loaded = new DeckList(standardFormat, deckData);
                         this.decks.push(loaded);
-                    } catch (e) {}
+                    } catch (e) { }
                 }
             })
             .catch(console.error);
@@ -88,13 +87,12 @@ export class DecksService {
             this.currentDeckNumber,
             this.decks.length - 1
         );
-        this.http
+        lastValueFrom(this.http
             .post(
                 deleteUrl,
                 { id: removed.id },
                 { headers: this.auth.getAuthHeader() }
-            )
-            .toPromise()
+            ))
             .catch(console.error);
     }
 

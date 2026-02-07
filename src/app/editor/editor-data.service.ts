@@ -6,6 +6,7 @@ import { UnitType } from '../game_model/card-types/unit';
 import { CollectionService } from '../collection.service';
 import { AuthenticationService } from 'app/user/authentication.service';
 import { HttpClient } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
 import { apiURL } from 'app/url';
 import { CardSet, SetInformation } from 'app/game_model/cardSet';
 import { cloneDeep, isEqual } from 'lodash';
@@ -51,11 +52,10 @@ export class EditorDataService {
     }
 
     private loadActiveSets() {
-        return this.http
+        return lastValueFrom(this.http
             .get<CardSet[]>(EditorDataService.getActiveSets, {
                 headers: this.auth.getAuthHeader()
-            })
-            .toPromise();
+            }));
     }
 
     public setSetActive(setId: string, active: boolean) {
@@ -64,7 +64,7 @@ export class EditorDataService {
         } else {
             this.getSet(setId).then(set => this.deactivateSet(set));
         }
-        this.http
+        lastValueFrom(this.http
             .post(
                 active
                     ? EditorDataService.activateSet
@@ -73,48 +73,44 @@ export class EditorDataService {
                 {
                     headers: this.auth.getAuthHeader()
                 }
-            )
-            .toPromise()
+            ))
             .catch(err => console.warn(err));
     }
 
     public addCardToSet(setId: string, id: string) {
-        this.http
+        lastValueFrom(this.http
             .post(
                 EditorDataService.addCardToSetRoute,
                 { cardId: id, setId: setId },
                 {
                     headers: this.auth.getAuthHeader()
                 }
-            )
-            .toPromise()
+            ))
             .catch(err => console.warn(err));
     }
 
     public removeCardFromSet(setId: string, id: string) {
-        this.http
+        lastValueFrom(this.http
             .post(
                 EditorDataService.removeCardFromSetRoute,
                 { cardId: id, setId: setId },
                 {
                     headers: this.auth.getAuthHeader()
                 }
-            )
-            .toPromise()
+            ))
             .catch(err => console.warn(err));
     }
 
     public deleteSet(set: SetInformation) {
         this.sets = this.sets.filter(curr => curr.id !== set.id);
-        this.http
+        lastValueFrom(this.http
             .post(
                 EditorDataService.deleteSetRoute,
                 { setId: set.id },
                 {
                     headers: this.auth.getAuthHeader()
                 }
-            )
-            .toPromise()
+            ))
             .then(() => console.log('Set deleted'));
     }
 
@@ -134,30 +130,28 @@ export class EditorDataService {
     }
 
     public saveSet(set: SetInformation) {
-        this.http
+        lastValueFrom(this.http
             .post(
                 EditorDataService.saveSetRoute,
                 { setInfo: set },
                 {
                     headers: this.auth.getAuthHeader()
                 }
-            )
-            .toPromise()
+            ))
             .then(() => this.markSetSaved(set))
             .catch(err => console.warn('Failed to save set', err));
     }
 
     private saveCard(card: CardData) {
         console.log('Save', card.name);
-        return this.http
+        return lastValueFrom(this.http
             .post(
                 EditorDataService.saveCardRoute,
                 { cardData: card },
                 {
                     headers: this.auth.getAuthHeader()
                 }
-            )
-            .toPromise()
+            ))
             .then(() => this.markCardSaved(card))
             .catch(err => console.warn('Failed to save card', err));
     }
@@ -171,9 +165,8 @@ export class EditorDataService {
     }
 
     public getPublicSets(): Promise<SetInformation[]> {
-        return this.http
-            .get<SetInformation[]>(EditorDataService.getPublicSetsRoute)
-            .toPromise();
+        return lastValueFrom(this.http
+            .get<SetInformation[]>(EditorDataService.getPublicSetsRoute));
     }
 
     public getSet(setInfo: SetInformation | string): Promise<CardSet> {
@@ -182,9 +175,8 @@ export class EditorDataService {
         if (cached) {
             return Promise.resolve(cached);
         }
-        return this.http
-            .get<CardSet>(EditorDataService.getSpecificSetRoute + id)
-            .toPromise()
+        return lastValueFrom(this.http
+            .get<CardSet>(EditorDataService.getSpecificSetRoute + id))
             .then(set => {
                 this.setCache.set(id, set);
                 return set;
@@ -296,14 +288,13 @@ export class EditorDataService {
     }
 
     private loadCardsInSet() {
-        this.http
+        lastValueFrom(this.http
             .get<{ setId: string; cardId: string }[]>(
                 EditorDataService.getCardMemberships,
                 {
                     headers: this.auth.getAuthHeader()
                 }
-            )
-            .toPromise()
+            ))
             .then(memberships => {
                 for (const membership of memberships) {
                     const set =
@@ -315,11 +306,10 @@ export class EditorDataService {
     }
 
     private loadCards() {
-        this.http
+        lastValueFrom(this.http
             .get<CardData[]>(EditorDataService.getCardsRoute, {
                 headers: this.auth.getAuthHeader()
-            })
-            .toPromise()
+            }))
             .then(cards => {
                 this.cards = cards;
                 for (const card of cards) {
@@ -341,11 +331,10 @@ export class EditorDataService {
     }
 
     private loadSets() {
-        this.http
+        lastValueFrom(this.http
             .get<SetInformation[]>(EditorDataService.getUserSetsRoute, {
                 headers: this.auth.getAuthHeader()
-            })
-            .toPromise()
+            }))
             .then(sets => {
                 this.sets = sets;
                 for (const set of sets) {
