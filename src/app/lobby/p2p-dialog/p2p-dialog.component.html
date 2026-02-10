@@ -1,0 +1,75 @@
+<h2 mat-dialog-title>P2P Multiplayer</h2>
+<mat-dialog-content>
+    <div class="tabs" *ngIf="checkingAvailability">
+        <p>Checking connectivity...</p>
+    </div>
+
+    <div class="roles">
+        <mat-radio-group [(ngModel)]="role" (change)="reset()">
+            <mat-radio-button value="host">Host Game</mat-radio-button>
+            <mat-radio-button value="join">Join Game</mat-radio-button>
+        </mat-radio-group>
+    </div>
+
+    <div *ngIf="signalingMethod === 'firebase'" class="section">
+        <div *ngIf="role === 'host'">
+            <button mat-raised-button color="accent" (click)="start()" *ngIf="!firebaseSessionId">Create
+                Session</button>
+            <div *ngIf="firebaseSessionId">
+                <p>Room Code: <strong>{{firebaseSessionId}}</strong></p>
+
+                <div class="share-link-container">
+                    <button mat-stroked-button (click)="copy(firebaseSessionId)">
+                        <mat-icon>content_copy</mat-icon> Copy Code
+                    </button>
+                    <button mat-stroked-button color="primary" (click)="copy(getShareLink())">
+                        <mat-icon>share</mat-icon> Copy Join Link
+                    </button>
+                </div>
+
+                <p>{{firebaseStatus}}</p>
+            </div>
+        </div>
+        <div *ngIf="role === 'join'">
+            <mat-form-field>
+                <input matInput placeholder="Session Code" [(ngModel)]="firebaseInputId">
+            </mat-form-field>
+            <button mat-raised-button color="accent" (click)="start()">Join</button>
+            <p>{{firebaseStatus}}</p>
+        </div>
+    </div>
+
+    <div *ngIf="signalingMethod === 'manual'" class="section">
+        <p *ngIf="!signaling">
+            <button mat-raised-button color="accent" (click)="start()">Start</button>
+        </p>
+
+        <div *ngIf="signaling">
+            <div *ngIf="role === 'host'">
+                <h3>1. Send this to friend:</h3>
+                <textarea matInput readonly [value]="manualOffer"></textarea>
+                <button mat-button (click)="copy(manualOffer)">Copy</button>
+
+                <h3>2. Paste friend's reply:</h3>
+                <textarea matInput [(ngModel)]="manualAnswer"></textarea>
+                <button mat-raised-button (click)="processManualInput()">Process Reply</button>
+            </div>
+
+            <div *ngIf="role === 'join'">
+                <h3>1. Paste friend's offer:</h3>
+                <textarea matInput [(ngModel)]="manualAnswer"></textarea>
+                <button mat-raised-button (click)="processManualInput()">Process Offer</button>
+
+                <h3>2. Send this reply to friend:</h3>
+                <textarea matInput readonly [value]="manualOffer"></textarea>
+                <button mat-button (click)="copy(manualOffer)">Copy</button>
+            </div>
+
+            <p>Status: {{manualLog}}</p>
+        </div>
+    </div>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

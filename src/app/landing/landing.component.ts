@@ -3,12 +3,14 @@ import { AuthenticationService } from '../user/authentication.service';
 import { SettingsService } from 'app/settings/settings.service';
 import { Router } from '@angular/router';
 import { WebClient } from 'app/client';
+import { environment } from '../../environments/environment';
 
 enum LandingState {
     Working,
     WaitingForAction,
     NewPlayer,
-    OfflineOnly
+    OfflineOnly,
+    Serverless
 }
 
 @Component({
@@ -30,6 +32,11 @@ export class LandingComponent implements OnInit {
     }
 
     private async init() {
+        if (environment.serverless) {
+            this.state = LandingState.Serverless;
+            return;
+        }
+
         const serverAvailable = await this.auth.checkServerAvailable();
         if (!serverAvailable) {
             this.state = LandingState.OfflineOnly;
@@ -51,11 +58,23 @@ export class LandingComponent implements OnInit {
         this.auth.registerGuest();
     }
 
-    public enterOfflineMode() {
-        this.settings.setOffline(true);
-        this.client.enterOfflineMode();
-        this.router.navigateByUrl('/lobby');
+    public ngOnInit() {
+        // Check for P2P room in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const room = urlParams.get('room');
+        if (room) {
+            console.log('Auto-joining P2P room:', room);
+            this.enterOfflineMode(room);
+        }
     }
 
-    public ngOnInit() { }
+    public enterOfflineMode(autoJoinRoom?: string) {
+        this.settings.setOffline(true);
+        this.client.enterOfflineMode();
+        if (autoJoinRoom) {
+            this.client.openP2PDialog(autoJoinRoom);
+        } else {
+            this.router.navigateByUrl('/lobby');
+        }
+    }
 }

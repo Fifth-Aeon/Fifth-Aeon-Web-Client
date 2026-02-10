@@ -66,3 +66,7 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
  * Needed for: All but Chrome, Firefox, Edge, IE11 and Safari 10
  */
 // import 'intl';  // Run `npm install --save intl`.
+
+(window as any).global = window;
+(window as any).process = require('process');
+(window as any).Buffer = (window as any).Buffer || require('buffer').Buffer;

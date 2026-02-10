@@ -1,5 +1,8 @@
 import { Queue } from 'typescript-collections';
 import { getWsUrl } from './url';
+import { NetworkInterface } from './network-interface';
+import { P2PTransport } from './p2p-transport';
+import { environment } from '../environments/environment';
 
 export enum MessageType {
     // General
@@ -26,6 +29,7 @@ export enum MessageType {
 
     // In Game
     GameEvent,
+    GameEvents,
     GameAction,
 }
 
@@ -44,7 +48,7 @@ const pingTime = 1000 * 15;
  * Used to communicate via websockets.
  *
  */
-export class Messenger {
+export class Messenger implements NetworkInterface {
     private handlers: Map<MessageType, (msg: Message) => void>;
     private ws: WebSocket | undefined;
     private messageQueue: Queue<string> = new Queue<string>();
@@ -61,6 +65,41 @@ export class Messenger {
     ) {
         this.handlers = new Map();
     }
+
+    public isConnected(): boolean {
+        if (this.p2p) {
+            return this.p2p.isConnected();
+        }
+        return this.ws !== undefined && this.ws.readyState === this.ws.OPEN;
+    }
+
+    public setP2PTransport(p2p: P2PTransport | null) {
+        if (this.p2p) {
+            this.p2p.destroy();
+        }
+        this.p2p = p2p;
+        if (this.p2p) {
+            // Switch to P2P mode
+            // We should probably close WS if it's open, or just ignore it
+            this.close();
+
+            this.p2p.connected$.subscribe(connected => {
+                this.onConnectChange(connected);
+            });
+            this.p2p.data$.subscribe(data => {
+                this.handleMessage({ data: data } as MessageEvent); // handleMessage expects MessageEvent
+            });
+
+            // Trigger initial state
+            this.onConnectChange(this.p2p.isConnected());
+        } else {
+            // Revert to WS mode
+            // We might need to restart WS connection logic
+            this.connect();
+        }
+    }
+
+    private p2p: P2PTransport | null = null;
 
     public setID(id: string) {
         this.id = id;
@@ -90,6 +129,8 @@ export class Messenger {
             return;
         }
         setInterval(() => {
+            if (this.p2p) return; // Don't auto-reconnect WS if in P2P mode
+
             if (!this.id || !this.ws || this.ws.readyState === this.ws.OPEN) {
                 return;
             }
@@ -104,6 +145,9 @@ export class Messenger {
     }
 
     private connect() {
+        if (this.p2p) return; // Block WS connect if P2P
+        if (environment.serverless) return; // Block WS if serverless
+
         if (!this.enabled) {
             return;
         }
@@ -123,11 +167,24 @@ export class Messenger {
     }
 
     private emptyMessageQueue() {
-        if (!this.ws) {
+        if (!this.ws && !this.p2p) {
             return;
         }
-        for (const msg = this.messageQueue.dequeue(); msg !== undefined; ) {
-            this.ws.send(msg);
+
+        while (!this.messageQueue.isEmpty()) {
+            const msg = this.messageQueue.dequeue();
+            if (msg === undefined) break;
+
+            if (this.p2p) {
+                try {
+                    const obj = JSON.parse(msg);
+                    this.p2p.send(obj);
+                } catch (e) {
+                    this.p2p.send(msg);
+                }
+            } else if (this.ws) {
+                this.ws.send(msg);
+            }
         }
     }
 
@@ -150,11 +207,17 @@ export class Messenger {
     }
 
     private handleMessage(ev: MessageEvent) {
-        const message = this.readMessage(ev.data);
+        // P2P passes object directly usually, but handleMessage expects MessageEvent
+        // We can check if ev is MessageEvent or just data
+        const data = (ev.data !== undefined) ? ev.data : ev;
+
+        const message = this.readMessage(data);
         if (!message) {
             return;
         }
-        if (!(message.data && message.source && message.type)) {
+        if (!(message.data && message.type !== undefined)) {
+            // We relax the check for P2P messages which might lack source
+            // But we really need type and data.
             console.error('Invalid message', message);
             return;
         }
@@ -172,13 +235,25 @@ export class Messenger {
     }
 
     private readMessage(data: any): Message | null {
-        try {
-            const parsed = JSON.parse(data);
-            parsed.type = MessageType[parsed.type];
-            return parsed as Message;
-        } catch (e) {
-            console.error('Could not parse message json');
-            return null;
+        if (typeof data === 'string') {
+            try {
+                const parsed = JSON.parse(data);
+                if (typeof parsed.type === 'string') {
+                    parsed.type = MessageType[parsed.type];
+                }
+                return parsed as Message;
+            } catch (e) {
+                console.error('Could not parse message json');
+                return null;
+            }
+        } else {
+            // Already an object (from P2P)
+            if (typeof data.type === 'string') {
+                // Parse string "Connect" to MessageType.Connect (3)
+                data.type = MessageType[data.type];
+            }
+            // If data.type is number (e.g. 3), it stays 3.
+            return data as Message;
         }
     }
 
@@ -208,12 +283,23 @@ export class Messenger {
         messageType: MessageType,
         data: string | object
     ) {
-        const message = this.makeMessage(messageType, data);
-        if (this.ws && this.ws.readyState === this.ws.OPEN) {
-            this.ws.send(message);
+        if (this.p2p && this.p2p.isConnected()) {
+            // Construct message object directly for P2P
+            const msg = {
+                type: MessageType[messageType],
+                data: data,
+                source: this.id
+            };
+            this.p2p.send(msg);
         } else {
-            this.messageQueue.add(message);
-            this.connect();
+            const message = this.makeMessage(messageType, data);
+            if (this.ws && this.ws.readyState === this.ws.OPEN) {
+                this.ws.send(message);
+            } else {
+                this.messageQueue.add(message);
+                this.connect();
+            }
         }
     }
 }
+

@@ -14,6 +14,9 @@ import { TipService, TipType } from './tips';
 import { AuthenticationService, UserData } from './user/authentication.service';
 import { SettingsDialogComponent } from './settings/settings-dialog/settings-dialog.component';
 import { GameType } from './gameType';
+import { P2PClient } from './p2p/p2p-client';
+import { ISignalingService } from './p2p/signaling/signaling-service';
+import { environment } from '../environments/environment';
 
 export enum ClientState {
     UnAuth,
@@ -47,7 +50,7 @@ export class WebClient {
         public dialog: MatDialog,
         private hotkeys: HotkeysService,
         private collection: CollectionService,
-        private gameManager: GameManager,
+        public gameManager: GameManager,
         preloader: Preloader,
         messengerService: MessengerService,
         auth: AuthenticationService
@@ -163,9 +166,30 @@ export class WebClient {
 
     public enterOfflineMode() {
         this.changeState(ClientState.InLobby);
-        this.username = 'Offline Player';
+        this.username = environment.serverless ? 'Player' : 'Offline Player';
         this.tips.setUsername(this.username);
         this.gameManager.setUsername(this.username);
+    }
+
+    public startP2PGame(signaling: ISignalingService, isHost: boolean) {
+        const p2p = new P2PClient(signaling);
+        p2p.initiate(isHost);
+        this.messenger.setP2PTransport(p2p);
+        this.gameManager.startP2PBackendGame(isHost);
+
+        this.messenger.connectChange = (connected) => {
+            if (connected) {
+                this.zone.run(() => {
+                    this.dialog.closeAll();
+                    this.selectDeckAndStartGame(isHost ? GameType.P2PHost : GameType.P2PJoin);
+                });
+            }
+        };
+
+        this.gameManager.onP2PGameStarted = () => {
+            this.changeState(ClientState.InGame);
+            this.router.navigate(['/game']);
+        };
     }
 
     public isLoggedIn() {
@@ -187,6 +211,14 @@ export class WebClient {
         this.messenger.sendMessageToServer(MessageType.SetDeck, {
             deckList: deck.toJson()
         });
+
+        if (this.onDeckSelected) {
+            // Only call onDeckSelected if we haven't already started the game 
+            // (e.g. P2P game might start immediately if opponent is ready)
+            if (this.state !== ClientState.InGame) {
+                this.onDeckSelected();
+            }
+        }
     }
 
     // Transitions -----------------------------------------------
@@ -224,6 +256,11 @@ export class WebClient {
     public joinPublicQueue() {
         this.router.navigate(['/queue']);
         this.messenger.sendMessageToServer(MessageType.JoinQueue, {});
+        this.changeState(ClientState.Waiting);
+    }
+
+    public startP2PDeckSelected() {
+        this.router.navigate(['/queue']);
         this.changeState(ClientState.Waiting);
     }
 
@@ -295,7 +332,19 @@ export class WebClient {
             case GameType.ServerAIGame:
                 this.onDeckSelected = this.startLocalAIGame;
                 break;
+            case GameType.P2PHost:
+            case GameType.P2PJoin:
+                this.onDeckSelected = this.startP2PDeckSelected;
+                break;
         }
         this.router.navigate(['/select']);
     }
+    public openP2PDialog(autoJoinRoom?: string) {
+        // Store the pending join room in WebClient state.
+        this.pendingP2PRoom = autoJoinRoom;
+        this.router.navigate(['/lobby']);
+    }
+
+    public pendingP2PRoom: string | undefined;
+
 }

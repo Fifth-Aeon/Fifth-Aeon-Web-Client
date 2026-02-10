@@ -1,0 +1,45 @@
+.status-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.status-badge mat-icon {
+    margin-right: 8px;
+}
+
+.online {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.offline {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.roles {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.share-link-container {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.share-link-container button {
+    width: 100%;
+}

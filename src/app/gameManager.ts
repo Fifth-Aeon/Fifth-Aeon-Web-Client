@@ -62,6 +62,43 @@ export class GameManager {
             msg => this.handleGameEvent(msg.data),
             this
         );
+        this.messenger.addHandler(
+            MessageType.GameEvents,
+            msg => {
+                const events = msg.data as GameSyncEvent[];
+                events.forEach(e => this.handleGameEvent(e));
+            },
+            this
+        );
+        this.messenger.addHandler(
+            MessageType.Connect,
+            msg => this.handleP2PConnect(msg),
+            this
+        );
+        this.messenger.addHandler(
+            MessageType.Ping,
+            () => { }, // Ignore
+            this
+        );
+        this.messenger.addHandler(
+            MessageType.SetDeck,
+            msg => this.handleSetDeck(msg),
+            this
+        );
+        this.messenger.addHandler( // Host receives actions from Joiner
+            MessageType.GameAction,
+            msg => {
+                if (this.gameType === GameType.P2PHost) {
+                    if (this.gameModel) {
+                        const res = this.gameModel.handleAction(msg.data);
+                        if (res) {
+                            this.sendEventsToLocalPlayers(res);
+                        }
+                    }
+                }
+            },
+            this
+        );
 
         this.localMessenger = messengerService.getLocalMessenger();
         this.localMessenger.addHandler(MessageType.GameEvent, msg => {
@@ -132,15 +169,26 @@ export class GameManager {
     // Decks -----------------------------------------------------
     public setDeck(deck: DeckList) {
         this.deck = deck;
+        this.p2pDeckConfirmed = true;
+        this.checkP2PStart();
     }
+    // ...
+
 
     public getDeck() {
         return this.deck;
     }
 
     // Action communication -------------------------------------
+
     private sendEventsToLocalPlayers(events: GameSyncEvent[]) {
         setTimeout(() => {
+            // If we are P2P Host, we must relay events to the client
+            if (this.gameType === GameType.P2PHost) {
+                // Send all events in one batch to prevent ordering issues
+                this.messenger.sendMessageToServer(MessageType.GameEvents, events);
+            }
+
             for (const event of events) {
                 for (const ai of this.ais) {
                     ai.handleGameEvent(event);
@@ -169,7 +217,7 @@ export class GameManager {
     }
 
     private sendGameAction(action: GameAction, isAi: boolean = false) {
-        if (this.gameType === GameType.PublicGame) {
+        if (this.gameType === GameType.PublicGame || this.gameType === GameType.P2PJoin) {
             this.messenger.sendMessageToServer(MessageType.GameAction, action);
             return;
         } else if (this.gameType === GameType.ServerAIGame) {
@@ -299,7 +347,7 @@ export class GameManager {
             case SyncEventType.EnchantmentModified:
                 const avatar =
                     playerGame.getCurrentPlayer().getPlayerNumber() ===
-                    this.playerNumber
+                        this.playerNumber
                         ? 'player'
                         : 'enemy';
                 this.overlay.addInteractionArrow(avatar, event.enchantmentId);
@@ -536,6 +584,88 @@ export class GameManager {
     private applyScenario(scenario: Scenario, games: Array<Game>) {
         games.forEach(game => {
             scenario.apply(game);
+        });
+    }
+
+    private handleP2PConnect(msg: any) {
+        // When we receive a Connect message in P2P, it means the other peer is ready.
+        console.log('P2P Connect received', msg);
+    }
+
+    public startP2PBackendGame(isHost: boolean) {
+        this.gameType = isHost ? GameType.P2PHost : GameType.P2PJoin;
+        this.playerNumber = isHost ? 0 : 1;
+        this.opponentNumber = 1 - this.playerNumber;
+        this.opponentDeck = null; // Reset opponent deck
+        this.p2pDeckConfirmed = false;
+    }
+
+    private opponentDeck: DeckList | null = null;
+    private p2pDeckConfirmed = false;
+
+    private handleSetDeck(msg: any) {
+        if (this.gameType === GameType.P2PHost) {
+            // Host receives deck from Joiner
+            console.log('Host received opponent deck', msg);
+            this.opponentDeck = new DeckList();
+            this.opponentDeck.fromJson(msg.data.deckList);
+
+            this.checkP2PStart();
+        } else if (this.gameType === GameType.P2PJoin) {
+            // Joiner receives deck from Host
+            console.log('Joiner received opponent deck', msg);
+            this.opponentDeck = new DeckList();
+            this.opponentDeck.fromJson(msg.data.deckList);
+        }
+    }
+
+    private checkP2PStart() {
+        if (this.gameType === GameType.P2PHost && this.p2pDeckConfirmed && this.deck && this.opponentDeck && !this.gameModel) {
+            this.startP2PGameSession();
+        }
+    }
+
+    public onP2PGameStarted: () => void = () => { };
+
+    private startP2PGameSession() {
+        console.log('Starting P2P Game Session as Host');
+        // Initialize ServerGame
+        ServerGame.setSeed(new Date().getTime());
+        // Host is 0, Joiner is 1
+        this.gameModel = new ServerGame('server', standardFormat, [
+            this.deck,
+            this.opponentDeck!
+        ]);
+
+        this.ais = [];
+        this.log = new Log(this.playerNumber);
+
+        // Host Game (Client Side)
+        this.game1 = new ClientGame(
+            'player',
+            (_, action) => this.sendGameAction(action, false),
+            this.overlay.getAnimator(),
+            this.log
+        );
+        this.game1.setOwningPlayer(this.playerNumber);
+        this.game1.enableAnimations();
+
+        this.soundManager.setFactionContext(this.deck.getColors());
+        this.soundManager.playImportantSound('gong');
+
+        this.zone.run(() => {
+            this.opponentUsername = 'Remote Opponent';
+            if (this.gameModel) {
+                const events = this.gameModel.startGame();
+                this.sendEventsToLocalPlayers(events);
+
+                this.messenger.sendMessageToServer(MessageType.StartGame, {
+                    playerNumber: this.opponentNumber,
+                    opponent: this.username
+                });
+
+                this.onP2PGameStarted();
+            }
         });
     }
 }

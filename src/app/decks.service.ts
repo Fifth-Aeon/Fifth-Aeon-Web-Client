@@ -81,7 +81,6 @@ export class DecksService {
     public setCurrentDeck(index: number) {
         this.currentDeck = this.decks[index];
         this.client.setDeck(this.currentDeck);
-        this.client.onDeckSelected();
     }
 
     public editDeck(index: number) {

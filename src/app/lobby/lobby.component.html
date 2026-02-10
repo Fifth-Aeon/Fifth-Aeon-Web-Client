@@ -36,16 +36,23 @@
 
         <mat-card class="lobby-card">
             <mat-card-title>Multiplayer</mat-card-title>
-            <ng-template [ngIf]="showMultiplayer()">
+
+            <!-- Public Queue (Requires Server Connection) -->
+            <ng-template [ngIf]="client.isConnected()">
                 <button mat-raised-button color="primary" (click)="client.selectDeckAndStartGame(2)">
                     <mat-icon>public</mat-icon> Public Game
                 </button>
+            </ng-template>
 
+            <ng-template [ngIf]="!client.isConnected() && !isServerless()">
+                <span class="offline-msg">Offline (Public Queue Unavailable)</span>
             </ng-template>
-            <ng-template [ngIf]="!showMultiplayer()">
-                <span>Connecting...</span>
-                <mat-progress-bar class="mp-bar" attr.color="primary" mode="indeterminate"></mat-progress-bar>
-            </ng-template>
+
+            <!-- P2P Game (Always Available) -->
+            <button mat-raised-button color="accent" (click)="openP2PDialog()">
+                <mat-icon>link</mat-icon> P2P Game
+            </button>
+
         </mat-card>
 
         <mat-card class="lobby-card">

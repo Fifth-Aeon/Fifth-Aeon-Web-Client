@@ -2,5 +2,7 @@ export enum GameType {
     AiGame,
     DoubleAiGame,
     PublicGame,
-    ServerAIGame
+    ServerAIGame,
+    P2PHost,
+    P2PJoin
 }

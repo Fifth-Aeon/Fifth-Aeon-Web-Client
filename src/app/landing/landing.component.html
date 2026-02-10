@@ -33,3 +33,10 @@
         Play Offline
     </button>
 </ng-template>
+
+<ng-template [ngIf]="state === states.Serverless">
+    <p>Welcome to Fifth Aeon</p>
+    <button mat-raised-button class="offline-button" (click)="enterOfflineMode()">
+        Play
+    </button>
+</ng-template>

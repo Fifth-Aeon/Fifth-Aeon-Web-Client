@@ -3,6 +3,8 @@ import { DecksService } from 'app/decks.service';
 import { ClientState, WebClient } from '../client';
 import { SoundManager } from '../sound';
 import { AuthenticationService, UserData } from '../user/authentication.service';
+import { P2PDialogComponent } from './p2p-dialog/p2p-dialog.component';
+import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'ccg-lobby',
@@ -37,10 +39,26 @@ export class LobbyComponent implements OnInit {
         if (!this.soundManager.musicIsPlaying()) {
             this.soundManager.setFactionContext(new Set());
         }
+
+        // Check for pending P2P join
+        if (this.client.pendingP2PRoom) {
+            const room = this.client.pendingP2PRoom;
+            this.client.pendingP2PRoom = undefined;
+            // timeout to ensure view is ready?
+            setTimeout(() => this.openP2PDialog(room), 100);
+        }
     }
 
     public join() {
         this.client.joinPublicQueue();
+    }
+
+    public openP2PDialog(autoJoinRoom?: string) {
+        this.client.gameManager.dialog.open(P2PDialogComponent, {
+            width: '600px',
+            disableClose: false,
+            data: { autoJoinRoom }
+        });
     }
 
     public fullscreen() {
@@ -55,6 +73,14 @@ export class LobbyComponent implements OnInit {
     }
 
     public showMultiplayer() {
+        // This method returning false hides the entire multiplayer card in the template if not connected.
+        // We want to show the card if we are connected OR if we want to play P2P.
+        // But the template uses showMultiplayer() to gate the whole block.
+        // Let's change the template logic instead.
+        return this.client.isConnected();
+    }
+
+    public isConnected() {
         return this.client.isConnected();
     }
 
@@ -78,5 +104,9 @@ export class LobbyComponent implements OnInit {
             return 0;
         }
         return this.client.getState();
+    }
+
+    public isServerless() {
+        return environment.serverless;
     }
 }

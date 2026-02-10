@@ -3,6 +3,7 @@ import { lastValueFrom } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { apiURL } from '../url';
+import { environment } from '../../environments/environment';
 
 export interface UserData {
     token: string;
@@ -30,6 +31,9 @@ export class AuthenticationService {
     }
 
     public async checkServerAvailable() {
+        if (environment.serverless) {
+            return false;
+        }
         try {
             await lastValueFrom(this.http.get(apiURL, { responseType: 'text' }));
             return true;
@@ -39,6 +43,9 @@ export class AuthenticationService {
     }
 
     public attemptLogin() {
+        if (environment.serverless) {
+            return Promise.resolve(false);
+        }
         try {
             const rawData = localStorage.getItem('login');
             if (!rawData) {

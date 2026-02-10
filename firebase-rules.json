@@ -1,0 +1,18 @@
+{
+    "rules": {
+        "sessions": {
+            ".read": false,
+            ".write": false,
+            "$sessionId": {
+                ".read": true,
+                ".write": "auth != null || !data.exists()",
+                "host-signals": {
+                    ".write": true
+                },
+                "client-signals": {
+                    ".write": true
+                }
+            }
+        }
+    }
+}

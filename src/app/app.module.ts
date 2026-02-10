@@ -43,6 +43,7 @@ import { AdminModule } from './admin/admin.module';
 import { SettingsModule } from './settings/settings.module';
 import { LocalDataProvider } from './data/local-data-provider';
 import { ServerDataProvider } from './data/server-data-provider';
+import { P2PDialogComponent } from './lobby/p2p-dialog/p2p-dialog.component';
 
 @NgModule({
     declarations: [
@@ -56,12 +57,15 @@ import { ServerDataProvider } from './data/server-data-provider';
         DraftComponent,
         LandingComponent,
         PlayerAvatarComponent,
-        DailyDialogComponent
+        PlayerAvatarComponent,
+        DailyDialogComponent,
+        P2PDialogComponent
     ],
     entryComponents: [
         EndDialogComponent,
         DeckMetadataDialogComponent,
-        DailyDialogComponent
+        DailyDialogComponent,
+        P2PDialogComponent
     ],
     imports: [
         BrowserModule,
