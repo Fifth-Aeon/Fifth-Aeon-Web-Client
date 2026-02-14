@@ -164,11 +164,15 @@ export class WebClient {
         this.tips.playTip(TipType.StartGame);
     }
 
-    public enterOfflineMode() {
+    public enterOfflineMode(): boolean {
         this.changeState(ClientState.InLobby);
         this.username = environment.serverless ? 'Player' : 'Offline Player';
         this.tips.setUsername(this.username);
         this.gameManager.setUsername(this.username);
+
+        const hasSound = localStorage.getItem('sound-settings');
+        const hasTips = localStorage.getItem('tip-store');
+        return !hasSound && !hasTips;
     }
 
     public startP2PGame(signaling: ISignalingService, isHost: boolean) {

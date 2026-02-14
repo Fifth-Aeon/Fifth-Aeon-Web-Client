@@ -70,7 +70,13 @@ export class LandingComponent implements OnInit {
 
     public enterOfflineMode(autoJoinRoom?: string) {
         this.settings.setOffline(true);
-        this.client.enterOfflineMode();
+        const needsSetup = this.client.enterOfflineMode();
+
+        if (needsSetup) {
+            this.router.navigateByUrl('/initialSetup');
+            return;
+        }
+
         if (autoJoinRoom) {
             this.client.openP2PDialog(autoJoinRoom);
         } else {
